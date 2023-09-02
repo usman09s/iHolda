@@ -21,3 +21,9 @@ export const WelcomeComments = [
     comment: 'Meet amazing people in your local community and share moments',
   },
 ];
+
+export const INITIAL_SELECTED_COUNTRY = {
+  phone: '+237',
+  name: 'Cameroon',
+  emoji: '\ud83c\udde8\ud83c\uddf2',
+};

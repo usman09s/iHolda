@@ -5,7 +5,7 @@ export const button = cva(['items-center justify-center active:opacity-20'], {
     type: {
       ghost: '',
       solid: '',
-      borderedSolid: 'bg-black py-2 rounded-full px-7 border-4 border-white',
+      borderedSolid: 'bg-black py-4 rounded-full px-12 border-4 border-white',
       borderedTransparent: '',
     },
     title: {

@@ -14,7 +14,16 @@ const VerifiedBadgeIcon = (props: SvgProps) => (
     />
   </Svg>
 );
+const CaretDownIcon = (props: SvgProps) => (
+  <Svg width={10} height={5.68} fill="none" {...props}>
+    <Path
+      fill="#fff"
+      d="M4.94 5.684a.94.94 0 0 1-.667-.276L.276 1.41a.942.942 0 0 1 0-1.333C.453-.098-.052.174.198.174s.609-.176.785 0h8.111c.177-.176.26-.096.509-.096-.177-.176.25 0 0 0a.942.942 0 0 1 0 1.333L5.606 5.408a.939.939 0 0 1-.667.276Z"
+    />
+  </Svg>
+);
 
 export default {
+  CaretDownIcon,
   VerifiedBadgeIcon,
 };

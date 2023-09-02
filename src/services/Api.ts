@@ -1,4 +1,4 @@
-import { LoginParameters, LoginResponse } from 'types/AuthTypes';
+import { LoginParameters, LoginResponse, SignUpResponse } from 'types/AuthTypes';
 import wretch from 'wretch';
 
 class ApiClass {
@@ -46,6 +46,22 @@ class ApiClass {
 
         return result;
       });
+
+  signUp = async ({ phone }: { phone: string }): Promise<SignUpResponse> =>
+    await this.externalApi
+      .url('users/')
+      .post({
+        phone,
+      })
+      .json((result: SignUpResponse) => result);
+
+  confirmOtp = async ({ otp, queryId }: { otp: string; queryId: string }): Promise<LoginResponse> =>
+    await this.externalApi
+      .url(`users/confirm-otp/?query-id=${queryId}`)
+      .post({
+        otp,
+      })
+      .json((result: LoginResponse) => result);
 }
 
 const Api = new ApiClass();

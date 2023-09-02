@@ -75,3 +75,33 @@ export type LoginParameters = {
   pin: string;
   phone: string;
 };
+
+export type CountryCodeType = {
+  name: string;
+  phone: string;
+  emoji: string;
+};
+
+export type SignUpResponse = {
+  access_token: string;
+  date_joined: string;
+  date_of_birth?: string;
+  date_updated: string;
+  email?: string;
+  first_name?: string;
+  gender: string;
+  id: number;
+  is_active: boolean;
+  is_online: boolean;
+  is_referred: boolean;
+  is_verified: boolean;
+  last_login?: string;
+  last_logout?: string;
+  last_name?: string;
+  max_referrals: number;
+  otp: number;
+  phone: string;
+  query_id: string;
+  refresh_token: string;
+  username: string;
+};
