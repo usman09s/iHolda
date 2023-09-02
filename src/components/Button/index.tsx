@@ -4,6 +4,7 @@ import colors from 'theme/colors';
 
 type Props = {
   title: string;
+  hitSlop?: object;
   disabled?: boolean;
   isLoading?: boolean;
   onPress?: () => void;
@@ -14,6 +15,7 @@ type Props = {
 
 const Button = ({
   title,
+  hitSlop,
   disabled,
   isLoading,
   type = 'solid',
@@ -23,6 +25,7 @@ const Button = ({
 }: Props) => (
   <Pressable
     onPress={onPress}
+    hitSlop={hitSlop}
     disabled={disabled}
     className={button({ type, class: customContainer })}>
     {isLoading ? (

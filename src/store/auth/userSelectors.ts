@@ -4,6 +4,7 @@ import { RootState } from 'store/store';
 type UserRootState = Pick<RootState, 'user'>;
 
 export const userSelector = (state: UserRootState) => state.user;
+export const userPhoneSelector = (state: UserRootState) => state.user.phone;
 
 export const queryIdSelector = (state: UserRootState) => state.user.query_id;
 
