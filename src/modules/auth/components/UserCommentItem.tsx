@@ -13,7 +13,7 @@ type Props = {
 const UserCommentItem = ({ bgColor, comment, username, image }: Props) => (
   <View
     className="bg-teaGreen rounded-xl p-4 mb-11 pb-8"
-    style={{ backgroundColor: bgColor, height: vh(16) }}>
+    style={{ backgroundColor: bgColor, minHeight: vh(18) }}>
     <View className="flex-row items-center">
       <Image source={image} className="w-12 h-12 rounded-full" />
       <View className="flex-row ml-2 items-center">
