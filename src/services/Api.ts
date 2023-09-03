@@ -4,8 +4,10 @@ import wretch from 'wretch';
 class ApiClass {
   externalApi;
   token = '';
+  queryId = '';
   _headers = {
     'Agent-Signature': 'mobile/iB+44',
+    'Content-Type': 'application/json',
   };
 
   constructor() {
@@ -43,6 +45,7 @@ class ApiClass {
       })
       .json((result: LoginResponse) => {
         this._setToken(result.access_token);
+        this.queryId = result.query_id;
 
         return result;
       });
@@ -53,21 +56,31 @@ class ApiClass {
       .post({
         phone,
       })
-      .json((result: SignUpResponse) => result);
+      .json((result: SignUpResponse) => {
+        this.queryId = result.query_id;
 
-  confirmOtp = async ({
-    otp,
-    queryId,
-  }: {
-    otp: string;
-    queryId: string;
-  }): Promise<{ status: number }> =>
+        return result;
+      });
+
+  confirmOtp = async ({ otp }: { otp: string }): Promise<{ status: number }> =>
     await this.externalApi
-      .url(`users/confirm-otp/?query-id=${queryId}`)
+      .url(`users/confirm-otp/?query-id=${this.queryId}`)
       .post({
         otp,
       })
       .json((result: LoginResponse) => result);
+
+  uploadImage = async ({ image }: { image: string }): Promise<unknown> =>
+    await this.externalApi
+      .url(`userprofiles/${this.queryId}/images/`)
+      .post({ image })
+      .json(result => result);
+
+  updateUsername = async ({ username }: { username: string }): Promise<unknown> =>
+    await this.externalApi
+      .url(`users/${this.queryId}/`)
+      .patch({ username })
+      .json(result => result);
 }
 
 const Api = new ApiClass();

@@ -19,7 +19,7 @@ export const getHitSlop = (
   };
 };
 
-export const parseApiError = (error: { message: string }) => {
+export const parseApiError = (error: { message: string } | unknown) => {
   if (!error?.message) {
     return;
   }
@@ -27,10 +27,18 @@ export const parseApiError = (error: { message: string }) => {
   let errorText = '';
 
   try {
-    errorText = JSON.parse(error.message).details;
+    errorText = JSON.parse(error.message).details || JSON.parse(error.message).detail;
   } catch {
     errorText = 'Try again';
   }
 
   return errorText;
+};
+
+export const getImageFormatFromUrl = (url: string | undefined): string => {
+  if (!url) {
+    return 'png';
+  }
+
+  return url.split('.')?.[1];
 };

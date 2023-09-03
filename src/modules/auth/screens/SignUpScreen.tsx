@@ -22,8 +22,8 @@ const SignUpScreen = () => {
   const { countries } = useLoadCountries();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showCountriesModal, setShowCountriesModal] = useState(false);
-  const [showPhoneConfirmationModal, setShowPhoneConfirmationModal] = useState(false);
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
+  const [showPhoneConfirmationModal, setShowPhoneConfirmationModal] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<CountryCodeType>(INITIAL_SELECTED_COUNTRY);
 
   const { isLoading, mutate } = useMutation(Api.signUp, {

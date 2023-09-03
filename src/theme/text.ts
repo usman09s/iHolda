@@ -18,6 +18,7 @@ export const text = cva(['items-center justify-center'], {
       r36: 'text-36 font-Regular',
 
       l13: 'text-13 font-Light',
+      l20: 'text-20 font-Light',
     },
     isCenter: {
       true: 'text-center',

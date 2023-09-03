@@ -4,6 +4,28 @@ module.exports = {
 
   blue: '#389DD6',
   teaGreen: '#C3EDC5',
+  dustGray: '#979797',
+  altoGray: '#D9D9D9',
   lightGold: '#F2E34B',
   sunriseOrange: '#ED7659',
+
+  'white-o-10': 'rgba(255,255,255,0.1)',
+  'white-o-20': 'rgba(255,255,255,0.2)',
+  'white-o-30': 'rgba(255,255,255,0.3)',
+  'white-o-40': 'rgba(255,255,255,0.4)',
+  'white-o-50': 'rgba(255,255,255,0.5)',
+  'white-o-60': 'rgba(255,255,255,0.6)',
+  'white-o-70': 'rgba(255,255,255,0.7)',
+  'white-o-80': 'rgba(255,255,255,0.8)',
+  'white-o-90': 'rgba(255,255,255,0.9)',
+
+  'black-o-10': 'rgba(0,0,0,0.1)',
+  'black-o-20': 'rgba(0,0,0,0.2)',
+  'black-o-30': 'rgba(0,0,0,0.3)',
+  'black-o-40': 'rgba(0,0,0,0.4)',
+  'black-o-50': 'rgba(0,0,0,0.5)',
+  'black-o-60': 'rgba(0,0,0,0.6)',
+  'black-o-70': 'rgba(0,0,0,0.7)',
+  'black-o-80': 'rgba(0,0,0,0.8)',
+  'black-o-90': 'rgba(0,0,0,0.9)',
 };

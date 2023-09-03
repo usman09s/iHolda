@@ -20,6 +20,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "class-variance-authority": "^0.7.0",
     "expo": "^49.0.9",
+    "expo-image-picker": "~14.3.2",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-updates": "~0.18.12",
