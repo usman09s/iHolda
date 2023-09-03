@@ -75,8 +75,8 @@ const SignUpScreen = () => {
           title="Continue"
           type="borderedSolid"
           isLoading={isLoading}
-          disabled={isLoading || !phoneNumber}
           onPress={() => setShowPhoneConfirmationModal(true)}
+          disabled={isLoading || !phoneNumber || phoneNumber.length < 4}
           customContainer={`self-center mt-20 ${phoneNumber.length < 4 && ' opacity-40'} `}
         />
       </KeyboardAvoidingView>
