@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { TextInput, View } from 'react-native';
 
 const OTPInput = ({ onChangeOtp = () => null }: { onChangeOtp: (value: string) => void }) => {
@@ -9,6 +9,10 @@ const OTPInput = ({ onChangeOtp = () => null }: { onChangeOtp: (value: string) =
   const otp = useRef<(number | string)[]>([]);
 
   const refs = [otpOne, otpTwo, otpThree, otpFour];
+
+  useEffect(() => {
+    setTimeout(() => otpOne.current?.focus(), 300);
+  }, []);
 
   const onKeyPress = (index: number, pressedKey: 'Backspace' | string | number) => {
     if (index === 0) {
