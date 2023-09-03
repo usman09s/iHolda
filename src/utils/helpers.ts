@@ -18,3 +18,19 @@ export const getHitSlop = (
     bottom: bottom || value,
   };
 };
+
+export const parseApiError = (error: { message: string }) => {
+  if (!error?.message) {
+    return;
+  }
+
+  let errorText = '';
+
+  try {
+    errorText = JSON.parse(error.message).details;
+  } catch {
+    errorText = 'Try again';
+  }
+
+  return errorText;
+};

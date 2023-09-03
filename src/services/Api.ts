@@ -55,7 +55,13 @@ class ApiClass {
       })
       .json((result: SignUpResponse) => result);
 
-  confirmOtp = async ({ otp, queryId }: { otp: string; queryId: string }): Promise<LoginResponse> =>
+  confirmOtp = async ({
+    otp,
+    queryId,
+  }: {
+    otp: string;
+    queryId: string;
+  }): Promise<{ status: number }> =>
     await this.externalApi
       .url(`users/confirm-otp/?query-id=${queryId}`)
       .post({
