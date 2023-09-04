@@ -8,6 +8,8 @@ module.exports = {
   dustGray: '#979797',
   altoGray: '#D9D9D9',
   lightGold: '#F2E34B',
+  jupiter: '#E1E1E1',
+  coolGreen: '#00F635',
   sunriseOrange: '#ED7659',
 
   'white-o-10': 'rgba(255,255,255,0.1)',

@@ -8,6 +8,7 @@ import WelcomeScreen from 'modules/auth/screens/WelcomeScreen';
 import ConfirmOtpScreen from './screens/ConfirmOtpScreen';
 import CreateUnlockPinScreen from './screens/CreateUnlockPinScreen';
 import EnterReferralCodeScreen from './screens/EnterReferralCodeScreen';
+import ReferralCodeSuccessfulScreen from './screens/ReferralCodeSuccessfulScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import UserAvatarAndUsernameUpdate from './screens/UserAvatarAndUsernameUpdate';
@@ -62,6 +63,11 @@ export default function AuthStackNavigator() {
         name="UserWaitList"
         options={commonOptions}
         component={UserWaitListScreen}
+      />
+      <AuthStack.Screen
+        options={commonOptions}
+        name="ReferralCodeSuccessful"
+        component={ReferralCodeSuccessfulScreen}
       />
     </AuthStack.Navigator>
   );
