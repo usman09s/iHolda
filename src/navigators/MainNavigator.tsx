@@ -6,6 +6,8 @@ import {
 } from '@react-navigation/native-stack';
 import AuthStackNavigator from 'modules/auth/AuthStackNavigator';
 
+import BottomTabsNavigator from './BottomTabsNavigator';
+
 const MainStack = createNativeStackNavigator();
 
 const commonOptions: NativeStackNavigationOptions = {
@@ -21,6 +23,11 @@ export default function MainNavigator() {
     <NavigationContainer>
       <MainStack.Navigator screenOptions={commonScreenOptions}>
         <MainStack.Screen options={commonOptions} name="Auth" component={AuthStackNavigator} />
+        <MainStack.Screen
+          name="BottomTabs"
+          options={commonOptions}
+          component={BottomTabsNavigator}
+        />
       </MainStack.Navigator>
     </NavigationContainer>
   );

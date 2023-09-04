@@ -27,6 +27,13 @@ export const useSlice = createSlice({
   reducers: {
     setUserInfo: (state, action: PayloadAction<UserState>) => {
       state = action.payload;
+      if (action.payload.user?.user_profile_image?.image) {
+        state.userImage = action.payload.user?.user_profile_image.image;
+      }
+
+      if (action.payload.user?.user.username) {
+        state.username = action.payload.user?.user.username;
+      }
 
       return state;
     },

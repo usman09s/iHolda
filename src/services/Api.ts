@@ -42,7 +42,7 @@ class ApiClass {
     this.externalApi;
   };
 
-  login = async ({ phone, pin }: LoginParameters): Promise<LoginResponse> =>
+  signIn = async ({ phone, pin }: LoginParameters): Promise<LoginResponse> =>
     await this.externalApi
       .url('login/?forced=yes')
       .post({

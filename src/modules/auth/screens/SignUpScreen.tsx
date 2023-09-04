@@ -41,7 +41,7 @@ const SignUpScreen = () => {
     onError: err => {
       const parsedError = JSON.parse(err?.message);
       if (parsedError[1].username || parsedError[1].phone === 'Already exists') {
-        navigate('SignIn');
+        navigate('SignIn', { phone: `${selectedCountry.phone}${phoneNumber}` });
       }
     },
   });

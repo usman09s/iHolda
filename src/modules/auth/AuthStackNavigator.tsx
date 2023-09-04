@@ -17,10 +17,10 @@ import UserWaitListScreen from './screens/UserWaitListScreen';
 export type AuthStackParamList = {
   Welcome: undefined;
   SignUp: undefined;
-  SignIn: undefined;
   ForgotPin: undefined;
   ConfirmOtp: undefined;
   UserWaitList: undefined;
+  SignIn: { phone: string };
   CreateUnlockPin: undefined;
   EnterReferralCode: undefined;
   ReferralCodeSuccessful: undefined;

@@ -1,21 +1,91 @@
-import { Text, View } from 'react-native';
+import { useMemo, useState } from 'react';
+import { KeyboardAvoidingView, Text, View } from 'react-native';
+import { NavigationProp, RouteProp, useRoute } from '@react-navigation/native';
 import Button from 'components/Button';
+import ErrorModal from 'components/ErrorModal';
+import Input from 'components/Input';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppNavigation } from 'hooks/useAppNavigation';
+import { useMutation } from 'react-query';
+import Api from 'services/Api';
+import { setUserInfo } from 'store/auth/userSlice';
 import { text } from 'theme/text';
+import { parseApiError } from 'utils/helpers';
 
-const SignInScreen = () => (
-  <View className="flex-1 bg-blue justify-center px-7">
-    <View className="mb-20">
-      <Text className={text({ type: 'b44', class: 'text-white' })}>Enter your pin</Text>
+import { AuthStackParamList } from '../AuthStackNavigator';
+
+const SignInScreen = () => {
+  const [pin, setPin] = useState('');
+  const dispatch = useAppDispatch();
+  const { navigate, reset } = useAppNavigation<
+    NavigationProp<
+      AuthStackParamList & {
+        BottomTabs: undefined;
+      }
+    >
+  >();
+  const { params } = useRoute<RouteProp<AuthStackParamList, 'SignIn'>>();
+  const { mutate, isLoading, error } = useMutation(Api.signIn);
+
+  const errorMessage = useMemo(
+    () => parseApiError(error) || parseApiError(error, 'non_field_errors'),
+    [error],
+  );
+
+  const onSignIn = () => {
+    mutate(
+      {
+        pin,
+        phone: params.phone,
+      },
+      {
+        onSuccess: result => {
+          dispatch(setUserInfo(result));
+          reset({
+            index: 0,
+            routes: [{ name: 'BottomTabs' }],
+          });
+        },
+        onError: err => {
+          if (err?.message?.includes('waiting list')) {
+            navigate('EnterReferralCode');
+          }
+        },
+      },
+    );
+  };
+
+  return (
+    <View className="flex-1 bg-blue justify-center px-7">
+      <KeyboardAvoidingView behavior="position">
+        <View className="mb-20">
+          <Text className={text({ type: 'b44', class: 'text-white' })}>Enter your pin</Text>
+        </View>
+        <Input
+          maxLength={4}
+          placeholder="Enter Pin"
+          onChangeText={setPin}
+          keyboardType="number-pad"
+          customInputClass="text-white py-5 text-18 mb-20 text-center"
+        />
+        <Button
+          type="solid"
+          title="Login"
+          onPress={onSignIn}
+          isLoading={isLoading}
+          disabled={isLoading || pin.length !== 4}
+        />
+        <Button
+          type="ghost"
+          title="forgot pin?"
+          onPress={() => null}
+          customContainer="mt-12"
+          customTextClass={text({ type: 'r20', class: 'text-white mb-4' })}
+        />
+      </KeyboardAvoidingView>
+      <ErrorModal errorText={errorMessage} />
     </View>
-    <Button title="Login" onPress={() => null} type="solid" />
-    <Button
-      type="ghost"
-      title="forgot pin?"
-      onPress={() => null}
-      customContainer="mt-12"
-      customTextClass={text({ type: 'r20', class: 'text-white' })}
-    />
-  </View>
-);
+  );
+};
 
 export default SignInScreen;
