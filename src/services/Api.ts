@@ -120,6 +120,24 @@ class ApiClass {
 
         return result;
       });
+
+  sendCodeForForgotPin = async ({ phoneNumber }: { phoneNumber: string }) =>
+    await this.externalApi
+      .url('reset/forgot-pin/send-code/')
+      .post({ phone: phoneNumber })
+      .json(result => result);
+
+  resetPinCodeConfirm = async ({ phoneNumber, code }: { phoneNumber: string; code: string }) =>
+    await this.externalApi
+      .url('reset/forgot-pin/send-code/')
+      .post({ phone: phoneNumber, code })
+      .json(result => result);
+
+  resetPinCodeFromCode = async ({ phoneNumber, pin }: { phoneNumber: string; pin: number }) =>
+    await this.externalApi
+      .url('reset/reset-pin/from-code/')
+      .post({ phone: phoneNumber, pin })
+      .json(result => result);
 }
 
 const Api = new ApiClass();

@@ -7,8 +7,10 @@ import WelcomeScreen from 'modules/auth/screens/WelcomeScreen';
 
 import ConfirmOtpScreen from './screens/ConfirmOtpScreen';
 import CreateUnlockPinScreen from './screens/CreateUnlockPinScreen';
+import EnterOptScreen from './screens/EnterOtpScren';
 import EnterReferralCodeScreen from './screens/EnterReferralCodeScreen';
 import ReferralCodeSuccessfulScreen from './screens/ReferralCodeSuccessfulScreen';
+import ResetPinScreen from './screens/ResetPinScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import UserAvatarAndUsernameUpdate from './screens/UserAvatarAndUsernameUpdate';
@@ -17,11 +19,12 @@ import UserWaitListScreen from './screens/UserWaitListScreen';
 export type AuthStackParamList = {
   Welcome: undefined;
   SignUp: undefined;
-  ForgotPin: undefined;
   ConfirmOtp: undefined;
   UserWaitList: undefined;
   SignIn: { phone: string };
   CreateUnlockPin: undefined;
+  ResetPin: { phone: string };
+  EnterOtp: { phone: string };
   EnterReferralCode: undefined;
   ReferralCodeSuccessful: undefined;
   UserAvatarAndUsernameUpdate: undefined;
@@ -69,6 +72,8 @@ export default function AuthStackNavigator() {
         name="ReferralCodeSuccessful"
         component={ReferralCodeSuccessfulScreen}
       />
+      <AuthStack.Screen options={commonOptions} name="EnterOtp" component={EnterOptScreen} />
+      <AuthStack.Screen options={commonOptions} name="ResetPin" component={ResetPinScreen} />
     </AuthStack.Navigator>
   );
 }

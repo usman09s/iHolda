@@ -13,9 +13,11 @@ import { text } from 'theme/text';
 import { parseApiError } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
+import OtpPhoneConfirmationModal from '../components/OtpPhoneConfirmationModal';
 
 const SignInScreen = () => {
   const [pin, setPin] = useState('');
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const dispatch = useAppDispatch();
   const { navigate, reset } = useAppNavigation<
     NavigationProp<
@@ -26,7 +28,12 @@ const SignInScreen = () => {
   >();
   const { params } = useRoute<RouteProp<AuthStackParamList, 'SignIn'>>();
   const { mutate, isLoading, error } = useMutation(Api.signIn);
+  const sendCodeMutation = useMutation(Api.sendCodeForForgotPin);
 
+  const sendCodeErrorMessage = useMemo(
+    () => parseApiError(sendCodeMutation.error),
+    [sendCodeMutation.error],
+  );
   const errorMessage = useMemo(
     () => parseApiError(error) || parseApiError(error, 'non_field_errors'),
     [error],
@@ -78,12 +85,29 @@ const SignInScreen = () => {
         <Button
           type="ghost"
           title="forgot pin?"
-          onPress={() => null}
           customContainer="mt-12"
+          onPress={() => setShowConfirmationModal(true)}
           customTextClass={text({ type: 'r20', class: 'text-white mb-4' })}
         />
       </KeyboardAvoidingView>
       <ErrorModal errorText={errorMessage} />
+      <OtpPhoneConfirmationModal
+        phoneNumber={params.phone}
+        isLoading={sendCodeMutation.isLoading}
+        onPressConfirm={() => {
+          sendCodeMutation.mutate(
+            { phoneNumber: params.phone },
+            {
+              onSuccess: () => {
+                navigate('EnterOtp', { phone: params.phone });
+              },
+            },
+          );
+        }}
+        visible={showConfirmationModal}
+        errorText={sendCodeErrorMessage}
+        onCloseModal={() => setShowConfirmationModal(false)}
+      />
     </View>
   );
 };
