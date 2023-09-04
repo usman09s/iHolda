@@ -6,6 +6,8 @@ export type UserState = {
   user?: User;
   phone: string;
   query_id: string;
+  username?: string;
+  userImage?: string;
   access_token: string;
   refresh_token: string;
 };
@@ -15,6 +17,8 @@ const initialState: UserState = {
   access_token: '',
   refresh_token: '',
   query_id: '',
+  userImage: '',
+  username: '',
 };
 
 export const useSlice = createSlice({
@@ -26,9 +30,18 @@ export const useSlice = createSlice({
 
       return state;
     },
+
+    setUserImageAndUsername: (
+      state,
+      action: PayloadAction<{ username: string; image: string }>,
+    ) => {
+      state = { ...state, userImage: action.payload.image, username: action.payload.username };
+
+      return state;
+    },
   },
 });
 
-export const { setUserInfo } = useSlice.actions;
+export const { setUserInfo, setUserImageAndUsername } = useSlice.actions;
 
 export default useSlice.reducer;

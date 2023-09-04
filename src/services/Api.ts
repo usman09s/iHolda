@@ -99,6 +99,15 @@ class ApiClass {
       .url(`users/${this.queryId}/pin/`)
       .post({ pin })
       .json(result => result);
+
+  setReferralCode = async ({ referralCode }: { referralCode: string }) =>
+    await this.externalApi
+      .url('referrals/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post({ referral_code: referralCode })
+      .json(result => result);
 }
 
 const Api = new ApiClass();

@@ -12,3 +12,6 @@ export const tokensSelector = createSelector(userSelector, user => ({
   token: user.access_token,
   refreshToken: user.refresh_token,
 }));
+
+export const userImageSelector = (state: UserRootState) => state.user.userImage;
+export const usernameSelector = (state: UserRootState) => state.user.username;

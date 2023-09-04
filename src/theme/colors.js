@@ -3,6 +3,7 @@ module.exports = {
   black: '#000000',
 
   blue: '#389DD6',
+  petrol: '#263341',
   teaGreen: '#C3EDC5',
   dustGray: '#979797',
   altoGray: '#D9D9D9',

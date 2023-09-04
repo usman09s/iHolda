@@ -43,6 +43,9 @@ module.exports = {
         h1: '1px',
         h2: '2px',
       },
+      rotate: {
+        30: '30deg',
+      },
     },
   },
   plugins: [],

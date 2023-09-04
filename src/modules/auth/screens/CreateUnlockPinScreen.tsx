@@ -25,7 +25,7 @@ const CreateUnlockPinScreen = () => {
       {
         onSuccess: result => {
           if (result.status === 200) {
-            navigate('EnterReferralCodeScreen');
+            navigate('EnterReferralCode');
           }
         },
       },

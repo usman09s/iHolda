@@ -11,6 +11,7 @@ import EnterReferralCodeScreen from './screens/EnterReferralCodeScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import UserAvatarAndUsernameUpdate from './screens/UserAvatarAndUsernameUpdate';
+import UserWaitListScreen from './screens/UserWaitListScreen';
 
 export type AuthStackParamList = {
   Welcome: undefined;
@@ -18,10 +19,11 @@ export type AuthStackParamList = {
   SignIn: undefined;
   ForgotPin: undefined;
   ConfirmOtp: undefined;
+  UserWaitList: undefined;
   CreateUnlockPin: undefined;
-  UserAvatarAndUsernameUpdate: undefined;
   EnterReferralCode: undefined;
   ReferralCodeSuccessful: undefined;
+  UserAvatarAndUsernameUpdate: undefined;
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -36,7 +38,7 @@ const commonScreenOptions: NativeStackNavigationOptions = {
 
 export default function AuthStackNavigator() {
   return (
-    <AuthStack.Navigator screenOptions={commonScreenOptions} initialRouteName="EnterReferralCode">
+    <AuthStack.Navigator screenOptions={commonScreenOptions}>
       <AuthStack.Screen options={commonOptions} name="Welcome" component={WelcomeScreen} />
       <AuthStack.Screen options={commonOptions} name="SignUp" component={SignUpScreen} />
       <AuthStack.Screen options={commonOptions} name="ConfirmOtp" component={ConfirmOtpScreen} />
@@ -55,6 +57,11 @@ export default function AuthStackNavigator() {
         options={commonOptions}
         name="EnterReferralCode"
         component={EnterReferralCodeScreen}
+      />
+      <AuthStack.Screen
+        name="UserWaitList"
+        options={commonOptions}
+        component={UserWaitListScreen}
       />
     </AuthStack.Navigator>
   );

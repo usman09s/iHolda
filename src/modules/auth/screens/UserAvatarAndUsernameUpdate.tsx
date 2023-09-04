@@ -12,10 +12,12 @@ import Button from 'components/Button';
 import ErrorModal from 'components/ErrorModal';
 import Icons from 'components/Icons';
 import Input from 'components/Input';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppNavigation } from 'hooks/useAppNavigation';
 import usePickImageAndUpload from 'hooks/usePickImage';
 import { useMutation } from 'react-query';
 import Api from 'services/Api';
+import { setUserImageAndUsername } from 'store/auth/userSlice';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
 import { parseApiError } from 'utils/helpers';
@@ -23,28 +25,31 @@ import { parseApiError } from 'utils/helpers';
 import { AuthStackParamList } from '../AuthStackNavigator';
 
 const UserAvatarAndUsernameUpdate = () => {
-  const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
+  const dispatch = useAppDispatch();
   const [username, setUsername] = useState('');
+  const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
   const { pickImage, pickedImage, pickingLoading } = usePickImageAndUpload();
   const uploadImage = useMutation(Api.uploadImage, {});
   const updateUsername = useMutation(Api.updateUsername, {});
 
-  const onContinue = () => {
-    uploadImage.mutate(
-      { image: pickedImage },
-      {
-        onSuccess: () => {
-          updateUsername.mutate(
-            { username },
-            {
-              onSuccess: () => {
-                navigate('CreateUnlockPinScreen');
-              },
-            },
-          );
-        },
-      },
+  const onContinue = async () => {
+    dispatch(
+      setUserImageAndUsername({
+        username,
+        image: pickedImage,
+      }),
     );
+    await uploadImage
+      .mutateAsync({ image: pickedImage })
+      .then(async () => {
+        await updateUsername
+          .mutateAsync({ username })
+          .then(() => {
+            navigate('CreateUnlockPin');
+          })
+          .catch(() => null);
+      })
+      .catch(() => null);
   };
 
   const isContinueButtonDisabled = !username || !pickedImage;
@@ -95,7 +100,11 @@ const UserAvatarAndUsernameUpdate = () => {
         </View>
       </KeyboardAvoidingView>
       <ErrorModal
-        errorText={parseApiError(uploadImage.error) || parseApiError(updateUsername.error)}
+        errorText={
+          parseApiError(uploadImage.error) ||
+          parseApiError(updateUsername.error) ||
+          parseApiError(updateUsername.error, 'username')
+        }
       />
     </View>
   );
