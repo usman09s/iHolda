@@ -1,10 +1,12 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { useNavigation } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
 import Button from 'components/Button';
 import Icons from 'components/Icons';
+import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
+import Api from 'services/Api';
 import { userImageSelector, usernameSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 
@@ -12,6 +14,7 @@ const UserWaitListScreen = () => {
   const { goBack, dispatch } = useNavigation();
   const username = useSelector(usernameSelector);
   const userImage = useSelector(userImageSelector);
+  const { data } = useQuery('waitingList', Api.getWaitingList);
 
   const copyToClipboard = async (value: string) => await Clipboard.setStringAsync(value);
 
@@ -39,7 +42,13 @@ const UserWaitListScreen = () => {
               You are currently Number
             </Text>
             <View className="border-b1 self-center px-6 py-2 rounded-2xl my-5 border-coolGreen">
-              <Text className={text({ class: 'text-white text-center', type: 'm48' })}>519</Text>
+              {data?.id ? (
+                <Text className={text({ class: 'text-white text-center', type: 'm48' })}>
+                  {data.id}
+                </Text>
+              ) : (
+                <ActivityIndicator />
+              )}
             </View>
             <Text className={text({ type: 'm24', class: 'text-white text-center' })}>
               on the waiting list

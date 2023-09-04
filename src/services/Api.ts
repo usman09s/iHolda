@@ -108,6 +108,18 @@ class ApiClass {
       })
       .post({ referral_code: referralCode })
       .json(result => result);
+
+  getWaitingList = async () =>
+    await this.externalApi
+      .url(`users/?waiting-list=list&query-id=${this.queryId}`)
+      .get()
+      .json(result => {
+        if (!result?.id) {
+          return {};
+        }
+
+        return result;
+      });
 }
 
 const Api = new ApiClass();
