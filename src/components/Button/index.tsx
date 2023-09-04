@@ -27,7 +27,7 @@ const Button = ({
     onPress={onPress}
     hitSlop={hitSlop}
     disabled={disabled}
-    className={button({ type, class: customContainer })}>
+    className={button({ type, class: customContainer, disabled })}>
     {isLoading ? (
       <ActivityIndicator color={colors.white} />
     ) : (

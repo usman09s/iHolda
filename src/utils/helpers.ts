@@ -19,7 +19,7 @@ export const getHitSlop = (
   };
 };
 
-export const parseApiError = (error: { message: string } | unknown) => {
+export const parseApiError = (error: { message: string } | unknown, field?: string) => {
   if (!error?.message) {
     return;
   }
@@ -27,7 +27,8 @@ export const parseApiError = (error: { message: string } | unknown) => {
   let errorText = '';
 
   try {
-    errorText = JSON.parse(error.message).details || JSON.parse(error.message).detail;
+    const parsedMessage = JSON.parse(error.message);
+    errorText = parsedMessage.details || parsedMessage.detail || (field && parsedMessage[field]);
   } catch {
     errorText = 'Try again';
   }

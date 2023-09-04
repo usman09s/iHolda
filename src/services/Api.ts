@@ -5,6 +5,8 @@ class ApiClass {
   externalApi;
   token = '';
   queryId = '';
+
+  _otp = 0;
   _headers = {
     'Agent-Signature': 'mobile/iB+44',
     'Content-Type': 'application/json',
@@ -18,6 +20,10 @@ class ApiClass {
       })
       .headers(this._headers);
   }
+
+  _getAuthorization = (value: string) => ({
+    Authorization: 'Bearer ' + value,
+  });
 
   _removeToken = () => {
     this.token = '';
@@ -40,11 +46,11 @@ class ApiClass {
     await this.externalApi
       .url('login/?forced=yes')
       .post({
-        phone,
         pin,
+        phone,
       })
       .json((result: LoginResponse) => {
-        this._setToken(result.access_token);
+        this.token = result.access_token;
         this.queryId = result.query_id;
 
         return result;
@@ -58,6 +64,8 @@ class ApiClass {
       })
       .json((result: SignUpResponse) => {
         this.queryId = result.query_id;
+        this.token = result.access_token;
+        this._otp = result.otp;
 
         return result;
       });
@@ -65,21 +73,31 @@ class ApiClass {
   confirmOtp = async ({ otp }: { otp: string }): Promise<{ status: number }> =>
     await this.externalApi
       .url(`users/confirm-otp/?query-id=${this.queryId}`)
-      .post({
-        otp,
-      })
+      .post({ otp })
       .json((result: LoginResponse) => result);
 
   uploadImage = async ({ image }: { image: string }): Promise<unknown> =>
     await this.externalApi
       .url(`userprofiles/${this.queryId}/images/`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
       .post({ image })
       .json(result => result);
 
   updateUsername = async ({ username }: { username: string }): Promise<unknown> =>
     await this.externalApi
       .url(`users/${this.queryId}/`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
       .patch({ username })
+      .json(result => result);
+
+  setPin = async ({ pin }: { pin: number }): Promise<{ status: number }> =>
+    await this.externalApi
+      .url(`users/${this.queryId}/pin/`)
+      .post({ pin })
       .json(result => result);
 }
 

@@ -15,6 +15,8 @@ export const button = cva(['items-center justify-center active:opacity-20'], {
       borderedSolid: 'text-15 font-Bold text-white',
     },
     size: {},
-    disabled: {},
+    disabled: {
+      true: 'opacity-50',
+    },
   },
 });

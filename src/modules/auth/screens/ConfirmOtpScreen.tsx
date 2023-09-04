@@ -66,6 +66,11 @@ const ConfirmOtpScreen = () => {
             Resend {remainingTime === '00' ? '' : `in ${remainingTime}`}
           </Text>
         </Pressable>
+        {__DEV__ && (
+          <Text className={text({ type: 'm13', class: 'text-white text-center mb-2' })}>
+            {Api._otp} is showed for only dev mode
+          </Text>
+        )}
         <Button
           title="Continue"
           type="borderedSolid"
