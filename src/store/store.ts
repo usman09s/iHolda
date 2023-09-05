@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import userSlice from './auth/userSlice';
+import plasticSlice from './plastic/plasticSlice';
 
 export const store = configureStore({
   reducer: {
     user: userSlice,
+    plastic: plasticSlice,
   },
 });
 

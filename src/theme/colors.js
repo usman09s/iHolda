@@ -11,6 +11,9 @@ module.exports = {
   jupiter: '#E1E1E1',
   coolGreen: '#00F635',
   sunriseOrange: '#ED7659',
+  saffron: '#FF9134',
+  smokeGray: '#707070',
+  yellowishOrange: '#F9AE2B',
 
   'white-o-10': 'rgba(255,255,255,0.1)',
   'white-o-20': 'rgba(255,255,255,0.2)',

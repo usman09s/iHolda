@@ -2,7 +2,8 @@ import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import PlasticScreen from 'modules/plastic/screens/PlasticScreen';
+import BottomNavigation from 'components/BottomNavigation';
+import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,8 +14,10 @@ const commonOptions: BottomTabNavigationOptions = {
 
 function BottomTabsNavigator() {
   return (
-    <Tab.Navigator screenOptions={commonOptions}>
-      <Tab.Screen name="Plastic" component={PlasticScreen} />
+    <Tab.Navigator screenOptions={commonOptions} tabBar={props => <BottomNavigation {...props} />}>
+      <Tab.Screen name="LeaderBoard" component={() => null} />
+      <Tab.Screen name="PlasticStack" component={PlasticStackNavigator} />
+      <Tab.Screen name="Profile" component={() => null} />
     </Tab.Navigator>
   );
 }

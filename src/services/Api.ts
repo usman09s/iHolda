@@ -1,4 +1,5 @@
 import { LoginParameters, LoginResponse, SignUpResponse } from 'types/AuthTypes';
+import { PlasticItemType } from 'types/PlasticTypes';
 import wretch from 'wretch';
 
 class ApiClass {
@@ -145,6 +146,34 @@ class ApiClass {
     await this.externalApi
       .url('reset/reset-pin/from-code/')
       .post({ phone: phoneNumber, pin })
+      .json(result => result);
+
+  // Plastic
+  getPlasticSizes = async (): Promise<PlasticItemType[]> =>
+    await this.externalApi
+      .url('plastics/sizes/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  getDropOffLocations = async ({ latitude, longitude }: { latitude: number; longitude: number }) =>
+    await this.externalApi
+      .url(`plastics/drop-off-locations/?latitude=${latitude}&longitude=${longitude}`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  getClosestDropOffLocations = async () =>
+    await this.externalApi
+      .url('plastics/drop-off-locations/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
       .json(result => result);
 }
 

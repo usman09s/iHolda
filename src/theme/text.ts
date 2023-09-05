@@ -4,6 +4,7 @@ export const text = cva(['items-center justify-center'], {
   variants: {
     type: {
       b44: 'text-5xl font-Bold',
+      b34: 'text-34 font-Bold',
       b2o: 'text-20 font-Bold',
       b12: 'text-12 font-Bold',
       b13: 'text-13 font-Bold',
@@ -25,6 +26,7 @@ export const text = cva(['items-center justify-center'], {
 
       l13: 'text-13 font-Light',
       l20: 'text-20 font-Light',
+      l48: 'text-[48px] font-Light',
     },
     isCenter: {
       true: 'text-center',

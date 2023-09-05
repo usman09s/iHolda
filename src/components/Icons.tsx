@@ -1,5 +1,7 @@
 import * as React from 'react';
-import Svg, { Path, SvgProps } from 'react-native-svg';
+import { View } from 'react-native';
+import Svg, { Path, Rect, SvgProps } from 'react-native-svg';
+import colors from 'theme/colors';
 
 const VerifiedBadgeIcon = (props: SvgProps) => (
   <Svg width={12} height={12} fill="none" {...props}>
@@ -78,9 +80,56 @@ const CopyIcon = (props: SvgProps) => (
   </Svg>
 );
 
+const PlasticIcon = (props: SvgProps) => (
+  <Svg width={28} height={28} fill="none" {...props}>
+    <Rect width={12} height={12} y={13} fill={props.color} rx={1} />
+    <Rect width={12} height={12} y={13} fill={props.color} rx={1} />
+    <Rect width={12} height={12} x={15} y={13} fill={props.color} rx={1} />
+    <Rect width={12} height={12} x={15} y={13} fill={props.color} rx={1} />
+    <Rect width={6} height={6} x={3} y={16} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={3} y={16} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={3} y={16} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={18} y={16} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={18} y={16} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={18} y={16} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={3} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={3} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={3} fill={props.color} rx={1} />
+    <Rect width={6} height={6} x={18} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={18} fill="#fff" rx={1} />
+    <Rect width={6} height={6} x={18} fill={props.color} rx={1} />
+  </Svg>
+);
+
+const LeaderBoardIcon = (props: SvgProps) => (
+  <Svg width={29} height={24} fill="none" {...props}>
+    <Path
+      fill={props.color || '#FF9134'}
+      d="M1.601 20.547 12.374.677l14.311 19.645c.963 1.322.019 3.178-1.616 3.178H3.359c-1.515 0-2.48-1.62-1.758-2.953Z"
+    />
+  </Svg>
+);
+
+export const BottomNavigationIcons: { [key in string]: (props: SvgProps) => React.JSX.Element } = {
+  PlasticStack: () => <PlasticIcon color={colors.smokeGray} />,
+  LeaderBoard: () => <LeaderBoardIcon color={colors.smokeGray} />,
+  Profile: () => (
+    <View className="h-8 w-8  rounded-full bg-smokeGray border-2 border-transparent" />
+  ),
+};
+
+export const BottomNavigationFilledIcons: {
+  [key in string]: (props: SvgProps) => React.JSX.Element;
+} = {
+  LeaderBoard: () => <LeaderBoardIcon color={colors.saffron} />,
+  PlasticStack: () => <PlasticIcon color={colors.saffron} />,
+  Profile: () => <View className="h-8 w-8 rounded-full bg-smokeGray border-2 border-saffron" />,
+};
+
 export default {
   CopyIcon,
   CrossIcon,
+  PlasticIcon,
   WarningIcon,
   CaretDownIcon,
   AvatarEditIcon,

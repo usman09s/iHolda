@@ -42,6 +42,7 @@ export const useSignInActions = () => {
       },
       {
         onSuccess: result => {
+          Api.setQueryIdValue(result.query_id);
           dispatch(setUserInfo(result));
           reset({
             index: 0,
