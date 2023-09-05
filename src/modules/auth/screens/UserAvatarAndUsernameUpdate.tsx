@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
   KeyboardAvoidingView,
+  Platform,
   Pressable,
   Text,
   View,
@@ -32,6 +33,14 @@ const UserAvatarAndUsernameUpdate = () => {
   const uploadImage = useMutation(Api.uploadImage, {});
   const updateUsername = useMutation(Api.updateUsername, {});
 
+  const errorMessage = useMemo(
+    () =>
+      parseApiError(uploadImage.error) ||
+      parseApiError(updateUsername.error) ||
+      parseApiError(updateUsername.error, 'username'),
+    [uploadImage.error, updateUsername.error],
+  );
+
   const onContinue = async () => {
     dispatch(
       setUserImageAndUsername({
@@ -56,7 +65,12 @@ const UserAvatarAndUsernameUpdate = () => {
 
   return (
     <View className="flex-1 bg-blue justify-center px-7">
-      <KeyboardAvoidingView behavior="position" className=" justify-between content-between">
+      <KeyboardAvoidingView
+        behavior={Platform.select({
+          ios: 'position',
+          android: undefined,
+        })}
+        className=" justify-between content-between">
         <View className="mb-20 w-full">
           <View>
             <Text className={text({ type: 'b2o', class: 'text-center mb-6 text-white' })}>
@@ -99,13 +113,7 @@ const UserAvatarAndUsernameUpdate = () => {
           />
         </View>
       </KeyboardAvoidingView>
-      <ErrorModal
-        errorText={
-          parseApiError(uploadImage.error) ||
-          parseApiError(updateUsername.error) ||
-          parseApiError(updateUsername.error, 'username')
-        }
-      />
+      <ErrorModal errorText={errorMessage} />
     </View>
   );
 };
