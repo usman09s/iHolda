@@ -32,7 +32,9 @@ const UserWaitListScreen = () => {
               <TouchableOpacity
                 className="flex-row"
                 onPress={() => copyToClipboard(`@${username}`)}>
-                <Text className={text({ type: 'b13', class: 'text-white mr-1' })}>@{username}</Text>
+                <Text className={text({ type: 'b13', class: 'text-white mr-1' })}>
+                  {username?.startsWith('@') ? `${username}` : `@${username}`}
+                </Text>
                 <Icons.CopyIcon />
               </TouchableOpacity>
             </View>

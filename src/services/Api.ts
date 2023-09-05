@@ -30,6 +30,14 @@ class ApiClass {
     this.externalApi = this.externalApi.headers(this._headers);
   };
 
+  setTokenValue = (value: string) => {
+    this.token = value;
+  };
+
+  setQueryIdValue = (value: string) => {
+    this.queryId = value;
+  };
+
   _setToken = (value: string) => {
     this.token = `Bearer ${value}`;
     this.externalApi = this.externalApi.headers({

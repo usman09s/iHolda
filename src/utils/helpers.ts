@@ -37,9 +37,17 @@ export const parseApiError = (error: { message: string } | unknown, field?: stri
 };
 
 export const getImageFormatFromUrl = (url: string | undefined): string => {
-  if (!url) {
+  if (url?.includes('.jpeg')) {
+    return 'jpeg';
+  }
+
+  if (url?.includes('.jpg')) {
+    return 'jpg';
+  }
+
+  if (url?.includes('.png')) {
     return 'png';
   }
 
-  return url.split('.')?.[1];
+  return 'png';
 };

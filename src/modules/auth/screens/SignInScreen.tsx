@@ -1,66 +1,30 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { KeyboardAvoidingView, Text, View } from 'react-native';
-import { NavigationProp, RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import Button from 'components/Button';
 import ErrorModal from 'components/ErrorModal';
 import Input from 'components/Input';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { useAppNavigation } from 'hooks/useAppNavigation';
 import { useMutation } from 'react-query';
 import Api from 'services/Api';
-import { setUserInfo } from 'store/auth/userSlice';
 import { text } from 'theme/text';
-import { parseApiError } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import OtpPhoneConfirmationModal from '../components/OtpPhoneConfirmationModal';
+import { useSignInActions } from '../hooks/useSignInActions';
 
 const SignInScreen = () => {
-  const [pin, setPin] = useState('');
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const dispatch = useAppDispatch();
-  const { navigate, reset } = useAppNavigation<
-    NavigationProp<
-      AuthStackParamList & {
-        BottomTabs: undefined;
-      }
-    >
-  >();
   const { params } = useRoute<RouteProp<AuthStackParamList, 'SignIn'>>();
-  const { mutate, isLoading, error } = useMutation(Api.signIn);
   const sendCodeMutation = useMutation(Api.sendCodeForForgotPin);
-
-  const sendCodeErrorMessage = useMemo(
-    () => parseApiError(sendCodeMutation.error),
-    [sendCodeMutation.error],
-  );
-  const errorMessage = useMemo(
-    () => parseApiError(error) || parseApiError(error, 'non_field_errors'),
-    [error],
-  );
-
-  const onSignIn = () => {
-    mutate(
-      {
-        pin,
-        phone: params.phone,
-      },
-      {
-        onSuccess: result => {
-          dispatch(setUserInfo(result));
-          reset({
-            index: 0,
-            routes: [{ name: 'BottomTabs' }],
-          });
-        },
-        onError: err => {
-          if (err?.message?.includes('waiting list')) {
-            navigate('EnterReferralCode');
-          }
-        },
-      },
-    );
-  };
+  const {
+    pin,
+    setPin,
+    onSignIn,
+    isLoading,
+    errorMessage,
+    sendCodeErrorMessage,
+    onPressConfirmOtpConfirmationModal,
+  } = useSignInActions();
 
   return (
     <View className="flex-1 bg-blue justify-center px-7">
@@ -94,18 +58,9 @@ const SignInScreen = () => {
       <OtpPhoneConfirmationModal
         phoneNumber={params.phone}
         isLoading={sendCodeMutation.isLoading}
-        onPressConfirm={() => {
-          sendCodeMutation.mutate(
-            { phoneNumber: params.phone },
-            {
-              onSuccess: () => {
-                navigate('EnterOtp', { phone: params.phone });
-              },
-            },
-          );
-        }}
+        onPressConfirm={onPressConfirmOtpConfirmationModal}
         visible={showConfirmationModal}
-        errorText={sendCodeErrorMessage}
+        errorText={sendCodeErrorMessage || ''}
         onCloseModal={() => setShowConfirmationModal(false)}
       />
     </View>
