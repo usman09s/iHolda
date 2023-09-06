@@ -16,3 +16,27 @@ export const plasticCountTotalSelector = createSelector(plasticSizeSelector, pla
 
   return sum;
 });
+
+export const addedPlasticSelector = createSelector(plasticSelector, plastics =>
+  plastics.plasticSizes
+    .map(plastic => ({
+      ...plastic,
+      price: plastic.count * Number(plastic.price_per_plastic) || 0,
+    }))
+    .filter(plastic => plastic.count > 0),
+);
+
+export const addedPlasticTotalPriceSelector = createSelector(
+  addedPlasticSelector,
+  addedPlastics => {
+    let price = 0;
+
+    addedPlastics.forEach(plastic => {
+      price += plastic.price;
+    });
+
+    return price;
+  },
+);
+
+export const plasticIdSelector = createSelector(plasticSelector, plastic => plastic.plasticId);

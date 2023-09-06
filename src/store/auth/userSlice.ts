@@ -21,8 +21,8 @@ const initialState: UserState = {
   username: '',
 };
 
-export const useSlice = createSlice({
-  name: 'counter',
+export const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {
     setUserInfo: (state, action: PayloadAction<UserState>) => {
@@ -49,6 +49,6 @@ export const useSlice = createSlice({
   },
 });
 
-export const { setUserInfo, setUserImageAndUsername } = useSlice.actions;
+export const { setUserInfo, setUserImageAndUsername } = userSlice.actions;
 
-export default useSlice.reducer;
+export default userSlice.reducer;

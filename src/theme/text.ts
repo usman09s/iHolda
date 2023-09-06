@@ -7,6 +7,7 @@ export const text = cva(['items-center justify-center'], {
       b34: 'text-34 font-Bold',
       b2o: 'text-20 font-Bold',
       b18: 'text-18 font-Bold',
+      b16: 'text-16 font-Bold',
       b12: 'text-12 font-Bold',
       b13: 'text-13 font-Bold',
 
@@ -27,6 +28,7 @@ export const text = cva(['items-center justify-center'], {
       r36: 'text-36 font-Regular',
 
       l13: 'text-13 font-Light',
+      l16: 'text-16 font-Light',
       l20: 'text-20 font-Light',
       l48: 'text-[48px] font-Light',
     },

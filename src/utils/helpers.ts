@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { Dimensions, Insets } from 'react-native';
 
 export const { width, height } = Dimensions.get('screen');
@@ -59,4 +60,15 @@ export const getHourWithTimeZone = (value: string): string => {
   const timeZone = Number(hour) < 12 ? 'am' : 'pm';
 
   return `${hour}${timeZone}`;
+};
+
+export const getFlexByRatio = (value: number) => {
+  switch (value) {
+    case 0.8:
+      return 5;
+    case 0.2:
+      return 3;
+    default:
+      return 1;
+  }
 };

@@ -3,13 +3,18 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
+import { AddPlasticResponseType } from 'types/PlasticTypes';
 
 import DropOffLocationListScreen from './screens/DropOffLocationListScreen';
+import PlasticConfirmationScreen from './screens/PlasticConfirmationScreen';
+import PlasticQRCodeScreen from './screens/PlasticQRCodeScreen';
 import PlasticScreen from './screens/PlasticScreen';
 
 export type PlasticStackParamList = {
   Plastic: undefined;
   DropOffLocationList: undefined;
+  PlasticConfirmation: { locationId: number };
+  PlasticQRCode: { plasticInformation: AddPlasticResponseType };
 };
 
 const PlasticStack = createNativeStackNavigator<PlasticStackParamList>();
@@ -30,6 +35,16 @@ export default function PlasticStackNavigator() {
         options={commonOptions}
         name="DropOffLocationList"
         component={DropOffLocationListScreen}
+      />
+      <PlasticStack.Screen
+        options={commonOptions}
+        name="PlasticConfirmation"
+        component={PlasticConfirmationScreen}
+      />
+      <PlasticStack.Screen
+        name="PlasticQRCode"
+        options={commonOptions}
+        component={PlasticQRCodeScreen}
       />
     </PlasticStack.Navigator>
   );

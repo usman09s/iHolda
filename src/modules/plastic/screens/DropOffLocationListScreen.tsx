@@ -49,7 +49,7 @@ const DropOffLocationListScreen = () => {
           className="border-b1 border-black-o-10 rounded-xl text-black py-4"
         />
       </View>
-      {isLoading && <ActivityIndicator className="mb-4" />}
+      {isLoading || (!data && <ActivityIndicator className="mb-4 flex-1" color={colors.blue} />)}
       <FlatList
         renderItem={renderItem}
         keyboardDismissMode="on-drag"

@@ -27,3 +27,22 @@ export const INITIAL_SELECTED_COUNTRY = {
   name: 'Cameroon',
   emoji: '\ud83c\udde8\ud83c\uddf2',
 };
+
+export const CashAndPointsFixture = [
+  {
+    id: 1,
+    cash: 0.8,
+    point: 0.2,
+  },
+  {
+    id: 2,
+    cash: 0.5,
+    point: 0.5,
+  },
+  {
+    id: 3,
+    cash: 0.2,
+    point: 0.8,
+  },
+  { id: 4, cash: 0, point: 1 },
+];

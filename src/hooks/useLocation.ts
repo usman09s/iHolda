@@ -1,6 +1,5 @@
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
-import { useFocusEffect } from '@react-navigation/native';
 
 const useLocation = () => {
   const [locationStatus, setLocationStatus] = useState<
@@ -28,11 +27,9 @@ const useLocation = () => {
     setLocationStatus('success');
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      getUserLocation();
-    }, []),
-  );
+  useEffect(() => {
+    getUserLocation();
+  }, []);
 
   return {
     errorMsg,

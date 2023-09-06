@@ -1,5 +1,9 @@
 import { LoginParameters, LoginResponse, SignUpResponse } from 'types/AuthTypes';
-import { DropOffLocationItemType, PlasticItemType } from 'types/PlasticTypes';
+import {
+  AddPlasticResponseType,
+  DropOffLocationItemType,
+  PlasticItemType,
+} from 'types/PlasticTypes';
 import wretch from 'wretch';
 
 class ApiClass {
@@ -180,6 +184,70 @@ class ApiClass {
         ...this._getAuthorization(this.token),
       })
       .get()
+      .json(result => result);
+
+  addPlastics = async ({
+    userType,
+    sizes,
+    dropOffLocation,
+  }: {
+    dropOffLocation: number;
+    userType: 'AGENT' | 'USER';
+    sizes: { size: number; quantity: number }[];
+  }): Promise<AddPlasticResponseType> =>
+    await this.externalApi
+      .url('plastics/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post({
+        sizes: sizes,
+        user_type: userType,
+        dropoff_location: dropOffLocation,
+      })
+      .json(result => result);
+
+  updatePlastics = async ({
+    sizes,
+    userType,
+    plasticId,
+    dropOffLocation,
+  }: {
+    plasticId: number;
+    dropOffLocation: number | undefined;
+    userType: 'AGENT' | 'USER';
+    sizes: { size: number; quantity: number }[];
+  }): Promise<AddPlasticResponseType> =>
+    await this.externalApi
+      .url(`plastics/${plasticId}/`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .patch({
+        sizes: sizes,
+        user_type: userType,
+        dropoff_location: dropOffLocation,
+      })
+      .json(result => result);
+
+  updatePlasticRatios = async ({
+    cash,
+    point,
+    plasticId,
+  }: {
+    cash: number;
+    point: number;
+    plasticId: number;
+  }): Promise<AddPlasticResponseType> =>
+    await this.externalApi
+      .url(`plastics/${plasticId}/`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .patch({
+        virtual_money_ratio: cash,
+        community_point_ratio: point,
+      })
       .json(result => result);
 }
 
