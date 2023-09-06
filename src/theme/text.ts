@@ -5,6 +5,7 @@ export const text = cva(['items-center justify-center'], {
     type: {
       b44: 'text-5xl font-Bold',
       b34: 'text-34 font-Bold',
+      b26: 'text-26 font-Bold',
       b2o: 'text-20 font-Bold',
       b18: 'text-18 font-Bold',
       b16: 'text-16 font-Bold',

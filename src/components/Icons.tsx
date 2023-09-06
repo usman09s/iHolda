@@ -119,6 +119,16 @@ const ArrowLeftIcon = (props: SvgProps) => (
   </Svg>
 );
 
+const TickIcon = (props: SvgProps) => (
+  <Svg width={23} height={19} fill="none" {...props}>
+    <Path
+      stroke="#fff"
+      strokeLinecap="round"
+      strokeWidth={5}
+      d="m2.699 11.456 6.653 4.839c.288.209.69.15.904-.134l9.719-12.854"
+    />
+  </Svg>
+);
 export const BottomNavigationIcons: { [key in string]: (props: SvgProps) => React.JSX.Element } = {
   PlasticStack: () => <PlasticIcon color={colors.smokeGray} />,
   LeaderBoard: () => <LeaderBoardIcon color={colors.smokeGray} />,
@@ -136,6 +146,7 @@ export const BottomNavigationFilledIcons: {
 };
 
 export default {
+  TickIcon,
   CopyIcon,
   CrossIcon,
   PlasticIcon,

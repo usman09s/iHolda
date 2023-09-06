@@ -7,12 +7,14 @@ import { AddPlasticResponseType } from 'types/PlasticTypes';
 
 import DropOffLocationListScreen from './screens/DropOffLocationListScreen';
 import PlasticConfirmationScreen from './screens/PlasticConfirmationScreen';
+import PlasticDeliveredDetailsScreen from './screens/PlasticDeliveredDetailsScreen';
 import PlasticQRCodeScreen from './screens/PlasticQRCodeScreen';
 import PlasticScreen from './screens/PlasticScreen';
 
 export type PlasticStackParamList = {
   Plastic: undefined;
   DropOffLocationList: undefined;
+  PlasticDeliveredDetails: undefined;
   PlasticConfirmation: { locationId: number };
   PlasticQRCode: { plasticInformation: AddPlasticResponseType };
 };
@@ -45,6 +47,11 @@ export default function PlasticStackNavigator() {
         name="PlasticQRCode"
         options={commonOptions}
         component={PlasticQRCodeScreen}
+      />
+      <PlasticStack.Screen
+        options={commonOptions}
+        name="PlasticDeliveredDetails"
+        component={PlasticDeliveredDetailsScreen}
       />
     </PlasticStack.Navigator>
   );
