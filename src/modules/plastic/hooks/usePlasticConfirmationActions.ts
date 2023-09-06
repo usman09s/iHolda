@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useMutation } from 'react-query';
@@ -58,8 +58,9 @@ export const usePlasticConfirmationActions = () => {
         point: selectedRatio.point,
       },
       {
-        onSuccess: () => {
-          navigate('PlasticQRCode', { plasticInformation: data });
+        onSuccess: result => {
+          dispatch(setPlasticId(result.id));
+          navigate('PlasticQRCode', { plasticInformation: result });
         },
       },
     );
@@ -86,13 +87,6 @@ export const usePlasticConfirmationActions = () => {
       onSuccess: onSuccessPlastics,
     });
   };
-
-  useEffect(
-    () => () => {
-      dispatch(setPlasticId());
-    },
-    [],
-  );
 
   return {
     isLoading,

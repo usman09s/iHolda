@@ -25,15 +25,15 @@ const DropOffLocationItem = ({ location, onPressLocation }: Props) => (
       <Text
         className={text({
           type: 'r12',
-          class: location.state === 'Closed' ? 'text-red-500' : 'text-green-600',
+          class: location?.state === 'Closed' ? 'text-red-500' : 'text-green-600',
         })}>
         {location?.state || ''}
       </Text>
     </View>
     <View className="flex-row justify-between mt-2">
       <Text className={text({ type: 'r10', class: 'text-black-o-60' })}>
-        Open from {getHourWithTimeZone(location.opening_hour)} to{' '}
-        {getHourWithTimeZone(location.closing_hour)}
+        Open from {getHourWithTimeZone(location?.opening_hour)} to{' '}
+        {getHourWithTimeZone(location?.closing_hour)}
       </Text>
       <Text></Text>
     </View>
