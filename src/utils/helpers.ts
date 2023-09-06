@@ -53,3 +53,10 @@ export const getImageFormatFromUrl = (url: string | undefined): string => {
 
   return 'png';
 };
+
+export const getHourWithTimeZone = (value: string): string => {
+  const hour = value.split(':')[0];
+  const timeZone = Number(hour) < 12 ? 'am' : 'pm';
+
+  return `${hour}${timeZone}`;
+};

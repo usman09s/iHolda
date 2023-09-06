@@ -110,6 +110,15 @@ const LeaderBoardIcon = (props: SvgProps) => (
   </Svg>
 );
 
+const ArrowLeftIcon = (props: SvgProps) => (
+  <Svg width={33} height={14} fill="none" {...props}>
+    <Path
+      fill="#000"
+      d="M31.895 7.86a.86.86 0 1 0 0-1.72v1.72ZM.392 6.392a.86.86 0 0 0 0 1.216l5.473 5.473a.86.86 0 1 0 1.216-1.216L2.217 7 7.08 2.135A.86.86 0 0 0 5.865.92L.392 6.392Zm31.503-.252H1v1.72h30.895V6.14Z"
+    />
+  </Svg>
+);
+
 export const BottomNavigationIcons: { [key in string]: (props: SvgProps) => React.JSX.Element } = {
   PlasticStack: () => <PlasticIcon color={colors.smokeGray} />,
   LeaderBoard: () => <LeaderBoardIcon color={colors.smokeGray} />,
@@ -131,6 +140,7 @@ export default {
   CrossIcon,
   PlasticIcon,
   WarningIcon,
+  ArrowLeftIcon,
   CaretDownIcon,
   AvatarEditIcon,
   VerifiedBadgeIcon,

@@ -1,5 +1,5 @@
 import { LoginParameters, LoginResponse, SignUpResponse } from 'types/AuthTypes';
-import { PlasticItemType } from 'types/PlasticTypes';
+import { DropOffLocationItemType, PlasticItemType } from 'types/PlasticTypes';
 import wretch from 'wretch';
 
 class ApiClass {
@@ -158,16 +158,22 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  getDropOffLocations = async ({ latitude, longitude }: { latitude: number; longitude: number }) =>
+  getClosestDropOffLocations = async ({
+    latitude,
+    longitude,
+  }: {
+    latitude: number;
+    longitude: number;
+  }): Promise<DropOffLocationItemType[]> =>
     await this.externalApi
-      .url(`plastics/drop-off-locations/?latitude=${latitude}&longitude=${longitude}`)
+      .url(`plastics/drop-off-locations/?lat=${latitude}&lon=${longitude}`)
       .headers({
         ...this._getAuthorization(this.token),
       })
       .get()
       .json(result => result);
 
-  getClosestDropOffLocations = async () =>
+  getDropOffLocations = async (): Promise<DropOffLocationItemType[]> =>
     await this.externalApi
       .url('plastics/drop-off-locations/')
       .headers({

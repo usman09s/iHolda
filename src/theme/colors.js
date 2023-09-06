@@ -1,18 +1,18 @@
 module.exports = {
   white: '#ffffff',
   black: '#000000',
-
   blue: '#389DD6',
   petrol: '#263341',
+  milkWhite: '#FBFBFB',
   teaGreen: '#C3EDC5',
   dustGray: '#979797',
   altoGray: '#D9D9D9',
   lightGold: '#F2E34B',
   jupiter: '#E1E1E1',
   coolGreen: '#00F635',
-  sunriseOrange: '#ED7659',
   saffron: '#FF9134',
   smokeGray: '#707070',
+  sunriseOrange: '#ED7659',
   yellowishOrange: '#F9AE2B',
 
   'white-o-10': 'rgba(255,255,255,0.1)',
