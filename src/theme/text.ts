@@ -14,6 +14,7 @@ export const text = cva(['items-center justify-center'], {
 
       m2o: 'text-20 font-Medium',
       m18: 'text-18 font-Medium',
+      m16: 'text-16 font-Medium',
       m13: 'text-13 font-Medium',
       m24: 'text-24 font-Medium',
       m48: 'text-[48px] font-Medium',
@@ -24,6 +25,7 @@ export const text = cva(['items-center justify-center'], {
       r16: 'text-16 font-Regular',
       r18: 'text-18 font-Regular',
       r20: 'text-20 font-Regular',
+      r24: 'text-24 font-Regular',
       r26: 'text-26 font-Regular',
       r32: 'text-32 font-Regular',
       r36: 'text-36 font-Regular',
@@ -31,6 +33,7 @@ export const text = cva(['items-center justify-center'], {
       l13: 'text-13 font-Light',
       l16: 'text-16 font-Light',
       l20: 'text-20 font-Light',
+      l24: 'text-24 font-Light',
       l48: 'text-[48px] font-Light',
     },
     isCenter: {

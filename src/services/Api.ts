@@ -249,6 +249,93 @@ class ApiClass {
         community_point_ratio: point,
       })
       .json(result => result);
+
+  checkUserIsAgent = async (): Promise<boolean> =>
+    await this.externalApi
+      .url('plastics/plastic-agents/check/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => {
+        let isAgent = undefined;
+        try {
+          isAgent =
+            result.details.includes('authenticated user is agent.') ||
+            result.details.includes('user is agent') ||
+            result.details.includes('is agent');
+        } catch {
+          isAgent = false;
+        }
+
+        return isAgent;
+      });
+
+  getTotalPlasticsToday = async (): Promise<boolean> =>
+    await this.externalApi
+      .url('plastics/?delivery-date=now')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  getPlasticsFuture = async (): Promise<boolean> =>
+    await this.externalApi
+      .url('plastics/?delivery-date=now')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  getPlasticsAll = async (): Promise<boolean> =>
+    await this.externalApi
+      .url('plastics/?is-community-point=0')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  getDropOffLocationByAgentId = async ({ id }: { id: number }): Promise<boolean> =>
+    await this.externalApi
+      .url(`plastics/drop-off-locations/?agent-id=${id}`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  decodeQrCode = async ({
+    ...params
+  }: {
+    query_id: string;
+    plastic_id: string;
+    encrypted_data: string;
+  }): Promise<boolean> =>
+    await this.externalApi
+      .url('plastics/qrcode/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post({ key: 'iHolda_Secret_Key', ...params })
+      .json(result => result);
+
+  approvedPlasticDelivery = async ({
+    queryId,
+    plasticId,
+  }: {
+    queryId: string;
+    plasticId: string;
+  }): Promise<unknown> =>
+    await this.externalApi
+      .url('plastics/delivery/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post({ query_id: queryId, plastic_id: plasticId })
+      .json(result => result);
 }
 
 const Api = new ApiClass();

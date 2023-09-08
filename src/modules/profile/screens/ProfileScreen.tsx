@@ -1,12 +1,25 @@
 import { Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import Button from 'components/Button';
+import { useQuery } from 'react-query';
+import Api from 'services/Api';
+
+import { ProfileStackParamList } from '../ProfileStackNavigator';
 
 const ProfileScreen = () => {
-  const {} = useNavigation();
+  const { navigate } = useNavigation<NavigationProp<ProfileStackParamList>>();
+  const checkUserIsAgent = useQuery('checkUserIsAgent', Api.checkUserIsAgent);
 
   return (
-    <View>
+    <View className="flex-1 justify-center items-center">
       <Text>Profile Screen</Text>
+      {checkUserIsAgent.data && (
+        <Button
+          title="Go to Agent"
+          customContainer="px-8 mt-4"
+          onPress={() => navigate('AgentPlasticStack')}
+        />
+      )}
     </View>
   );
 };

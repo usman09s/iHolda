@@ -4,6 +4,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import BottomNavigation from 'components/BottomNavigation';
 import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
+import ProfileStackNavigator from 'modules/profile/ProfileStackNavigator';
 import ProfileScreen from 'modules/profile/screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
@@ -18,7 +19,7 @@ function BottomTabsNavigator() {
     <Tab.Navigator screenOptions={commonOptions} tabBar={props => <BottomNavigation {...props} />}>
       <Tab.Screen name="LeaderBoard" component={ProfileScreen} />
       <Tab.Screen name="PlasticStack" component={PlasticStackNavigator} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="ProfileStack" component={ProfileStackNavigator} />
     </Tab.Navigator>
   );
 }

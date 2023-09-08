@@ -5,6 +5,7 @@ type Props = {
   totalPrice: number;
   totalPlastic: number;
 };
+
 const AddedPlasticTotalInformation = ({ totalPlastic, totalPrice }: Props) => (
   <View className="flex-row  bg-green-200 border-b1 border-black-o-50  px-1 rounded-md mt-7 mb-12">
     <View className="basis-1/2 flex-row">

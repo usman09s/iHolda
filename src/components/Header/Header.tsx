@@ -8,6 +8,7 @@ import { getHitSlop } from 'utils/helpers';
 
 type Props = {
   title?: string;
+  backIconColor?: string;
   showBackIcon?: boolean;
   onPressLeft?: () => void;
   onPressRight?: () => void;
@@ -22,6 +23,7 @@ const Header = ({
   onPressLeft,
   onPressRight,
   showBackIcon,
+  backIconColor,
   leftComponent,
   rightComponent,
   centerComponent,
@@ -36,7 +38,7 @@ const Header = ({
       <View className="flex-row z-20">
         {showBackIcon && !leftComponent && (
           <TouchableOpacity onPress={goBack} hitSlop={getHitSlop({ value: 20 })}>
-            <Icons.ArrowLeftIcon />
+            <Icons.ArrowLeftIcon color={backIconColor} />
           </TouchableOpacity>
         )}
         {leftComponent && (

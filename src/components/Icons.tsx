@@ -113,7 +113,7 @@ const LeaderBoardIcon = (props: SvgProps) => (
 const ArrowLeftIcon = (props: SvgProps) => (
   <Svg width={33} height={14} fill="none" {...props}>
     <Path
-      fill="#000"
+      fill={props.color || '#000'}
       d="M31.895 7.86a.86.86 0 1 0 0-1.72v1.72ZM.392 6.392a.86.86 0 0 0 0 1.216l5.473 5.473a.86.86 0 1 0 1.216-1.216L2.217 7 7.08 2.135A.86.86 0 0 0 5.865.92L.392 6.392Zm31.503-.252H1v1.72h30.895V6.14Z"
     />
   </Svg>
@@ -129,10 +129,23 @@ const TickIcon = (props: SvgProps) => (
     />
   </Svg>
 );
+
+const ApprovedCircleIcon = (props: SvgProps) => (
+  <Svg width={181} height={181} fill="none" {...props}>
+    <Path
+      stroke="#52C3FF"
+      strokeLinecap="round"
+      strokeWidth={9}
+      d="m63.5 96.5 20.412 14.845a2 2 0 0 0 2.772-.411L116.5 71.5"
+    />
+    <Rect width={179} height={179} x={1} y={1} stroke="#52C3FF" strokeWidth={2} rx={89.5} />
+  </Svg>
+);
+
 export const BottomNavigationIcons: { [key in string]: (props: SvgProps) => React.JSX.Element } = {
   PlasticStack: () => <PlasticIcon color={colors.smokeGray} />,
   LeaderBoard: () => <LeaderBoardIcon color={colors.smokeGray} />,
-  Profile: () => (
+  ProfileStack: () => (
     <View className="h-8 w-8  rounded-full bg-smokeGray border-2 border-transparent" />
   ),
 };
@@ -142,7 +155,9 @@ export const BottomNavigationFilledIcons: {
 } = {
   LeaderBoard: () => <LeaderBoardIcon color={colors.saffron} />,
   PlasticStack: () => <PlasticIcon color={colors.saffron} />,
-  Profile: () => <View className="h-8 w-8 rounded-full bg-smokeGray border-2 border-saffron" />,
+  ProfileStack: () => (
+    <View className="h-8 w-8 rounded-full bg-smokeGray border-2 border-saffron" />
+  ),
 };
 
 export default {
@@ -155,4 +170,5 @@ export default {
   CaretDownIcon,
   AvatarEditIcon,
   VerifiedBadgeIcon,
+  ApprovedCircleIcon,
 };

@@ -3,6 +3,7 @@ module.exports = {
   black: '#000000',
   blue: '#389DD6',
   petrol: '#263341',
+  cultured: '#F8F8F8',
   milkWhite: '#FBFBFB',
   teaGreen: '#C3EDC5',
   dustGray: '#979797',
@@ -13,7 +14,7 @@ module.exports = {
   saffron: '#FF9134',
   smokeGray: '#707070',
   sunriseOrange: '#ED7659',
-  yellowishOrange: '#F9AE2B',
+  xx: '#F9AE2B',
 
   'white-o-10': 'rgba(255,255,255,0.1)',
   'white-o-20': 'rgba(255,255,255,0.2)',
