@@ -18,7 +18,7 @@ class ApiClass {
   };
 
   constructor() {
-    this.externalApi = wretch('https://holda-backend-muyrh.ondigitalocean.app/api/')
+    this.externalApi = wretch('https://holda-backend-8t993.ondigitalocean.app/api/')
       .options({
         mode: 'cors',
         credentials: 'include',
