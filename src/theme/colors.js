@@ -14,7 +14,7 @@ module.exports = {
   saffron: '#FF9134',
   smokeGray: '#707070',
   sunriseOrange: '#ED7659',
-  xx: '#F9AE2B',
+  yellowishOrange: '#F9AE2B',
 
   'white-o-10': 'rgba(255,255,255,0.1)',
   'white-o-20': 'rgba(255,255,255,0.2)',

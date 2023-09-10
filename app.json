@@ -21,8 +21,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.dbyilmaz.holder"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,6 +36,18 @@
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you upload profile picture"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location for closest drop off locations."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera for scanning qr code."
         }
       ]
     ]

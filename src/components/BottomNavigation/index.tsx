@@ -30,6 +30,10 @@ const BottomNavigation = ({ navigation: { navigate }, state }: BottomTabBarProps
             <BottomNavigationItem
               key={route}
               onPress={() => {
+                if (route === 'MomentsStack') {
+                  return onPressNavigate('MomentsStackNav')();
+                }
+
                 onPressNavigate(route)();
                 const subState = state.routes[state.index].state;
 

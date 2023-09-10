@@ -2,7 +2,12 @@
 import { Dimensions, Insets } from 'react-native';
 
 export const { width, height } = Dimensions.get('screen');
+export const windowSizes = Dimensions.get('window');
 
+export const sW = width,
+  sH = height,
+  wW = windowSizes.width,
+  wH = windowSizes.height;
 export const getHitSlop = (
   params: Insets & { value?: number } = {
     value: 10,

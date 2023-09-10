@@ -61,8 +61,8 @@ const WarningIcon = (props: SvgProps) => (
 export const CrossIcon = (props: SvgProps) => (
   <Svg className="ionicon" viewBox="0 0 512 512" width={32} height={32} {...props}>
     <Path
-      fill="black"
-      stroke="black"
+      fill={props.color || 'black'}
+      stroke={props.color || 'black'}
       strokeWidth={32}
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -111,10 +111,10 @@ const LeaderBoardIcon = (props: SvgProps) => (
 );
 
 const ArrowLeftIcon = (props: SvgProps) => (
-  <Svg width={33} height={14} fill="none" {...props}>
+  <Svg width={23} height={16} fill="none" {...props}>
     <Path
       fill={props.color || '#000'}
-      d="M31.895 7.86a.86.86 0 1 0 0-1.72v1.72ZM.392 6.392a.86.86 0 0 0 0 1.216l5.473 5.473a.86.86 0 1 0 1.216-1.216L2.217 7 7.08 2.135A.86.86 0 0 0 5.865.92L.392 6.392Zm31.503-.252H1v1.72h30.895V6.14Z"
+      d="M21.015 9a1 1 0 1 0 0-2v2ZM.308 7.293a1 1 0 0 0 0 1.414l6.364 6.364a1 1 0 0 0 1.414-1.414L2.429 8l5.657-5.657A1 1 0 0 0 6.67.93L.308 7.293ZM21.015 7h-20v2h20V7Z"
     />
   </Svg>
 );
@@ -142,8 +142,85 @@ const ApprovedCircleIcon = (props: SvgProps) => (
   </Svg>
 );
 
+const MomentsIcon = (props: SvgProps) => (
+  <Svg width={32} height={32} fill="none" {...props}>
+    <Path
+      stroke={props.color || '#000'}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M21 28h3.5a3.5 3.5 0 0 0 3.5-3.5V21m0-10V7.5A3.5 3.5 0 0 0 24.5 4H21M11 28H7.5A3.5 3.5 0 0 1 4 24.5V21m0-10V7.5A3.5 3.5 0 0 1 7.5 4H11M15.75 9v13.5m6.75-6.75H9"
+    />
+  </Svg>
+);
+
+const QrCodeIcon = (props: SvgProps) => (
+  <Svg width={26} height={26} fill="none" {...props}>
+    <Path fill="#fff" d="M4.645 4.851h2.716v2.716H4.645V4.851Z" />
+    <Path
+      fill="#fff"
+      d="M.571 11.642V.777h10.864v10.865H.571Zm2.716-8.149v5.432H8.72V3.493H3.287ZM14.152 14.358h4.074v2.716h-4.074v-2.716Z"
+    />
+    <Path
+      fill="#fff"
+      d="M18.226 17.074h2.716v-2.716h4.074v4.074h-4.074v1.358H22.3v1.358h2.716v4.074H22.3v-2.716h-2.716v2.716h-5.432V19.79h2.716v2.716h1.358v-5.432ZM20.942 4.851h-2.716v2.716h2.716V4.851Z"
+    />
+    <Path
+      fill="#fff"
+      d="M14.152.777v10.865h10.864V.777H14.152ZM22.3 3.493v5.432h-5.432V3.493H22.3ZM4.645 18.432h2.716v2.716H4.645v-2.716Z"
+    />
+    <Path
+      fill="#fff"
+      d="M.571 25.222V14.358h10.864v10.864H.571Zm2.716-8.148v5.432H8.72v-5.432H3.287Z"
+    />
+  </Svg>
+);
+
+const TrashIcon = (props: SvgProps) => (
+  <Svg width={22} height={25} fill="none" {...props}>
+    <Path
+      fill="#fff"
+      d="M20.683 4.867h-4.866V3.65A3.65 3.65 0 0 0 12.167 0H9.733a3.65 3.65 0 0 0-3.65 3.65v1.217H1.217a1.217 1.217 0 1 0 0 2.433h1.216v13.383a3.65 3.65 0 0 0 3.65 3.65h9.734a3.65 3.65 0 0 0 3.65-3.65V7.3h1.216a1.216 1.216 0 1 0 0-2.433ZM8.517 3.65a1.217 1.217 0 0 1 1.216-1.217h2.434a1.217 1.217 0 0 1 1.216 1.217v1.217H8.517V3.65Zm8.516 17.033a1.216 1.216 0 0 1-1.216 1.217H6.083a1.217 1.217 0 0 1-1.216-1.217V7.3h12.166v13.383Z"
+    />
+  </Svg>
+);
+
+const TakePhotoIcon = (props: SvgProps) => (
+  <Svg width={21} height={21} fill="none" {...props}>
+    <Path
+      stroke="#fff"
+      strokeWidth={1.88}
+      d="M1.142 9.151A3.122 3.122 0 0 1 4.264 6.03c.994 0 1.921-.496 2.472-1.323l.234-.35A3.18 3.18 0 0 1 9.615 2.94h1.53c.944 0 1.839.42 2.443 1.144l.722.866a3 3 0 0 0 2.304 1.08h.065a3.18 3.18 0 0 1 3.18 3.179v7.208a3.18 3.18 0 0 1-3.18 3.18H4.321a3.18 3.18 0 0 1-3.179-3.18V9.151Z"
+    />
+    <Path
+      fill="#fff"
+      d="M9.357 16.185V7.709h1.687v8.476H9.357Zm-3.391-3.398v-1.686h8.476v1.686H5.966Z"
+    />
+  </Svg>
+);
+
+const ScanQrCodeIcon = (props: SvgProps) => (
+  <Svg width={28} height={28} fill="none" {...props}>
+    <Path
+      fill="#fff"
+      d="M0 3.111A3.111 3.111 0 0 1 3.111 0h5.445c.43 0 .777.348.777.778v1.555c0 .43-.348.778-.777.778H3.889a.778.778 0 0 0-.778.778v4.667c0 .43-.348.777-.778.777H.778A.778.778 0 0 1 0 8.556V3.11ZM28 3.111A3.111 3.111 0 0 0 24.889 0h-5.445a.778.778 0 0 0-.777.778v1.555c0 .43.348.778.777.778h4.667c.43 0 .778.348.778.778v4.667c0 .43.348.777.778.777h1.555c.43 0 .778-.348.778-.777V3.11ZM24.889 28A3.111 3.111 0 0 0 28 24.889v-5.445a.778.778 0 0 0-.778-.777h-1.555a.778.778 0 0 0-.778.777v4.667c0 .43-.348.778-.778.778h-4.667a.778.778 0 0 0-.777.778v1.555c0 .43.348.778.777.778h5.445ZM0 24.889A3.111 3.111 0 0 0 3.111 28h5.445c.43 0 .777-.348.777-.778v-1.555a.778.778 0 0 0-.777-.778H3.889a.778.778 0 0 1-.778-.778v-4.667a.778.778 0 0 0-.778-.777H.778a.778.778 0 0 0-.778.777v5.445ZM27.222 15.556c.43 0 .778-.349.778-.778v-1.556a.778.778 0 0 0-.778-.778H.778a.778.778 0 0 0-.778.778v1.556c0 .43.348.778.778.778h26.444Z"
+    />
+  </Svg>
+);
+
+const SmallVerifiedCircleIcon = (props: SvgProps) => (
+  <Svg width={18} height={18} fill="none" {...props}>
+    <Path
+      fill="#056DFA"
+      stroke="#fff"
+      d="m7.197 10.136.354.354.353-.354 3.088-3.087c.105-.106.24-.106.347 0 .106.106.106.241 0 .347L7.724 11.01c-.106.106-.24.106-.347 0L5.721 9.354c-.106-.106-.106-.241 0-.347.106-.106.24-.106.347 0l1.13 1.13ZM8.53 1C4.112 1 .5 4.612.5 9.03c0 4.417 3.612 8.03 8.03 8.03 4.417 0 8.03-3.613 8.03-8.03C16.56 4.612 12.946 1 8.53 1Z"
+    />
+  </Svg>
+);
+
 export const BottomNavigationIcons: { [key in string]: (props: SvgProps) => React.JSX.Element } = {
   PlasticStack: () => <PlasticIcon color={colors.smokeGray} />,
+  MomentsStack: () => <MomentsIcon color={colors.smokeGray} />,
   LeaderBoard: () => <LeaderBoardIcon color={colors.smokeGray} />,
   ProfileStack: () => (
     <View className="h-8 w-8  rounded-full bg-smokeGray border-2 border-transparent" />
@@ -158,17 +235,23 @@ export const BottomNavigationFilledIcons: {
   ProfileStack: () => (
     <View className="h-8 w-8 rounded-full bg-smokeGray border-2 border-saffron" />
   ),
+  MomentsStack: () => <MomentsIcon color={colors.saffron} />,
 };
 
 export default {
   TickIcon,
   CopyIcon,
+  TrashIcon,
   CrossIcon,
+  QrCodeIcon,
   PlasticIcon,
   WarningIcon,
+  TakePhotoIcon,
   ArrowLeftIcon,
   CaretDownIcon,
   AvatarEditIcon,
+  ScanQrCodeIcon,
   VerifiedBadgeIcon,
   ApprovedCircleIcon,
+  SmallVerifiedCircleIcon,
 };

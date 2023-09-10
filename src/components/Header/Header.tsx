@@ -10,6 +10,7 @@ type Props = {
   title?: string;
   backIconColor?: string;
   showBackIcon?: boolean;
+  customTopHeight?: number;
   onPressLeft?: () => void;
   onPressRight?: () => void;
   leftComponent?: React.ReactNode;
@@ -27,6 +28,7 @@ const Header = ({
   leftComponent,
   rightComponent,
   centerComponent,
+  customTopHeight,
 }: Props) => {
   const { top } = useSafeAreaInsets();
   const { goBack } = useAppNavigation<{ goBack: () => void }>();
@@ -34,7 +36,7 @@ const Header = ({
   return (
     <View
       className="flex-row items-center content-center justify-between h-10"
-      style={{ marginTop: top + 8, zIndex: 10 }}>
+      style={{ marginTop: customTopHeight || top + 8, zIndex: 10 }}>
       <View className="flex-row z-20">
         {showBackIcon && !leftComponent && (
           <TouchableOpacity onPress={goBack} hitSlop={getHitSlop({ value: 20 })}>
