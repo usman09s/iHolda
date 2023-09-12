@@ -13,9 +13,9 @@ const WelcomeScreen = () => {
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
 
   return (
-    <View className="flex-1 justify-center">
+    <View className="flex-1 justify-center ">
       <ScrollView
-        className="bg-blue px-10"
+        className="bg-blue px-10 py-2"
         style={{ paddingTop: top }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollableContent}>

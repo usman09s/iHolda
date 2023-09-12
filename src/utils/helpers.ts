@@ -81,3 +81,8 @@ export const getFlexByRatio = (value: number) => {
       return 1;
   }
 };
+
+export const units = {
+  vw: windowSizes.width / 100,
+  vh: windowSizes.height / 100,
+};

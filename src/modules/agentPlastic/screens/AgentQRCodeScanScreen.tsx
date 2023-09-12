@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Button from 'components/Button';
@@ -10,6 +11,7 @@ import { width } from 'utils/helpers';
 import { AgentPlasticStackParamList } from '../AgentPlasticNavigator';
 
 const AgentQRCodeScanScreen = () => {
+  const { top } = useSafeAreaInsets();
   const { navigate } = useNavigation<NavigationProp<AgentPlasticStackParamList>>();
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [, setScanResult] = useState<
@@ -38,8 +40,7 @@ const AgentQRCodeScanScreen = () => {
 
   return (
     <View className="flex-1">
-      <View className="bg-black px-7 pb-6">
-        <Header showBackIcon backIconColor="white" />
+      <View className="bg-black px-7 pb-6" style={{ paddingTop: top + 16 }}>
         <View
           className="overflow-hidden rounded-xl self-center mt-4 border-white border-b1"
           style={sizes}>

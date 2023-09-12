@@ -17,7 +17,7 @@ const BottomNavigation = ({ navigation: { navigate }, state }: BottomTabBarProps
         className="pt-4 px-4 flex-row justify-between"
         style={{
           paddingBottom: Platform.select({
-            ios: bottom,
+            ios: bottom === 0 ? bottom + 16 : bottom,
             android: bottom + 16,
           }),
         }}>

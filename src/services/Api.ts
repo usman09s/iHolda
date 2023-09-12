@@ -336,6 +336,36 @@ class ApiClass {
       })
       .post({ query_id: queryId, plastic_id: plasticId })
       .json(result => result);
+
+  getUserProfile = async () =>
+    await this.externalApi
+      .url(`userprofiles/${this.queryId}/`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  addMoment = async () =>
+    await this.externalApi
+      .url('plastics/delivery/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post({})
+      .json(result => result);
+
+  postMeetup = async ({ queryId }: { queryId: string }) =>
+    await this.externalApi
+      .url('meetups/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post({
+        key: 'iHolda_Secret_Key',
+        query_id: queryId,
+      })
+      .json(result => result);
 }
 
 const Api = new ApiClass();

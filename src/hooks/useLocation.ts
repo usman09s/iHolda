@@ -20,7 +20,10 @@ const useLocation = () => {
 
       return;
     }
-    const currentUserLocation = await Location.getCurrentPositionAsync({});
+    const currentUserLocation = await Location.getCurrentPositionAsync({
+      mayShowUserSettingsDialog: true,
+      accuracy: Location.Accuracy.Balanced,
+    });
     const { latitude, longitude } = currentUserLocation.coords;
 
     setLocation({ latitude, longitude });

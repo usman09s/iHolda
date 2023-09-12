@@ -13,33 +13,28 @@ const AgentPlasticConfirmationScreen = () => {
   return (
     <View className="px-7 bg-white flex-1">
       <Header title="Bayuga" showBackIcon />
-      <ScrollView contentContainerStyle={{ flex: 1 }} className="flex-1">
-        <View className="mt-10">
-          <AgentPlasticItem
-            image="https://holda-spaces.fra1.digitaloceanspaces.com/media/plastic/sizes/-1/1lt_png.png"
-            count={10}
-            onPressDecrease={() => null}
-            onPressIncrease={() => null}
-          />
-          <AgentPlasticItem
-            image="https://holda-spaces.fra1.digitaloceanspaces.com/media/plastic/sizes/-1/1lt_png.png"
-            count={10}
-            onPressDecrease={() => null}
-            onPressIncrease={() => null}
-          />
-          <AgentPlasticItem
-            image="https://holda-spaces.fra1.digitaloceanspaces.com/media/plastic/sizes/-1/1lt_png.png"
-            count={10}
-            onPressDecrease={() => null}
-            onPressIncrease={() => null}
-          />
-        </View>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingVertical: 32 }}
+        className="flex-1"
+        showsVerticalScrollIndicator={false}>
+        <AgentPlasticItem
+          image="https://holda-spaces.fra1.digitaloceanspaces.com/media/plastic/sizes/-1/1lt_png.png"
+          count={10}
+          onPressDecrease={() => null}
+          onPressIncrease={() => null}
+        />
+        <AgentPlasticItem
+          image="https://holda-spaces.fra1.digitaloceanspaces.com/media/plastic/sizes/-1/1lt_png.png"
+          count={10}
+          onPressDecrease={() => null}
+          onPressIncrease={() => null}
+        />
         <TotalResultBar totalPlastic={100} totalPrice={100} />
       </ScrollView>
       <Button
         title="Confirm"
-        customContainer="bg-saffron rounded-xl my-2 self-center px-12"
         onPress={() => navigate('AgentPlasticApproved')}
+        customContainer="bg-saffron rounded-xl my-2 self-center px-12"
       />
     </View>
   );

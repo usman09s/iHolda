@@ -6,6 +6,9 @@ import {
 } from '@react-navigation/native-stack';
 import AuthStackNavigator from 'modules/auth/AuthStackNavigator';
 import MomentsStackNavigator from 'modules/moments/MomentsStackNavigator';
+import { useSelector } from 'react-redux';
+import Api from 'services/Api';
+import { queryIdSelector, tokensSelector } from 'store/auth/userSelectors';
 
 import BottomTabsNavigator from './BottomTabsNavigator';
 
@@ -20,6 +23,14 @@ const commonScreenOptions: NativeStackNavigationOptions = {
 };
 
 export default function MainNavigator() {
+  const tokens = useSelector(tokensSelector);
+  const queryId = useSelector(queryIdSelector);
+
+  React.useEffect(() => {
+    Api.setQueryIdValue(queryId);
+    Api.setTokenValue(tokens.token);
+  }, []);
+
   return (
     <NavigationContainer>
       <MainStack.Navigator screenOptions={commonScreenOptions}>
