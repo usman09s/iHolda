@@ -14,6 +14,7 @@ import {
   setPlasticsSize,
 } from 'store/plastic/plasticSlice';
 import { text } from 'theme/text';
+import { units } from 'utils/helpers';
 
 import PlasticItem from '../components/PlasticItem';
 import { PlasticStackParamList } from '../PlasticStackNavigator';
@@ -32,13 +33,17 @@ const PlasticScreen = () => {
   });
 
   return (
-    <View style={{ paddingTop: top + 16 }} className="flex-1 bg-white justify-center">
+    <View style={{ paddingTop: top + 24 }} className="flex-1 bg-white justify-between py-4">
       <View className="px-6">
         <Text className={text({ class: 'text-center text-black-o-60' })}>
           Join the move to protect the future of our planet rescue plastics from your community and
           get rewarded.
         </Text>
-        <Text className={text({ type: 'b34', class: 'text-center mt-9' })}>100,001</Text>
+        <Text
+          className={text({ type: 'b34', class: 'text-center' })}
+          style={{ marginTop: units.vh * 2 }}>
+          100,001
+        </Text>
         <Text className={text({ type: 'r12', class: 'text-center mt-2' })}>
           Plastics rescued so far
         </Text>
@@ -47,8 +52,9 @@ const PlasticScreen = () => {
         {isLoading && <ActivityIndicator size={'large'} className="mt-8" />}
         <FlatList
           horizontal
+          style={{ marginTop: units.vh * 2, height: units.vh * 40 }}
           data={plasticSizes}
-          className="mt-8 pl-16 w-full"
+          className="pl-16 w-full"
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <PlasticItem
@@ -61,11 +67,11 @@ const PlasticScreen = () => {
           contentContainerStyle={{ paddingRight: 100 }}
         />
       </View>
-      <View className="px-7 mt-12">
+      <View className="px-7 " style={{ marginTop: units.vh * 2 }}>
         <Text className={text({ type: 'm2o', class: 'text-center' })}>Total = {totalPlastic}</Text>
         <Button
           title="Continue"
-          customContainer="mt-8"
+          customContainer="mt-4"
           type="borderedTransparent"
           disabled={isLoading || totalPlastic === 0}
           onPress={() => navigate('DropOffLocationList')}
