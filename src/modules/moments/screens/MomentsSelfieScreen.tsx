@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import {
   allMomentsSelector,
   captionSelector,
+  matchedUserSelector,
   selectedMomentSelector,
 } from 'store/moments/momentsSelectors';
 
@@ -21,6 +22,7 @@ const MomentsSelfieScreen = () => {
   const caption = useSelector(captionSelector);
   const moments = useSelector(allMomentsSelector);
   const selectedMoment = useSelector(selectedMomentSelector);
+  const matchedUser = useSelector(matchedUserSelector);
   const { goBack, navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const {
     sizes,
@@ -44,9 +46,10 @@ const MomentsSelfieScreen = () => {
         className="overflow-hidden rounded-[40px]  mt-4 border-white border-2">
         <MomentCameraHeader
           goBack={goBack}
-          matchedUserUsername="@bayuga"
+          matchedUserUsername={matchedUser?.user.username || ''}
           selectedMomentId={selectedMoment?.id}
           onDeleteMoment={() => {
+            alert('dd');
             selectedMoment && onDeleteMoment(selectedMoment);
           }}
         />
@@ -57,7 +60,7 @@ const MomentsSelfieScreen = () => {
               ref={cameraRef}
               autoFocus={false}
               type={CameraType.front}
-              className="w-full h-full"
+              className="w-full h-full z-40"
             />
           )}
           {!selectedMoment?.id && (

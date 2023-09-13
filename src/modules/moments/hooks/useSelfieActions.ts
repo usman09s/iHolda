@@ -28,7 +28,7 @@ export const useSelfieActions = () => {
   });
 
   const takeShot = async () => {
-    const result = await cameraRef.current?.takePictureAsync({ base64: true });
+    const result = await cameraRef.current?.takePictureAsync({ base64: true, quality: 0.7 });
 
     dispatch(
       addMoment({

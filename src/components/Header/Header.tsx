@@ -37,14 +37,14 @@ const Header = ({
     <View
       className="flex-row items-center content-center justify-between h-10"
       style={{ marginTop: customTopHeight || top + 8, zIndex: 10 }}>
-      <View className="flex-row z-20">
+      <View className="flex-row  z-20">
         {showBackIcon && !leftComponent && (
           <TouchableOpacity onPress={goBack} hitSlop={getHitSlop({ value: 20 })}>
             <Icons.ArrowLeftIcon color={backIconColor} />
           </TouchableOpacity>
         )}
         {leftComponent && (
-          <Pressable hitSlop={getHitSlop({ value: 20 })} onPress={onPressLeft}>
+          <Pressable hitSlop={getHitSlop({ value: 25 })} onPress={onPressLeft} className="z-20">
             {leftComponent}
           </Pressable>
         )}
@@ -53,7 +53,7 @@ const Header = ({
         {title && !centerComponent && <Text className={text({ type: 'm2o' })}>{title}</Text>}
       </View>
       {!!centerComponent && centerComponent}
-      <View className="flex-row z-0">
+      <View className="flex-row z-20">
         {!!rightComponent && (
           <Pressable onPress={onPressRight} hitSlop={getHitSlop({ value: 20 })}>
             {rightComponent}

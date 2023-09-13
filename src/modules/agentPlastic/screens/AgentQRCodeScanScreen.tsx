@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Button from 'components/Button';
-import Header from 'components/Header/Header';
 import { text } from 'theme/text';
 import { width } from 'utils/helpers';
 

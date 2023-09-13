@@ -1,11 +1,12 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Slider } from '@miblanchard/react-native-slider';
 import colors from 'theme/colors';
 
-const MoodSlider = () => {
+const MoodSlider = ({ onChangeMood }: { onChangeMood: (value: string) => void }) => {
   const emotions = ['🥹', '😔', '😐', '😄', '😍'];
+  const [value, setValue] = useState(0);
   const sliderValue = useSharedValue(0);
 
   const mood = useAnimatedStyle(() => ({
@@ -13,19 +14,19 @@ const MoodSlider = () => {
   }));
 
   const mood1 = useAnimatedStyle(() => ({
-    fontSize: withTiming(sliderValue.value === 0.25 ? 70 : 30),
+    fontSize: withTiming(sliderValue.value === 1 ? 70 : 30),
   }));
 
   const mood2 = useAnimatedStyle(() => ({
-    fontSize: withTiming(sliderValue.value === 0.5 ? 70 : 30),
+    fontSize: withTiming(sliderValue.value === 2 ? 70 : 30),
   }));
 
   const mood3 = useAnimatedStyle(() => ({
-    fontSize: withTiming(sliderValue.value === 0.75 ? 70 : 30),
+    fontSize: withTiming(sliderValue.value === 3 ? 70 : 30),
   }));
 
   const mood4 = useAnimatedStyle(() => ({
-    fontSize: withTiming(sliderValue.value === 1 ? 70 : 30),
+    fontSize: withTiming(sliderValue.value === 4 ? 70 : 30),
   }));
 
   const moods = [mood, mood1, mood2, mood3, mood4];
@@ -40,13 +41,16 @@ const MoodSlider = () => {
         ))}
       </View>
       <Slider
-        step={0.25}
+        step={1}
+        value={value}
         minimumValue={0}
-        maximumValue={1}
+        maximumValue={4}
         thumbStyle={styles.thumbStyle}
         trackStyle={styles.trackStyle}
-        onValueChange={value => {
-          sliderValue.value = value[0];
+        onValueChange={arrayValue => {
+          sliderValue.value = arrayValue[0];
+          setValue(arrayValue[0]);
+          onChangeMood(emotions[Number(arrayValue[0])]);
         }}
         minimumTrackTintColor={colors.yellowishOrange}
         maximumTrackTintColor="#000000"

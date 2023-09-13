@@ -1,24 +1,55 @@
-import { useEffect, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
 import Header from 'components/Header/Header';
 import Icons from 'components/Icons';
+import { useMutation, useQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
+import Api from 'services/Api';
+import { setMatchedUser } from 'store/moments/momentsSlice';
+import colors from 'theme/colors';
 import { text } from 'theme/text';
 import { getHitSlop, width } from 'utils/helpers';
 
 import { MomentsStackParamList } from '../MomentsStackNavigator';
 
 const MomentsQrScanScreen = () => {
+  const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  const [, setScanResult] = useState<BarCodeScanningResult>();
+  useQuery('currentUserProfile', Api.getUserProfile);
+  const scanResultRef = useRef<BarCodeScanningResult>();
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const { navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
+
+  const { mutate, isLoading } = useMutation(Api.postMeetup, {
+    onSuccess: data => {
+      if (!data.met_with) {
+        return;
+      }
+
+      dispatch(
+        setMatchedUser({
+          meetupId: data.id,
+          id: data.met_with.id,
+          user: data.met_with.user,
+          location_name: data.met_with.location_name,
+          user_profile_image: data.met_with.user_profile_image,
+        }),
+      );
+      navigate('MomentsMatch');
+    },
+  });
 
   const sizes = { width: width - 56, height: width - 56 };
 
   const onBarCodeScanned = (result: BarCodeScanningResult) => {
-    setScanResult(result);
+    const matchedUserQueryId = JSON.parse(result.data).query_id;
+    if (scanResultRef.current !== matchedUserQueryId) {
+      mutate({ queryId: matchedUserQueryId });
+    }
+
+    scanResultRef.current = matchedUserQueryId;
   };
 
   useEffect(() => {
@@ -39,6 +70,13 @@ const MomentsQrScanScreen = () => {
           className="overflow-hidden rounded-xl self-center mt-4 border-white border-b1">
           {permission?.granted && isFocused && (
             <Camera onBarCodeScanned={onBarCodeScanned} style={sizes} />
+          )}
+          {isLoading && (
+            <ActivityIndicator
+              color={colors.coolGreen}
+              className="absolute self-center"
+              style={{ top: sizes.height / 2 }}
+            />
           )}
         </View>
       </View>
@@ -61,14 +99,10 @@ const MomentsQrScanScreen = () => {
           </Text>
         </View>
         <View className="flex-row bg-gray-300 shadow-md mx-2 self-end mt-10 py-4 px-10 rounded-full items-between">
-          <Pressable
-            hitSlop={getHitSlop({ value: 20, right: 10, left: 40 })}
-            onPress={() => navigate('MomentsMatch')}>
+          <Pressable hitSlop={getHitSlop({ value: 20, right: 10, left: 40 })}>
             <Text className={text({ type: 'r15', class: 'mr-8' })}>Meetup</Text>
           </Pressable>
-          <Pressable
-            hitSlop={getHitSlop({ value: 20, left: 10, right: 40 })}
-            onPress={() => alert('j')}>
+          <Pressable hitSlop={getHitSlop({ value: 20, left: 10, right: 40 })}>
             <Text className={text({ type: 'r15', class: 'text-black-o-40' })}>Job</Text>
           </Pressable>
         </View>

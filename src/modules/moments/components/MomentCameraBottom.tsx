@@ -43,6 +43,7 @@ const MomentCameraBottom = ({
               customInputClass="flex-1 mr-4 bg-black"
             />
             <Pressable
+              onPress={onPressNext}
               className="w-12 h-12 justify-center items-center rounded-full bg-blue self-end"
               hitSlop={getHitSlop({ value: 12 })}>
               <Icons.ArrowLeftIcon color={'white'} className="rotate-180" />

@@ -1,17 +1,20 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { MomentType } from 'types/MomentsTypes';
+import { MatchedUserType, MomentType } from 'types/MomentsTypes';
 
 export type momentsState = {
+  mood?: string;
   caption: string;
+  meetupId?: number;
   moments: MomentType[];
   selectedMoment?: MomentType;
+  matchedUser?: MatchedUserType;
 };
 
 const initialState: momentsState = {
   moments: [],
   caption: '',
-  selectedMoment: undefined,
+  meetupId: undefined,
 };
 
 export const momentsSlice = createSlice({
@@ -38,9 +41,33 @@ export const momentsSlice = createSlice({
       ...state,
       caption: action.payload,
     }),
+
+    setMatchedUser: (state, action: PayloadAction<MatchedUserType & { meetupId: number }>) => ({
+      ...state,
+      matchedUser: action.payload,
+      meetupId: action.payload.meetupId,
+    }),
+
+    setMood: (state, action: PayloadAction<string>) => ({
+      ...state,
+      mood: action.payload,
+    }),
+
+    resetState: state => ({
+      ...state,
+      ...initialState,
+    }),
   },
 });
 
-export const { setSelectedMoment, addMoment, deleteMoment, setCaption } = momentsSlice.actions;
+export const {
+  setMood,
+  addMoment,
+  resetState,
+  setCaption,
+  deleteMoment,
+  setMatchedUser,
+  setSelectedMoment,
+} = momentsSlice.actions;
 
 export default momentsSlice.reducer;

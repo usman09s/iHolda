@@ -13,3 +13,18 @@ export const selectedMomentSelector = createSelector(
   momentsSelector,
   moments => moments.selectedMoment,
 );
+
+export const matchedUserSelector = createSelector(momentsSelector, moments => moments.matchedUser);
+export const moodSelector = createSelector(momentsSelector, moments => moments.mood);
+export const meetupIdSelector = createSelector(momentsSelector, moments => moments.meetupId);
+
+export const postMomentsParamsSelector = createSelector(
+  allMomentsSelector,
+  captionSelector,
+  meetupIdSelector,
+  (moments, caption, meetupId = '') => ({
+    caption,
+    meetupId,
+    moments: moments.map(moment => ({ file: moment.base64 })),
+  }),
+);

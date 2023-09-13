@@ -1,4 +1,5 @@
 import { LoginParameters, LoginResponse, SignUpResponse } from 'types/AuthTypes';
+import { GetMomentsResponseType, PostMomentsResponse } from 'types/MomentsTypes';
 import {
   AddPlasticResponseType,
   DropOffLocationItemType,
@@ -355,9 +356,9 @@ class ApiClass {
       .post({})
       .json(result => result);
 
-  postMeetup = async ({ queryId }: { queryId: string }) =>
+  postMeetup = async ({ queryId }: { queryId: string }): Promise<PostMomentsResponse> =>
     await this.externalApi
-      .url('meetups/')
+      .url('meetups/?latitude=35.6762&longitude=139.6503')
       .headers({
         ...this._getAuthorization(this.token),
       })
@@ -365,6 +366,36 @@ class ApiClass {
         key: 'iHolda_Secret_Key',
         query_id: queryId,
       })
+      .json(result => result);
+
+  postMoments = async ({
+    caption,
+    moments,
+    meetupId,
+  }: {
+    meetupId: number;
+    caption: string;
+    moments: { file: string }[];
+  }): Promise<PostMomentsResponse> =>
+    await this.externalApi
+      .url('moments/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post({
+        caption,
+        moments,
+        meetup_id: meetupId,
+      })
+      .json(result => result);
+
+  getMoments = async (): Promise<GetMomentsResponseType[]> =>
+    await this.externalApi
+      .url('moments/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
       .json(result => result);
 }
 

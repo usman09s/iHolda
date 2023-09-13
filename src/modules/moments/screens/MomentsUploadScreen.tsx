@@ -1,17 +1,35 @@
-import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import Animated, { SlideInLeft } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp, StackActions, useNavigation } from '@react-navigation/native';
 import Button from 'components/Button';
+import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
+import Api from 'services/Api';
+import { matchedUserSelector } from 'store/moments/momentsSelectors';
 import { text } from 'theme/text';
-import { units, width } from 'utils/helpers';
+import { formatDateDifference, units, width } from 'utils/helpers';
 
 import { MomentsStackParamList } from '../MomentsStackNavigator';
 
 const MomentsUploadScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
-  const { navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
+  const matchedUser = useSelector(matchedUserSelector);
+  const moments = useQuery('getMoments', Api.getMoments);
+  const { data } = useQuery('currentUserProfile', Api.getUserProfile);
+  const { dispatch } = useNavigation<NavigationProp<MomentsStackParamList>>();
 
-  const goToMomentsUpload = () => navigate('MomentsUpload');
+  const navigateToRoot = () => {
+    dispatch(StackActions.popToTop);
+  };
 
   return (
     <ScrollView
@@ -24,36 +42,39 @@ const MomentsUploadScreen = () => {
         All Done!
       </Text>
       <Text className={text({ type: 'r16', class: 'text-white text-center px-10 mb-3' })}>
-        You met @bayuga in person for the first time.
+        You met {matchedUser?.user.username} in person for the first time.
       </Text>
       <View className="flex-row self-center mb-2">
         <View className="overflow-hidden border-white rounded-2xl border-4  -rotate-30 ">
-          <Image source={{ uri: 'https://i.pravatar.cc/150?img=33' }} className="w-16 h-16" />
+          <Image source={{ uri: data?.user_profile_image.image }} className="w-16 h-16" />
         </View>
         <View className="overflow-hidden border-white  rounded-2xl border-4 -left-8 top-2 rotate-30">
-          <Image source={{ uri: 'https://i.pravatar.cc/150?img=34' }} className="w-16 h-16" />
+          <Image source={{ uri: matchedUser?.user_profile_image.image }} className="w-16 h-16" />
         </View>
       </View>
       <View className="h-3 bg-white rounded-full overflow-hidden  my-8 mx-10">
-        <View className="h-3 bg-yellowishOrange" style={{ width: '60%' }} />
+        <Animated.View
+          entering={SlideInLeft}
+          style={{ width: '100%' }}
+          className="h-3 bg-yellowishOrange"
+        />
       </View>
       <Text className={text({ class: 'text-white text-center mb-4' })}>
         view recommended moment from friends
       </Text>
       <View>
+        {moments.isLoading && <ActivityIndicator />}
         <FlatList
           horizontal
-          data={[1, 2, 3]}
+          data={moments.data || []}
           contentContainerStyle={styles.contentContainer}
-          renderItem={() => (
+          renderItem={({ item }) => (
             <View className="rounded-2xl overflow-hidden border-4 mr-10 border-white">
-              <Image
-                resizeMode="cover"
-                style={styles.image}
-                source={{ uri: 'https://i.pravatar.cc/300?img=16' }}
-              />
+              <Image resizeMode="cover" style={styles.image} source={{ uri: item.file }} />
               <View className="absolute z-10 bottom-4 left-0 right-0 items-center">
-                <Text className={text({ type: 'b16', class: 'text-white' })}>Today</Text>
+                <Text className={text({ type: 'b16', class: 'text-white' })}>
+                  {formatDateDifference(item.created_at)}
+                </Text>
                 <Text className={text({ type: 'b16', class: 'text-white' })}>Buea, Cameroon</Text>
               </View>
             </View>
@@ -63,7 +84,7 @@ const MomentsUploadScreen = () => {
       <Button
         title="Close"
         type="borderedSolid"
-        onPress={goToMomentsUpload}
+        onPress={navigateToRoot}
         customContainer="self-center px-10 mt-16"
       />
     </ScrollView>
