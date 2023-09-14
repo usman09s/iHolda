@@ -1,3 +1,4 @@
+import { DecodePlasticsQrResponseType } from 'types/AgentPlasticTypes';
 import { LoginParameters, LoginResponse, SignUpResponse } from 'types/AuthTypes';
 import { GetMomentsResponseType, PostMomentsResponse } from 'types/MomentsTypes';
 import {
@@ -208,6 +209,38 @@ class ApiClass {
       })
       .json(result => result);
 
+  updatePlasticsSizes = async ({
+    sizes,
+    plasticId,
+  }: {
+    plasticId: number;
+    sizes: { size: number | string; quantity: number }[];
+  }): Promise<AddPlasticResponseType> =>
+    await this.externalApi
+      .url(`plastics/${plasticId}/`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .patch({ sizes })
+      .json(result => result);
+
+  updatePlasticsSizesx = async ({
+    sizes,
+    queryId,
+    plasticId,
+  }: {
+    queryId: string;
+    plasticId: number;
+    sizes: { size: number | string; quantity: number }[];
+  }): Promise<AddPlasticResponseType> =>
+    await this.externalApi
+      .url(`plastics/${plasticId}/`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .patch({ sizes, queryId })
+      .json(result => result);
+
   updatePlastics = async ({
     sizes,
     userType,
@@ -251,7 +284,12 @@ class ApiClass {
       })
       .json(result => result);
 
-  checkUserIsAgent = async (): Promise<boolean> =>
+  checkUserIsAgent = async (): Promise<{
+    agentId: number;
+    isAgent: boolean;
+    todayDelivery: number;
+    totalDelivery: number;
+  }> =>
     await this.externalApi
       .url('plastics/plastic-agents/check/')
       .headers({
@@ -269,7 +307,14 @@ class ApiClass {
           isAgent = false;
         }
 
-        return isAgent;
+        return {
+          isAgent,
+          agentId: result.id,
+          totalDelivery: result.total_delivery,
+          todayDelivery: result.today_delivery,
+          dropoff_locations: result.dropoff_locations,
+          ...result,
+        };
       });
 
   getTotalPlasticsToday = async (): Promise<boolean> =>
@@ -281,9 +326,9 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  getPlasticsFuture = async (): Promise<boolean> =>
+  getPlasticsFuture = async ({ locationId }: { locationId: number }): Promise<boolean> =>
     await this.externalApi
-      .url('plastics/?delivery-date=now')
+      .url(`plastics/?is_delivered=false&dropoff-location-id=${locationId}`)
       .headers({
         ...this._getAuthorization(this.token),
       })
@@ -314,7 +359,7 @@ class ApiClass {
     query_id: string;
     plastic_id: string;
     encrypted_data: string;
-  }): Promise<boolean> =>
+  }): Promise<DecodePlasticsQrResponseType> =>
     await this.externalApi
       .url('plastics/qrcode/')
       .headers({
@@ -328,7 +373,7 @@ class ApiClass {
     plasticId,
   }: {
     queryId: string;
-    plasticId: string;
+    plasticId: number;
   }): Promise<unknown> =>
     await this.externalApi
       .url('plastics/delivery/')

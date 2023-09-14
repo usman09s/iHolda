@@ -12,8 +12,15 @@ import AgentQRCodeScanScreen from './screens/AgentQRCodeScanScreen';
 export type AgentPlasticStackParamList = {
   AgentCollection: undefined;
   AgentQrCodeScan: undefined;
-  AgentPlasticConfirmation: undefined;
-  AgentPlasticApproved: undefined;
+  AgentPlasticConfirmation: {
+    query_id: string;
+    plastic_id: string;
+    encrypted_data: string;
+  };
+  AgentPlasticApproved: {
+    username: string;
+    totalPlastic: number;
+  };
 };
 
 const AgentPlasticStack = createNativeStackNavigator<AgentPlasticStackParamList>();

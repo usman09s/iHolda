@@ -40,7 +40,7 @@ const PlasticQRCodeScreen = () => {
         <View style={{ width: width - 32, height: width - 32 }} className="self-center">
           <Image
             resizeMode="stretch"
-            className="w-full h-full border-[10px] rounded-xl self-center"
+            className="w-full h-full border-[7px] rounded-xl self-center"
             source={{ uri: params?.plasticInformation?.qr_code }}
           />
         </View>

@@ -11,10 +11,12 @@ import { AgentPlasticStackParamList } from '../AgentPlasticNavigator';
 import UpcomingDropOffItem from '../components/UpcomingDropOffItem';
 
 const AgentCollectionsScreen = () => {
+  const agentUser = useQuery('agentUser', Api.checkUserIsAgent);
   const { navigate } = useNavigation<NavigationProp<AgentPlasticStackParamList>>();
-  const getPlasticsFuture = useQuery('getPlasticsFuture', Api.getPlasticsFuture);
-  const getTotalPlasticsToday = useQuery('getTotalPlasticsToday', Api.getTotalPlasticsToday);
-  const getTotalPlasticsAll = useQuery('getTotalPlasticsAll', Api.getPlasticsAll);
+  const locationId = agentUser.data?.dropoff_locations?.[0]?.id;
+  const getPlasticsFuture = useQuery(['getPlasticsFuture', locationId], () =>
+    Api.getPlasticsFuture({ locationId }),
+  );
 
   return (
     <View className="flex-1 bg-white">
@@ -22,21 +24,21 @@ const AgentCollectionsScreen = () => {
       <View className="flex-row justify-center mt-8">
         <View className="border-b1 mr-3 rounded-md py-3 flex-1 ml-4">
           <Text className={text({ type: 'r24', class: 'text-center' })}>Total</Text>
-          {getTotalPlasticsAll.isLoading ? (
+          {agentUser.isLoading ? (
             <ActivityIndicator color={colors.saffron} />
           ) : (
             <Text className={text({ type: 'b26', class: 'text-center' })}>
-              {getTotalPlasticsAll.data?.length || 0}
+              {agentUser.data?.totalDelivery || 0}
             </Text>
           )}
         </View>
         <View className="border-b1 rounded-md py-3 flex-1 mr-4">
           <Text className={text({ type: 'r24', class: 'text-center' })}>Today</Text>
-          {getTotalPlasticsToday.isLoading ? (
+          {agentUser.isLoading ? (
             <ActivityIndicator color={colors.saffron} />
           ) : (
             <Text className={text({ type: 'b26', class: 'text-center' })}>
-              {getTotalPlasticsToday.data?.length || 0}
+              {agentUser.data?.todayDelivery || 0}
             </Text>
           )}
         </View>

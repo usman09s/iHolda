@@ -1,41 +1,62 @@
-import { ScrollView, View } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import Button from 'components/Button';
+import ErrorModal from 'components/ErrorModal';
 import Header from 'components/Header/Header';
+import colors from 'theme/colors';
 
-import { AgentPlasticStackParamList } from '../AgentPlasticNavigator';
 import AgentPlasticItem from '../components/AgentPlasticItem';
 import TotalResultBar from '../components/TotalResultBar';
+import { useAgentPlasticConfirmationActions } from '../hooks/useAgentPlasticConfirmationActions';
 
 const AgentPlasticConfirmationScreen = () => {
-  const { navigate } = useNavigation<NavigationProp<AgentPlasticStackParamList>>();
+  const {
+    username,
+    plastics,
+    isLoading,
+    errorMessage,
+    buttonLoading,
+    onPressConfirm,
+    onPressDecrease,
+    onPressIncrease,
+    addedPlasticTotalPrice,
+    agentPlasticCountTotal,
+  } = useAgentPlasticConfirmationActions();
 
   return (
     <View className="px-7 bg-white flex-1">
-      <Header title="Bayuga" showBackIcon />
-      <ScrollView
+      <Header title={username} showBackIcon />
+      {isLoading && <ActivityIndicator color={colors.saffron} size={'large'} className="mt-4" />}
+      <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingVertical: 32 }}
         className="flex-1"
-        showsVerticalScrollIndicator={false}>
-        <AgentPlasticItem
-          image="https://holda-spaces.fra1.digitaloceanspaces.com/media/plastic/sizes/-1/1lt_png.png"
-          count={10}
-          onPressDecrease={() => null}
-          onPressIncrease={() => null}
-        />
-        <AgentPlasticItem
-          image="https://holda-spaces.fra1.digitaloceanspaces.com/media/plastic/sizes/-1/1lt_png.png"
-          count={10}
-          onPressDecrease={() => null}
-          onPressIncrease={() => null}
-        />
-        <TotalResultBar totalPlastic={100} totalPrice={100} />
-      </ScrollView>
+        showsVerticalScrollIndicator={false}
+        data={[...plastics] || []}
+        renderItem={({ item }) => (
+          <View className="flex-grow">
+            <AgentPlasticItem
+              image={item.image}
+              count={item.quantity}
+              totalPrice={item.price}
+              onPressDecrease={() => onPressDecrease(item.size)}
+              onPressIncrease={() => onPressIncrease(item.size)}
+            />
+          </View>
+        )}
+        ListFooterComponent={() => (
+          <TotalResultBar
+            totalPrice={addedPlasticTotalPrice}
+            totalPlastic={agentPlasticCountTotal}
+          />
+        )}
+      />
       <Button
         title="Confirm"
-        onPress={() => navigate('AgentPlasticApproved')}
-        customContainer="bg-saffron rounded-xl my-2 self-center px-12"
+        onPress={onPressConfirm}
+        disabled={buttonLoading}
+        isLoading={buttonLoading}
+        customContainer="bg-saffron rounded-xl my-4 self-center px-12"
       />
+      <ErrorModal errorText={errorMessage} />
     </View>
   );
 };

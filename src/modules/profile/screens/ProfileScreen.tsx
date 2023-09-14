@@ -8,12 +8,12 @@ import { ProfileStackParamList } from '../ProfileStackNavigator';
 
 const ProfileScreen = () => {
   const { navigate } = useNavigation<NavigationProp<ProfileStackParamList>>();
-  const checkUserIsAgent = useQuery('checkUserIsAgent', Api.checkUserIsAgent);
+  const agentUser = useQuery('agentUser', Api.checkUserIsAgent);
 
   return (
     <View className="flex-1 justify-center items-center">
       <Text>Profile Screen</Text>
-      {checkUserIsAgent.data && (
+      {agentUser.data?.isAgent && (
         <Button
           title="Go to Agent"
           customContainer="px-8 mt-4"

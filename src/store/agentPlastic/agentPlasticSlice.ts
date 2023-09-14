@@ -1,14 +1,22 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { PlasticItemType } from 'types/PlasticTypes';
+import { DecodePlasticsQrResponseType } from 'types/AgentPlasticTypes';
 
-export type agentPlasticState = {
-  upcomingDropOffs: unknown[];
-  plasticId: number | undefined;
-  plasticSizes: (PlasticItemType & { count: number })[];
+type ScannedPlasticItemType = {
+  plasticId: number;
+  sizes: { size: number | string; quantity: number; price: number; image: string }[];
 };
 
-const initialState: agentPlasticState = {
+export type AgentPlasticState = {
+  queryId?: string;
+  plasticId?: number;
+  plasticOwner?: string;
+  upcomingDropOffs: unknown[];
+  scannedPlastics?: ScannedPlasticItemType;
+  plasticSizes: { size: number | string; quantity: number; price: number; image: string }[];
+};
+
+const initialState: AgentPlasticState = {
   plasticSizes: [],
   plasticId: undefined,
   upcomingDropOffs: [],
@@ -18,23 +26,18 @@ export const agentPlasticSlice = createSlice({
   name: 'agentPlastic',
   initialState,
   reducers: {
-    setPlasticsSize: (state, action: PayloadAction<PlasticItemType[]>) => ({
-      ...state,
-      plasticSizes: action.payload.map(item => ({ ...item, count: 0 })),
-    }),
-
     increasePlasticCount: (state, action: PayloadAction<number>) => ({
       ...state,
       plasticSizes: state.plasticSizes.map(item =>
-        item.id === action.payload ? { ...item, count: item.count + 1 } : item,
+        item.size === action.payload ? { ...item, quantity: item.quantity + 1 } : item,
       ),
     }),
 
     decreasePlasticCount: (state, action: PayloadAction<number>) => ({
       ...state,
       plasticSizes: state.plasticSizes.map(item =>
-        item.id === action.payload
-          ? { ...item, count: item.count === 0 ? 0 : item.count - 1 }
+        item.size === action.payload
+          ? { ...item, quantity: item.quantity === 0 ? 0 : item.quantity - 1 }
           : item,
       ),
     }),
@@ -48,13 +51,34 @@ export const agentPlasticSlice = createSlice({
       ...state,
       upcomingDropOffs: action.payload,
     }),
+
+    setScannedPlastic: (state, action: PayloadAction<DecodePlasticsQrResponseType>) => {
+      const sizes = action.payload.sizes.map(item => ({
+        size: Number(item.size),
+        image: item.image,
+        quantity: item.quantity,
+        price: Number(item.price_per_plastic),
+      }));
+
+      return {
+        ...state,
+        plasticSizes: sizes,
+        queryId: action.payload.query_id,
+        plasticId: action.payload.plastic_id,
+        plasticOwner: action.payload.user_name,
+        scannedPlastics: {
+          plasticId: action.payload.plastic_id,
+          sizes,
+        },
+      };
+    },
   },
 });
 
 export const {
   setDropOffs,
   setPlasticId,
-  setPlasticsSize,
+  setScannedPlastic,
   increasePlasticCount,
   decreasePlasticCount,
 } = agentPlasticSlice.actions;
