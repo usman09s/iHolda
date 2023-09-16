@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { BottomNavigationFilledIcons, BottomNavigationIcons } from 'components/Icons';
 import colors from 'theme/colors';
+import { units } from 'utils/helpers';
 
 import BottomNavigationItem from './BottomNavigationItem';
 
@@ -12,13 +13,13 @@ const BottomNavigation = ({ navigation: { navigate }, state }: BottomTabBarProps
   const { bottom } = useSafeAreaInsets();
 
   return (
-    <View className="border-t-b1 border-t-gray-200 bg-white">
+    <View className="border-t-b1 border-t-gray-200 bg-white" style={{ height: units.vh * 8 }}>
       <View
         className="pt-4 px-4 flex-row justify-between"
         style={{
           paddingBottom: Platform.select({
-            ios: bottom === 0 ? bottom + 16 : bottom,
             android: bottom + 16,
+            ios: bottom === 0 ? bottom + 16 : bottom,
           }),
         }}>
         {state?.routeNames.map((route, index) => {

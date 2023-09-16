@@ -16,6 +16,8 @@ module.exports = {
   sunriseOrange: '#ED7659',
   yellowishOrange: '#F9AE2B',
 
+  'white-o-025': 'rgba(255,255,255,0.02)',
+  'white-o-05': 'rgba(255,255,255,0.05)',
   'white-o-10': 'rgba(255,255,255,0.1)',
   'white-o-20': 'rgba(255,255,255,0.2)',
   'white-o-30': 'rgba(255,255,255,0.3)',
@@ -26,6 +28,9 @@ module.exports = {
   'white-o-80': 'rgba(255,255,255,0.8)',
   'white-o-90': 'rgba(255,255,255,0.9)',
 
+  'black-o-01': 'rgba(0,0,0,0.01)',
+  'black-o-025': 'rgba(0,0,0,0.025)',
+  'black-o-05': 'rgba(0,0,0,0.05)',
   'black-o-10': 'rgba(0,0,0,0.1)',
   'black-o-20': 'rgba(0,0,0,0.2)',
   'black-o-30': 'rgba(0,0,0,0.3)',

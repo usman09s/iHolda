@@ -15,3 +15,5 @@ export const tokensSelector = createSelector(userSelector, user => ({
 
 export const userImageSelector = (state: UserRootState) => state.user.userImage;
 export const usernameSelector = (state: UserRootState) => state.user.username;
+
+export const profileImageSelector = createSelector(userSelector, user => user.userImage);

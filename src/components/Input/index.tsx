@@ -5,13 +5,17 @@ import colors from 'theme/colors';
 
 type Props = {
   customInputClass?: string;
-  onPressLeftIcon: () => void;
-  leftIcon: React.ReactNode | JSX.Element;
+  onPressLeftIcon?: () => void;
+  onPressRightIcon?: () => void;
+  leftIcon?: React.ReactNode | JSX.Element;
+  rightIcon?: React.ReactNode | JSX.Element;
 };
 
 const Input = ({
   leftIcon,
+  rightIcon,
   onPressLeftIcon,
+  onPressRightIcon,
   customInputClass,
   placeholderTextColor,
   ...rest
@@ -35,6 +39,13 @@ const Input = ({
       cursorColor={colors.white}
       {...rest}
     />
+    {rightIcon && (
+      <Pressable
+        onPress={onPressRightIcon}
+        className="absolute items-center mr-4 right-0 top-0 bottom-0  justify-center z-10">
+        {rightIcon}
+      </Pressable>
+    )}
   </>
 );
 

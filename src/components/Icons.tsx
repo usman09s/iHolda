@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import Svg, { Path, Rect, SvgProps } from 'react-native-svg';
+import Svg, { Defs, G, Path, Rect, SvgProps } from 'react-native-svg';
 import colors from 'theme/colors';
+
+import ProfileAvatar from './BottomNavigation/ProfileAvatar';
 
 const VerifiedBadgeIcon = (props: SvgProps) => (
   <Svg width={12} height={12} fill="none" {...props}>
@@ -218,22 +220,156 @@ const SmallVerifiedCircleIcon = (props: SvgProps) => (
   </Svg>
 );
 
+const HomeFeedIcon = (props: SvgProps) => (
+  <Svg width={24} height={24} fill="none" {...props}>
+    <Path
+      fill="#FF9134"
+      d="M10.81 15.851H1.351A1.351 1.351 0 0 0 0 17.203v9.459a1.352 1.352 0 0 0 1.351 1.35h9.46a1.352 1.352 0 0 0 1.35-1.35v-9.46a1.351 1.351 0 0 0-1.35-1.35ZM25.674.987h-9.459a1.351 1.351 0 0 0-1.35 1.351v9.46a1.351 1.351 0 0 0 1.35 1.35h9.46a1.351 1.351 0 0 0 1.35-1.35v-9.46a1.351 1.351 0 0 0-1.35-1.35Zm-1.35 8.378c0 .597-.485 1.081-1.082 1.081h-4.594a1.081 1.081 0 0 1-1.081-1.08V4.77c0-.597.484-1.081 1.08-1.081h4.595c.597 0 1.081.484 1.081 1.08v4.595Zm1.35 6.486h-9.459a1.351 1.351 0 0 0-1.35 1.352v9.459a1.352 1.352 0 0 0 1.35 1.35h9.46a1.351 1.351 0 0 0 1.35-1.35v-9.46a1.351 1.351 0 0 0-1.35-1.35ZM10.81.987H1.351A1.351 1.351 0 0 0 0 2.338v9.46a1.351 1.351 0 0 0 1.351 1.35h9.46a1.351 1.351 0 0 0 1.35-1.35v-9.46a1.351 1.351 0 0 0-1.35-1.35ZM9.46 9.365c0 .597-.484 1.081-1.081 1.081H3.784a1.081 1.081 0 0 1-1.081-1.08V4.77c0-.597.484-1.081 1.08-1.081h4.595c.597 0 1.081.484 1.081 1.08v4.595Z"
+    />
+  </Svg>
+);
+
+const PlasticLineIcon = (props: SvgProps) => (
+  <Svg width={46} height={46} fill="none" {...props}>
+    <G filter="url(#a)">
+      <Rect
+        width={40}
+        height={40}
+        x={3}
+        y={3}
+        fill={colors['black-o-30']}
+        fillOpacity={0.35}
+        rx={20}
+        shapeRendering="crispEdges"
+      />
+      <Path
+        stroke="#fff"
+        strokeWidth={0.623}
+        d="m21.652 13.99-.047-.092-.046-.093v-1.344l.046-.046.14-.093.185-.046.324-.046h.973l.325.046.185.093.14.046.046.046v.696l.046.092v.556l-.139.093v.603l.649.556.51.649.278.417.232.324.139.417.138.371v3.105l-.139.371v6.906l.14.232v4.403l-.093.231-.14.278-.185.325-.185.185-.37.14h-4.218l-.232-.14-.185-.185-.186-.325-.139-.37-.093-.417v-4.125l.14-.279v-6.859l-.186-.37v-3.199l.046-.139.047-.139.093-.185.092-.232.325-.463.37-.464.418-.463.556-.556v-.51Zm0 0 .324.094.649.046h.741l.186-.046.185-.047.047-.046.139-.186-.047-1.344-.556-.185h-.695l-.556.046-.325.093-.139.093v1.158l.047.325Z"
+      />
+      <Path
+        fill="#fff"
+        d="m21.943 24.443-2 .5.5 2.5-.5.5v4l.5 1h4.5l.5-.5v-3.5l-.25-1 .25-1v-5.5l-1.5 1.5-.5 1-1.5.5Z"
+      />
+      <Rect
+        width={38.943}
+        height={38.943}
+        x={3.529}
+        y={3.529}
+        stroke="#fff"
+        strokeWidth={1.057}
+        rx={19.471}
+        shapeRendering="crispEdges"
+      />
+    </G>
+    <Defs></Defs>
+  </Svg>
+);
+
+const BookmarkIcon = (props: SvgProps) => (
+  <Svg width={20} height={30} fill="none" {...props}>
+    <Path
+      stroke="#fff"
+      strokeWidth={2}
+      d="M17.418 1.188h-15a1 1 0 0 0-1 1v17.085c0 .891 1.077 1.337 1.707.707l6.086-6.085a1 1 0 0 1 1.414 0l6.086 6.085c.63.63 1.707.184 1.707-.707V2.188a1 1 0 0 0-1-1Z"
+    />
+  </Svg>
+);
+
+const CommentIcon = (props: SvgProps) => (
+  <Svg width={26} height={30} fill="none" {...props}>
+    <G filter="url(#a)">
+      <Path
+        stroke="#fff"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2.37}
+        d="M22.792 12.606a9.192 9.192 0 0 1-.988 4.169 9.324 9.324 0 0 1-8.337 5.156 9.194 9.194 0 0 1-4.17-.987l-6.253 2.084 2.085-6.253a9.193 9.193 0 0 1-.987-4.17 9.325 9.325 0 0 1 5.156-8.337 9.193 9.193 0 0 1 4.169-.987h.548a9.303 9.303 0 0 1 8.777 8.776v.549Z"
+      />
+    </G>
+    <Defs></Defs>
+  </Svg>
+);
+
+const HeartIcon = (props: SvgProps) => (
+  <Svg width={36} height={30} fill="none" {...props}>
+    <G filter="url(#a)">
+      <Path
+        stroke="#fff"
+        strokeWidth={2.606}
+        d="m17.032 7.192.886.823.887-.823c2.837-2.634 7.474-2.634 10.312 0 2.781 2.582 2.781 6.726 0 9.308l-9.426 8.75c-1 .928-2.546.928-3.546 0L6.72 16.5c-2.782-2.582-2.782-6.726 0-9.308 2.837-2.634 7.474-2.634 10.312 0Z"
+      />
+    </G>
+    <Defs></Defs>
+  </Svg>
+);
+
+const ShareIcon = (props: SvgProps) => (
+  <Svg width={36} height={30} fill="none" {...props}>
+    <Path
+      fill="#fff"
+      d="M23.965 16.08c-.022.077-.05.149-.084.211-.111.2-.34.297-.54.411-1.892 1.087-6.801 2.082-9.726 7.06l-2.28 4.043c-.842 1.896-3.562 1.809-4.28-.137l-.206-.556C4.454 20.63 11.21 14.59 20.966 10.985c.262-.097.525-.19.789-.28 1.376-.472 2.746.595 2.748 2.05.001 1.027-.257 2.336-.538 3.324Z"
+    />
+    <Path
+      fill="#fff"
+      d="M30.146 10.833a.643.643 0 0 1 .34.905l-6.265 11.756a.644.644 0 0 1-1.17-.076L16.853 6.955a.643.643 0 0 1 .83-.828l12.462 4.706Z"
+    />
+  </Svg>
+);
+
+export const SearchIcon = (props: SvgProps) => (
+  <Svg width={30} height={24} fill="none" {...props}>
+    <G filter="url(#a)">
+      <Path
+        stroke="#fff"
+        strokeLinecap="round"
+        strokeWidth={1.643}
+        d="m25.714 22.643-5.042-5.052m2.794-6.75a9.554 9.554 0 1 1-19.108 0 9.554 9.554 0 0 1 19.108 0Z"
+        shapeRendering="crispEdges"
+      />
+    </G>
+    <Defs></Defs>
+  </Svg>
+);
+
+const MagnitudeIcon = (props: SvgProps) => (
+  <Svg width={19} height={20} fill="none" {...props}>
+    <Path
+      stroke="#282828"
+      strokeWidth={0.953}
+      d="M14.566 9.123c0 3.483-2.803 6.301-6.253 6.301S2.06 12.606 2.06 9.123c0-3.484 2.803-6.302 6.253-6.302s6.253 2.818 6.253 6.302Z"
+    />
+    <Path
+      stroke="#282828"
+      strokeLinecap="round"
+      strokeWidth={0.953}
+      d="m12.666 13.509 4.354 4.386"
+    />
+  </Svg>
+);
+
 export const BottomNavigationIcons: { [key in string]: (props: SvgProps) => React.JSX.Element } = {
-  PlasticStack: () => <PlasticIcon color={colors.smokeGray} />,
+  HomeStack: () => <HomeFeedIcon color={colors.smokeGray} />,
+  FeedStack: () => <PlasticIcon color={colors.smokeGray} />,
   MomentsStack: () => <MomentsIcon color={colors.smokeGray} />,
   LeaderBoard: () => <LeaderBoardIcon color={colors.smokeGray} />,
   ProfileStack: () => (
-    <View className="h-8 w-8  rounded-full bg-smokeGray border-2 border-transparent" />
+    <View className="h-8 w-8  rounded-full bg-smokeGray border-2 border-transparent">
+      <ProfileAvatar />
+    </View>
   ),
 };
 
 export const BottomNavigationFilledIcons: {
   [key in string]: (props: SvgProps) => React.JSX.Element;
 } = {
+  HomeStack: () => <HomeFeedIcon color={colors.saffron} />,
   LeaderBoard: () => <LeaderBoardIcon color={colors.saffron} />,
-  PlasticStack: () => <PlasticIcon color={colors.saffron} />,
+  FeedStack: () => <PlasticIcon color={colors.saffron} />,
   ProfileStack: () => (
-    <View className="h-8 w-8 rounded-full bg-smokeGray border-2 border-saffron" />
+    <View className="h-8 w-8 rounded-full bg-smokeGray border-2 border-saffron">
+      <ProfileAvatar />
+    </View>
   ),
   MomentsStack: () => <MomentsIcon color={colors.saffron} />,
 };
@@ -243,14 +379,21 @@ export default {
   CopyIcon,
   TrashIcon,
   CrossIcon,
+  ShareIcon,
+  HeartIcon,
+  SearchIcon,
   QrCodeIcon,
+  CommentIcon,
   PlasticIcon,
   WarningIcon,
+  BookmarkIcon,
   TakePhotoIcon,
   ArrowLeftIcon,
   CaretDownIcon,
+  MagnitudeIcon,
   AvatarEditIcon,
   ScanQrCodeIcon,
+  PlasticLineIcon,
   VerifiedBadgeIcon,
   ApprovedCircleIcon,
   SmallVerifiedCircleIcon,
