@@ -10,10 +10,10 @@ const BottomNavigationItem = ({
 }) => (
   <Pressable
     onPress={onPress}
-    style={{ width: (width - 32) / 4 }}
+    style={{ width: (width - 32) / 5 }}
     className="justify-center items-center"
     hitSlop={getHitSlop({ value: 15, left: 20, right: 20 })}>
-    <View className="h-6 w-6 mb-1">{icon && icon}</View>
+    <View className="h-6 w-6">{icon && icon}</View>
   </Pressable>
 );
 

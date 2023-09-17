@@ -2,6 +2,7 @@ module.exports = {
   white: '#ffffff',
   black: '#000000',
   blue: '#389DD6',
+  lightBlue: '#52C3FF',
   petrol: '#263341',
   cultured: '#F8F8F8',
   milkWhite: '#FBFBFB',
