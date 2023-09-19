@@ -135,3 +135,13 @@ export const deepEqual = (obj1: object, obj2: object) => {
 
   return true;
 };
+
+export const getStars = (point: number) => {
+  const halfStarCount = (point / 0.5) % 2;
+  const starCount = (point / 0.5 - halfStarCount) / 2;
+
+  return {
+    starCount: new Array(starCount).fill(''),
+    halfStarCount: new Array(halfStarCount).fill(''),
+  };
+};
