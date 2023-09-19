@@ -657,6 +657,18 @@ const CameraIcon = (props: SvgProps) => (
   </Svg>
 );
 
+const TriangleUp = (props: SvgProps) => (
+  <Svg width={9} height={6} fill="none" {...props}>
+    <Path fill="#00D95F" d="m4.5 0 3.897 5.25H.603L4.5 0Z" />
+  </Svg>
+);
+
+const TriangleDown = (props: SvgProps) => (
+  <Svg width={9} height={6} fill="none" {...props}>
+    <Path fill="#D82953" d="M4.5 6 .603.75h7.794L4.5 6Z" />
+  </Svg>
+);
+
 export default {
   StarIcon,
   TickIcon,
@@ -665,6 +677,7 @@ export default {
   CrossIcon,
   ShareIcon,
   HeartIcon,
+  TriangleUp,
   CameraIcon,
   CashInIcon,
   TiktokIcon,
@@ -675,6 +688,7 @@ export default {
   WarningIcon,
   WebsiteIcon,
   CashOutIcon,
+  TriangleDown,
   SnapchatIcon,
   NineDotsIcon,
   BookmarkIcon,
@@ -702,7 +716,7 @@ export const BottomNavigationIcons: { [key in string]: (props: SvgProps) => Reac
   HomeStack: () => <HomeFeedIcon color={colors.smokeGray} />,
   FeedStack: () => <PlasticIcon color={colors.smokeGray} />,
   MomentsStack: () => <MomentsIcon color={colors.smokeGray} />,
-  LeaderBoard: () => <LeaderBoardIcon color={colors.smokeGray} />,
+  LeaderBoardStack: () => <LeaderBoardIcon color={colors.smokeGray} />,
   ActivityStack: () => <ActivityStackIcon color={colors.smokeGray} />,
   ProfileStack: () => (
     <View className="h-8 w-8  rounded-full bg-smokeGray border-2 border-transparent">
@@ -715,7 +729,7 @@ export const BottomNavigationFilledIcons: {
   [key in string]: (props: SvgProps) => React.JSX.Element;
 } = {
   HomeStack: () => <HomeFeedIcon color={colors.saffron} />,
-  LeaderBoard: () => <LeaderBoardIcon color={colors.saffron} />,
+  LeaderBoardStack: () => <LeaderBoardIcon color={colors.saffron} />,
   FeedStack: () => <PlasticIcon color={colors.saffron} />,
   ProfileStack: () => (
     <View className="h-8 w-8 rounded-full bg-smokeGray border-2 border-saffron">
