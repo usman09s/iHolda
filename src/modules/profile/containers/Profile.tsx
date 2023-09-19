@@ -1,8 +1,8 @@
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { width } from 'utils/helpers';
 
 import ProfileDescriptionAndStats from '../components/ProfileDescriptionAndStats';
+import ProfilePostItem from '../components/ProfilePostItem';
 import ProfilePostTabs from '../components/ProfilePostTabs';
 
 const Profile = () => (
@@ -26,12 +26,7 @@ const Profile = () => (
         <ProfilePostTabs activeIndex={0} onPressTabItem={() => () => null} />
       </>
     }
-    renderItem={({ index }) => (
-      <Image
-        style={[{ height: width / 2.4, width: width / 3 }]}
-        source={{ uri: 'https://i.pravatar.cc/300?img=' + index }}
-      />
-    )}
+    renderItem={({ index }) => <ProfilePostItem index={index} />}
   />
 );
 
