@@ -9,10 +9,12 @@ import ScrolledHeader from './ScrolledHeader';
 import ScrolledHeaderRight from './ScrolledHeaderRight';
 
 type Props = {
-  avatar: string;
   top: number;
+  avatar: string;
   username: string;
+  invitedBy: string;
   activeIndex: number;
+  monthAndYear: string;
   hederThumbnail: string;
   activeY: SharedValue<number>;
   onPressTabItem: (value: number) => () => void;
@@ -23,7 +25,9 @@ const ProfileHeader = ({
   avatar,
   activeY,
   username,
+  invitedBy,
   activeIndex,
+  monthAndYear,
   hederThumbnail,
   onPressTabItem,
 }: Props) => {
@@ -51,14 +55,15 @@ const ProfileHeader = ({
       <Animated.View
         style={[{ height: headerImageHeight }, animatedHeaderStyle]}
         className={'z-30 flex-row overflow-hidden'}>
-        <Image className="w-full h-full absolute" source={{ uri: hederThumbnail }} />
+        <Image className="w-full h-full absolute bg-black" source={{ uri: hederThumbnail }} />
         <View className=" h-full justify-end px-6" style={{ paddingBottom: units.vh * 2 }}>
           <View className="flex-row">
             <Text className={text({ type: 'b20', class: 'text-white mr-1 mb-3' })}>{username}</Text>
             <Icons.BorderedVerifiedIcon />
           </View>
           <Text className={text({ type: 'r13', class: 'text-white' })}>
-            Joined June 2023 invited by <Text className={text({ type: 'b13' })}>@daniel</Text>
+            Joined {monthAndYear} invited by{' '}
+            <Text className={text({ type: 'b13' })}>{invitedBy}</Text>
           </Text>
         </View>
         <ScrolledHeaderRight activeY={activeY} top={top} />

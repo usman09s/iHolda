@@ -145,3 +145,29 @@ export const getStars = (point: number) => {
     halfStarCount: new Array(halfStarCount).fill(''),
   };
 };
+
+export const getMonthAndYear = (dateString: string) => {
+  if (!dateString) {
+    return '';
+  }
+
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = monthNames[date.getMonth()];
+
+  return `${month} ${year}`;
+};

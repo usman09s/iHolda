@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+import { userCommonInformationSelector, userImageSelector } from 'store/auth/userSelectors';
 
 import ProfileHeader from '../components/ProfileHeader';
 import Community from '../containers/Community';
@@ -14,6 +16,9 @@ const ProfileScreen = () => {
   const activeY = useSharedValue(0);
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
+  const { username, avatar, invitedBy, joinedMonthAndYear } = useSelector(
+    userCommonInformationSelector,
+  );
 
   const onPressTabItem = (value: number) => () => {
     setIndex(value);
@@ -46,13 +51,15 @@ const ProfileScreen = () => {
         ListHeaderComponent={
           <ProfileHeader
             top={top}
+            avatar={avatar}
             activeY={activeY}
-            username="@bayuga"
+            username={username}
             activeIndex={index}
             key={'profileHeader'}
+            invitedBy={invitedBy}
+            hederThumbnail={avatar}
+            monthAndYear={joinedMonthAndYear}
             onPressTabItem={onPressTabItem}
-            avatar="https://i.pravatar.cc/300?img=33"
-            hederThumbnail="https://i.pravatar.cc/1000?img=33"
           />
         }
       />
