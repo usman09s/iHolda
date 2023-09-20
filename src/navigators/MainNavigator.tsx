@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
+import { userAppInit } from 'hooks/useAppInit';
 import AuthStackNavigator from 'modules/auth/AuthStackNavigator';
 import FeedDetailsScreen from 'modules/feed/screens/FeedDetailScreen';
 import FeedMomentsSearchScreen from 'modules/feed/screens/FeedMomentsSearchScreen';
@@ -12,6 +14,7 @@ import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
 import { queryIdSelector, tokensSelector } from 'store/auth/userSelectors';
+import colors from 'theme/colors';
 
 import BottomTabsNavigator from './BottomTabsNavigator';
 
@@ -28,15 +31,26 @@ const commonScreenOptions: NativeStackNavigationOptions = {
 export default function MainNavigator() {
   const tokens = useSelector(tokensSelector);
   const queryId = useSelector(queryIdSelector);
+  const { status } = userAppInit();
 
   React.useEffect(() => {
     Api.setQueryIdValue(queryId);
     Api.setTokenValue(tokens.token);
   }, []);
 
+  if (status === 'IDLE' || status === 'LOADING') {
+    return (
+      <View className="flex-1 justify-center items-center bg-blue">
+        <ActivityIndicator size={'large'} color={colors.white} />
+      </View>
+    );
+  }
+
   return (
     <NavigationContainer>
-      <MainStack.Navigator screenOptions={commonScreenOptions}>
+      <MainStack.Navigator
+        screenOptions={commonScreenOptions}
+        initialRouteName={status === 'SUCCESS' ? 'BottomTabs' : 'Auth'}>
         <MainStack.Screen options={commonOptions} name="Auth" component={AuthStackNavigator} />
         <MainStack.Screen
           name="BottomTabs"

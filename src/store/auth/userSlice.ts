@@ -26,12 +26,12 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action: PayloadAction<UserState>) => {
-      state = action.payload;
+      state = { ...state, ...action.payload };
       if (action.payload.user?.user_profile_image?.image) {
         state.userImage = action.payload.user?.user_profile_image.image;
       }
 
-      if (action.payload.user?.user.username) {
+      if (action.payload.user?.user?.username) {
         state.username = action.payload.user?.user.username;
       }
 
@@ -46,9 +46,23 @@ export const userSlice = createSlice({
 
       return state;
     },
+
+    setTokensAndQueryId: (
+      state,
+      action: PayloadAction<{ accessToken: string; refreshToken: string; queryId: string }>,
+    ) => {
+      state = {
+        ...state,
+        query_id: action.payload.queryId,
+        access_token: action.payload.accessToken,
+        refresh_token: action.payload.refreshToken,
+      };
+
+      return state;
+    },
   },
 });
 
-export const { setUserInfo, setUserImageAndUsername } = userSlice.actions;
+export const { setUserInfo, setUserImageAndUsername, setTokensAndQueryId } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
-import { userCommonInformationSelector, userImageSelector } from 'store/auth/userSelectors';
+import { userCommonInformationSelector } from 'store/auth/userSelectors';
 
 import ProfileHeader from '../components/ProfileHeader';
 import Community from '../containers/Community';

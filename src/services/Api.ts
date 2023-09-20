@@ -383,7 +383,7 @@ class ApiClass {
       .post({ query_id: queryId, plastic_id: plasticId })
       .json(result => result);
 
-  getUserProfile = async () =>
+  getUserProfile = async (): Promise<LoginResponse> =>
     await this.externalApi
       .url(`userprofiles/${this.queryId}/`)
       .headers({

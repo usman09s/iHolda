@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Alert } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 import { NavigationProp, RouteProp, useRoute } from '@react-navigation/native';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppNavigation } from 'hooks/useAppNavigation';
@@ -42,6 +43,14 @@ export const useSignInActions = () => {
       },
       {
         onSuccess: result => {
+          SecureStore.setItemAsync(
+            'tokensAndQueryId',
+            JSON.stringify({
+              queryId: result.query_id,
+              accessToken: result.access_token,
+              refreshToken: result.refresh_token,
+            }),
+          );
           Api.setQueryIdValue(result.query_id);
           dispatch(setUserInfo(result));
           reset({
