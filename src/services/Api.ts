@@ -138,13 +138,13 @@ class ApiClass {
 
   sendCodeForForgotPin = async ({ phoneNumber }: { phoneNumber: string }) =>
     await this.externalApi
-      .url('reset/forgot-pin/send-code/')
+      .url('reset/forgot-pin/send-code/?delete-retry=yes')
       .post({ phone: phoneNumber })
       .json(result => result);
 
   resetPinCodeConfirm = async ({ phoneNumber, code }: { phoneNumber: string; code: string }) =>
     await this.externalApi
-      .url('reset/forgot-pin/send-code/')
+      .url('reset/reset-pin-code/confirm/')
       .post({ phone: phoneNumber, code })
       .json(result => result);
 

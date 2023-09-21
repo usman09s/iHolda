@@ -14,6 +14,7 @@ import { AuthStackParamList } from '../AuthStackNavigator';
 export const useSignInActions = () => {
   const dispatch = useAppDispatch();
   const [pin, setPin] = useState('');
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const { navigate, reset } = useAppNavigation<
     NavigationProp<
       AuthStackParamList & {
@@ -102,6 +103,7 @@ export const useSignInActions = () => {
       { phoneNumber: params.phone },
       {
         onSuccess: () => {
+          setShowConfirmationModal(false);
           navigate('EnterOtp', { phone: params.phone });
         },
       },
@@ -119,6 +121,8 @@ export const useSignInActions = () => {
     isLoading,
     errorMessage,
     sendCodeErrorMessage,
+    showConfirmationModal,
+    setShowConfirmationModal,
     onPressConfirmOtpConfirmationModal,
   };
 };

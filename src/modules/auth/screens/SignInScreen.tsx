@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { KeyboardAvoidingView, Text, View } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import Button from 'components/Button';
@@ -13,7 +12,6 @@ import OtpPhoneConfirmationModal from '../components/OtpPhoneConfirmationModal';
 import { useSignInActions } from '../hooks/useSignInActions';
 
 const SignInScreen = () => {
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const { params } = useRoute<RouteProp<AuthStackParamList, 'SignIn'>>();
   const sendCodeMutation = useMutation(Api.sendCodeForForgotPin);
   const {
@@ -24,6 +22,8 @@ const SignInScreen = () => {
     errorMessage,
     sendCodeErrorMessage,
     onPressConfirmOtpConfirmationModal,
+    showConfirmationModal,
+    setShowConfirmationModal,
   } = useSignInActions();
 
   return (
@@ -33,6 +33,7 @@ const SignInScreen = () => {
           <Text className={text({ type: 'b44', class: 'text-white' })}>Enter your pin</Text>
         </View>
         <Input
+          value={pin}
           maxLength={4}
           placeholder="Enter Pin"
           onChangeText={setPin}
