@@ -15,7 +15,7 @@ import LeaderBoardUserItem from '../components/LeaderBoardUserItem';
 import LeaderBoardUsersHeader from '../components/LeaderBoardUsersHeader';
 import { useCommunityRank } from '../hooks/useCommunityRank';
 
-const Meetup = () => {
+const Community = () => {
   const {} = useNavigation();
   const [isVisible, setIsVisible] = useState(true);
   const { rankItems, winners, currentUser, isLoading } = useCommunityRank();
@@ -65,4 +65,4 @@ const Meetup = () => {
   );
 };
 
-export default Meetup;
+export default Community;

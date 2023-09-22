@@ -4,6 +4,7 @@ import Header from 'components/Header/Header';
 import { text } from 'theme/text';
 
 import LeaderBoardTabItem from '../components/LeaderBoardTabItem';
+import Community from '../containers/Community';
 import Meetups from '../containers/Meetups';
 import TeamUp from '../containers/Teamup';
 
@@ -34,8 +35,9 @@ const LeaderBoardScreen = () => {
           onPressTabItem={() => setTabIndex(2)}
         />
       </View>
+      {tabIndex === 0 && <Community />}
+      {tabIndex === 1 && <Meetups />}
       {tabIndex === 2 && <TeamUp />}
-      {tabIndex !== 2 && <Meetups />}
     </View>
   );
 };

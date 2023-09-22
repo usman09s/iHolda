@@ -1,5 +1,6 @@
 import { DecodePlasticsQrResponseType } from 'types/AgentPlasticTypes';
 import { LoginParameters, LoginResponse, SignUpResponse } from 'types/AuthTypes';
+import { CommunityRankItemType } from 'types/LeaderBoardTypes';
 import { GetMomentsResponseType, PostMomentsResponse } from 'types/MomentsTypes';
 import {
   AddPlasticResponseType,
@@ -437,6 +438,15 @@ class ApiClass {
   getMoments = async (): Promise<GetMomentsResponseType[]> =>
     await this.externalApi
       .url('moments/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  getCommunityPointsRank = async (): Promise<CommunityRankItemType[]> =>
+    await this.externalApi
+      .url('wallets/get-by/?community-points=highest&period=month')
       .headers({
         ...this._getAuthorization(this.token),
       })
