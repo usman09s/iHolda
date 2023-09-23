@@ -20,7 +20,9 @@ const AgentCollectionsScreen = () => {
 
   return (
     <View className="flex-1 bg-white">
-      <Header title="Your collections" />
+      <View className="px-4">
+        <Header title="Your collections" showBackIcon />
+      </View>
       <View className="flex-row justify-center mt-8">
         <View className="border-b1 mr-3 rounded-md py-3 flex-1 ml-4">
           <Text className={text({ type: 'r24', class: 'text-center' })}>Total</Text>

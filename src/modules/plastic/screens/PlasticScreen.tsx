@@ -1,7 +1,8 @@
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp } from '@react-navigation/native';
 import Button from 'components/Button';
+import Header from 'components/Header/Header';
+import Icons from 'components/Icons';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppNavigation } from 'hooks/useAppNavigation';
 import { useQuery } from 'react-query';
@@ -21,10 +22,9 @@ import { PlasticStackParamList } from '../PlasticStackNavigator';
 
 const PlasticScreen = () => {
   const dispatch = useAppDispatch();
-  const { top } = useSafeAreaInsets();
   const plasticSizes = useSelector(plasticSizeSelector);
   const totalPlastic = useSelector(plasticCountTotalSelector);
-  const { navigate } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
+  const { navigate, goBack } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
 
   const { isLoading } = useQuery('plasticSizes', Api.getPlasticSizes, {
     onSuccess: result => {
@@ -33,9 +33,12 @@ const PlasticScreen = () => {
   });
 
   return (
-    <View style={{ paddingTop: top + 24 }} className="flex-1 bg-white justify-between py-4">
+    <View className="flex-1 bg-white justify-between py-4">
       <View className="px-6">
-        <Text className={text({ class: 'text-center text-black-o-60' })}>
+        <Header onPressLeft={goBack} leftComponent={<Icons.CrossIcon />} />
+      </View>
+      <View className="px-6">
+        <Text className={text({ class: 'text-center text-black-o-60 mx-6 ' })}>
           Join the move to protect the future of our planet rescue plastics from your community and
           get rewarded.
         </Text>
@@ -52,7 +55,7 @@ const PlasticScreen = () => {
         {isLoading && <ActivityIndicator size={'large'} className="mt-8" />}
         <FlatList
           horizontal
-          style={{ marginTop: units.vh * 2, height: units.vh * 40 }}
+          style={{ marginTop: units.vh * 2, height: units.vh * 44 }}
           data={plasticSizes}
           className="pl-16 w-full"
           showsHorizontalScrollIndicator={false}
@@ -71,7 +74,7 @@ const PlasticScreen = () => {
         <Text className={text({ type: 'm2o', class: 'text-center' })}>Total = {totalPlastic}</Text>
         <Button
           title="Continue"
-          customContainer="mt-4"
+          customContainer="my-4"
           type="borderedTransparent"
           disabled={isLoading || totalPlastic === 0}
           onPress={() => navigate('DropOffLocationList')}

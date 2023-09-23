@@ -1,8 +1,8 @@
-import { Image, Text, View } from 'react-native';
+import { Image, Pressable, Text, View } from 'react-native';
 import { text } from 'theme/text';
 import { units } from 'utils/helpers';
 
-const JobItem = ({ index = 0 }: { index: number }) => {
+const JobItem = ({ index = 0, onPress }: { index: number; onPress: () => void }) => {
   const isOdd = index % 2 !== 0;
   const colors = {
     title: isOdd ? 'grayCool' : 'white',
@@ -16,7 +16,8 @@ const JobItem = ({ index = 0 }: { index: number }) => {
   const avatarClass = `overflow-hidden rounded-full border-b1 border-${colors.avatarBorder}`;
 
   return (
-    <View
+    <Pressable
+      onPress={onPress}
       className={`${colors.container} p-4 self-start rounded-2xl mr-4`}
       style={{ width: units.vw * 40 }}>
       <View className="flex-row justify-between items-center">
@@ -67,7 +68,7 @@ const JobItem = ({ index = 0 }: { index: number }) => {
           </Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

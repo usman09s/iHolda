@@ -28,7 +28,9 @@ const PlasticItem = ({ image, count = 0, onPressDecrease, onPressIncrease }: Pro
         style={styles.h8}>
         <Text className={text({ type: 'l20', class: 'text-center text-white' })}>{count}</Text>
       </View>
-      <View className="flex-row bg-yellowishOrange justify-around w-full" style={styles.h8}>
+      <View
+        className="flex-row bg-yellowishOrange justify-around w-full"
+        style={[styles.h8, { marginTop: units.vh * 3 }]}>
         <Pressable
           onPress={onPressDecrease}
           className="flex-1 justify-center items-center"
@@ -48,8 +50,8 @@ const PlasticItem = ({ image, count = 0, onPressDecrease, onPressIncrease }: Pro
 );
 
 const styles = StyleSheet.create({
-  container: { width: units.vw * 56, height: units.vh * 40 },
-  imageContainer: { height: units.vh * 24, paddingTop: units.vh * 1 },
+  container: { width: units.vw * 56, height: units.vh * 44 },
+  imageContainer: { height: units.vh * 24, paddingTop: units.vh * 1, marginTop: units.vh * 1 },
   textContainer: { height: units.vh * 16 },
   h8: { height: units.vh * 8 },
 });

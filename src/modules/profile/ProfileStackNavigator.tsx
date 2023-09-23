@@ -3,7 +3,6 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
-import AgentPlasticStackNavigator from 'modules/agentPlastic/AgentPlasticNavigator';
 
 import ProfileScreen from './screens/ProfileScreen';
 
@@ -26,11 +25,6 @@ export default function ProfileStackNavigator() {
   return (
     <ProfileStack.Navigator screenOptions={commonScreenOptions}>
       <ProfileStack.Screen options={commonOptions} name="Profile" component={ProfileScreen} />
-      <ProfileStack.Screen
-        options={commonOptions}
-        name="AgentPlasticStack"
-        component={AgentPlasticStackNavigator}
-      />
     </ProfileStack.Navigator>
   );
 }

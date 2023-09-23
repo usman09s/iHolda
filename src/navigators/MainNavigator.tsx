@@ -6,6 +6,7 @@ import {
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
 import { userAppInit } from 'hooks/useAppInit';
+import AgentPlasticStackNavigator from 'modules/agentPlastic/AgentPlasticNavigator';
 import AuthStackNavigator from 'modules/auth/AuthStackNavigator';
 import FeedDetailsScreen from 'modules/feed/screens/FeedDetailScreen';
 import FeedMomentsSearchScreen from 'modules/feed/screens/FeedMomentsSearchScreen';
@@ -66,6 +67,11 @@ export default function MainNavigator() {
           name="PlasticStack"
           options={commonOptions}
           component={PlasticStackNavigator}
+        />
+        <MainStack.Screen
+          name="AgentPlasticStack"
+          options={commonOptions}
+          component={AgentPlasticStackNavigator}
         />
         <MainStack.Screen
           name="FeedDetails"

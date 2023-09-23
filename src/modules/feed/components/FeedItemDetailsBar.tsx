@@ -34,7 +34,7 @@ const FeedItemDetailsBar = ({
         colors['black-o-60'],
       ]}
       locations={[0, 0.1, 0.6, 1]}
-      className="items-center justify-between  z-20 px-6 pb-3 pt-2">
+      className="items-center justify-between  z-20 px-3 pb-3 pt-2">
       <View className="mr-12">
         <View className="flex-row items-center pl-6">
           <Text className="rotate-30">{userFirst.emotion}</Text>
