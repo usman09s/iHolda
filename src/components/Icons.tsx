@@ -669,6 +669,34 @@ const TriangleDown = (props: SvgProps) => (
   </Svg>
 );
 
+const OutlineCameraIcon = (props: SvgProps) => (
+  <Svg width={35} height={35} fill="none" {...props}>
+    <Path
+      fill="#000"
+      stroke="#fff"
+      strokeWidth={2.115}
+      d="M4.645 14.909a4.503 4.503 0 0 1 4.503-4.504 3.837 3.837 0 0 0 3.193-1.708l.32-.48a4.581 4.581 0 0 1 3.812-2.04h2.095c1.36 0 2.649.603 3.52 1.648l.987 1.186a3.876 3.876 0 0 0 2.979 1.395h.089a4.582 4.582 0 0 1 4.581 4.581v9.868a4.582 4.582 0 0 1-4.581 4.582H9.226a4.582 4.582 0 0 1-4.581-4.582v-9.946Z"
+    />
+    <Circle cx={17.685} cy={19.216} r={5.991} stroke="#fff" strokeWidth={2.115} />
+  </Svg>
+);
+
+const DeleteCrossIcon = (props: SvgProps) => (
+  <Svg
+    width={24}
+    height={24}
+    fill="none"
+    stroke="#000"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth={1.5}
+    className="lucide lucide-x"
+    viewBox="0 0 24 24"
+    {...props}>
+    <Path d="M18 6 6 18M6 6l12 12" />
+  </Svg>
+);
+
 export default {
   StarIcon,
   TickIcon,
@@ -701,8 +729,10 @@ export default {
   CaretRightIcon,
   AvatarEditIcon,
   ScanQrCodeIcon,
+  DeleteCrossIcon,
   PlasticLineIcon,
   SmilingFacesIcon,
+  OutlineCameraIcon,
   GreenTriangleIcon,
   VerifiedBadgeIcon,
   ApprovedCircleIcon,

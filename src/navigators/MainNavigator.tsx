@@ -10,6 +10,7 @@ import AgentPlasticStackNavigator from 'modules/agentPlastic/AgentPlasticNavigat
 import AuthStackNavigator from 'modules/auth/AuthStackNavigator';
 import FeedDetailsScreen from 'modules/feed/screens/FeedDetailScreen';
 import FeedMomentsSearchScreen from 'modules/feed/screens/FeedMomentsSearchScreen';
+import JobPostingStackNavigator from 'modules/jobposting/JobPostingStackNavigator';
 import MomentsStackNavigator from 'modules/moments/MomentsStackNavigator';
 import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
 import { useSelector } from 'react-redux';
@@ -82,6 +83,11 @@ export default function MainNavigator() {
           name="FeedMomentsSearch"
           options={commonOptions}
           component={FeedMomentsSearchScreen}
+        />
+        <MainStack.Screen
+          name="JobPostingStack"
+          options={commonOptions}
+          component={JobPostingStackNavigator}
         />
       </MainStack.Navigator>
     </NavigationContainer>

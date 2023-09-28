@@ -22,6 +22,8 @@ export const text = cva(['items-center justify-center'], {
       m28: 'text-[28px] font-Medium',
       m18: 'text-18 font-Medium',
       m16: 'text-16 font-Medium',
+      m15: 'text-15 font-Medium',
+      m14: 'text-14 font-Medium',
       m12: 'text-12 font-Medium',
       m10: 'text-10 font-Medium',
       m13: 'text-13 font-Medium',
@@ -38,6 +40,7 @@ export const text = cva(['items-center justify-center'], {
       r24: 'text-24 font-Regular',
       r26: 'text-26 font-Regular',
       r32: 'text-32 font-Regular',
+      r33: 'text-33 font-Regular',
       r36: 'text-36 font-Regular',
 
       l13: 'text-13 font-Light',

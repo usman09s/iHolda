@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ActivityIndicator, Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
 import Header from 'components/Header/Header';
@@ -10,8 +10,9 @@ import Api from 'services/Api';
 import { setMatchedUser } from 'store/moments/momentsSlice';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
-import { getHitSlop, width } from 'utils/helpers';
+import { width } from 'utils/helpers';
 
+import MeetupAndJobButtons from '../components/MeetupAndJobButtons';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
 
 const MomentsQrScanScreen = () => {
@@ -98,14 +99,8 @@ const MomentsQrScanScreen = () => {
             Position the QR code at the center of the square and scan to create a moment.
           </Text>
         </View>
-        <View className="flex-row bg-gray-300 shadow-md mx-2 self-end mt-10 py-4 px-10 rounded-full items-between">
-          <Pressable hitSlop={getHitSlop({ value: 20, right: 10, left: 40 })}>
-            <Text className={text({ type: 'r15', class: 'mr-8' })}>Meetup</Text>
-          </Pressable>
-          <Pressable hitSlop={getHitSlop({ value: 20, left: 10, right: 40 })}>
-            <Text className={text({ type: 'r15', class: 'text-black-o-40' })}>Job</Text>
-          </Pressable>
-        </View>
+        <View />
+        <MeetupAndJobButtons flow="meetup" />
       </View>
     </View>
   );

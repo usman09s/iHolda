@@ -1,9 +1,11 @@
 import React from 'react';
-import { Pressable, TextInput, TextInputProps } from 'react-native';
+import { Pressable, Text, TextInput, TextInputProps } from 'react-native';
 import Icons from 'components/Icons';
 import colors from 'theme/colors';
+import { text } from 'theme/text';
 
 type Props = {
+  statusText?: string;
   customInputClass?: string;
   onPressLeftIcon?: () => void;
   onPressRightIcon?: () => void;
@@ -14,6 +16,7 @@ type Props = {
 const Input = ({
   leftIcon,
   rightIcon,
+  statusText,
   onPressLeftIcon,
   onPressRightIcon,
   customInputClass,
@@ -28,7 +31,9 @@ const Input = ({
         <Icons.TakePhotoIcon />
       </Pressable>
     )}
-
+    {!!statusText && (
+      <Text className={text({ type: 'r10', class: 'text-gray-400 mb-1' })}>{statusText}</Text>
+    )}
     <TextInput
       placeholderTextColor={placeholderTextColor || colors['white-o-70']}
       className={
