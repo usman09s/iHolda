@@ -18,6 +18,7 @@ import { height, units, wH, wW } from 'utils/helpers';
 
 import FeedHeader from '../components/FeedHeader';
 import FeedItem from '../components/FeedItem';
+import JobFeedItem from '../components/JobFeedItem';
 import { FeedStackParamList } from '../FeedStackNavigator';
 
 const FeedScreen = () => {
@@ -33,19 +34,32 @@ const FeedScreen = () => {
     });
   };
 
-  const renderItem: ListRenderItem<number> = ({ item }) => (
-    <Pressable
-      onPress={() => navigate('FeedDetails')}
-      style={{
-        width: wW,
-        height: Platform.select({
-          ios: wH - units.vh * 8,
-          android: height - top - units.vh * 8,
-        }),
-      }}>
-      <FeedItem image={item.file} />
-    </Pressable>
-  );
+  const renderItem: ListRenderItem<object> = ({ item }) =>
+    item?.type === 'job' ? (
+      <Pressable
+        onPress={() => navigate('FeedDetails')}
+        style={{
+          width: wW,
+          height: Platform.select({
+            ios: wH - units.vh * 8,
+            android: height - top - units.vh * 8,
+          }),
+        }}>
+        <JobFeedItem type={item.jobType} image="https://i.pravatar.cc/980?img=33" />
+      </Pressable>
+    ) : (
+      <Pressable
+        onPress={() => navigate('FeedDetails')}
+        style={{
+          width: wW,
+          height: Platform.select({
+            ios: wH - units.vh * 8,
+            android: height - top - units.vh * 8,
+          }),
+        }}>
+        <FeedItem image={item.file} />
+      </Pressable>
+    );
 
   return (
     <>
@@ -56,7 +70,13 @@ const FeedScreen = () => {
         </View>
       )}
       <FlatList
-        data={data || []}
+        data={
+          [
+            { id: 1, type: 'job', jobType: 'private' },
+            { id: 2, type: 'job', jobType: 'community' },
+            ...(data || []),
+          ] || []
+        }
         className="bg-black"
         renderItem={renderItem}
         windowSize={Platform.select({

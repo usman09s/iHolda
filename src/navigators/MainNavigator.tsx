@@ -10,6 +10,7 @@ import AgentPlasticStackNavigator from 'modules/agentPlastic/AgentPlasticNavigat
 import AuthStackNavigator from 'modules/auth/AuthStackNavigator';
 import FeedDetailsScreen from 'modules/feed/screens/FeedDetailScreen';
 import FeedMomentsSearchScreen from 'modules/feed/screens/FeedMomentsSearchScreen';
+import JobApplyingStackNavigator from 'modules/jobApplying/JobApplyingStackNavigator';
 import JobPostingStackNavigator from 'modules/jobposting/JobPostingStackNavigator';
 import MomentsStackNavigator from 'modules/moments/MomentsStackNavigator';
 import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
@@ -88,6 +89,11 @@ export default function MainNavigator() {
           name="JobPostingStack"
           options={commonOptions}
           component={JobPostingStackNavigator}
+        />
+        <MainStack.Screen
+          name="JopApplyingStack"
+          options={commonOptions}
+          component={JobApplyingStackNavigator}
         />
       </MainStack.Navigator>
     </NavigationContainer>

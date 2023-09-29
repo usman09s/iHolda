@@ -44,7 +44,9 @@ export const userAppInit = () => {
 
     if (result) {
       await refetch()
-        .then(() => setStatus('SUCCESS'))
+        .then(response => {
+          setStatus(response.data ? 'SUCCESS' : 'FAILED');
+        })
         .catch(() => setStatus('FAILED'));
     } else {
       setStatus('FAILED');
