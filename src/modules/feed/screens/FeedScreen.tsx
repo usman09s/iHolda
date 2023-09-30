@@ -23,7 +23,7 @@ import { FeedStackParamList } from '../FeedStackNavigator';
 
 const FeedScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const { navigate } = useAppNavigation<NavigationProp<FeedStackParamList>>();
+  const {} = useAppNavigation<NavigationProp<FeedStackParamList>>();
   const { data, refetch, isLoading } = useQuery('moments', Api.getMoments);
   const { top } = useSafeAreaInsets();
 
@@ -37,7 +37,6 @@ const FeedScreen = () => {
   const renderItem: ListRenderItem<object> = ({ item }) =>
     item?.type === 'job' ? (
       <Pressable
-        onPress={() => navigate('FeedDetails')}
         style={{
           width: wW,
           height: Platform.select({
@@ -49,7 +48,6 @@ const FeedScreen = () => {
       </Pressable>
     ) : (
       <Pressable
-        onPress={() => navigate('FeedDetails')}
         style={{
           width: wW,
           height: Platform.select({

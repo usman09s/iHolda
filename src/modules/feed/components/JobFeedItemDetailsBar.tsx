@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { LocationMarker } from 'components/Images';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
+import { units } from 'utils/helpers';
 
 type JobFeedItemDetailsBarProps = {
   caption: string;
@@ -52,7 +53,9 @@ const JobFeedItemDetailsBar = ({
           <Text className={text({ type: 'b18', class: 'text-green-400' })}>5000Cfa</Text>
         </View>
       </View>
-      {children}
+      <View style={{ paddingBottom: units.vh * 2 }} className="w-full">
+        {children}
+      </View>
     </LinearGradient>
   </View>
 );
