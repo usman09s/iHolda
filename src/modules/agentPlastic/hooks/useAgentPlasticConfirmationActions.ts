@@ -45,7 +45,7 @@ export const useAgentPlasticConfirmationActions = () => {
         plasticId,
         sizes: plastics.map(plastic => ({
           quantity: plastic.quantity,
-          size: plastic.size === -1 ? 1 : plastic.size === 1.5 ? 4 : 5,
+          size: plastic.size,
         })),
       });
 
