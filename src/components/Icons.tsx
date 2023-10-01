@@ -769,6 +769,17 @@ const GreenHeartIcon = (props: SvgProps) => (
     />
   </Svg>
 );
+
+const TinyShareIcon = (props: SvgProps) => (
+  <Svg width={23} height={24} fill="none" {...props}>
+    <G fill="#fff" filter="url(#a)">
+      <Path d="M15.249 11.127a.645.645 0 0 1-.055.137c-.072.13-.22.192-.349.266-1.225.704-4.404 1.348-6.298 4.571L7.071 18.72c-.546 1.227-2.307 1.17-2.772-.09l-.133-.36c-1.55-4.198 2.824-8.109 9.141-10.442.17-.063.34-.123.51-.182.892-.305 1.779.386 1.78 1.328.001.665-.166 1.513-.348 2.152Z" />
+      <Path d="M19.251 7.73a.417.417 0 0 1 .22.587l-4.057 7.612a.417.417 0 0 1-.758-.05L10.644 5.22a.417.417 0 0 1 .537-.536l8.07 3.048Z" />
+    </G>
+    <Defs></Defs>
+  </Svg>
+);
+
 export default {
   StarIcon,
   TickIcon,
@@ -797,6 +808,7 @@ export default {
   NineDotsIcon,
   BookmarkIcon,
   HalfStarIcon,
+  TinyShareIcon,
   InstagramIcon,
   TakePhotoIcon,
   ArrowLeftIcon,

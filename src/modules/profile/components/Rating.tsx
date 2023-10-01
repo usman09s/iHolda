@@ -3,7 +3,7 @@ import Icons from 'components/Icons';
 import { text } from 'theme/text';
 import { getStars } from 'utils/helpers';
 
-const Rating = ({ point }: { point: number }) => {
+const Rating = ({ point, customTextType }: { point: number; customTextType?: string }) => {
   const { starCount, halfStarCount } = getStars(point);
 
   return (
@@ -14,7 +14,9 @@ const Rating = ({ point }: { point: number }) => {
       {halfStarCount.map((_, index) => (
         <Icons.HalfStarIcon key={`${index}-halfStarIcon`} />
       ))}
-      <Text className={text({ type: 'r10', class: 'text-black-o-50 ml-1.5' })}>{point}</Text>
+      <Text className={text({ type: customTextType || 'r10', class: 'text-black-o-50 ml-1.5' })}>
+        {point}
+      </Text>
     </View>
   );
 };

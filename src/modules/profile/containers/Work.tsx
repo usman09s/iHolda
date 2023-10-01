@@ -1,14 +1,19 @@
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Pressable, Text, View } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { userCommonInformationSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 import { height } from 'utils/helpers';
 
 import JobItem from '../components/JobItem';
 import JobPostAvatarGroup from '../components/JobPostAvatarGroup';
-import PastJobItem from '../components/PastJobItem';
+import MyServices from '../components/MyServices';
+import PastJobItem from '../components/profession/PastJobItem';
+import UserCommunityStatistic from '../components/UserCommunityStatistic';
 import { ProfileStackParamList } from '../ProfileStackNavigator';
 
 const Work = () => {
+  const { fullName } = useSelector(userCommonInformationSelector);
   const { navigate } = useNavigation<NavigationProp<ProfileStackParamList>>();
 
   return (
@@ -34,11 +39,21 @@ const Work = () => {
           )}
         />
       </View>
+      <View className="flex-row justify-between bg-gray-300 items-center py-4 mt-7">
+        <Text className={text({ type: 'r14', class: 'px-6 ' })}>Your public job profile</Text>
+        <Text className={text({ type: 'b16', class: 'px-6 underline' })}>Edit</Text>
+      </View>
+      <UserCommunityStatistic fullName={fullName} />
+      <MyServices />
       <View className="mt-8">
         <Text className={text({ type: 'r16', class: 'mb-3 px-6 ' })}>Past jobs</Text>
         <FlatList
           data={[1, 2, 3, 4, 5]}
-          renderItem={() => <PastJobItem />}
+          renderItem={() => (
+            <Pressable onPress={() => navigate('CompletedJobDetails')}>
+              <PastJobItem />
+            </Pressable>
+          )}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingLeft: 24 }}
         />

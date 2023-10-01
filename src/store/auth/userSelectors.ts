@@ -24,6 +24,10 @@ export const userCommonInformationSelector = createSelector(userSelector, user =
   phone: user.phone || '',
   avatar: user.userImage || '',
   username: user.username || '',
+  fullName:
+    `${user.user?.user?.first_name || ''} ${user.user?.user?.last_name || ''}`.trim() ||
+    user.username ||
+    '',
   invitedBy: user.user?.invited_by?.user?.username,
   joinedMonthAndYear: getMonthAndYear(user.user?.created_at || ''),
 }));

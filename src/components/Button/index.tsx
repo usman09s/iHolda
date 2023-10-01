@@ -10,6 +10,7 @@ type Props = {
   onPress?: () => void;
   customContainer?: string;
   customTextClass?: string;
+  rightIcon?: React.ReactNode;
   type?: 'borderedSolid' | 'solid' | 'borderedTransparent' | 'ghost';
 };
 
@@ -17,6 +18,7 @@ const Button = ({
   title,
   hitSlop,
   disabled,
+  rightIcon,
   isLoading,
   type = 'solid',
   customTextClass,
@@ -27,12 +29,13 @@ const Button = ({
     onPress={onPress}
     hitSlop={hitSlop}
     disabled={disabled}
-    className={button({ type, class: customContainer, disabled })}>
+    className={button({ type, class: `${customContainer} flex-row`, disabled })}>
     {isLoading ? (
       <ActivityIndicator color={colors.white} />
     ) : (
       <Text className={button({ title: type, class: customTextClass })}>{title}</Text>
     )}
+    {rightIcon && rightIcon}
   </Pressable>
 );
 

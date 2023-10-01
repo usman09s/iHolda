@@ -37,13 +37,13 @@ const PhoneConfirmationModal = ({
             title="CHANGE"
             type="ghost"
             onPress={onCloseModal}
-            customTextClass={text({ type: 'm2o' })}
+            customTextClass={text({ type: 'm20' })}
           />
           <Button
             title="YES"
             type="ghost"
             onPress={onPressYes}
-            customTextClass={text({ type: 'm2o' })}
+            customTextClass={text({ type: 'm20' })}
           />
         </View>
       </Animated.View>

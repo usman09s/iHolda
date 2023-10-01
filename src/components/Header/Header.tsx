@@ -50,7 +50,7 @@ const Header = ({
         )}
       </View>
       <View className="justify-center items-center left-0 right-0 top-0 bottom-0 absolute">
-        {title && !centerComponent && <Text className={text({ type: 'm2o' })}>{title}</Text>}
+        {title && !centerComponent && <Text className={text({ type: 'm20' })}>{title}</Text>}
       </View>
       {!!centerComponent && centerComponent}
       <View className="flex-row z-20">

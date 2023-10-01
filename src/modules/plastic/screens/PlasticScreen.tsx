@@ -71,7 +71,7 @@ const PlasticScreen = () => {
         />
       </View>
       <View className="px-7 " style={{ marginTop: units.vh * 2 }}>
-        <Text className={text({ type: 'm2o', class: 'text-center' })}>Total = {totalPlastic}</Text>
+        <Text className={text({ type: 'm20', class: 'text-center' })}>Total = {totalPlastic}</Text>
         <Button
           title="Continue"
           customContainer="my-4"

@@ -16,10 +16,11 @@ export const text = cva(['items-center justify-center'], {
       b15: 'text-15 font-Bold',
       b12: 'text-12 font-Bold',
       b13: 'text-13 font-Bold',
+      b14: 'text-14 font-Bold',
       b10: 'text-10 font-Bold',
       b9: 'text-[9px] font-Bold',
 
-      m2o: 'text-20 font-Medium',
+      m20: 'text-20 font-Medium',
       m28: 'text-[28px] font-Medium',
       m18: 'text-18 font-Medium',
       m16: 'text-16 font-Medium',

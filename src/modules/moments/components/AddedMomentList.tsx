@@ -35,7 +35,7 @@ const AddedMomentList = ({ moments, selectedMoment, listHeight }: Props) => {
         />
       )}
       <View className="absolute h-full w-full justify-center items-center bg-black-o-10">
-        <Text className={text({ type: 'm2o', class: 'text-white' })}>{index + 1}</Text>
+        <Text className={text({ type: 'm20', class: 'text-white' })}>{index + 1}</Text>
       </View>
     </Pressable>
   );
