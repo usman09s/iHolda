@@ -8,10 +8,10 @@ import { userCommonInformationSelector } from 'store/auth/userSelectors';
 import ProfileHeader from '../components/ProfileHeader';
 import Community from '../containers/Community';
 import Profile from '../containers/Profile';
-import Wallet from '../containers/Wallet';
+import Shared from '../containers/Shared';
 import Work from '../containers/Work';
 
-const ProfileScreen = () => {
+const OtherUserProfileScreen = () => {
   const activeY = useSharedValue(0);
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
@@ -28,7 +28,7 @@ const ProfileScreen = () => {
   });
 
   const RenderedComponent =
-    [<Profile key={0} />, <Community key={1} />, <Work key={2} />, <Wallet key={3} />]?.[index] ||
+    [<Profile key={0} />, <Community key={1} />, <Work key={2} />, <Shared key={4} />]?.[index] ||
     [];
 
   return (
@@ -45,13 +45,13 @@ const ProfileScreen = () => {
         ListHeaderComponent={
           <ProfileHeader
             top={top}
-            isCurrentUser
             avatar={avatar}
             activeY={activeY}
             username={username}
             activeIndex={index}
             key={'profileHeader'}
             invitedBy={invitedBy}
+            isCurrentUser={false}
             hederThumbnail={avatar}
             monthAndYear={joinedMonthAndYear}
             onPressTabItem={onPressTabItem}
@@ -62,4 +62,4 @@ const ProfileScreen = () => {
   );
 };
 
-export default ProfileScreen;
+export default OtherUserProfileScreen;

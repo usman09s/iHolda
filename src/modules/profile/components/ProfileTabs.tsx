@@ -5,6 +5,7 @@ import { units, width } from 'utils/helpers';
 
 type Props = {
   activeIndex: number;
+  isCurrentUser: boolean;
   onPressTabItem: (value: number) => () => void;
 };
 
@@ -17,7 +18,7 @@ type ProfileTabITemProps = {
 const ProfileTabItem = ({ title, isActive, onPressTabItem }: ProfileTabITemProps) => (
   <Pressable
     style={{
-      width: width / 5,
+      width: width / 4,
       borderBottomWidth: isActive ? 1 : 0,
       borderBottomColor: colors.saffron,
     }}
@@ -29,7 +30,7 @@ const ProfileTabItem = ({ title, isActive, onPressTabItem }: ProfileTabITemProps
   </Pressable>
 );
 
-const ProfileTabs = ({ activeIndex, onPressTabItem }: Props) => (
+const ProfileTabs = ({ activeIndex, onPressTabItem, isCurrentUser }: Props) => (
   <View
     className="flex-row  border-b-b1 bg-white border-black-o-10  w-full"
     style={{ height: units.vh * 8 }}>
@@ -44,16 +45,19 @@ const ProfileTabs = ({ activeIndex, onPressTabItem }: Props) => (
       onPressTabItem={onPressTabItem(1)}
     />
     <ProfileTabItem title="Work" onPressTabItem={onPressTabItem(2)} isActive={activeIndex === 2} />
-    <ProfileTabItem
-      title="Wallet"
-      onPressTabItem={onPressTabItem(3)}
-      isActive={activeIndex === 3}
-    />
-    <ProfileTabItem
-      title="Shared"
-      onPressTabItem={onPressTabItem(4)}
-      isActive={activeIndex === 4}
-    />
+    {isCurrentUser ? (
+      <ProfileTabItem
+        title="Wallet"
+        onPressTabItem={onPressTabItem(3)}
+        isActive={activeIndex === 3}
+      />
+    ) : (
+      <ProfileTabItem
+        title="Shared"
+        onPressTabItem={onPressTabItem(4)}
+        isActive={activeIndex === 4}
+      />
+    )}
   </View>
 );
 

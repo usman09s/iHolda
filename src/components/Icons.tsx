@@ -560,6 +560,27 @@ const CaretRightIcon = (props: SvgProps) => (
   </Svg>
 );
 
+const StarIcon14 = (props: SvgProps) => (
+  <Svg width={15} height={14} fill="none" {...props}>
+    <Path
+      fill="#FFC400"
+      stroke="#FFC400"
+      strokeWidth={0.692}
+      d="M9.978 4.892 7.9 1.43 5.823 4.892l-4.154.346 2.77 3.116-.347 4.5L7.9 10.779l3.809 2.077-.347-4.5 2.77-3.117-4.154-.346Z"
+    />
+  </Svg>
+);
+const HalfStarIcon14 = (props: SvgProps) => (
+  <Svg width={9} height={14} fill="none" {...props}>
+    <Path
+      fill="#FFC400"
+      stroke="#FFC400"
+      strokeWidth={0.692}
+      d="M7.678 4.892V1.43L5.6 4.892l-4.155.346 2.77 3.116-.346 4.5 3.808-2.076.064-.378-.064-1.182V4.892Z"
+    />
+  </Svg>
+);
+
 const StarIcon = (props: SvgProps) => (
   <Svg width={12} height={12} fill="none" {...props}>
     <Path
@@ -795,6 +816,7 @@ export default {
   TiktokIcon,
   SearchIcon,
   QrCodeIcon,
+  StarIcon14,
   CommentIcon,
   PlasticIcon,
   WarningIcon,
@@ -814,6 +836,7 @@ export default {
   ArrowLeftIcon,
   CaretDownIcon,
   MagnitudeIcon,
+  HalfStarIcon14,
   GreenHeartIcon,
   CaretRightIcon,
   AvatarEditIcon,

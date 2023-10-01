@@ -16,6 +16,7 @@ type Props = {
   activeIndex: number;
   monthAndYear: string;
   hederThumbnail: string;
+  isCurrentUser: boolean;
   activeY: SharedValue<number>;
   onPressTabItem: (value: number) => () => void;
 };
@@ -28,6 +29,7 @@ const ProfileHeader = ({
   invitedBy,
   activeIndex,
   monthAndYear,
+  isCurrentUser,
   hederThumbnail,
   onPressTabItem,
 }: Props) => {
@@ -54,7 +56,7 @@ const ProfileHeader = ({
     <>
       <Animated.View
         style={[{ height: headerImageHeight }, animatedHeaderStyle]}
-        className={'z-30 flex-row overflow-hidden'}>
+        className={'z-30 flex-row overflow-hidden w-full'}>
         <Image className="w-full h-full absolute bg-black" source={{ uri: hederThumbnail }} />
         <View className=" h-full justify-end px-6" style={{ paddingBottom: units.vh * 2 }}>
           <View className="flex-row">
@@ -66,12 +68,22 @@ const ProfileHeader = ({
             <Text className={text({ type: 'b13' })}>{invitedBy}</Text>
           </Text>
         </View>
-        <ScrolledHeaderRight activeY={activeY} top={top} />
+        <ScrolledHeaderRight activeY={activeY} top={top} isCurrentUser={isCurrentUser} />
       </Animated.View>
       <View className="bg-white">
-        <ScrolledHeader top={top} username={username} activeY={activeY} avatar={avatar} />
+        <ScrolledHeader
+          top={top}
+          avatar={avatar}
+          activeY={activeY}
+          username={username}
+          isCurrentUser={isCurrentUser}
+        />
         <Animated.View style={animatedTabsStyle}>
-          <ProfileTabs activeIndex={activeIndex} onPressTabItem={onPressTabItem} />
+          <ProfileTabs
+            activeIndex={activeIndex}
+            isCurrentUser={isCurrentUser}
+            onPressTabItem={onPressTabItem}
+          />
         </Animated.View>
       </View>
     </>

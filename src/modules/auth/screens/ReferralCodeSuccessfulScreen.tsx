@@ -38,12 +38,12 @@ const ReferralCodeSuccessfulScreen = () => {
                 />
               </View>
               <View className="px-7 py-2 rounded-full bg-yellow-300 ml-4">
-                <Text className={text({ type: 'b2o' })}>500cfa</Text>
+                <Text className={text({ type: 'b20' })}>500cfa</Text>
               </View>
             </View>
             <View className="mb-5 flex-row items-center justify-end">
               <View className="px-10 py-2 rounded-full bg-yellow-300 mr-4">
-                <Text className={text({ type: 'b2o' })}>500cfa</Text>
+                <Text className={text({ type: 'b20' })}>500cfa</Text>
               </View>
               <View className="overflow-hidden rounded-full border-4 border-white">
                 <Image source={{ uri: userImage }} className="w-14 h-14" />

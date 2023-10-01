@@ -18,7 +18,9 @@ const Work = () => {
 
   return (
     <View className="flex-1 bg-white pt-6 " style={{ minHeight: height + 200 }}>
-      <View className="bg-minionYellow py-3 p-6 rounded-3xl mx-6">
+      <Pressable
+        className="bg-minionYellow py-3 p-6 rounded-3xl mx-6"
+        onPress={() => navigate('JobDashboardStack', { screen: 'JobDashboard' })}>
         <View>
           <Text className={text({ type: 'b15' })}>New job requests</Text>
           <Text className={text({ type: 'r12', class: 'mt-1 text-black-o-50' })}>
@@ -26,7 +28,18 @@ const Work = () => {
           </Text>
         </View>
         <JobPostAvatarGroup />
-      </View>
+      </Pressable>
+      <Pressable
+        className="bg-lightBlue py-3 p-6 rounded-3xl mx-6 mt-6"
+        onPress={() => navigate('JobDashboardStack', { screen: 'PostedJob' })}>
+        <View>
+          <Text className={text({ type: 'b15' })}>My Posted jobs</Text>
+          <Text className={text({ type: 'r12', class: 'mt-1 text-black-o-50' })}>
+            Click to view all new jobs
+          </Text>
+        </View>
+        <JobPostAvatarGroup />
+      </Pressable>
       <View className="mt-8">
         <Text className={text({ type: 'r16', class: 'mb-3 px-6 ' })}>Current jobs</Text>
         <FlatList

@@ -8,10 +8,11 @@ type Props = {
   top: number;
   avatar: string;
   username: string;
+  isCurrentUser: boolean;
   activeY: SharedValue<number>;
 };
 
-const ScrolledHeader = ({ top, avatar, activeY, username }: Props) => {
+const ScrolledHeader = ({ top, avatar, activeY, username, isCurrentUser }: Props) => {
   const headerHeight = units.vh * 8;
   const animatedStyle = useAnimatedStyle(() => ({
     top: interpolate(
@@ -40,8 +41,8 @@ const ScrolledHeader = ({ top, avatar, activeY, username }: Props) => {
       </View>
       <View>
         <Button
-          title="Settings"
           type="solid"
+          title={isCurrentUser ? 'Settings' : 'Follow'}
           customContainer="rounded-md self-center py-1 px-3 bg-white border-b1 border-black-o-20"
           customTextClass={text({ type: 'r12', class: 'text-black h-4' })}
         />

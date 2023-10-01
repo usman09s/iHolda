@@ -3,15 +3,21 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
+import JobDashboardStackNavigator from 'modules/jobDashboard/JobDashboardStackNavigator';
 
 import CompletedJobDetailsScreen from './screens/CompletedJobDetailsScreen';
 import MainProfessionProfileScreen from './screens/MainProfessionProfile';
+import OtherUserProfileScreen from './screens/OtherUserProfileScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SideProfessionProfileScreen from './screens/SideProfessionProfile';
 
 export type ProfileStackParamList = {
   Profile: undefined;
+  OtherUserProfile: undefined;
   AgentPlasticStack: undefined;
+  JobDashboardStack: {
+    screen?: 'JobDashboard' | 'PostedJob';
+  };
   CompletedJobDetails: undefined;
   MainProfessionProfile: undefined;
   SideProfessionProfile: undefined;
@@ -33,6 +39,11 @@ export default function ProfileStackNavigator() {
       <ProfileStack.Screen options={commonOptions} name="Profile" component={ProfileScreen} />
       <ProfileStack.Screen
         options={commonOptions}
+        name="OtherUserProfile"
+        component={OtherUserProfileScreen}
+      />
+      <ProfileStack.Screen
+        options={commonOptions}
         name="MainProfessionProfile"
         component={MainProfessionProfileScreen}
       />
@@ -45,6 +56,11 @@ export default function ProfileStackNavigator() {
         options={commonOptions}
         name="CompletedJobDetails"
         component={CompletedJobDetailsScreen}
+      />
+      <ProfileStack.Screen
+        options={commonOptions}
+        name="JobDashboardStack"
+        component={JobDashboardStackNavigator}
       />
     </ProfileStack.Navigator>
   );
