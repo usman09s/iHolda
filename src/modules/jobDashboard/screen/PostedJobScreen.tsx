@@ -21,11 +21,17 @@ const PostedJobScreen = () => {
   const goToJobDetails = () => {
     if (index === 2) {
       navigate('ProfileStack', { screen: 'CompletedJobDetails' });
+
+      return;
+    }
+
+    if (index === 1) {
+      navigate('AssignedJobStack');
     }
   };
 
-  const onPageScroll = (e: PagerViewOnPageScrollEvent) => {
-    setIndex(e.nativeEvent.position);
+  const onPageScroll = (event: PagerViewOnPageScrollEvent) => {
+    setIndex(event.nativeEvent.position);
   };
 
   return (
@@ -57,7 +63,7 @@ const PostedJobScreen = () => {
           data={[1, 2, 3, 4]}
           renderItem={({}) => (
             <Pressable onPress={goToJobDetails} className="px-4">
-              <PostedJobItem type={'inProgress'} />
+              <PostedJobItem type={'inProgress'} onPressButton={goToJobDetails} />
             </Pressable>
           )}
         />
@@ -66,7 +72,7 @@ const PostedJobScreen = () => {
           data={[1, 2, 3, 4]}
           renderItem={({}) => (
             <Pressable onPress={goToJobDetails} className="px-4">
-              <PostedJobItem type={'completed'} />
+              <PostedJobItem type={'completed'} onPressButton={goToJobDetails} />
             </Pressable>
           )}
         />

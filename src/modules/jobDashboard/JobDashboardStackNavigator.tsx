@@ -12,6 +12,7 @@ export type JobDashboardStackParamList = {
   JobDashboard: undefined;
   PostedJob: undefined;
   JobApplications: undefined;
+  AssignedJobStack: undefined;
   ProfileStack: {
     screen?: 'CompletedJobDetails' | 'OtherUserProfile';
   };

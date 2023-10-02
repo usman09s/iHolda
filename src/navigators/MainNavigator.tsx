@@ -11,6 +11,7 @@ import AuthStackNavigator from 'modules/auth/AuthStackNavigator';
 import FeedDetailsScreen from 'modules/feed/screens/FeedDetailScreen';
 import FeedMomentsSearchScreen from 'modules/feed/screens/FeedMomentsSearchScreen';
 import JobApplyingStackNavigator from 'modules/jobApplying/JobApplyingStackNavigator';
+import AssignedJobStackNavigator from 'modules/jobDashboard/AssignedJobStackNavigator';
 import JobPostingStackNavigator from 'modules/jobposting/JobPostingStackNavigator';
 import MomentsStackNavigator from 'modules/moments/MomentsStackNavigator';
 import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
@@ -77,8 +78,8 @@ export default function MainNavigator() {
         />
         <MainStack.Screen
           name="FeedDetails"
-          options={{ ...commonOptions, animation: 'slide_from_bottom' }}
           component={FeedDetailsScreen}
+          options={{ ...commonOptions, animation: 'slide_from_bottom' }}
         />
         <MainStack.Screen
           name="FeedMomentsSearch"
@@ -94,6 +95,11 @@ export default function MainNavigator() {
           name="JopApplyingStack"
           options={commonOptions}
           component={JobApplyingStackNavigator}
+        />
+        <MainStack.Screen
+          name="AssignedJobStack"
+          options={commonOptions}
+          component={AssignedJobStackNavigator}
         />
       </MainStack.Navigator>
     </NavigationContainer>

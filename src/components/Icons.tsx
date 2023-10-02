@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import Svg, { Circle, ClipPath, Defs, G, Path, Rect, SvgProps } from 'react-native-svg';
+import Svg, { Circle, ClipPath, Defs, Ellipse, G, Path, Rect, SvgProps } from 'react-native-svg';
 import colors from 'theme/colors';
 
 import ProfileAvatar from './BottomNavigation/ProfileAvatar';
@@ -801,7 +801,53 @@ const TinyShareIcon = (props: SvgProps) => (
   </Svg>
 );
 
+const PlusIcon = (props: SvgProps) => (
+  <Svg width={28} height={28} fill="none" {...props}>
+    <Path stroke="#000" strokeOpacity={0.6} strokeWidth={4.098} d="M13.659 0v14m0 14V14m0 0H28 0" />
+  </Svg>
+);
+
+const RecordAudioIcon = (props: SvgProps) => (
+  <Svg width={32} height={32} fill="none" {...props}>
+    <Circle cx={16} cy={16} r={16} fill="#fff" />
+    <Circle cx={16} cy={16} r={15.5} stroke="#000" strokeOpacity={0.6} />
+    <Path
+      fill="#000"
+      fillOpacity={0.6}
+      d="M16 18.369c.811 0 1.59-.303 2.164-.843.575-.54.897-1.272.897-2.035v-4.317c0-.763-.322-1.495-.897-2.035A3.164 3.164 0 0 0 16 8.296c-.812 0-1.59.303-2.165.843a2.793 2.793 0 0 0-.896 2.035v4.317c0 .763.322 1.495.896 2.035.575.54 1.353.843 2.165.843Zm-1.531-7.195c0-.382.16-.748.448-1.018.287-.27.676-.421 1.082-.421s.796.152 1.083.421c.287.27.448.636.448 1.018v4.317c0 .382-.161.748-.448 1.018-.287.27-.677.421-1.083.421-.406 0-.795-.152-1.082-.421a1.397 1.397 0 0 1-.448-1.018v-4.317Zm7.654 4.317c0-.19-.08-.374-.224-.509a.79.79 0 0 0-.541-.21.791.791 0 0 0-.542.21.698.698 0 0 0-.224.509 4.19 4.19 0 0 1-1.345 3.053 4.746 4.746 0 0 1-3.248 1.264 4.746 4.746 0 0 1-3.247-1.264c-.861-.81-1.345-1.908-1.345-3.053 0-.19-.08-.374-.224-.509a.791.791 0 0 0-.542-.21.79.79 0 0 0-.54.21.698.698 0 0 0-.225.509 5.562 5.562 0 0 0 1.533 3.804c.986 1.05 2.346 1.726 3.825 1.902v1.489h-1.53a.79.79 0 0 0-.542.21.698.698 0 0 0-.224.51c0 .19.08.373.224.508a.79.79 0 0 0 .541.211h4.593a.791.791 0 0 0 .541-.21.698.698 0 0 0 .224-.51c0-.19-.08-.373-.224-.508a.79.79 0 0 0-.541-.211h-1.531v-1.49c1.479-.175 2.839-.85 3.825-1.901a5.562 5.562 0 0 0 1.533-3.804Z"
+    />
+    <Ellipse cx={15.999} cy={13.234} fill="#fff" rx={2.173} ry={4.148} />
+  </Svg>
+);
+const AddImageIcon = (props: SvgProps) => (
+  <Svg width={26} height={26} fill="none" {...props}>
+    <Path
+      fill="#C4C4C4"
+      d="M21.501 10.118a1.265 1.265 0 0 0-1.265 1.265v4.275l-1.872-1.872a3.529 3.529 0 0 0-4.97 0l-.886.898-3.136-3.15a3.528 3.528 0 0 0-4.97 0L2.53 13.42V6.324a1.265 1.265 0 0 1 1.264-1.265h10.118a1.265 1.265 0 0 0 0-2.53H3.794A3.794 3.794 0 0 0 0 6.325v15.455a3.529 3.529 0 0 0 3.516 3.516H19.25a3.639 3.639 0 0 0 1.012-.152 3.465 3.465 0 0 0 2.53-3.351v-10.41a1.264 1.264 0 0 0-1.291-1.264ZM3.794 22.766A1.265 1.265 0 0 1 2.53 21.5v-4.515l3.655-3.655a.987.987 0 0 1 1.39 0l9.449 9.435H3.794ZM20.236 21.5a1.265 1.265 0 0 1-.227.683l-5.717-5.742.898-.885a.975.975 0 0 1 1.391 0l3.655 3.68v2.264ZM24.03 2.53h-1.264V1.265a1.265 1.265 0 0 0-2.53 0V2.53h-1.265a1.265 1.265 0 1 0 0 2.53h1.265v1.264a1.265 1.265 0 0 0 2.53 0V5.059h1.265a1.265 1.265 0 1 0 0-2.53Z"
+    />
+  </Svg>
+);
+
+const RatingStarIcon = (props: SvgProps) => (
+  <Svg width={36} height={33} fill="none" {...props}>
+    <Path
+      fill={props.color || '#FFC400'}
+      d="M23.3 10.875 17.973 2l-5.324 8.875L2 11.762l7.1 7.987-.888 11.537 9.762-5.325 9.762 5.325-.887-11.537 7.1-7.987-10.65-.887Z"
+    />
+    <Path
+      stroke="#000"
+      strokeWidth={1.775}
+      d="M23.3 10.875 17.973 2l-5.324 8.875L2 11.762l7.1 7.987-.888 11.537 9.762-5.325 9.762 5.325-.887-11.537 7.1-7.987-10.65-.887Z"
+    />
+    <Path
+      stroke="#000"
+      strokeWidth={1.775}
+      d="M23.3 10.875 17.973 2l-5.324 8.875L2 11.762l7.1 7.987-.888 11.537 9.762-5.325 9.762 5.325-.887-11.537 7.1-7.987-10.65-.887Z"
+    />
+  </Svg>
+);
 export default {
+  PlusIcon,
   StarIcon,
   TickIcon,
   CopyIcon,
@@ -822,6 +868,7 @@ export default {
   WarningIcon,
   WebsiteIcon,
   CashOutIcon,
+  AddImageIcon,
   CalendarIcon,
   DurationIcon,
   TinyTickIcon,
@@ -836,11 +883,13 @@ export default {
   ArrowLeftIcon,
   CaretDownIcon,
   MagnitudeIcon,
+  RatingStarIcon,
   HalfStarIcon14,
   GreenHeartIcon,
   CaretRightIcon,
   AvatarEditIcon,
   ScanQrCodeIcon,
+  RecordAudioIcon,
   DeleteCrossIcon,
   PlasticLineIcon,
   NoOfWorkersIcon,
