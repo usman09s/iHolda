@@ -40,7 +40,7 @@ const SignUpScreen = () => {
     },
     onError: err => {
       const parsedError = JSON.parse(err?.message);
-      if (parsedError[1].username || parsedError[1].phone === 'Already exists') {
+      if (parsedError?.info?.status === 307 && parsedError?.info?.screen === 'login') {
         navigate('SignIn', { phone: `${selectedCountry.phone}${phoneNumber}` });
       }
     },
@@ -61,7 +61,7 @@ const SignUpScreen = () => {
   return (
     <View className="pt-10 bg-blue flex-1 px-7 justify-center">
       <KeyboardAvoidingView behavior="position">
-        <Text className={text({ type: 'b44', class: 'text-white mb-20' })}>
+        <Text className={text({ type: 'b44', class: 'text-white mb-16' })}>
           Enter your{'\n'}Phone Number
         </Text>
         <PhoneInput
