@@ -11,8 +11,12 @@ import MomentsMoodScreen from './screens/MomentsMoodScreen';
 import MomentsQrScanScreen from './screens/MomentsQrScanScreen';
 import MomentsSelfieScreen from './screens/MomentsSelfieScreen';
 import MomentsUploadScreen from './screens/MomentsUploadScreen';
+import PostCameraScreen from './screens/PostCameraScreen';
+import PostPreviewScreen from './screens/PostPreviewScreen';
 
 export type MomentsStackParamList = {
+  PostCamera: undefined;
+  PostPreview: undefined;
   MomentsMood: undefined;
   MomentsMatch: undefined;
   MomentsQrScan: undefined;
@@ -69,6 +73,12 @@ export default function MomentsStackNavigator() {
         name="MomentDetails"
         options={commonOptions}
         component={MomentDetailsScreen}
+      />
+      <MomentsStack.Screen name="PostCamera" options={commonOptions} component={PostCameraScreen} />
+      <MomentsStack.Screen
+        name="PostPreview"
+        options={commonOptions}
+        component={PostPreviewScreen}
       />
     </MomentsStack.Navigator>
   );
