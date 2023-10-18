@@ -8,18 +8,20 @@ import { getHitSlop } from 'utils/helpers';
 type Props = {
   caption: string;
   sectionHeight: number;
+  onPressQuiz: () => void;
   onPressNext: () => void;
   selectedMoment?: MomentType;
   onSelectedMoment: () => void;
-  mediaType: 'VIDEO' | 'PHOTO';
+  mediaType: 'VIDEO' | 'PHOTO' | 'QUIZ';
   onChangeCaption: (value: string) => void;
-  onPressMediaType: (value: 'VIDEO' | 'PHOTO') => void;
+  onPressMediaType: (value: 'VIDEO' | 'PHOTO' | 'QUIZ') => void;
 };
 
 const MomentCameraBottom = ({
   caption,
   mediaType,
   onPressNext,
+  onPressQuiz,
   sectionHeight,
   selectedMoment,
   onChangeCaption,
@@ -56,6 +58,19 @@ const MomentCameraBottom = ({
       <View>
         <View className="flex-row w-full justify-between  mt-5 ">
           <View className="flex-row pl-8">
+            <Pressable
+              onPress={() => {
+                onPressQuiz();
+                onPressMediaType('VIDEO');
+              }}>
+              <Text
+                className={text({
+                  type: 'm18',
+                  class: mediaType === 'QUIZ' ? 'text-blue pr-4' : 'text-white pr-4',
+                })}>
+                Quiz
+              </Text>
+            </Pressable>
             <Pressable onPress={() => onPressMediaType('VIDEO')}>
               <Text
                 className={text({

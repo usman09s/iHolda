@@ -19,7 +19,7 @@ export const useSelfieActions = () => {
   const { bottom, top } = useSafeAreaInsets();
   const [isRecording, setIsRecording] = useState(false);
   const [, setRecordTimeCounter] = useState(5);
-  const [mediaType, setMediaType] = useState<'VIDEO' | 'PHOTO'>('PHOTO');
+  const [mediaType, setMediaType] = useState<'VIDEO' | 'PHOTO' | 'QUIZ'>('PHOTO');
   const { permissionsGranted, permissionLoading } = useHardwarePermission();
 
   const ratio = Platform.select({

@@ -53,7 +53,7 @@ const PostCameraScreen = () => {
           <View className="flex-row justify-between items-center mt-9">
             <View className="items-center">
               <Icons.MicrophoneIcon />
-              <Text className={text({ type: 'm12', class: 'text-white mt-1.5' })}>Upload</Text>
+              <Text className={text({ type: 'm12', class: 'text-white mt-1.5' })}>Record</Text>
             </View>
             <Pressable
               className="bg-white w-20 h-20 rounded-[40px] items-center justify-center"

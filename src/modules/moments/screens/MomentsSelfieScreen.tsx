@@ -93,6 +93,7 @@ const MomentsSelfieScreen = () => {
       <MomentCameraBottom
         caption={caption}
         mediaType={mediaType}
+        onPressQuiz={() => navigate('MomentsQuiz')}
         onPressMediaType={setMediaType}
         selectedMoment={selectedMoment}
         onChangeCaption={onChangeCaption}
