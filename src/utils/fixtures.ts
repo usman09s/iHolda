@@ -22,12 +22,16 @@ export const WelcomeComments = [
   },
 ];
 
+// export const INITIAL_SELECTED_COUNTRY = {
+//   phone: '+237',
+//   name: 'Cameroon',
+//   emoji: '\ud83c\udde8\ud83c\uddf2',
+// };
 export const INITIAL_SELECTED_COUNTRY = {
-  phone: '+237',
+  phone: '+90',
   name: 'Cameroon',
   emoji: '\ud83c\udde8\ud83c\uddf2',
 };
-
 export const CashAndPointsFixture = [
   {
     id: 1,

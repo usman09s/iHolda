@@ -55,17 +55,7 @@ export const userAppInit = () => {
 
   useEffect(() => {
     if (data) {
-      dispatch(
-        setUserInfo({
-          user: {
-            ...data.user,
-            created_at: data.created_at,
-            invited_by: data.invited_by,
-          },
-          username: data.user.username,
-          userImage: data.user_profile_image.image,
-        }),
-      );
+      dispatch(setUserInfo(data.data.user));
     }
   }, [data]);
 

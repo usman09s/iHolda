@@ -40,7 +40,12 @@ const CaretDownIcon = (props: SvgProps) => (
 );
 
 const AvatarEditIcon = (props: SvgProps) => (
-  <Svg width={100} height={107} fill="none" {...props}>
+  <Svg
+    width={props.width || 100}
+    height={props.height || 107}
+    fill="none"
+    viewBox={'0 0 100 107'}
+    {...props}>
     <Path
       fill="#979797"
       d="M57.258 67.921a24.743 24.743 0 1 0-30.598 0 41.238 41.238 0 0 0-25.65 33.732 4.15 4.15 0 0 0 8.248.908 32.99 32.99 0 0 1 65.567 0 4.124 4.124 0 0 0 4.124 3.67h.453a4.125 4.125 0 0 0 3.63-4.536 41.237 41.237 0 0 0-25.774-33.774Zm-15.299-2.927a16.494 16.494 0 1 1 0-32.989 16.494 16.494 0 0 1 0 32.989Z"

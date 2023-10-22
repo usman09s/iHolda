@@ -25,15 +25,8 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserInfo: (state, action: PayloadAction<UserState>) => {
-      state = { ...state, ...action.payload };
-      if (action.payload.user?.user_profile_image?.image) {
-        state.userImage = action.payload.user?.user_profile_image.image;
-      }
-
-      if (action.payload.user?.user?.username) {
-        state.username = action.payload.user?.user.username;
-      }
+    setUserInfo: (state, action: PayloadAction<User>) => {
+      state = { ...state, user: action.payload };
 
       return state;
     },

@@ -1,4 +1,5 @@
-import { KeyboardAvoidingView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import Button from 'components/Button';
 import ErrorModal from 'components/ErrorModal';
@@ -20,26 +21,34 @@ const SignInScreen = () => {
     onSignIn,
     isLoading,
     errorMessage,
+    animatedTextStyle,
     sendCodeErrorMessage,
-    onPressConfirmOtpConfirmationModal,
     showConfirmationModal,
+    animatedSpaceHeightStyle,
     setShowConfirmationModal,
+    onPressConfirmOtpConfirmationModal,
   } = useSignInActions();
 
   return (
-    <View className="flex-1 bg-blue justify-center px-7">
+    <Animated.View className={'flex-1 bg-blue justify-center px-7 pt-10'}>
       <KeyboardAvoidingView behavior="position">
-        <View className="mb-20">
-          <Text className={text({ type: 'b44', class: 'text-white' })}>Enter your pin</Text>
+        <View>
+          <Animated.Text
+            className={text({ type: 'b44', class: 'text-white' })}
+            style={animatedTextStyle}>
+            Enter your pin
+          </Animated.Text>
         </View>
+        <Animated.View className="h-20" style={animatedSpaceHeightStyle} />
         <Input
           value={pin}
           maxLength={4}
-          placeholder="Enter Pin"
           onChangeText={setPin}
+          placeholder="Enter Pin"
           keyboardType="number-pad"
-          customInputClass="text-white py-5 text-18 mb-20 text-center"
+          customInputClass="text-white py-5 text-18 text-center"
         />
+        <Animated.View className="h-20" style={animatedSpaceHeightStyle} />
         <Button
           type="solid"
           title="Login"
@@ -47,10 +56,10 @@ const SignInScreen = () => {
           isLoading={isLoading}
           disabled={isLoading || pin.length !== 4}
         />
+        <Animated.View className="h-20" style={animatedSpaceHeightStyle} />
         <Button
           type="ghost"
           title="forgot pin?"
-          customContainer="mt-12"
           onPress={() => setShowConfirmationModal(true)}
           customTextClass={text({ type: 'r20', class: 'text-white mb-4' })}
         />
@@ -58,13 +67,13 @@ const SignInScreen = () => {
       <ErrorModal errorText={errorMessage} />
       <OtpPhoneConfirmationModal
         phoneNumber={params.phone}
-        isLoading={sendCodeMutation.isLoading}
-        onPressConfirm={onPressConfirmOtpConfirmationModal}
         visible={showConfirmationModal}
         errorText={sendCodeErrorMessage || ''}
+        isLoading={sendCodeMutation.isLoading}
+        onPressConfirm={onPressConfirmOtpConfirmationModal}
         onCloseModal={() => setShowConfirmationModal(false)}
       />
-    </View>
+    </Animated.View>
   );
 };
 

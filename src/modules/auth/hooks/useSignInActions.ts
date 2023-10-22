@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Alert } from 'react-native';
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationProp, RouteProp, useRoute } from '@react-navigation/native';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppNavigation } from 'hooks/useAppNavigation';
+import { useKeyboardVisible } from 'hooks/useKeyboardVisible';
 import { useMutation } from 'react-query';
 import Api from 'services/Api';
 import { setUserInfo } from 'store/auth/userSlice';
@@ -25,6 +27,27 @@ export const useSignInActions = () => {
   const { params } = useRoute<RouteProp<AuthStackParamList, 'SignIn'>>();
   const { mutate, isLoading, error } = useMutation(Api.signIn);
   const sendCodeMutation = useMutation(Api.sendCodeForForgotPin);
+  const sharedValue = useSharedValue(44);
+  const sharedSpaceHeightValue = useSharedValue(80);
+  const isVisible = useKeyboardVisible();
+
+  useEffect(() => {
+    if (isVisible) {
+      sharedValue.value = 24;
+      sharedSpaceHeightValue.value = 40;
+    } else {
+      sharedValue.value = 44;
+      sharedSpaceHeightValue.value = 80;
+    }
+  }, [isVisible]);
+
+  const animatedTextStyle = useAnimatedStyle(() => ({
+    fontSize: withTiming(sharedValue.value),
+  }));
+
+  const animatedSpaceHeightStyle = useAnimatedStyle(() => ({
+    height: withTiming(sharedSpaceHeightValue.value),
+  }));
 
   const sendCodeErrorMessage = useMemo(
     () => parseApiError(sendCodeMutation.error),
@@ -120,9 +143,11 @@ export const useSignInActions = () => {
     onSignIn,
     isLoading,
     errorMessage,
+    animatedTextStyle,
     sendCodeErrorMessage,
     showConfirmationModal,
     setShowConfirmationModal,
+    animatedSpaceHeightStyle,
     onPressConfirmOtpConfirmationModal,
   };
 };

@@ -5,6 +5,7 @@ import { getMonthAndYear } from 'utils/helpers';
 type UserRootState = Pick<RootState, 'user'>;
 
 export const userSelector = (state: UserRootState) => state.user;
+
 export const userPhoneSelector = (state: UserRootState) => state.user.phone;
 
 export const queryIdSelector = (state: UserRootState) => state.user.query_id;
@@ -14,20 +15,21 @@ export const tokensSelector = createSelector(userSelector, user => ({
   refreshToken: user.refresh_token,
 }));
 
-export const userImageSelector = (state: UserRootState) => state.user.userImage;
-export const usernameSelector = (state: UserRootState) => state.user.username;
+export const userImageSelector = (state: UserRootState) => state.user.user?.photo;
+
+export const usernameSelector = (state: UserRootState) => state.user.user?.userName;
 
 export const profileImageSelector = createSelector(userSelector, user => user.userImage);
 
 export const userCommonInformationSelector = createSelector(userSelector, user => ({
-  id: user.user?.id,
-  phone: user.phone || '',
-  avatar: user.userImage || '',
-  username: user.username || '',
+  id: user.user?._id,
+  phone: user.user?.phone || '',
+  avatar: user.user?.photo || '',
+  username: user.user?.userName || '',
   fullName:
-    `${user.user?.user?.first_name || ''} ${user.user?.user?.last_name || ''}`.trim() ||
-    user.username ||
+    `${user.user?.firstName || ''} ${user.user?.lastName || ''}`.trim() ||
+    user.user?.userName ||
     '',
-  invitedBy: user.user?.invited_by?.user?.username,
-  joinedMonthAndYear: getMonthAndYear(user.user?.created_at || ''),
+  invitedBy: user.user?.invited_by?.user?.username || 'anon',
+  joinedMonthAndYear: getMonthAndYear(user.user?.dateJoined || ''),
 }));

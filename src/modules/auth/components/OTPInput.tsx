@@ -6,9 +6,11 @@ const OTPInput = ({ onChangeOtp = () => null }: { onChangeOtp: (value: string) =
   const otpTwo = useRef<TextInput | null>(null);
   const otpThree = useRef<TextInput | null>(null);
   const otpFour = useRef<TextInput | null>(null);
+  const otpFive = useRef<TextInput | null>(null);
+  const otpSix = useRef<TextInput | null>(null);
   const otp = useRef<(number | string)[]>([]);
 
-  const refs = [otpOne, otpTwo, otpThree, otpFour];
+  const refs = [otpOne, otpTwo, otpThree, otpFour, otpFive, otpSix];
 
   useEffect(() => {
     setTimeout(() => otpOne.current?.focus(), 300);
@@ -23,7 +25,7 @@ const OTPInput = ({ onChangeOtp = () => null }: { onChangeOtp: (value: string) =
       return;
     }
 
-    if (index === 3) {
+    if (index === 5) {
       if (pressedKey === 'Backspace') {
         refs[2].current?.focus();
       }

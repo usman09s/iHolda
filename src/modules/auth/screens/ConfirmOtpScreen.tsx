@@ -7,10 +7,11 @@ import { useAppNavigation } from 'hooks/useAppNavigation';
 import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { queryIdSelector, userPhoneSelector } from 'store/auth/userSelectors';
+import { userPhoneSelector } from 'store/auth/userSelectors';
 import { useTimer } from 'store/auth/useTimer';
 import { text } from 'theme/text';
-import { getHitSlop, parseApiError } from 'utils/helpers';
+import { VerifyOTPMessage } from 'types/AuthTypes';
+import { getHitSlop } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import OTPInput from '../components/OTPInput';
@@ -19,26 +20,20 @@ const ConfirmOtpScreen = () => {
   const [otp, setOtp] = useState('');
   const { goBack } = useNavigation();
   const phone = useSelector(userPhoneSelector);
-  const queryId = useSelector(queryIdSelector);
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
   const { remainingTime, resetTimer } = useTimer({ duration: 30, onTimeout: () => null });
 
-  const { error, isLoading, mutate } = useMutation(Api.confirmOtp, {
+  const { error, isLoading, mutate } = useMutation(Api.verifyOtp, {
     onSuccess: result => {
-      if (result.status === 200) {
+      if (result.message === VerifyOTPMessage.OTP_VERIFIED_USER_NOT_REGISTERED) {
         navigate('UserAvatarAndUsernameUpdate');
       }
     },
   });
 
-  const confirmMutationErrorMessage = parseApiError(error as { message: string });
+  const confirmMutationErrorMessage = (error as { message: string })?.message;
 
-  const onPressContinue = () => {
-    mutate({
-      otp,
-      queryId,
-    });
-  };
+  const onPressContinue = () => mutate({ otp });
 
   return (
     <View className="flex-1 bg-blue justify-center px-7">
@@ -76,8 +71,8 @@ const ConfirmOtpScreen = () => {
           type="borderedSolid"
           isLoading={isLoading}
           onPress={onPressContinue}
-          disabled={isLoading || otp.length !== 4}
-          customContainer={`self-center ${otp.length !== 4 && ' opacity-40'} `}
+          disabled={isLoading || otp.length !== 6}
+          customContainer={`self-center ${otp.length !== 6 && ' opacity-40'} `}
         />
       </KeyboardAvoidingView>
       <ErrorModal errorText={confirmMutationErrorMessage} />

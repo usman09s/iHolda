@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import Button from 'components/Button';
-import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppNavigation } from 'hooks/useAppNavigation';
 import { useLoadCountries } from 'hooks/useLoadContries';
 import { useMutation } from 'react-query';
 import Api from 'services/Api';
-import { setUserInfo } from 'store/auth/userSlice';
 import { text } from 'theme/text';
 import { CountryCodeType } from 'types/AuthTypes';
 import { INITIAL_SELECTED_COUNTRY } from 'utils/fixtures';
@@ -18,30 +16,29 @@ import PhoneConfirmationModal from '../components/PhoneConfirmationModal';
 import PhoneInput from '../components/PhoneInput';
 
 const SignUpScreen = () => {
-  const dispatch = useAppDispatch();
   const { countries } = useLoadCountries();
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('5468167196');
   const [showCountriesModal, setShowCountriesModal] = useState(false);
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
   const [showPhoneConfirmationModal, setShowPhoneConfirmationModal] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<CountryCodeType>(INITIAL_SELECTED_COUNTRY);
 
-  const { isLoading, mutate } = useMutation(Api.signUp, {
+  const { isLoading, mutate } = useMutation(Api.verifyPhoneBeforeRegister, {
     onSuccess: data => {
-      dispatch(
-        setUserInfo({
-          phone: data.phone,
-          query_id: data.query_id,
-          access_token: data.access_token,
-          refresh_token: data.refresh_token,
-        }),
-      );
-      navigate('ConfirmOtp');
-    },
-    onError: err => {
-      const parsedError = JSON.parse(err?.message);
-      if (parsedError?.info?.status === 307 && parsedError?.info?.screen === 'login') {
-        navigate('SignIn', { phone: `${selectedCountry.phone}${phoneNumber}` });
+      if (data.navigateTo === 'ConfirmOtp') {
+        navigate(data.navigateTo);
+
+        return;
+      }
+
+      if (data.navigateTo === 'SignIn') {
+        const formattedPhone = `${selectedCountry.phone}${phoneNumber}`;
+
+        navigate('SignIn', {
+          phone: formattedPhone.substring(1, formattedPhone.length),
+        });
+
+        return;
       }
     },
   });
@@ -53,14 +50,20 @@ const SignUpScreen = () => {
 
     setShowPhoneConfirmationModal(false);
 
+    const formattedPhone = `${selectedCountry.phone}${phoneNumber}`;
+
     mutate({
-      phone: `${selectedCountry.phone}${phoneNumber}`,
+      phone: formattedPhone.substring(1, formattedPhone.length),
     });
   };
 
   return (
     <View className="pt-10 bg-blue flex-1 px-7 justify-center">
-      <KeyboardAvoidingView behavior="position">
+      <KeyboardAvoidingView
+        behavior={Platform.select({
+          android: undefined,
+          ios: 'position',
+        })}>
         <Text className={text({ type: 'b44', class: 'text-white mb-16' })}>
           Enter your{'\n'}Phone Number
         </Text>

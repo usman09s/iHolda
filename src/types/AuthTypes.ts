@@ -1,4 +1,6 @@
-export type User = {
+import { AuthStackParamList } from 'modules/auth/AuthStackNavigator';
+
+export type _User = {
   created_at: string;
   friends: [];
   id: number;
@@ -104,4 +106,77 @@ export type SignUpResponse = {
   query_id: string;
   refresh_token: string;
   username: string;
+};
+
+// NEW API
+export type AuthStackParamKeys = keyof AuthStackParamList;
+
+export type VerifyPhoneBeforeRegisterResponse = {
+  message: string;
+  data?: {
+    otp: string;
+  };
+  navigateTo?: AuthStackParamKeys;
+};
+
+export enum VerifyPhoneBeforeRegisterMessage {
+  OTP_GENERATED_SUCCESSFULLY = 'OTP generated successfully',
+  PHONE_NUMBER_IS_EXIST = 'phone number is already registered',
+}
+
+export enum VerifyOTPMessage {
+  OTP_VERIFIED_USER_NOT_REGISTERED = 'otp verified but user is not registered',
+  OTP_NOT_FOUND = 'OTP not found',
+}
+
+export type VerifyOTPResponse = {
+  message: string;
+  navigateTo?: AuthStackParamList;
+};
+
+export type SignInResponseType = {
+  message: string;
+  data: SignInResponseDataType;
+};
+
+export type SignInResponseDataType = {
+  isReferred: boolean;
+  user: User;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type User = {
+  _id: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  dob: string;
+  gender: string;
+  photo: string;
+  email: string;
+  role: string;
+  isActive: boolean;
+  address: string;
+  fcmTokens: string[];
+  online: boolean;
+  followers: string[];
+  following: string[];
+  bookmarks: string[];
+  userQrCode: string;
+  dateJoined: string;
+  lastLogin: string;
+  lastLogout: string;
+  isReferred: boolean;
+  referralCode: string;
+  createdAt: string;
+  updatedAt: string;
+  location: Location;
+  __v: number;
+};
+
+export type LocationType = {
+  type: string;
+  coordinates: number[];
 };

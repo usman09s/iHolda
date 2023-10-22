@@ -1,5 +1,15 @@
+/* eslint-disable prettier/prettier */
 import { DecodePlasticsQrResponseType } from 'types/AgentPlasticTypes';
-import { LoginParameters, LoginResponse, SignUpResponse } from 'types/AuthTypes';
+import {
+  LoginParameters,
+  LoginResponse,
+  SignInResponseType,
+  SignUpResponse,
+  VerifyOTPMessage,
+  VerifyOTPResponse,
+  VerifyPhoneBeforeRegisterMessage,
+  VerifyPhoneBeforeRegisterResponse,
+} from 'types/AuthTypes';
 import { CommunityRankItemType } from 'types/LeaderBoardTypes';
 import { GetMomentsResponseType, PostMomentsResponse } from 'types/MomentsTypes';
 import {
@@ -12,18 +22,17 @@ import wretch from 'wretch';
 class ApiClass {
   externalApi;
   token = '';
+  refreshToken = '';
   queryId = '';
 
   _otp = 0;
   _headers = {
-    'Agent-Signature': 'mobile/iB+44',
     'Content-Type': 'application/json',
   };
 
   constructor() {
-    this.externalApi = wretch('https://iholda-backend-ebvfu.ondigitalocean.app/api/')
+    this.externalApi = wretch('http://ihold.yameenyousuf.com/api/')
       .options({
-        mode: 'cors',
         credentials: 'include',
       })
       .headers(this._headers);
@@ -58,16 +67,69 @@ class ApiClass {
     this.externalApi;
   };
 
-  signIn = async ({ phone, pin }: LoginParameters): Promise<LoginResponse> =>
+  verifyPhoneBeforeRegister = async ({
+    phone,
+  }: {
+    phone: string;
+  }): Promise<VerifyPhoneBeforeRegisterResponse> =>
     await this.externalApi
-      .url('login/?forced=yes')
+      .url('otp/register')
       .post({
-        pin,
         phone,
       })
-      .json((result: LoginResponse) => {
-        this.token = result.access_token;
-        this.queryId = result.query_id;
+      .json((result): VerifyPhoneBeforeRegisterResponse => {
+        this._otp = result.data.otp;
+
+        return {
+          ...result,
+          navigateTo:
+            result.message === VerifyPhoneBeforeRegisterMessage.OTP_GENERATED_SUCCESSFULLY &&
+            'ConfirmOtp',
+        };
+      })
+      .catch(err => {
+        const error = JSON.parse(err.message);
+        if (error?.message === VerifyPhoneBeforeRegisterMessage.PHONE_NUMBER_IS_EXIST) {
+          return {
+            navigateTo: 'SignIn',
+            message: error?.message || '',
+          };
+        }
+
+        throw { message: 'Try again!' };
+      });
+
+  verifyOtp = async ({ otp }: { otp: string }) =>
+    await this.externalApi
+      .url('otp/verify')
+      .put({ otp })
+      .json((result: VerifyOTPResponse) => {
+        if (result.message === VerifyOTPMessage.OTP_NOT_FOUND) {
+          throw result;
+        }
+
+        return {
+          ...result,
+          navigateTo:
+            result.message === VerifyOTPMessage.OTP_VERIFIED_USER_NOT_REGISTERED &&
+            'UserAvatarAndUsernameUpdate',
+        };
+      })
+      .catch(err => {
+        throw { message: JSON.parse(err.message)?.message };
+      });
+
+  signIn = async ({ phone, pin }: LoginParameters): Promise<SignInResponseType> =>
+    await this.externalApi
+      .url('auth/login')
+      .post({
+        phone: phone,
+        password: pin,
+        fcmToken: phone,
+      })
+      .json((result: SignInResponseType) => {
+        this.token = result.data.accessToken;
+        this.refreshToken = result.data.refreshToken;
 
         return result;
       });
@@ -384,9 +446,9 @@ class ApiClass {
       .post({ query_id: queryId, plastic_id: plasticId })
       .json(result => result);
 
-  getUserProfile = async (): Promise<LoginResponse> =>
+  getUserProfile = async (): Promise<SignInResponseType> =>
     await this.externalApi
-      .url(`userprofiles/${this.queryId}/`)
+      .url('user')
       .headers({
         ...this._getAuthorization(this.token),
       })
