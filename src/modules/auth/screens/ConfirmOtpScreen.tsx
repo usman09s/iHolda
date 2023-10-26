@@ -7,7 +7,7 @@ import { useAppNavigation } from 'hooks/useAppNavigation';
 import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { userPhoneSelector } from 'store/auth/userSelectors';
+import { userPhoneSelector, userSelector } from 'store/auth/userSelectors';
 import { useTimer } from 'store/auth/useTimer';
 import { text } from 'theme/text';
 import { VerifyOTPMessage } from 'types/AuthTypes';

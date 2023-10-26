@@ -30,7 +30,7 @@ const PlasticConfirmationScreen = () => {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <AddedPlasticInformationLabel />
         {addedPlastics.map(plastic => (
-          <AddedPlasticInformationStats key={plastic.id} plastic={plastic} />
+          <AddedPlasticInformationStats key={plastic._id} plastic={plastic} />
         ))}
         <AddedPlasticTotalInformation totalPlastic={totalPlastic} totalPrice={totalPrice} />
         <View>

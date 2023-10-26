@@ -76,6 +76,8 @@ export type LoginResponse = {
 export type LoginParameters = {
   pin: string;
   phone: string;
+  countryCode: string;
+  fcmToken: string;
 };
 
 export type CountryCodeType = {

@@ -11,6 +11,11 @@ import { text } from 'theme/text';
 import { parseApiError } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
+import { RootState } from '../../../store/store';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'store/auth/userSelectors';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { setTokensAndQueryId } from 'store/auth/userSlice';
 
 const CreateUnlockPinScreen = () => {
   LayoutAnimation.linear();
@@ -18,16 +23,24 @@ const CreateUnlockPinScreen = () => {
   const { navigate } = useNavigation<NavigationProp<AuthStackParamList>>();
   const [pin, setPin] = useState('');
   const [rePin, setRePin] = useState('');
-  const { mutate, isLoading, error } = useMutation(Api.setPin);
-
+  const { mutate, isLoading, error } = useMutation(Api.authRegister);
   const disabledButton = !pin || !rePin || pin !== rePin;
+  const userInfo = useSelector(userSelector);
+  const dispatch = useAppDispatch();
 
   const onConfirm = () => {
     mutate(
-      { pin: Number(pin) },
+      {
+        password: pin.toString(),
+        userName: userInfo.username,
+        phone: userInfo.phone,
+        countryCode: userInfo.countryCode,
+        fcmToken: '1234567',
+      },
       {
         onSuccess: result => {
-          if (result.status === 200) {
+          if (result.message === 'Register successful') {
+            dispatch(setTokensAndQueryId({ accessToken: result.data.accessToken }));
             navigate('EnterReferralCode');
           }
         },
@@ -58,7 +71,6 @@ const CreateUnlockPinScreen = () => {
             placeholder="Re-enter"
             onChangeText={e => {
               setRePin(e);
-              Keyboard.dismiss();
             }}
             keyboardType="number-pad"
             customInputClass="text-white py-5 text-18"

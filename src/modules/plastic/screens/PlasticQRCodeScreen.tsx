@@ -22,12 +22,9 @@ const PlasticQRCodeScreen = () => {
       <View className="px-7 flex-1">
         <Header title="Go to drop off location" />
         <Text className={text({ type: 'l13', class: 'mb-2 mt-12' })}>
-          Your drop off location is {params.plasticInformation.id}
+          Your drop off location is
         </Text>
-        <DropOffLocationItem
-          onPressLocation={() => null}
-          location={params.plasticInformation.dropoff_location}
-        />
+        <DropOffLocationItem />
         <Pressable
           onPress={() => {
             dispatch(StackActions.pop(2));

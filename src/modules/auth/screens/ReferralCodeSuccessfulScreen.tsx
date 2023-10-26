@@ -6,7 +6,7 @@ import { userImageSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 
 const ReferralCodeSuccessfulScreen = () => {
-  const {} = useNavigation();
+  const { navigate } = useNavigation();
   const userImage = useSelector(userImageSelector);
 
   return (
@@ -50,7 +50,12 @@ const ReferralCodeSuccessfulScreen = () => {
               </View>
             </View>
           </View>
-          <Button title="Close" customContainer="self-center" type="borderedSolid" />
+          <Button
+            title="Close"
+            customContainer="self-center"
+            type="borderedSolid"
+            onPress={() => navigate('PlasticStack')}
+          />
         </View>
       </ScrollView>
     </View>

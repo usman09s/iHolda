@@ -24,6 +24,7 @@ const EnterReferralCodeScreen = () => {
   const isVisibleKeyboard = useKeyboardVisible();
 
   const onContinue = () => {
+    console.log(referralCode);
     mutate(
       { referralCode },
       {
@@ -69,6 +70,7 @@ const EnterReferralCodeScreen = () => {
           placeholder="Enter referral code"
           customInputClass="text-20 mx-7"
           placeholderTextColor={colors['white-o-60']}
+          keyboardType="numeric"
         />
         <View style={{ height: isVisibleKeyboard ? 32 : 64 }} />
         <View>

@@ -12,6 +12,9 @@ import { getHitSlop, parseApiError } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import OTPInput from '../components/OTPInput';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+import { userSelector } from 'store/auth/userSelectors';
 
 const EnterOptScreen = () => {
   const [otp, setOtp] = useState('');
@@ -19,6 +22,9 @@ const EnterOptScreen = () => {
   const { params } = useRoute<RouteProp<AuthStackParamList, 'EnterOtp'>>();
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
   const { remainingTime, resetTimer } = useTimer({ duration: 30, onTimeout: () => null });
+  const userInfo = useSelector((state: RootState) => state.user);
+
+  console.log(userInfo, 'sssss');
 
   const { error, isLoading, mutate } = useMutation(Api.resetPinCodeConfirm, {
     onSuccess: result => {

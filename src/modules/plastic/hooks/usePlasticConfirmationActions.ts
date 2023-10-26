@@ -54,11 +54,12 @@ export const usePlasticConfirmationActions = () => {
     updatePlasticRatios.mutate(
       {
         plasticId: data.id,
-        cash: selectedRatio.cash,
-        point: selectedRatio.point,
+        cash: selectedRatio.cash * 100,
+        point: selectedRatio.point * 100,
       },
       {
         onSuccess: result => {
+          console.log(result);
           dispatch(setPlasticId(result.id));
           navigate('PlasticQRCode', { plasticInformation: result });
         },
@@ -67,10 +68,12 @@ export const usePlasticConfirmationActions = () => {
   };
 
   const onPressConfirm = () => {
+    console.log(params);
     const commonParams = {
-      userType: 'USER',
-      dropOffLocation: params?.locationId,
-      sizes: addedPlastics.map(item => ({ size: item.id, quantity: item.count })),
+      communityPointRatio: selectedRatio.point * 100,
+      virtualMoneyRatio: selectedRatio.cash * 100,
+      plasticAgent: params?.locationId,
+      plastics: addedPlastics.map(item => ({ size: item.size, quantity: item.count })),
     };
 
     if (plasticId) {

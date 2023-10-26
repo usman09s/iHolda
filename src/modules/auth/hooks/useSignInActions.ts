@@ -12,10 +12,13 @@ import { setUserInfo } from 'store/auth/userSlice';
 import { parseApiError } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'store/auth/userSelectors';
 
 export const useSignInActions = () => {
   const dispatch = useAppDispatch();
   const [pin, setPin] = useState('');
+  const userInfo = useSelector(userSelector);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const { navigate, reset } = useAppNavigation<
     NavigationProp<
@@ -63,10 +66,13 @@ export const useSignInActions = () => {
     mutate(
       {
         pin,
-        phone: params.phone,
+        phone: userInfo.phone,
+        countryCode: userInfo.countryCode,
+        fcmToken: '1234567',
       },
       {
         onSuccess: result => {
+          console.log(pin);
           SecureStore.setItemAsync(
             'tokensAndQueryId',
             JSON.stringify({
@@ -102,7 +108,7 @@ export const useSignInActions = () => {
 
             dispatch(
               setUserInfo({
-                phone: params.phone,
+                phone: userInfo.phone,
                 userImage: userImage.image.image,
                 query_id: userData.user.query_id,
                 username: userData.user.username,

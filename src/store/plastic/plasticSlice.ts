@@ -24,14 +24,14 @@ export const plasticSlice = createSlice({
     increasePlasticCount: (state, action: PayloadAction<number>) => ({
       ...state,
       plasticSizes: state.plasticSizes.map(item =>
-        item.id === action.payload ? { ...item, count: item.count + 1 } : item,
+        item._id === action.payload ? { ...item, count: item.count + 1 } : item,
       ),
     }),
 
     decreasePlasticCount: (state, action: PayloadAction<number>) => ({
       ...state,
       plasticSizes: state.plasticSizes.map(item =>
-        item.id === action.payload
+        item._id === action.payload
           ? { ...item, count: item.count === 0 ? 0 : item.count - 1 }
           : item,
       ),

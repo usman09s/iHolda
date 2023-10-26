@@ -10,6 +10,7 @@ export type UserState = {
   userImage?: string;
   access_token: string;
   refresh_token: string;
+  countryCode: string;
 };
 
 const initialState: UserState = {
@@ -19,6 +20,7 @@ const initialState: UserState = {
   query_id: '',
   userImage: '',
   username: '',
+  countryCode: '',
 };
 
 export const userSlice = createSlice({
@@ -26,8 +28,10 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action: PayloadAction<User>) => {
-      state = { ...state, user: action.payload };
-
+      state = {
+        ...state,
+        user: action.payload,
+      };
       return state;
     },
 
@@ -36,6 +40,12 @@ export const userSlice = createSlice({
       action: PayloadAction<{ username: string; image: string }>,
     ) => {
       state = { ...state, userImage: action.payload.image, username: action.payload.username };
+
+      return state;
+    },
+
+    setCountryCode: (state, action: PayloadAction<{ countryCode: string; phone: string }>) => {
+      state = { ...state, countryCode: action.payload.countryCode, phone: action.payload.phone };
 
       return state;
     },
@@ -56,6 +66,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUserInfo, setUserImageAndUsername, setTokensAndQueryId } = userSlice.actions;
+export const { setUserInfo, setUserImageAndUsername, setTokensAndQueryId, setCountryCode } =
+  userSlice.actions;
 
 export default userSlice.reducer;

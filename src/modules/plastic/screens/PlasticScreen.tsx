@@ -23,6 +23,7 @@ import { PlasticStackParamList } from '../PlasticStackNavigator';
 const PlasticScreen = () => {
   const dispatch = useAppDispatch();
   const plasticSizes = useSelector(plasticSizeSelector);
+  console.log(plasticSizes);
   const totalPlastic = useSelector(plasticCountTotalSelector);
   const { navigate, goBack } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
 
@@ -63,8 +64,11 @@ const PlasticScreen = () => {
             <PlasticItem
               image={item.image}
               count={item.count}
-              onPressDecrease={() => dispatch(decreasePlasticCount(item.id))}
-              onPressIncrease={() => dispatch(increasePlasticCount(item.id))}
+              onPressDecrease={() => {
+                console.log('Decrease action for plastic item:', item._id);
+                dispatch(decreasePlasticCount(item._id));
+              }}
+              onPressIncrease={() => dispatch(increasePlasticCount(item._id))}
             />
           )}
           contentContainerStyle={{ paddingRight: 100 }}

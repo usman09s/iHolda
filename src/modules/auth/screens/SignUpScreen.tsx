@@ -14,6 +14,8 @@ import { AuthStackParamList } from '../AuthStackNavigator';
 import CountriesModal from '../components/CountriesModal';
 import PhoneConfirmationModal from '../components/PhoneConfirmationModal';
 import PhoneInput from '../components/PhoneInput';
+import { setCountryCode } from 'store/auth/userSlice';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 
 const SignUpScreen = () => {
   const { countries } = useLoadCountries();
@@ -22,6 +24,7 @@ const SignUpScreen = () => {
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
   const [showPhoneConfirmationModal, setShowPhoneConfirmationModal] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<CountryCodeType>(INITIAL_SELECTED_COUNTRY);
+  const dispatch = useAppDispatch();
 
   const { isLoading, mutate } = useMutation(Api.verifyPhoneBeforeRegister, {
     onSuccess: data => {
@@ -30,10 +33,8 @@ const SignUpScreen = () => {
 
         return;
       }
-
       if (data.navigateTo === 'SignIn') {
         const formattedPhone = `${selectedCountry.phone}${phoneNumber}`;
-
         navigate('SignIn', {
           phone: formattedPhone.substring(1, formattedPhone.length),
         });
@@ -47,13 +48,19 @@ const SignUpScreen = () => {
     if (phoneNumber.length < 4) {
       return;
     }
-
     setShowPhoneConfirmationModal(false);
 
     const formattedPhone = `${selectedCountry.phone}${phoneNumber}`;
-
+    const formattedPhoneWithoutPlus = formattedPhone.replace(/\+/g, '');
+    console.log(formattedPhoneWithoutPlus, 'ssss');
+    dispatch(
+      setCountryCode({
+        countryCode: selectedCountry.countryCode,
+        phone: formattedPhoneWithoutPlus,
+      }),
+    );
     mutate({
-      phone: formattedPhone.substring(1, formattedPhone.length),
+      phone: formattedPhone.substring(1, formattedPhone.length).toString(),
     });
   };
 

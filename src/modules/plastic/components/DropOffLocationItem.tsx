@@ -17,9 +17,9 @@ const DropOffLocationItem = ({ location, onPressLocation }: Props) => (
     })}`}>
     <View className="flex-row justify-between items-center">
       <View>
-        <Text className={text({ type: 'r20' })}>{location?.location_name || ''}</Text>
+        <Text className={text({ type: 'r16' })}>{location?.name || ''}</Text>
         <Text className={text({ type: 'r12', class: 'text-black-o-70' })}>
-          {location?.location?.address?.town || ''}
+          {location?.dropoffLocation.address || ''}
         </Text>
       </View>
       <Text
@@ -27,15 +27,17 @@ const DropOffLocationItem = ({ location, onPressLocation }: Props) => (
           type: 'r12',
           class: location?.state === 'Closed' ? 'text-red-500' : 'text-green-600',
         })}>
-        {location?.state || ''}
+        {location?.isAvailable || ''}
       </Text>
     </View>
     <View className="flex-row justify-between mt-2">
       <Text className={text({ type: 'r10', class: 'text-black-o-60' })}>
-        Open from {getHourWithTimeZone(location?.opening_hour)} to{' '}
-        {getHourWithTimeZone(location?.closing_hour)}
+        Open from {getHourWithTimeZone(location?.openingHour)} to{' '}
+        {getHourWithTimeZone(location?.closingHour)}
       </Text>
-      <Text></Text>
+      <Text>
+        {location?.days[0]}-{location?.days[location?.days.length - 1]}
+      </Text>
     </View>
   </Pressable>
 );

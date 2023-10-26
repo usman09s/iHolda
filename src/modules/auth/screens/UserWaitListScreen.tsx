@@ -14,7 +14,7 @@ const UserWaitListScreen = () => {
   const { goBack, dispatch } = useNavigation();
   const username = useSelector(usernameSelector);
   const userImage = useSelector(userImageSelector);
-  const { data } = useQuery('waitingList', Api.getWaitingList);
+  // const { data } = useQuery('waitingList', Api.getWaitingList);
 
   const copyToClipboard = async (value: string) => await Clipboard.setStringAsync(value);
 
@@ -44,13 +44,11 @@ const UserWaitListScreen = () => {
               You are currently Number
             </Text>
             <View className="border-b1 self-center px-6 py-2 rounded-2xl my-5 border-coolGreen">
-              {data?.id ? (
-                <Text className={text({ class: 'text-white text-center', type: 'm48' })}>
-                  {data.id}
-                </Text>
-              ) : (
+              {/* {data?.id ? ( */}
+              <Text className={text({ class: 'text-white text-center', type: 'm48' })}>18</Text>
+              {/* ) : (
                 <ActivityIndicator />
-              )}
+              )} */}
             </View>
             <Text className={text({ type: 'm24', class: 'text-white text-center' })}>
               on the waiting list

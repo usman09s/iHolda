@@ -79,7 +79,7 @@ class ApiClass {
       })
       .json((result): VerifyPhoneBeforeRegisterResponse => {
         this._otp = result.data.otp;
-
+        console.log(phone);
         return {
           ...result,
           navigateTo:
@@ -119,13 +119,19 @@ class ApiClass {
         throw { message: JSON.parse(err.message)?.message };
       });
 
-  signIn = async ({ phone, pin }: LoginParameters): Promise<SignInResponseType> =>
+  signIn = async ({
+    phone,
+    pin,
+    countryCode,
+    fcmToken,
+  }: LoginParameters): Promise<SignInResponseType> =>
     await this.externalApi
       .url('auth/login')
       .post({
         phone: phone,
         password: pin,
-        fcmToken: phone,
+        fcmToken: fcmToken,
+        countryCode: countryCode,
       })
       .json((result: SignInResponseType) => {
         this.token = result.data.accessToken;
@@ -178,13 +184,31 @@ class ApiClass {
       .post({ pin })
       .json(result => result);
 
+  authRegister = async ({ userName, phone, dob, password, countryCode, fcmToken }: any) => {
+    try {
+      return await this.externalApi
+        .url('auth/register')
+        .post({
+          userName,
+          phone,
+          dob,
+          password,
+          countryCode,
+          fcmToken,
+        })
+        .json(result => {
+          console.log(result);
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
   setReferralCode = async ({ referralCode }: { referralCode: string }) =>
     await this.externalApi
-      .url('referrals/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
-      .post({ referral_code: referralCode })
+      .url('user/referral-code')
+      .put({ referralCode: referralCode.toString() })
       .json(result => result);
 
   getWaitingList = async () =>
@@ -220,12 +244,11 @@ class ApiClass {
   // Plastic
   getPlasticSizes = async (): Promise<PlasticItemType[]> =>
     await this.externalApi
-      .url('plastics/sizes/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic/sizes?page=1')
       .get()
-      .json(result => result);
+      .json(result => {
+        return result.data.data;
+      });
 
   getClosestDropOffLocations = async ({
     latitude,
@@ -235,40 +258,40 @@ class ApiClass {
     longitude: number;
   }): Promise<DropOffLocationItemType[]> =>
     await this.externalApi
-      .url(`plastics/drop-off-locations/?lat=${latitude}&lon=${longitude}`)
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic/agents?page=1')
       .get()
-      .json(result => result);
+      .json(result => {
+        console.log(result.data.data);
+        return result.data.data;
+      });
 
   getDropOffLocations = async (): Promise<DropOffLocationItemType[]> =>
     await this.externalApi
-      .url('plastics/drop-off-locations/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic/agents?page=1')
       .get()
-      .json(result => result);
+      .json(result => {
+        console.log(result);
+        return result;
+      });
 
   addPlastics = async ({
-    userType,
-    sizes,
-    dropOffLocation,
+    communityPointRatio,
+    virtualMoneyRatio,
+    plastics,
+    plasticAgent,
   }: {
-    dropOffLocation: number;
-    userType: 'AGENT' | 'USER';
-    sizes: { size: number; quantity: number }[];
+    plasticAgent: string;
+    virtualMoneyRatio: any;
+    communityPointRatio: any;
+    plastics: { size: number; quantity: number }[];
   }): Promise<AddPlasticResponseType> =>
     await this.externalApi
-      .url('plastics/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic')
       .post({
-        sizes: sizes,
-        user_type: userType,
-        dropoff_location: dropOffLocation,
+        plasticAgent: plasticAgent,
+        virtualMoneyRatio: virtualMoneyRatio,
+        communityPointRatio: communityPointRatio,
+        plastics: plastics,
       })
       .json(result => result);
 
