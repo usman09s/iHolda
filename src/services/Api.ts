@@ -225,20 +225,20 @@ class ApiClass {
 
   sendCodeForForgotPin = async ({ phoneNumber }: { phoneNumber: string }) =>
     await this.externalApi
-      .url('reset/forgot-pin/send-code/?delete-retry=yes')
+      .url('otp/generate')
       .post({ phone: phoneNumber })
       .json(result => result);
 
   resetPinCodeConfirm = async ({ phoneNumber, code }: { phoneNumber: string; code: string }) =>
     await this.externalApi
-      .url('reset/reset-pin-code/confirm/')
-      .post({ phone: phoneNumber, code })
+      .url('otp/verify')
+      .put({ otp: code })
       .json(result => result);
 
   resetPinCodeFromCode = async ({ phoneNumber, pin }: { phoneNumber: string; pin: number }) =>
     await this.externalApi
-      .url('reset/reset-pin/from-code/')
-      .post({ phone: phoneNumber, pin })
+      .url('auth/reset-password')
+      .put({ password: pin, confirmPassword: pin })
       .json(result => result);
 
   // Plastic
@@ -370,37 +370,45 @@ class ApiClass {
       })
       .json(result => result);
 
-  checkUserIsAgent = async (): Promise<{
-    agentId: number;
-    isAgent: boolean;
-    todayDelivery: number;
-    totalDelivery: number;
-  }> =>
+  // checkUserIsAgent = async (): Promise<{
+  //   agentId: number;
+  //   isAgent: boolean;
+  //   todayDelivery: number;
+  //   totalDelivery: number;
+  // }> =>
+  //   await this.externalApi
+  //     .url('plastics/plastic-agents/check/')
+  //     .headers({
+  //       ...this._getAuthorization(this.token),
+  //     })
+  //     .get()
+  //     .json(result => {
+  //       let isAgent = undefined;
+  //       try {
+  //         isAgent =
+  //           result.details.includes('authenticated user is agent.') ||
+  //           result.details.includes('user is agent') ||
+  //           result.details.includes('is agent');
+  //       } catch {
+  //         isAgent = false;
+  //       }
+
+  //       return {
+  //         isAgent,
+  //         agentId: result.id,
+  //         totalDelivery: result.total_delivery,
+  //         todayDelivery: result.today_delivery,
+  //         dropoff_locations: result.dropoff_locations,
+  //         ...result,
+  //       };
+  //     });
+
+  checkUserIsAgent = async () =>
     await this.externalApi
-      .url('plastics/plastic-agents/check/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic/agent/count/652e726f397bc8f89cbd5a6c')
       .get()
       .json(result => {
-        let isAgent = undefined;
-        try {
-          isAgent =
-            result.details.includes('authenticated user is agent.') ||
-            result.details.includes('user is agent') ||
-            result.details.includes('is agent');
-        } catch {
-          isAgent = false;
-        }
-
-        return {
-          isAgent,
-          agentId: result.id,
-          totalDelivery: result.total_delivery,
-          todayDelivery: result.today_delivery,
-          dropoff_locations: result.dropoff_locations,
-          ...result,
-        };
+        return result.data;
       });
 
   getTotalPlasticsToday = async (): Promise<boolean> =>
@@ -412,14 +420,14 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  getPlasticsFuture = async ({ locationId }: { locationId: number }): Promise<boolean> =>
+  getPlasticsFuture = async () =>
     await this.externalApi
-      .url(`plastics/?is_delivered=false&dropoff-location-id=${locationId}`)
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url(`plastic/upcoming`)
       .get()
-      .json(result => result);
+      .json(result => {
+        console.log(result.data, 'ssssohfe');
+        return result.data;
+      });
 
   getPlasticsAll = async (): Promise<boolean> =>
     await this.externalApi
@@ -439,35 +447,41 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  decodeQrCode = async ({
-    ...params
-  }: {
-    query_id: string;
-    plastic_id: string;
-    encrypted_data: string;
-  }): Promise<DecodePlasticsQrResponseType> =>
-    await this.externalApi
-      .url('plastics/qrcode/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
-      .post({ key: 'iHolda_Secret_Key', ...params })
-      .json(result => result);
+  // decodeQrCode = async ({
+  //   ...params
+  // }: {
+  //   query_id: string;
+  //   plastic_id: string;
+  //   encrypted_data: string;
+  // }): Promise<DecodePlasticsQrResponseType> =>
+  //   await this.externalApi
+  //     .url('plastics/qrcode/')
+  //     .headers({
+  //       ...this._getAuthorization(this.token),
+  //     })
+  //     .post({ key: 'iHolda_Secret_Key', ...params })
+  //     .json(result => result);
 
   approvedPlasticDelivery = async ({
-    queryId,
     plasticId,
+    plastics,
+    queryId,
   }: {
     queryId: string;
     plasticId: number;
+    plastics: any;
   }): Promise<unknown> =>
     await this.externalApi
-      .url('plastics/delivery/')
-      .headers({
-        ...this._getAuthorization(this.token),
+      .url('plastic/complete')
+      .post({
+        plasticId: queryId,
+        plasticAgent: plasticId,
+        ...(plastics ? { plastics } : null),
       })
-      .post({ query_id: queryId, plastic_id: plasticId })
-      .json(result => result);
+      .json(result => {
+        console.log(result, 'asjdqjpojpwqej api');
+        return result;
+      });
 
   getUserProfile = async (): Promise<SignInResponseType> =>
     await this.externalApi

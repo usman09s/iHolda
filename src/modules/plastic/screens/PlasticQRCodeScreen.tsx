@@ -12,10 +12,17 @@ import { width } from 'utils/helpers';
 
 import DropOffLocationItem from '../components/DropOffLocationItem';
 import { PlasticStackParamList } from '../PlasticStackNavigator';
+import QRCode from 'react-native-qrcode-svg';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUserPlasticDataState } from 'store/plastic/userPlasticSlice';
 
 const PlasticQRCodeScreen = () => {
   const { params } = useRoute<RouteProp<PlasticStackParamList, 'PlasticQRCode'>>();
+  const userPlasticData = useSelector(selectUserPlasticDataState);
   const { dispatch } = useNavigation<NavigationProp<PlasticStackParamList>>();
+  console.log(userPlasticData.plasticQrCode);
+  const [id, setId] = useState(userPlasticData.plasticQrCode);
 
   return (
     <ScrollView className="bg-milkWhite">
@@ -24,7 +31,7 @@ const PlasticQRCodeScreen = () => {
         <Text className={text({ type: 'l13', class: 'mb-2 mt-12' })}>
           Your drop off location is
         </Text>
-        <DropOffLocationItem />
+        <DropOffLocationItem onPressLocation={() => console.log('Something')} />
         <Pressable
           onPress={() => {
             dispatch(StackActions.pop(2));
@@ -34,12 +41,13 @@ const PlasticQRCodeScreen = () => {
         <Text className={text({ type: 'l13', class: 'mt-12 mb-7 text-center' })}>
           Present your QR code at drop off location{' '}
         </Text>
-        <View style={{ width: width - 32, height: width - 32 }} className="self-center">
-          <Image
+        <View className="self-center">
+          {/* <Image
             resizeMode="stretch"
             className="w-full h-full border-[7px] rounded-xl self-center"
             source={{ uri: params?.plasticInformation?.qr_code }}
-          />
+          /> */}
+          <QRCode value={id} size={300} />
         </View>
       </View>
     </ScrollView>

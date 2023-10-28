@@ -14,9 +14,11 @@ import { text } from 'theme/text';
 import { parseApiError } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
+import CustomErrorModal from 'components/ErrorModal/errorModal';
 
 const EnterReferralCodeScreen = () => {
   LayoutAnimation.easeInEaseOut();
+  const [modalVisible, setModalVisible] = useState(false);
   const [referralCode, setReferralCode] = useState('');
   const { navigate } = useNavigation<NavigationProp<AuthStackParamList>>();
   const { mutate, error } = useMutation(Api.setReferralCode);
@@ -28,8 +30,12 @@ const EnterReferralCodeScreen = () => {
     mutate(
       { referralCode },
       {
-        onSuccess: () => {
+        onSuccess: result => {
+          console.log(result);
           navigate('ReferralCodeSuccessful');
+        },
+        onError: error => {
+          setModalVisible(true);
         },
       },
     );
@@ -45,10 +51,17 @@ const EnterReferralCodeScreen = () => {
         <Text className={text({ type: 'm18', class: 'text-white text-center mb-8' })}>
           Referral code
         </Text>
-
         <View className="flex-row self-center">
-          <Image
+          {/* <Image
             source={{ uri: userImage }}
+            className={
+              isVisibleKeyboard
+                ? 'w-20 h-20 rounded-3xl border-4 border-white -rotate-30'
+                : 'w-28 h-28 rounded-3xl border-4 border-white -rotate-30'
+            }
+          /> */}
+          <Image
+            source={userImage}
             className={
               isVisibleKeyboard
                 ? 'w-20 h-20 rounded-3xl border-4 border-white -rotate-30'
@@ -90,8 +103,13 @@ const EnterReferralCodeScreen = () => {
           />
           <View style={{ height: isVisibleKeyboard ? 0 : 16 }} />
         </View>
+        <CustomErrorModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          errorText={'Incorrect Referral code!'}
+          buttonTitle="CLOSE"
+        />
       </KeyboardAvoidingView>
-      <ErrorModal errorText={parseApiError(error)} />
     </View>
   );
 };

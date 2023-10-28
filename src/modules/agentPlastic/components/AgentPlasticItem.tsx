@@ -19,13 +19,8 @@ const AgentPlasticItem = ({
 }: Props) => (
   <View className="flex-row items-center justify-evenly p-2 rounded-xl border-[0.3px] border-black bg-cultured mb-4">
     <View className="bg-blue flex-row rounded-lg ml-2">
-      <Image
-        resizeMode="contain"
-        className="h-28 w-20 my-2"
-        source={{
-          uri: image,
-        }}
-      />
+      <Image resizeMode="contain" className="h-28 w-20 my-2" source={image} />
+      {/* <Image resizeMode="contain" className="h-28 w-20 my-2" source={{uri: image}} /> */}
       <View style={{ backgroundColor: '#EFF9FF' }} className="justify-center items-center px-5">
         <View className="border-[0.3px] border-black-o-50 rounded-xl w-12">
           <Text className={text({ type: 'l24', class: 'p-2 text-center' })}>{count}</Text>
@@ -49,7 +44,7 @@ const AgentPlasticItem = ({
     </View>
     <View className="flex-1">
       <Text className={text({ type: 'l16', class: 'text-center text-black-o-70' })}>
-        {totalPrice}Cfa
+        {count * totalPrice}Cfa
       </Text>
     </View>
   </View>

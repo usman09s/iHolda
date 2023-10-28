@@ -23,8 +23,12 @@ const UserWaitListScreen = () => {
       <ScrollView className="flex-1" contentContainerStyle={{ flex: 1 }}>
         <View className="flex-1 justify-evenly">
           <View>
-            <Image
+            {/* <Image
               source={{ uri: userImage }}
+              className="w-28 h-28 rounded-full border-4 border-jupiter self-center"
+            /> */}
+            <Image
+              source={userImage}
               className="w-28 h-28 rounded-full border-4 border-jupiter self-center"
             />
             <View className="border-b1 border-white-o-60 rounded-full flex-row py-4 justify-between px-7 mt-6">

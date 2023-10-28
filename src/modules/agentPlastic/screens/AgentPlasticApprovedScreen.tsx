@@ -23,7 +23,8 @@ const AgentPlasticApprovedScreen = () => {
       <View className="flex-1 items-center justify-evenly">
         <View className="items-center">
           <Text className={text({ type: 'l16', class: 'text-center mb-12' })}>
-            You approved {params.totalPlastic} Plastic drop off for {params.username}
+            You approved {params.totalPlastic} Plastic drop off for @
+            {params.username ? params.username : 'bayuga'}
           </Text>
           <Icons.ApprovedCircleIcon />
           <Text className={text({ type: 'b34', class: 'text-center text-green-500 mt-12' })}>

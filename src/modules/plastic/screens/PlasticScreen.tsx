@@ -19,6 +19,10 @@ import { units } from 'utils/helpers';
 
 import PlasticItem from '../components/PlasticItem';
 import { PlasticStackParamList } from '../PlasticStackNavigator';
+const Bottle = require('../../../../assets/images/bottleLabel.png');
+const DefaultImage = require('../../../../assets/images/bottle.png');
+const BiggerBottle = require('../../../../assets/images/biggerBottle.png');
+const BiggestBottle = require('../../../../assets/images/biggestBottle.png');
 
 const PlasticScreen = () => {
   const dispatch = useAppDispatch();
@@ -32,6 +36,19 @@ const PlasticScreen = () => {
       dispatch(setPlasticsSize(result));
     },
   });
+
+  const getImageForSize = size => {
+    console.log('Size', size);
+    if (size === '1L') {
+      return Bottle;
+    } else if (size === '1.5L') {
+      return BiggerBottle;
+    } else if (size === '5L') {
+      return BiggestBottle;
+    } else {
+      return DefaultImage;
+    }
+  };
 
   return (
     <View className="flex-1 bg-white justify-between py-4">
@@ -62,7 +79,7 @@ const PlasticScreen = () => {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <PlasticItem
-              image={item.image}
+              image={getImageForSize(item.size)}
               count={item.count}
               onPressDecrease={() => {
                 console.log('Decrease action for plastic item:', item._id);

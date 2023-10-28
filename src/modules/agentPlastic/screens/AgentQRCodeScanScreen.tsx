@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
@@ -6,14 +6,21 @@ import Button from 'components/Button';
 import Header from 'components/Header/Header';
 import { text } from 'theme/text';
 import { width } from 'utils/helpers';
+import axios from 'axios';
 
 import { AgentPlasticStackParamList } from '../AgentPlasticNavigator';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { setScannedPlastic, setUserPlasticAgent } from 'store/agentPlastic/agentPlasticSlice';
+import ErrorModal from 'components/ErrorModal';
 
 const AgentQRCodeScanScreen = () => {
   const isFocused = useIsFocused();
-
+  const dispatch = useAppDispatch();
   const { navigate } = useNavigation<NavigationProp<AgentPlasticStackParamList>>();
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [qrCode, setQrCode] = useState('');
+  const [errorText, setErrorText] = useState();
+  const plasticAgent = '652e726f397bc8f89cbd5a6c';
   const scanResult = useRef<
     { encrypted_data: string; query_id: string; plastic_id: string } | undefined
   >();
@@ -30,20 +37,34 @@ const AgentQRCodeScanScreen = () => {
 
   const sizes = { width: width - 56, height: width - 56 };
 
-  const onBarCodeScanned = (result: BarCodeScanningResult) => {
-    let parsedResult = JSON.parse(result.data);
-
-    parsedResult = {
-      query_id: parsedResult.query_id,
-      encrypted_data: parsedResult.data,
-      plastic_id: parsedResult.plastic,
-    };
-
-    if (scanResult.current?.plastic_id !== parsedResult.plastic_id && parsedResult) {
-      navigate('AgentPlasticConfirmation', parsedResult);
+  const onBarCodeScanned = async ({ type, data }: any) => {
+    if (data) {
+      setQrCode(data);
     }
+    console.log(qrCode);
+  };
 
-    scanResult.current = parsedResult;
+  const handleContinuePress = async () => {
+    try {
+      const apiUrl = `http://ihold.yameenyousuf.com/api/plastic/scan/${qrCode}/${plasticAgent}`;
+      const response = await axios.get(apiUrl);
+
+      if (response.status === 200) {
+        const result = response.data;
+        console.log('API response:', result);
+        if (result.message === 'qr code verified') {
+          dispatch(setScannedPlastic(result.data));
+          dispatch(setUserPlasticAgent(result.data));
+          navigate('AgentPlasticConfirmation', result.data);
+          return result;
+        } else {
+          setErrorText('Try Again');
+          console.error('API request failed:', result.error);
+        }
+      }
+    } catch (error: any) {
+      setErrorText('Try Again');
+    }
   };
 
   return (
@@ -73,12 +94,9 @@ const AgentQRCodeScanScreen = () => {
           })}>
           Scan the user’s QR code to check and confirm their plastic drop off.
         </Text>
-        <Button
-          title="Scan Code"
-          customContainer="bg-saffron mt-6"
-          onPress={() => navigate('AgentPlasticConfirmation')}
-        />
+        <Button title="Scan Code" customContainer="bg-saffron mt-6" onPress={handleContinuePress} />
       </View>
+      <ErrorModal errorText={errorText} />
     </View>
   );
 };

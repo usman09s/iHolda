@@ -28,6 +28,7 @@ import { parseApiError, units } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import { useAnimatedComponentStyle } from '../hooks/useAnimatedComponentStyle';
+import Header from 'components/Header/Header';
 
 const UserAvatarAndUsernameUpdate = () => {
   const dispatch = useAppDispatch();
@@ -49,10 +50,19 @@ const UserAvatarAndUsernameUpdate = () => {
     [uploadImage.error, updateUsername.error],
   );
 
+  const onUsernameChange = newUsername => {
+    if (!newUsername.startsWith('@')) {
+      setUsername(`@${newUsername}`);
+    } else {
+      setUsername(newUsername);
+    }
+  };
+
   const onContinue = async () => {
+    const cleanedUsername = username.replace('@', '');
     dispatch(
       setUserImageAndUsername({
-        username,
+        username: cleanedUsername,
         image: pickedImage,
       }),
     );
@@ -72,13 +82,16 @@ const UserAvatarAndUsernameUpdate = () => {
     //   .catch(() => null);
   };
 
-  const isContinueButtonDisabled = !username || !pickedImage;
+  const isContinueButtonDisabled = !username || /\s/.test(username) || !pickedImage;
   LayoutAnimation.easeInEaseOut();
 
   return (
     <View
       className="flex-1 bg-blue justify-center px-7"
       style={{ justifyContent: isVisibleKeyboard ? 'flex-end' : 'center' }}>
+      <View style={{ bottom: 60 }}>
+        <Header showBackIcon backIconColor="white" />
+      </View>
       <KeyboardAvoidingView
         behavior={Platform.select({
           ios: 'position',
@@ -127,8 +140,9 @@ const UserAvatarAndUsernameUpdate = () => {
               Username
             </Text>
             <Input
-              onChangeText={setUsername}
-              placeholder="like @bayuga"
+              onChangeText={onUsernameChange}
+              value={username}
+              placeholder="e.g bayuga"
               customInputClass="text-20"
               placeholderTextColor={colors['white-o-60']}
             />

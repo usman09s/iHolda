@@ -47,6 +47,7 @@ const DropOffLocationListScreen = () => {
           placeholder="search town"
           placeholderTextColor={colors['black-o-30']}
           className="border-b1 border-black-o-10 rounded-xl text-black py-4"
+          style={{ marginHorizontal: 35 }}
         />
       </View>
       {isLoading || (!data && <ActivityIndicator className="mb-4 flex-1" color={colors.blue} />)}

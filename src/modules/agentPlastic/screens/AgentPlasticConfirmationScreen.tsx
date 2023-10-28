@@ -7,12 +7,20 @@ import colors from 'theme/colors';
 import AgentPlasticItem from '../components/AgentPlasticItem';
 import TotalResultBar from '../components/TotalResultBar';
 import { useAgentPlasticConfirmationActions } from '../hooks/useAgentPlasticConfirmationActions';
+import { agentPlasticSizeSelector } from 'store/agentPlastic/agentSelectors';
+import { useSelector } from 'react-redux';
+const Bottle = require('../../../../assets/images/bottleLabel.png');
+const DefaultImage = require('../../../../assets/images/bottle.png');
+const BiggerBottle = require('../../../../assets/images/biggerBottle.png');
+const BiggestBottle = require('../../../../assets/images/biggestBottle.png');
 
 const AgentPlasticConfirmationScreen = () => {
+  const agentPlasticSizes = useSelector(agentPlasticSizeSelector);
+  console.log(agentPlasticSizes);
   const {
     username,
     plastics,
-    isLoading,
+    // isLoading,
     errorMessage,
     buttonLoading,
     onPressConfirm,
@@ -22,21 +30,33 @@ const AgentPlasticConfirmationScreen = () => {
     agentPlasticCountTotal,
   } = useAgentPlasticConfirmationActions();
 
+  const getImageForSize = size => {
+    if (size === '1L') {
+      return Bottle;
+    } else if (size === '1.5L') {
+      return BiggerBottle;
+    } else if (size === '5L') {
+      return BiggestBottle;
+    } else {
+      return DefaultImage;
+    }
+  };
+
   return (
     <View className="px-7 bg-white flex-1">
-      <Header title={username} showBackIcon />
-      {isLoading && <ActivityIndicator color={colors.saffron} size={'large'} className="mt-4" />}
+      <Header title={username ? username : 'bayuga'} showBackIcon />
+      {/* {isLoading && <ActivityIndicator color={colors.saffron} size={'large'} className="mt-4" />} */}
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingVertical: 32 }}
         className="flex-1"
         showsVerticalScrollIndicator={false}
-        data={[...plastics] || []}
+        data={agentPlasticSizes || []}
         renderItem={({ item }) => (
           <View className="flex-grow">
             <AgentPlasticItem
-              image={item.image}
+              image={getImageForSize(item.size)}
               count={item.quantity}
-              totalPrice={item.price}
+              totalPrice={item.perUnitPrice}
               onPressDecrease={() => onPressDecrease(item.size)}
               onPressIncrease={() => onPressIncrease(item.size)}
             />
