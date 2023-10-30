@@ -16,13 +16,14 @@ import MomentCameraHeader from '../components/MomentCameraHeader';
 import RecordButton from '../components/RecordButton';
 import { useSelfieActions } from '../hooks/useSelfieActions';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
+import { MatchedUserType } from 'types/MomentsTypes';
 
-const MomentsSelfieScreen = () => {
+const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } }) => {
   const isFocused = useIsFocused();
   const caption = useSelector(captionSelector);
   const moments = useSelector(allMomentsSelector);
   const selectedMoment = useSelector(selectedMomentSelector);
-  const matchedUser = useSelector(matchedUserSelector);
+  const matchedUser = route?.params;
   const { goBack, navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const {
     sizes,
@@ -46,28 +47,29 @@ const MomentsSelfieScreen = () => {
         className="overflow-hidden rounded-[40px]  mt-4 border-white border-2">
         <MomentCameraHeader
           goBack={goBack}
-          matchedUserUsername={matchedUser?.user.username || ''}
+          matchedUserUsername={matchedUser?.user.userName || ''}
           selectedMomentId={selectedMoment?.id}
           onDeleteMoment={() => {
-            alert('dd');
             selectedMoment && onDeleteMoment(selectedMoment);
           }}
         />
         <View style={{ height: sizes.cameraHeight }}>
           {isFocused && !selectedMoment && showCamera && (
-            <Camera
-              ratio={ratio}
-              ref={cameraRef}
-              autoFocus={false}
-              type={CameraType.front}
-              className="w-full h-full z-40"
-            />
+            <View style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%' }}>
+              <Camera
+                ratio={ratio}
+                ref={cameraRef}
+                autoFocus={false}
+                type={CameraType.front}
+                className="w-full h-full"
+              />
+            </View>
           )}
-          {!selectedMoment?.id && (
+          {/* {!selectedMoment?.id && (
             <Text className="absolute text-white z-10 text-32 items-center top-0 bottom-0 left-0 right-0 text-center mt-44">
               {recordTimeCounter}
             </Text>
-          )}
+          )} */}
           {selectedMoment &&
             (selectedMoment.type === 'PHOTO' ? (
               <Image source={{ uri: selectedMoment.localUri }} className="w-full h-full" />
@@ -93,12 +95,12 @@ const MomentsSelfieScreen = () => {
       <MomentCameraBottom
         caption={caption}
         mediaType={mediaType}
-        onPressQuiz={() => navigate('MomentsQuiz')}
+        onPressQuiz={() => matchedUser && navigate('MomentsQuiz', { ...matchedUser })}
         onPressMediaType={setMediaType}
         selectedMoment={selectedMoment}
         onChangeCaption={onChangeCaption}
         onSelectedMoment={onSelectedMoment}
-        onPressNext={() => navigate('MomentsMood')}
+        onPressNext={() => matchedUser && navigate('MomentsMood', { matchedUser })}
         sectionHeight={sizes.cameraBottomComponentHeight}
       />
     </View>

@@ -14,17 +14,18 @@ import MomentsSelfieScreen from './screens/MomentsSelfieScreen';
 import MomentsUploadScreen from './screens/MomentsUploadScreen';
 import PostCameraScreen from './screens/PostCameraScreen';
 import PostPreviewScreen from './screens/PostPreviewScreen';
+import { MatchedUserType, MomentsMoodParams } from 'types/MomentsTypes';
 
 export type MomentsStackParamList = {
   PostCamera: undefined;
   PostPreview: undefined;
-  MomentsMood: undefined;
-  MomentsQuiz: undefined;
-  MomentsMatch: undefined;
+  MomentsMood: undefined | MomentsMoodParams;
+  MomentsQuiz: undefined | MatchedUserType;
+  MomentsMatch: undefined | MatchedUserType;
   MomentsQrScan: undefined;
   MomentsQrCode: undefined;
-  MomentsSelfie: undefined;
-  MomentsUpload: undefined;
+  MomentsSelfie: undefined | MatchedUserType;
+  MomentsUpload: undefined | MatchedUserType;
   MomentDetails: undefined;
 };
 

@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { QUIZ_ID } from 'modules/moments/constants';
 import { DecodePlasticsQrResponseType } from 'types/AgentPlasticTypes';
 import {
   LoginParameters,
@@ -17,6 +18,7 @@ import {
   DropOffLocationItemType,
   PlasticItemType,
 } from 'types/PlasticTypes';
+import { Quiz } from 'types/QuizTypes';
 import wretch from 'wretch';
 
 class ApiClass {
@@ -489,35 +491,20 @@ class ApiClass {
 
   postMeetup = async ({ queryId }: { queryId: string }): Promise<PostMomentsResponse> =>
     await this.externalApi
-      .url('meetups/?latitude=35.6762&longitude=139.6503')
+      .url(`user/qr?q=${queryId}`)
       .headers({
         ...this._getAuthorization(this.token),
       })
-      .post({
-        key: 'iHolda_Secret_Key',
-        query_id: queryId,
-      })
+      .get()
       .json(result => result);
 
-  postMoments = async ({
-    caption,
-    moments,
-    meetupId,
-  }: {
-    meetupId: number;
-    caption: string;
-    moments: { file: string }[];
-  }): Promise<PostMomentsResponse> =>
+  postMoments = async (reqBody: FormData): Promise<PostMomentsResponse> =>
     await this.externalApi
-      .url('moments/')
+      .url('met/')
       .headers({
         ...this._getAuthorization(this.token),
       })
-      .post({
-        caption,
-        moments,
-        meetup_id: meetupId,
-      })
+      .post(reqBody)
       .json(result => result);
 
   getMoments = async (): Promise<GetMomentsResponseType[]> =>
@@ -532,6 +519,14 @@ class ApiClass {
   getCommunityPointsRank = async (): Promise<CommunityRankItemType[]> =>
     await this.externalApi
       .url('wallets/get-by/?community-points=highest&period=month')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getQuizs = async (): Promise<{ data: { quiz: Quiz } }> =>
+    await this.externalApi
+      .url('quiz/' + QUIZ_ID)
       .headers({
         ...this._getAuthorization(this.token),
       })

@@ -7,22 +7,39 @@ import Input from 'components/Input';
 
 import PostPreviewSideActionBar from '../components/PostPreviewSideActionBar';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
+import { useSelector } from 'react-redux';
+import { allMomentsSelector } from 'store/moments/momentsSelectors';
+import { ResizeMode, Video } from 'expo-av';
 
 const PostPreviewScreen = () => {
   const { dispatch, goBack } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const { bottom } = useSafeAreaInsets();
+  const moments = useSelector(allMomentsSelector);
+  console.log(
+    '🚀 ~ file: PostPreviewScreen.tsx:18 ~ PostPreviewScreen ~ moments:',
+    moments[0].localUri,
+  );
 
   return (
     <View className="flex-1 bg-black justify-center ">
-      <ImageBackground
+      <View style={{ flex: 1, width: '100%', zIndex: 9999 }}>
+        <Video
+          isLooping
+          shouldPlay={true}
+          className="w-full h-full"
+          resizeMode={ResizeMode.COVER}
+          source={{ uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+        />
+      </View>
+      {/* <ImageBackground
         resizeMode="cover"
         className="flex-1 w-full"
-        source={{ uri: 'https://i.pravatar.cc/1024?img=24' }}>
+        source={{ uri: moments[0].localUri }}>
         <View className="px-6">
           <Header showBackIcon backIconColor="white" />
         </View>
         <PostPreviewSideActionBar />
-      </ImageBackground>
+      </ImageBackground> */}
       <View
         className="flex-row w-full px-6"
         style={{ marginBottom: bottom || 16, marginTop: bottom || 16 }}>

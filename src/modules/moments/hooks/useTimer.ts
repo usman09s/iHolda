@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 
-export const useTimer = () => {
+export const useTimer = ({ initialSeconds = 80, started = false }) => {
   const [isFinished, setIsFinished] = useState(false);
-  const [minutes, setMinutes] = useState(1);
-  const [seconds, setSeconds] = useState(20);
+  const totalSeconds = initialSeconds;
+
+  const [seconds, setSeconds] = useState(initialSeconds % 60);
+  const [minutes, setMinutes] = useState(Math.floor(initialSeconds / 60));
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -27,5 +29,6 @@ export const useTimer = () => {
   return {
     isFinished,
     counter: `${formattedMinutes}:${formattedSeconds}`,
+    totalSeconds: totalSeconds,
   };
 };

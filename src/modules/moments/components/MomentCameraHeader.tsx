@@ -24,7 +24,7 @@ const MomentCameraHeader = ({
         <View className="justify-center items-center left-0 right-0 top-0 bottom-0 absolute z-10">
           <Text className={text({ type: 'b12', class: 'text-white text-center' })}>
             Moments shared with{'\n'}
-            {matchedUserUsername}
+            @{matchedUserUsername}
           </Text>
         </View>
       }
@@ -32,7 +32,7 @@ const MomentCameraHeader = ({
       onPressRight={onDeleteMoment}
       leftComponent={<Icons.CrossIcon color="white" className="ml-4 z-20" />}
       rightComponent={
-        selectedMomentId && <Icons.TrashIcon color="white" className="mr-5 z-20 bg-red-700" />
+        selectedMomentId && <Icons.TrashIcon color="white" className="mr-5 z-20" />
       }
     />
   </View>

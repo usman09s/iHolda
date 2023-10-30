@@ -1,16 +1,29 @@
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Image, LayoutChangeEvent, ScrollView, Text, View } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Header from 'components/Header/Header';
 import Icons from 'components/Icons';
 import { useQuery } from 'react-query';
 import Api from 'services/Api';
 import { text } from 'theme/text';
+import QRCode from 'react-native-qrcode-svg';
 
 import { MomentsStackParamList } from '../MomentsStackNavigator';
+import { useState } from 'react';
+import { getImageLink } from '../helpers/imageHelpers';
 
 const MomentsQRCodeScreen = () => {
+  const [viewHeight, setViewHeight] = useState(0);
   const { goBack } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const { data, isLoading } = useQuery('currentUserProfile', Api.getUserProfile);
+
+  const profilePhoto = data?.data.user.photo;
+  const qrCode = data?.data.user.userQrCode;
+  const username = data?.data.user.userName;
+
+  const handleLayout = (event: LayoutChangeEvent) => {
+    const { width } = event.nativeEvent.layout;
+    setViewHeight(width);
+  };
 
   return (
     <ScrollView className="bg-black px-7 pb-6 flex-1" contentContainerStyle={{ flex: 1 }}>
@@ -20,21 +33,16 @@ const MomentsQRCodeScreen = () => {
         onPressRight={goBack}
         rightComponent={<Icons.ScanQrCodeIcon />}
       />
-      <View className="bg-white  rounded-2xl px-7 py-6 mt-7">
+      <View className="bg-white  rounded-2xl px-7 py-6 mt-16">
         <View className="flex-row items-center">
-          <Image
-            className="h-14 w-14 rounded-full mr-2"
-            source={{ uri: data?.user_profile_image.image }}
-          />
-          <Text className={text({ type: 'b16' })}>{data?.user.username}</Text>
+          {profilePhoto ? (
+            <Image className="h-14 w-14 rounded-full mr-2" source={{ uri: getImageLink(profilePhoto) }} />
+          ) : null}
+          <Text className={text({ type: 'b16' })}>{username}</Text>
           <Icons.SmallVerifiedCircleIcon className="mb-2" />
         </View>
-        <View className="h-[300px] rounded-xl mt-4 ">
-          {isLoading ? (
-            <ActivityIndicator size={'small'} />
-          ) : (
-            <Image source={{ uri: data?.qr_code }} className="h-full w-full" resizeMode="contain" />
-          )}
+        <View onLayout={handleLayout} className="w rounded-xl mt-4 w-full">
+          {isLoading ? <ActivityIndicator size={'small'} /> : <QRCode size={viewHeight} value={qrCode} />}
         </View>
 
         <View className="mt-3">

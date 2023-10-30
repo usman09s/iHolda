@@ -35,7 +35,7 @@ const Header = ({
 
   return (
     <View
-      className="flex-row items-center content-center justify-between h-10"
+      className="flex-row items-center content-center justify-between"
       style={{ marginTop: customTopHeight || top + 8, zIndex: 10 }}>
       <View className="flex-row  z-20">
         {showBackIcon && !leftComponent && (

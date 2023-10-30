@@ -6,11 +6,14 @@ const usePickImage = () => {
   const [pickedImage, setPickedImage] = useState('');
   const [pickingLoading, setPickingLoading] = useState(false);
 
-  const pickImage = async () => {
+  const pickImage = async (
+    mediaTypes: ImagePicker.MediaTypeOptions = ImagePicker.MediaTypeOptions.Images,
+    allowsEditing =true
+  ) => {
     setPickingLoading(true);
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      mediaTypes,
+      allowsEditing,
       base64: true,
       aspect: [1, 1],
       quality: 0.7,

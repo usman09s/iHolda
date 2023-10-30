@@ -12,29 +12,62 @@ import { text } from 'theme/text';
 
 import MoodSlider from '../components/MoodSlider';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
+import { MatchedUserType, MomentsMoodParams } from 'types/MomentsTypes';
+import { getImageLink } from '../helpers/imageHelpers';
+import { EMOTIONS } from '../constants';
 
-const MomentsMoodScreen = () => {
+const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } }) => {
   const dispatch = useDispatch();
   const pressedBtn = useRef<'SKIP' | 'DONE'>();
-  const matchedUser = useSelector(matchedUserSelector);
+  const matchedUser = route?.params.matchedUser;
+
   const { mutate, isLoading } = useMutation(Api.postMoments);
   const postMomentsParams = useSelector(postMomentsParamsSelector);
   const { data } = useQuery('currentUserProfile', Api.getUserProfile);
   const { reset } = useNavigation<NavigationProp<MomentsStackParamList>>();
 
   const goToMomentsUpload = () => {
-    mutate(
-      { ...postMomentsParams },
-      {
-        onSuccess: () => {
-          reset({
-            index: 0,
-            routes: [{ name: 'MomentsUpload' }],
-          });
-          dispatch(resetState());
-        },
+    if (!matchedUser || !data) return;
+
+    let formdata = new FormData();
+    const mediaUri = postMomentsParams.moments[0].file;
+    const mediaType = postMomentsParams.moments[0].type.toLowerCase();
+    const media: any = {
+      uri: mediaUri,
+      type: mediaType,
+      name: 'moment.jpeg',
+    };
+
+    const moodScale = EMOTIONS.findIndex(e => e === postMomentsParams.mood) + 1;
+
+    // const users: any = [{ user: data?.data.user._id }, {user: matchedUser?.user._id}];
+
+    formdata.append('post[text]', postMomentsParams.caption);
+    formdata.append('post[visibility]', 'Public');
+    formdata.append('post[media]', media, 'file');
+    formdata.append('post[subText]', '');
+    formdata.append('post[mediaType]', mediaType);
+    formdata.append('users[0][user]', data?.data.user._id);
+    formdata.append('users[1][user]', matchedUser?.user._id);
+    // formdata.append('users', users);
+    formdata.append('mood', moodScale.toString());
+
+    reset({
+      index: 0,
+      routes: [{ name: 'MomentsUpload', params: matchedUser }],
+    });
+    dispatch(resetState());
+    return;
+
+    mutate(formdata, {
+      onSuccess: data => {
+        reset({
+          index: 0,
+          routes: [{ name: 'MomentsUpload' }],
+        });
+        dispatch(resetState());
       },
-    );
+    });
   };
 
   return (
@@ -42,7 +75,7 @@ const MomentsMoodScreen = () => {
       <Header
         centerComponent={
           <Text className={text({ type: 'r16', class: 'text-white text-center px-10' })}>
-            You met {matchedUser?.user.username} in person for the first time. {'\n \n'}
+            You met @{matchedUser?.user.userName} in person for the first time. {'\n \n'}
           </Text>
         }
       />
@@ -53,11 +86,11 @@ const MomentsMoodScreen = () => {
           </Text>
           <View className="flex-row self-center mb-20 mt-10">
             <View className="overflow-hidden border-white rounded-3xl border-4  -rotate-30 ">
-              <Image source={{ uri: data?.user_profile_image.image }} className="w-20 h-20" />
+              <Image source={{ uri: getImageLink(data?.data.user.photo) }} className="w-20 h-20" />
             </View>
             <View className="overflow-hidden border-white  rounded-3xl border-4   -left-8 top-2 rotate-30">
               <Image
-                source={{ uri: matchedUser?.user_profile_image.image }}
+                source={{ uri: getImageLink(matchedUser?.user_profile_image.image) }}
                 className="w-20 h-20"
               />
             </View>

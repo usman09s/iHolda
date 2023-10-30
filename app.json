@@ -11,9 +11,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -33,13 +31,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-    },
+    "extra": {},
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "updates": {
-    },
+    "updates": {},
     "plugins": [
       [
         "expo-image-picker",
@@ -57,6 +53,14 @@
         "expo-camera",
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access camera for scanning qr code."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "isAccessMediaLocationEnabled": true
         }
       ]
     ]

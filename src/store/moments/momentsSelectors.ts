@@ -22,9 +22,11 @@ export const postMomentsParamsSelector = createSelector(
   allMomentsSelector,
   captionSelector,
   meetupIdSelector,
-  (moments, caption, meetupId = '') => ({
+  moodSelector,
+  (moments, caption, meetupId = 0, mood) => ({
     caption,
     meetupId,
-    moments: moments.map(moment => ({ file: moment.base64 })),
+    moments: moments.map(moment => ({ file: moment.localUri, type: moment.type })),
+    mood,
   }),
 );

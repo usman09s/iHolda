@@ -19,10 +19,14 @@ import { text } from 'theme/text';
 import { formatDateDifference, units, width } from 'utils/helpers';
 
 import { MomentsStackParamList } from '../MomentsStackNavigator';
+import { MatchedUserType } from 'types/MomentsTypes';
+import { getImageLink } from '../helpers/imageHelpers';
 
-const MomentsUploadScreen = () => {
+const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } }) => {
   const { top, bottom } = useSafeAreaInsets();
-  const matchedUser = useSelector(matchedUserSelector);
+  // const matchedUser = useSelector(matchedUserSelector);
+  const matchedUser = route?.params;
+
   const moments = useQuery('getMoments', Api.getMoments);
   const { data } = useQuery('currentUserProfile', Api.getUserProfile);
   const { dispatch } = useNavigation<NavigationProp<MomentsStackParamList>>();
@@ -42,14 +46,14 @@ const MomentsUploadScreen = () => {
         All Done!
       </Text>
       <Text className={text({ type: 'r16', class: 'text-white text-center px-10 mb-3' })}>
-        You met {matchedUser?.user.username} in person for the first time.
+        You met {matchedUser?.user.userName} in person for the first time.
       </Text>
       <View className="flex-row self-center mb-2">
         <View className="overflow-hidden border-white rounded-2xl border-4  -rotate-30 ">
-          <Image source={{ uri: data?.user_profile_image.image }} className="w-16 h-16" />
+          <Image source={{ uri: getImageLink(data?.data.user.photo) }} className="w-16 h-16" />
         </View>
         <View className="overflow-hidden border-white  rounded-2xl border-4 -left-8 top-2 rotate-30">
-          <Image source={{ uri: matchedUser?.user_profile_image.image }} className="w-16 h-16" />
+          <Image source={{ uri: getImageLink(matchedUser?.user_profile_image.image) }} className="w-16 h-16" />
         </View>
       </View>
       <View className="h-3 bg-white rounded-full overflow-hidden  my-8 mx-10">

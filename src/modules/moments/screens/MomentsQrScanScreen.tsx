@@ -19,23 +19,40 @@ const MomentsQrScanScreen = () => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   useQuery('currentUserProfile', Api.getUserProfile);
-  const scanResultRef = useRef<BarCodeScanningResult>();
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const { navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
 
   const { mutate, isLoading } = useMutation(Api.postMeetup, {
-    onSuccess: data => {
-      if (!data.met_with) {
+    onError: error => {
+      console.error(error);
+    },
+    onSuccess: ({ data }) => {
+      console.log("🚀 ~ file: MomentsQrScanScreen.tsx:30 ~ MomentsQrScanScreen ~ data:", data)
+      if (!data.metBefore) {
+        navigate('MomentsMatch', {
+          id: 12343,
+          user: data.user,
+          location_name: 'No Location',
+          user_profile_image: {
+            id: 4545345,
+            image: data.user.photo,
+            uploaded_at: data.user.updatedAt,
+          },
+        });
         return;
       }
 
       dispatch(
         setMatchedUser({
-          meetupId: data.id,
-          id: data.met_with.id,
-          user: data.met_with.user,
-          location_name: data.met_with.location_name,
-          user_profile_image: data.met_with.user_profile_image,
+          meetupId: 123,
+          id: 12343,
+          user: data.user,
+          location_name: 'No Location',
+          user_profile_image: {
+            id: 123,
+            image: '',
+            uploaded_at: 'fdaskfjdsakf',
+          },
         }),
       );
       navigate('MomentsMatch');
@@ -45,12 +62,9 @@ const MomentsQrScanScreen = () => {
   const sizes = { width: width - 56, height: width - 56 };
 
   const onBarCodeScanned = (result: BarCodeScanningResult) => {
-    const matchedUserQueryId = JSON.parse(result.data).query_id;
-    if (scanResultRef.current !== matchedUserQueryId) {
-      mutate({ queryId: matchedUserQueryId });
-    }
-
-    scanResultRef.current = matchedUserQueryId;
+    if (isLoading) return;
+    const matchedUserQueryId = result.data;
+    mutate({ queryId: matchedUserQueryId });
   };
 
   useEffect(() => {
@@ -70,7 +84,7 @@ const MomentsQrScanScreen = () => {
           style={sizes}
           className="overflow-hidden rounded-xl self-center mt-4 border-white border-b1">
           {permission?.granted && isFocused && (
-            <Camera onBarCodeScanned={onBarCodeScanned} style={sizes} />
+            <Camera ratio="4:3" onBarCodeScanned={onBarCodeScanned} style={sizes} />
           )}
           {isLoading && (
             <ActivityIndicator

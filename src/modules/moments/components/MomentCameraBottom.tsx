@@ -90,11 +90,11 @@ const MomentCameraBottom = ({
               </Text>
             </Pressable>
           </View>
-          <Pressable onPress={onPressNext}>
+          {/* <Pressable onPress={onPressNext}>
             <Text className={text({ type: 'm18', class: 'text-white mr-5 text-white-o-60' })}>
               Next
             </Text>
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
     )}
