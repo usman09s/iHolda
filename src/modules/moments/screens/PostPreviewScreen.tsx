@@ -15,7 +15,7 @@ import { MomentsStackParamList } from '../MomentsStackNavigator';
 import { useDispatch, useSelector } from 'react-redux';
 import { allMomentsSelector, postMomentsParamsSelector } from 'store/moments/momentsSelectors';
 import { ResizeMode, Video } from 'expo-av';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { resetState } from 'store/moments/momentsSlice';
 import { PostScreenParams } from 'types/MomentsTypes';
 import { useMutation } from 'react-query';
@@ -23,6 +23,8 @@ import Api from 'services/Api';
 import { TEXT_POST_COLOR } from '../constants';
 
 const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) => {
+  const [caption, setCaption] = useState('');
+
   const { dispatch: dispatchNavigation, goBack } =
     useNavigation<NavigationProp<MomentsStackParamList>>();
   const { bottom } = useSafeAreaInsets();
@@ -122,7 +124,12 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
       <View
         className="flex-row w-full px-6"
         style={{ marginBottom: bottom || 16, marginTop: bottom || 16 }}>
-        <Input placeholder="Add caption" customInputClass="flex-1 mr-4" />
+        <Input
+          value={caption}
+          onChangeText={setCaption}
+          placeholder="Add caption"
+          customInputClass="flex-1 mr-4"
+        />
         <Pressable
           onPress={makePost}
           className="bg-blue rounded-full w-12 h-12 items-center justify-center">
