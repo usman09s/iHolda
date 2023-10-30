@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { allMomentsSelector } from 'store/moments/momentsSelectors';
 import { addMoment, resetState } from 'store/moments/momentsSlice';
 import { PostTypes } from 'types/MomentsTypes';
+import { TEXT_POST_COLOR } from '../constants';
 
 const PostCameraScreen = () => {
   const [cameraType, setCameraType] = useState<CameraType>(CameraType.back);
@@ -162,7 +163,7 @@ const PostCameraScreen = () => {
         )}
         {postType === 'Text' && (
           <>
-            <View className="w-full h-full z-40 bg-[#8896cc]"></View>
+            <View className={`w-full h-full z-40 bg-[${TEXT_POST_COLOR}]`}></View>
             <TextInput
               value={postTxt}
               onChangeText={setPostTxt}

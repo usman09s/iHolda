@@ -13,23 +13,58 @@ import Input from 'components/Input';
 import PostPreviewSideActionBar from '../components/PostPreviewSideActionBar';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
 import { useDispatch, useSelector } from 'react-redux';
-import { allMomentsSelector } from 'store/moments/momentsSelectors';
+import { allMomentsSelector, postMomentsParamsSelector } from 'store/moments/momentsSelectors';
 import { ResizeMode, Video } from 'expo-av';
 import { useEffect, useRef } from 'react';
 import { resetState } from 'store/moments/momentsSlice';
 import { PostScreenParams } from 'types/MomentsTypes';
+import { useMutation } from 'react-query';
+import Api from 'services/Api';
+import { TEXT_POST_COLOR } from '../constants';
 
-const PostPreviewScreen = ({ route }: { route: { params: PostScreenParams } }) => {
+const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) => {
   const { dispatch: dispatchNavigation, goBack } =
     useNavigation<NavigationProp<MomentsStackParamList>>();
   const { bottom } = useSafeAreaInsets();
 
-  const { postType, text } = route.params;
+  const { mutate, isLoading } = useMutation(Api.createPost);
+
+  const { postType, text } = route ? route.params : { postType: 'PHOTO', text: '' };
 
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
+  const postMomentsParams = useSelector(postMomentsParamsSelector);
   const moments = useSelector(allMomentsSelector);
+
+  const makePost = () => {
+    let formdata = new FormData();
+    const mediaUri = moments[0].localUri;
+    const mediaType = moments[0].type.toLowerCase();
+    const media: any = {
+      uri: mediaUri,
+      type: mediaType,
+      name: 'moment.jpeg',
+    };
+
+    formdata.append('visibility', 'Public');
+    formdata.append('media', media, 'file');
+    formdata.append('subText', '');
+    formdata.append('hexCode', TEXT_POST_COLOR);
+    formdata.append('text', postMomentsParams.caption);
+
+    mutate(formdata, {
+      onSuccess: data => {
+        console.log('🚀 ~ file: PostPreviewScreen.tsx:59 ~ makePost ~ data:', data);
+        return;
+        dispatchNavigation(StackActions.popToTop());
+        goBack();
+      },
+      onError: err => {
+        console.log('🚀 ~ file: PostPreviewScreen.tsx:63 ~ makePost ~ err:', err);
+      },
+    });
+  };
 
   useEffect(() => {
     return () => {
@@ -50,7 +85,7 @@ const PostPreviewScreen = ({ route }: { route: { params: PostScreenParams } }) =
                 resizeMode={ResizeMode.COVER}
                 // useNativeControls
                 source={{
-                  uri: moments[0].localUri
+                  uri: moments[0].localUri,
                 }}
               />
             ) : postType === 'Photo' ? (
@@ -61,7 +96,8 @@ const PostPreviewScreen = ({ route }: { route: { params: PostScreenParams } }) =
               />
             ) : postType === 'Text' ? (
               <>
-                <View className="w-full h-full bg-[#8896cc] justify-center items-center">
+                <View
+                  className={`w-full h-full bg-[${TEXT_POST_COLOR}] justify-center items-center`}>
                   <Text
                     style={{
                       zIndex: 9999,
@@ -88,10 +124,7 @@ const PostPreviewScreen = ({ route }: { route: { params: PostScreenParams } }) =
         style={{ marginBottom: bottom || 16, marginTop: bottom || 16 }}>
         <Input placeholder="Add caption" customInputClass="flex-1 mr-4" />
         <Pressable
-          onPress={() => {
-            dispatchNavigation(StackActions.popToTop());
-            goBack();
-          }}
+          onPress={makePost}
           className="bg-blue rounded-full w-12 h-12 items-center justify-center">
           <Icons.ArrowLeftIcon color={'white'} className="rotate-180" />
         </Pressable>

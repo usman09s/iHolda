@@ -532,6 +532,15 @@ class ApiClass {
       })
       .get()
       .json(result => result);
+
+  createPost = async (reqBody: FormData): Promise<PostMomentsResponse> =>
+    await this.externalApi
+      .url('post/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post(reqBody)
+      .json(result => result);
 }
 
 const Api = new ApiClass();
