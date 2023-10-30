@@ -9,6 +9,7 @@ import { text } from 'theme/text';
 import { height, width } from 'utils/helpers';
 import * as MediaLibrary from 'expo-media-library';
 import { MediaTypeOptions } from 'expo-image-picker';
+import { Audio } from 'expo-av';
 
 import MeetupAndJobButtons from '../components/MeetupAndJobButtons';
 import PostCameraTabItem from '../components/PostCameraTabItem';
@@ -25,6 +26,7 @@ const PostCameraScreen = () => {
   const [lastMedia, setLastMedia] = useState<string | null>(null);
   const [postTxt, setPostTxt] = useState('');
   const [postType, setPostType] = useState<PostTypes>('Video');
+  const [recording, setRecording] = useState<Audio.Recording>();
 
   const { navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const { bottom } = useSafeAreaInsets();
@@ -71,6 +73,38 @@ const PostCameraScreen = () => {
       navigate('PostPreview', { postType, text: postTxt });
     }, 100);
   };
+
+  async function startRecording() {
+    try {
+      console.log('Requesting permissions..');
+      await Audio.requestPermissionsAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+
+      console.log('Starting recording..');
+      const { recording } = await Audio.Recording.createAsync(
+        Audio.RecordingOptionsPresets.HIGH_QUALITY,
+      );
+      setRecording(recording);
+      console.log('Recording started');
+    } catch (err) {
+      console.error('Failed to start recording', err);
+    }
+  }
+
+  async function stopRecording() {
+    if (!recording) return;
+    console.log('Stopping recording..');
+    setRecording(undefined);
+    await recording?.stopAndUnloadAsync();
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+    });
+    const uri = recording?.getURI();
+    console.log('Recording stopped and stored at', uri);
+  }
 
   useEffect(() => {
     console.log(moments.length);
@@ -186,10 +220,10 @@ const PostCameraScreen = () => {
               </PostCameraTabItem>
             </View>
             <View className="flex-row justify-between items-center mt-9">
-              <View className="items-center">
+              <TouchableOpacity onPress={startRecording} className="items-center">
                 <Icons.MicrophoneIcon />
                 <Text className={text({ type: 'm12', class: 'text-white mt-1.5' })}>Record</Text>
-              </View>
+              </TouchableOpacity>
               <Pressable
                 className="bg-white w-20 h-20 rounded-[40px] items-center justify-center"
                 onPress={
