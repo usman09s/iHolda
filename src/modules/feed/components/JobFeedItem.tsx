@@ -20,13 +20,15 @@ const JobFeedItem = ({ image, type }: { image: string; type: string }) => {
   return (
     <View>
       <View
-        className="absolute z-40 flex-row space-x-2 self-center items-center"
-        style={{ paddingTop: top + 160 }}>
+        className="flex-row space-x-2 self-center items-center"
+        // style={{ paddingTop: top + 160 }}
+        >
         <FeedItemIndex indexCount={10} activeIndex={1} />
       </View>
       <View
         className="absolute z-20 flex-row self-center items-center right-10"
-        style={{ top: units.vh * 20 }}>
+        style={{ top: units.vh * 20 }}
+        >
         <BorderedText>4</BorderedText>
       </View>
       <Image

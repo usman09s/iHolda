@@ -14,11 +14,11 @@ const FeedHeader = () => {
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
 
   return (
-    <View className="flex-row items-center justify-between absolute z-20">
+    <View className="flex-row items-center justify-between absolute z-50">
       <LinearGradient
         locations={[0, 0.2, 0.6, 1]}
         style={{ paddingTop: top + units.vh * 3 }}
-        className="flex-row items-center justify-between  z-20 px-4 pb-3"
+        className="flex-row items-center justify-between px-4 pb-3"
         colors={[
           colors['black-o-80'],
           colors['black-o-70'],

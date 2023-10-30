@@ -18,6 +18,7 @@ import {
   DropOffLocationItemType,
   PlasticItemType,
 } from 'types/PlasticTypes';
+import { GetPostsResponseType } from 'types/PostsTypes';
 import { Quiz } from 'types/QuizTypes';
 import wretch from 'wretch';
 
@@ -515,6 +516,15 @@ class ApiClass {
       })
       .get()
       .json(result => result);
+
+  getFeed = async (): Promise<GetPostsResponseType> =>
+    await this.externalApi
+      .url('post/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result.data);
 
   getCommunityPointsRank = async (): Promise<CommunityRankItemType[]> =>
     await this.externalApi
