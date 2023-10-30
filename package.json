@@ -17,6 +17,7 @@
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.3.1",
     "@react-native-community/datetimepicker": "7.2.0",
+    "@react-native-community/slider": "4.4.2",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
@@ -36,6 +37,7 @@
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-updates": "~0.18.12",
+    "expo-video-player": "^2.2.0",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.72.4",

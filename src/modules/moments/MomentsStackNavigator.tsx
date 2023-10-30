@@ -14,11 +14,11 @@ import MomentsSelfieScreen from './screens/MomentsSelfieScreen';
 import MomentsUploadScreen from './screens/MomentsUploadScreen';
 import PostCameraScreen from './screens/PostCameraScreen';
 import PostPreviewScreen from './screens/PostPreviewScreen';
-import { MatchedUserType, MomentsMoodParams } from 'types/MomentsTypes';
+import { MatchedUserType, MomentsMoodParams, PostScreenParams } from 'types/MomentsTypes';
 
 export type MomentsStackParamList = {
   PostCamera: undefined;
-  PostPreview: undefined;
+  PostPreview: undefined | PostScreenParams;
   MomentsMood: undefined | MomentsMoodParams;
   MomentsQuiz: undefined | MatchedUserType;
   MomentsMatch: undefined | MatchedUserType;

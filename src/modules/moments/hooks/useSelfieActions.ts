@@ -24,7 +24,7 @@ export const useSelfieActions = () => {
 
   const ratio = Platform.select({
     ios: '4:3',
-    android: '2:1',
+    android: '16:9',
   });
 
   const takeShot = async () => {

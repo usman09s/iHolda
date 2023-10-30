@@ -140,3 +140,7 @@ export type MomentsUser = {
 };
 
 export type MomentsMoodParams = { matchedUser: MatchedUserType; selectedQA?: SelectedQA[] };
+
+export type PostTypes = 'Video' | 'Audio' | 'Photo' | 'Text';
+
+export type PostScreenParams = { postType: PostTypes; text: string };

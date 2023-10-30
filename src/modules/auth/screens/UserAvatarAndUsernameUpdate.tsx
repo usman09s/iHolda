@@ -50,10 +50,11 @@ const UserAvatarAndUsernameUpdate = () => {
   );
 
   const onContinue = async () => {
+    if (!pickedImage?.base64) return;
     dispatch(
       setUserImageAndUsername({
         username,
-        image: pickedImage,
+        image: pickedImage?.base64,
       }),
     );
 
@@ -72,7 +73,7 @@ const UserAvatarAndUsernameUpdate = () => {
     //   .catch(() => null);
   };
 
-  const isContinueButtonDisabled = !username || !pickedImage;
+  const isContinueButtonDisabled = !username || !pickedImage?.base64;
   LayoutAnimation.easeInEaseOut();
 
   return (
@@ -95,7 +96,7 @@ const UserAvatarAndUsernameUpdate = () => {
               <Animated.View
                 className="border-4 border-dustGray rounded-full overflow-hidden bg-altoGray  w-44 h-44 self-center justify-center items-center"
                 style={customSizeAnimatedStyle}>
-                {!pickedImage && (
+                {!pickedImage?.base64 && (
                   <Animated.View
                     style={customSizeAnimatedStyle}
                     className={isVisibleKeyboard ? 'p-4' : 'p-10'}>
@@ -109,12 +110,12 @@ const UserAvatarAndUsernameUpdate = () => {
                     className="absolute z-10 bg-black-o-40 w-44 h-44"
                   />
                 )}
-                {pickedImage && (
+                {pickedImage?.base64 && (
                   <Animated.View style={customSizeAnimatedStyle}>
                     <Image
                       className="w-full h-full"
                       resizeMode="contain"
-                      source={{ uri: pickedImage }}
+                      source={{ uri: pickedImage.base64F }}
                     />
                   </Animated.View>
                 )}
