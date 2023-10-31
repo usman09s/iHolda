@@ -68,7 +68,7 @@ const UserAvatarAndUsernameUpdate = () => {
       }),
     );
 
-    navigate('EnterReferralCode');
+    navigate('CreateUnlockPin');
 
     // await uploadImage
     //   .mutateAsync({ image: pickedImage })

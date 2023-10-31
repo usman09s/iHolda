@@ -38,8 +38,8 @@ const CountriesModal = ({ visible, onCloseModal, countries, onPressCountry }: Pr
             removeClippedSubviews
             className="pb-4 pt-5"
             data={countries || []}
-            initialNumToRender={10}
-            maxToRenderPerBatch={5}
+            initialNumToRender={20}
+            maxToRenderPerBatch={20}
             renderItem={renderItem}
             keyExtractor={keyExtractor}
             showsVerticalScrollIndicator={false}
