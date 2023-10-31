@@ -4,18 +4,22 @@ import Header from 'components/Header/Header';
 import Icons from 'components/Icons';
 import { text } from 'theme/text';
 import { usePlasticConfirmationActions } from '../hooks/usePlasticConfirmationActions';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { PlasticStackParamList } from '../PlasticStackNavigator';
 
 const PlasticDeliveredDetailsScreen = () => {
   const { totalPlastic, selectedRatio, totalPrice } = usePlasticConfirmationActions();
+  const { navigate } = useNavigation<NavigationProp<PlasticStackParamList>>();
+  console.log(selectedRatio);
 
   const getCfa = () => {
     const cfa = totalPrice - totalPrice * (1 - selectedRatio?.cash);
-    return cfa.toString();
+    return cfa.toString() + 'cfa';
   };
 
   const getPoints = () => {
     const points = selectedRatio?.point * 100;
-    return points.toString();
+    return points.toString() + ' CP';
   };
 
   return (
@@ -33,6 +37,11 @@ const PlasticDeliveredDetailsScreen = () => {
       <Text className={text({ type: 'l16', class: 'text-center mt-12' })}>
         will be credited into your accounts
       </Text>
+      <Button
+        title="Close"
+        onPress={() => navigate('Plastic')}
+        customContainer="self-center px-12 mt-7 mb-4 mt-24"
+      />
     </View>
   );
 };
