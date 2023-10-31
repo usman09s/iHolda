@@ -211,3 +211,11 @@ const areDaysConsecutive = (days, daysInOrder) => {
 const capitalizeFirstLetter = day => {
   return day.charAt(0).toUpperCase() + day.slice(1);
 };
+
+const guidelineBaseWidth = 375;
+const guidelineBaseHeight = 812;
+
+export const horizontalScale = (size: any) => (width / guidelineBaseWidth) * size;
+export const verticalScale = (size: any) => (height / guidelineBaseHeight) * size;
+export const moderateScale = (size: any, factor = 0.5) =>
+  size + (horizontalScale(size) - size) * factor;

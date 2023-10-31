@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import Api from 'services/Api';
 import { profileImageSelector, usernameSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
+import { horizontalScale, verticalScale, moderateScale } from '../../../utils/helpers';
 
 const UserWaitListScreen = () => {
   const { goBack, dispatch } = useNavigation();
@@ -26,18 +27,18 @@ const UserWaitListScreen = () => {
             <Image
               source={{ uri: userImage }}
               className="w-28 h-28 rounded-full self-center"
-              style={{ borderWidth: 4, borderColor: 'white', marginBottom: 30 }}
+              style={{ borderWidth: 4, borderColor: 'white', marginBottom: verticalScale(30) }}
             />
             <View
               style={{
                 flexDirection: 'row',
-                paddingVertical: 14,
+                paddingVertical: verticalScale(14),
                 borderColor: 'white',
                 borderRadius: 40,
-                marginHorizontal: 30,
+                marginHorizontal: horizontalScale(30),
                 borderWidth: 2,
                 justifyContent: 'space-between',
-                paddingHorizontal: 18,
+                paddingHorizontal: horizontalScale(18),
               }}>
               <Text className={text({ type: 'r12', class: 'text-white-o-60' })}>Your username</Text>
               <TouchableOpacity
@@ -51,17 +52,25 @@ const UserWaitListScreen = () => {
             </View>
           </View>
           <View className="self-center">
-            <Text className={text({ type: 'm24', class: 'text-white text-center' })}>
+            <Text
+              className={text({ class: 'text-white text-center' })}
+              style={{ fontSize: moderateScale(26), fontWeight: '500' }}>
               You are currently Number
             </Text>
             <View className="border-b1 self-center px-6 py-2 rounded-2xl my-5 border-coolGreen">
               {/* {data?.id ? ( */}
-              <Text className={text({ class: 'text-white text-center', type: 'm48' })}>18</Text>
+              <Text
+                className={text({ class: 'text-white text-center' })}
+                style={{ fontSize: moderateScale(48), fontWeight: '500' }}>
+                18
+              </Text>
               {/* ) : (
                 <ActivityIndicator />
               )} */}
             </View>
-            <Text className={text({ type: 'm24', class: 'text-white text-center' })}>
+            <Text
+              className={text({ class: 'text-white text-center' })}
+              style={{ fontSize: moderateScale(22), fontWeight: '500' }}>
               on the waiting list
             </Text>
           </View>
