@@ -53,7 +53,7 @@ const ReferralCodeSuccessfulScreen = () => {
           <Button
             title="Close"
             customContainer="self-center"
-            type="borderedSolid"
+            extraStyles={{ borderWidth: 5, borderColor: 'white', width: 180 }}
             onPress={() => navigate('PlasticStack')}
           />
         </View>

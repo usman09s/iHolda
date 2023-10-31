@@ -80,9 +80,9 @@ const EnterReferralCodeScreen = () => {
         <View style={{ height: isVisibleKeyboard ? 32 : 64 }} />
         <View>
           <Button
-            title="Continue"
+            title="Confirm"
             customContainer="self-center"
-            type="borderedSolid"
+            extraStyles={{ borderWidth: 5, borderColor: 'white', width: 200 }}
             onPress={onContinue}
           />
           <View style={{ height: isVisibleKeyboard ? 16 : 32 }} />

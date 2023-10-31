@@ -25,7 +25,7 @@ const WelcomeScreen = () => {
           <View style={{ height: 25 }} />
           <Button
             title="Start"
-            type="borderedSolid"
+            extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
             customContainer="self-center"
             onPress={() => navigate('SignUp')}
           />
