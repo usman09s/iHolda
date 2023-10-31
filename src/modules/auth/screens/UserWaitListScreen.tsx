@@ -26,7 +26,7 @@ const UserWaitListScreen = () => {
             <Image
               source={{ uri: userImage }}
               className="w-28 h-28 rounded-full self-center"
-              style={{ borderWidth: 7, borderColor: 'white', marginBottom: 30 }}
+              style={{ borderWidth: 4, borderColor: 'white', marginBottom: 30 }}
             />
             <View
               style={{
@@ -75,15 +75,19 @@ const UserWaitListScreen = () => {
                 onPress={goBack}
                 title="Enter code"
                 customContainer="self-center"
-                type="borderedSolid"
-                extraStyles={{ borderWidth: 5, borderColor: 'white', width: '50%', height: 70 }}
+                extraStyles={{
+                  borderWidth: 5,
+                  borderColor: 'white',
+                  width: '50%',
+                }}
+                extraTextStyles={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}
               />
               <Button
                 title="Exit"
                 customContainer="self-center"
-                type="borderedSolid"
                 onPress={() => dispatch(StackActions.popToTop())}
-                extraStyles={{ borderWidth: 5, borderColor: 'white', width: '40%', height: 70 }}
+                extraStyles={{ borderWidth: 5, borderColor: 'white', width: '40%' }}
+                extraTextStyles={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}
               />
             </View>
           </View>

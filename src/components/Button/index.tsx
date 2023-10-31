@@ -11,6 +11,7 @@ type Props = {
   customContainer?: string;
   customTextClass?: string;
   extraStyles?: any;
+  extraTextStyles?: any;
   rightIcon?: React.ReactNode;
   type?: 'borderedSolid' | 'solid' | 'borderedTransparent' | 'ghost';
 };
@@ -25,6 +26,7 @@ const Button = ({
   customTextClass,
   customContainer,
   extraStyles,
+  extraTextStyles,
   onPress = () => null,
 }: Props) => (
   <Pressable
@@ -36,7 +38,9 @@ const Button = ({
     {isLoading ? (
       <ActivityIndicator color={colors.white} />
     ) : (
-      <Text className={button({ title: type, class: customTextClass })}>{title}</Text>
+      <Text className={button({ title: type, class: customTextClass })} style={extraTextStyles}>
+        {title}
+      </Text>
     )}
     {rightIcon && rightIcon}
   </Pressable>

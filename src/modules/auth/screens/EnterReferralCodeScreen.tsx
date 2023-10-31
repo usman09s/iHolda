@@ -59,6 +59,7 @@ const EnterReferralCodeScreen = () => {
                 ? 'w-20 h-20 rounded-3xl border-4 border-white -rotate-30'
                 : 'w-28 h-28 rounded-3xl border-4 border-white -rotate-30'
             }
+            style={{ borderColor: 'white', borderWidth: 4 }}
           />
           <View
             className={
