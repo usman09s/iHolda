@@ -24,8 +24,6 @@ const EnterOptScreen = () => {
   const { remainingTime, resetTimer } = useTimer({ duration: 30, onTimeout: () => null });
   const userInfo = useSelector((state: RootState) => state.user);
 
-  console.log(userInfo, 'sssss');
-
   const { error, isLoading, mutate } = useMutation(Api.resetPinCodeConfirm, {
     onSuccess: result => {
       if (result.status === 200) {
@@ -37,6 +35,7 @@ const EnterOptScreen = () => {
   const enterOtpMutationErrorMessage = parseApiError(error as { message: string });
 
   const onPressContinue = () => {
+    console.log(otp);
     mutate({
       code: otp,
       phoneNumber: params?.phone,
@@ -79,8 +78,8 @@ const EnterOptScreen = () => {
           type="borderedSolid"
           isLoading={isLoading}
           onPress={onPressContinue}
-          disabled={isLoading || otp.length !== 4}
-          customContainer={`self-center ${otp.length !== 4 && ' opacity-40'} `}
+          disabled={isLoading || otp.length !== 6}
+          customContainer={`self-center ${otp.length !== 6 && ' opacity-40'} `}
         />
       </KeyboardAvoidingView>
       <ErrorModal errorText={enterOtpMutationErrorMessage} />

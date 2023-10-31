@@ -197,7 +197,6 @@ class ApiClass {
           fcmToken,
         })
         .json(result => {
-          console.log(result);
           return result;
         });
     } catch (error) {
@@ -293,7 +292,11 @@ class ApiClass {
         communityPointRatio: communityPointRatio,
         plastics: plastics,
       })
-      .json(result => result);
+      .json(result => {
+        console.log(plastics);
+        console.log(result);
+        return result;
+      });
 
   updatePlasticsSizes = async ({
     sizes,
@@ -425,7 +428,6 @@ class ApiClass {
       .url(`plastic/upcoming`)
       .get()
       .json(result => {
-        console.log(result.data, 'ssssohfe');
         return result.data;
       });
 

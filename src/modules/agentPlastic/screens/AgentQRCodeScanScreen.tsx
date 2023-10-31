@@ -11,7 +11,8 @@ import axios from 'axios';
 import { AgentPlasticStackParamList } from '../AgentPlasticNavigator';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { setScannedPlastic, setUserPlasticAgent } from 'store/agentPlastic/agentPlasticSlice';
-import ErrorModal from 'components/ErrorModal';
+// import ErrorModal from 'components/ErrorModal';
+import CustomErrorModal from 'components/ErrorModal/errorModal';
 
 const AgentQRCodeScanScreen = () => {
   const isFocused = useIsFocused();
@@ -19,6 +20,7 @@ const AgentQRCodeScanScreen = () => {
   const { navigate } = useNavigation<NavigationProp<AgentPlasticStackParamList>>();
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [qrCode, setQrCode] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
   const [errorText, setErrorText] = useState();
   const plasticAgent = '652e726f397bc8f89cbd5a6c';
   const scanResult = useRef<
@@ -41,7 +43,6 @@ const AgentQRCodeScanScreen = () => {
     if (data) {
       setQrCode(data);
     }
-    console.log(qrCode);
   };
 
   const handleContinuePress = async () => {
@@ -51,7 +52,6 @@ const AgentQRCodeScanScreen = () => {
 
       if (response.status === 200) {
         const result = response.data;
-        console.log('API response:', result);
         if (result.message === 'qr code verified') {
           dispatch(setScannedPlastic(result.data));
           dispatch(setUserPlasticAgent(result.data));
@@ -59,11 +59,12 @@ const AgentQRCodeScanScreen = () => {
           return result;
         } else {
           setErrorText('Try Again');
-          console.error('API request failed:', result.error);
+          setModalVisible(true);
         }
       }
     } catch (error: any) {
       setErrorText('Try Again');
+      setModalVisible(true);
     }
   };
 
@@ -96,7 +97,13 @@ const AgentQRCodeScanScreen = () => {
         </Text>
         <Button title="Scan Code" customContainer="bg-saffron mt-6" onPress={handleContinuePress} />
       </View>
-      <ErrorModal errorText={errorText} />
+      {/* <ErrorModal errorText={errorText} /> */}
+      <CustomErrorModal
+        errorText={errorText}
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        buttonTitle="CLOSE"
+      />
     </View>
   );
 };

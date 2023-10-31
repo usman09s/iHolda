@@ -27,7 +27,6 @@ export const useAgentPlasticConfirmationActions = () => {
   const addedPlasticTotalPrice = useSelector(addedPlasticTotalPriceSelector);
   const agentPlasticCountTotal = useSelector(agentPlasticCountTotalSelector);
   const { plasticId, queryId, username } = useSelector(plasticsOwnerInformationSelector);
-
   // const { mutate, isLoading } = useMutation(Api.decodeQrCode);
   const updatePlasticsSizes = useMutation(Api.updatePlasticsSizes);
   const approvedPlasticDelivery = useMutation(Api.approvedPlasticDelivery);
@@ -43,18 +42,15 @@ export const useAgentPlasticConfirmationActions = () => {
       size: item.size,
       quantity: item.quantity,
     }));
-    console.log(plasticId, queryId, plastics, 'aohdooij');
+
     if (isChangedPlastic) {
       return await approvedPlasticDelivery.mutateAsync(
         { plasticId, queryId, plastics: transformedPlastics },
         {
           onSuccess: () => {
-            if (!username) {
-              return;
-            }
             navigate('AgentPlasticApproved', {
               totalPlastic: agentPlasticCountTotal,
-              username,
+              username: 'Something',
             });
           },
         },
@@ -65,12 +61,9 @@ export const useAgentPlasticConfirmationActions = () => {
       { plasticId, queryId },
       {
         onSuccess: () => {
-          if (!username) {
-            return;
-          }
           navigate('AgentPlasticApproved', {
             totalPlastic: agentPlasticCountTotal,
-            username,
+            username: 'Something',
           });
         },
       },

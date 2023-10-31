@@ -15,14 +15,13 @@ import { PlasticStackParamList } from '../PlasticStackNavigator';
 import QRCode from 'react-native-qrcode-svg';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectUserPlasticDataState } from 'store/plastic/userPlasticSlice';
+import { selectQrCodeData } from 'store/plastic/userPlasticSlice';
 
 const PlasticQRCodeScreen = () => {
   const { params } = useRoute<RouteProp<PlasticStackParamList, 'PlasticQRCode'>>();
-  const userPlasticData = useSelector(selectUserPlasticDataState);
+  const userQrCode = useSelector(selectQrCodeData);
   const { dispatch } = useNavigation<NavigationProp<PlasticStackParamList>>();
-  console.log(userPlasticData.plasticQrCode);
-  const [id, setId] = useState(userPlasticData.plasticQrCode);
+  const [id, setId] = useState(userQrCode);
 
   return (
     <ScrollView className="bg-milkWhite">
@@ -31,7 +30,10 @@ const PlasticQRCodeScreen = () => {
         <Text className={text({ type: 'l13', class: 'mb-2 mt-12' })}>
           Your drop off location is
         </Text>
-        <DropOffLocationItem onPressLocation={() => console.log('Something')} />
+        <DropOffLocationItem
+          onPressLocation={() => console.log('Something')}
+          location={params.location}
+        />
         <Pressable
           onPress={() => {
             dispatch(StackActions.pop(2));

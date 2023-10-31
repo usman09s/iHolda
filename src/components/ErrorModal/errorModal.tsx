@@ -16,7 +16,11 @@ const CustomErrorModal = ({ errorText, visible, buttonTitle, onClose }: Props) =
         <Animated.View
           className="justify-center items-center p-4 bg-white rounded-xl py-8 w-full"
           entering={SlideInDown}>
-          <Text className={text({ type: 'r20', class: 'mt-4 mb-7' })}>{errorText}</Text>
+          <Text
+            className={text({ type: 'r20', class: 'mt-4 mb-7' })}
+            style={{ textAlign: 'center' }}>
+            {errorText}
+          </Text>
           <TouchableOpacity
             onPress={onClose}
             style={{

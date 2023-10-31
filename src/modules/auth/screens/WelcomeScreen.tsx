@@ -13,28 +13,30 @@ const WelcomeScreen = () => {
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
 
   return (
-    <View className="flex-1 justify-center ">
+    <View className="flex-1 justify-center">
       <ScrollView
         className="bg-blue px-10 py-2"
-        style={{ paddingTop: top }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollableContent}>
-        {WelcomeComments.map(item => (
-          <UserCommentItem {...item} key={item.comment} />
-        ))}
-        <Button
-          title="Start"
-          type="borderedSolid"
-          customContainer="self-center"
-          onPress={() => navigate('SignUp')}
-        />
+        <View style={{ paddingVertical: 40, flex: 1, marginTop: 50 }}>
+          {WelcomeComments.map(item => (
+            <UserCommentItem {...item} key={item.comment} />
+          ))}
+          <View style={{ height: 25 }} />
+          <Button
+            title="Start"
+            type="borderedSolid"
+            customContainer="self-center"
+            onPress={() => navigate('SignUp')}
+          />
+        </View>
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollableContent: { justifyContent: 'center', flex: 1 },
+  scrollableContent: { justifyContent: 'center' },
 });
 
 export default WelcomeScreen;

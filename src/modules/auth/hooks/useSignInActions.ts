@@ -72,7 +72,6 @@ export const useSignInActions = () => {
       },
       {
         onSuccess: result => {
-          console.log(pin);
           SecureStore.setItemAsync(
             'tokensAndQueryId',
             JSON.stringify({

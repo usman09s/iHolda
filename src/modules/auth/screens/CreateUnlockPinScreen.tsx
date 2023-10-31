@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { setTokensAndQueryId } from 'store/auth/userSlice';
+import { setQrCode } from 'store/plastic/userPlasticSlice';
 
 const CreateUnlockPinScreen = () => {
   LayoutAnimation.linear();
@@ -40,6 +41,8 @@ const CreateUnlockPinScreen = () => {
       {
         onSuccess: result => {
           if (result.message === 'Register successful') {
+            dispatch(setQrCode(result.data.user.userQrCode));
+            console.log(result.data.userQrCode, 'dwhceonewoncoi');
             dispatch(setTokensAndQueryId({ accessToken: result.data.accessToken }));
             navigate('EnterReferralCode');
           }

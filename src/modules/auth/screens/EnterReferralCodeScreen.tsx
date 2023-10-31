@@ -8,13 +8,14 @@ import { useKeyboardVisible } from 'hooks/useKeyboardVisible';
 import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { userImageSelector } from 'store/auth/userSelectors';
+import { profileImageSelector, userImageSelector } from 'store/auth/userSelectors';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
 import { parseApiError } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import CustomErrorModal from 'components/ErrorModal/errorModal';
+import { selectQrCodeData } from 'store/plastic/userPlasticSlice';
 
 const EnterReferralCodeScreen = () => {
   LayoutAnimation.easeInEaseOut();
@@ -22,11 +23,10 @@ const EnterReferralCodeScreen = () => {
   const [referralCode, setReferralCode] = useState('');
   const { navigate } = useNavigation<NavigationProp<AuthStackParamList>>();
   const { mutate, error } = useMutation(Api.setReferralCode);
-  const userImage = useSelector(userImageSelector);
+  const userImage = useSelector(profileImageSelector);
   const isVisibleKeyboard = useKeyboardVisible();
 
   const onContinue = () => {
-    console.log(referralCode);
     mutate(
       { referralCode },
       {
@@ -52,16 +52,8 @@ const EnterReferralCodeScreen = () => {
           Referral code
         </Text>
         <View className="flex-row self-center">
-          {/* <Image
-            source={{ uri: userImage }}
-            className={
-              isVisibleKeyboard
-                ? 'w-20 h-20 rounded-3xl border-4 border-white -rotate-30'
-                : 'w-28 h-28 rounded-3xl border-4 border-white -rotate-30'
-            }
-          /> */}
           <Image
-            source={userImage}
+            source={{ uri: userImage }}
             className={
               isVisibleKeyboard
                 ? 'w-20 h-20 rounded-3xl border-4 border-white -rotate-30'

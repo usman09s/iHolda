@@ -15,14 +15,17 @@ import { AgentPlasticStackParamList } from '../AgentPlasticNavigator';
 
 const AgentPlasticApprovedScreen = () => {
   const { params } = useRoute<RouteProp<AgentPlasticStackParamList, 'AgentPlasticApproved'>>();
-  const { dispatch, goBack } = useNavigation<NavigationProp<AgentPlasticStackParamList>>();
+  const { dispatch, goBack, navigate } =
+    useNavigation<NavigationProp<AgentPlasticStackParamList>>();
 
   return (
     <View className="flex-1 bg-white items-center">
       <Header />
       <View className="flex-1 items-center justify-evenly">
         <View className="items-center">
-          <Text className={text({ type: 'l16', class: 'text-center mb-12' })}>
+          <Text
+            className={text({ type: 'l16', class: 'text-center mb-12' })}
+            style={{ paddingHorizontal: 20 }}>
             You approved {params.totalPlastic} Plastic drop off for @
             {params.username ? params.username : 'bayuga'}
           </Text>
@@ -35,8 +38,7 @@ const AgentPlasticApprovedScreen = () => {
           customContainer="self-center px-10 rounded-lg bg-saffron"
           title="Close"
           onPress={() => {
-            dispatch(StackActions.popToTop());
-            goBack();
+            navigate('Auth');
           }}
         />
       </View>

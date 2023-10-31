@@ -38,6 +38,7 @@ const UserAvatarAndUsernameUpdate = () => {
   const uploadImage = useMutation(Api.uploadImage, {});
   const updateUsername = useMutation(Api.updateUsername, {});
   const isVisibleKeyboard = useKeyboardVisible();
+  console.log(pickedImage);
   const { Spacing, customSizeAnimatedStyle } = useAnimatedComponentStyle({
     customSize: 176,
   });
@@ -67,7 +68,7 @@ const UserAvatarAndUsernameUpdate = () => {
       }),
     );
 
-    navigate('CreateUnlockPin');
+    navigate('EnterReferralCode');
 
     // await uploadImage
     //   .mutateAsync({ image: pickedImage })

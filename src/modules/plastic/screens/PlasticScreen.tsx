@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, ScrollView, Text, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import Button from 'components/Button';
 import Header from 'components/Header/Header';
@@ -51,11 +51,13 @@ const PlasticScreen = () => {
   };
 
   return (
-    <View className="flex-1 bg-white justify-between py-4">
+    <ScrollView
+      className="flex-1 bg-white py-4"
+      contentContainerStyle={{ justifyContent: 'space-between' }}>
       <View className="px-6">
         <Header onPressLeft={goBack} leftComponent={<Icons.CrossIcon />} />
       </View>
-      <View className="px-6">
+      <View className="px-6" style={{ marginVertical: 20 }}>
         <Text className={text({ class: 'text-center text-black-o-60 mx-6 ' })}>
           Join the move to protect the future of our planet rescue plastics from your community and
           get rewarded.
@@ -92,7 +94,11 @@ const PlasticScreen = () => {
         />
       </View>
       <View className="px-7 " style={{ marginTop: units.vh * 2 }}>
-        <Text className={text({ type: 'm20', class: 'text-center' })}>Total = {totalPlastic}</Text>
+        <Text
+          className={text({ type: 'm20', class: 'text-center' })}
+          style={{ marginVertical: 20 }}>
+          Total = {totalPlastic}
+        </Text>
         <Button
           title="Continue"
           customContainer="my-4"
@@ -101,7 +107,7 @@ const PlasticScreen = () => {
           onPress={() => navigate('DropOffLocationList')}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

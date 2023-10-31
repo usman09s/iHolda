@@ -18,7 +18,15 @@ const PhoneInput = ({
   editable = true,
   onPressCountryCode,
 }: Props) => (
-  <View className="bg-transparent border-2 py-4 border-white rounded-full flex-row">
+  <View
+    style={{
+      borderRadius: 40,
+      borderColor: 'white',
+      flexDirection: 'row',
+      borderWidth: 2,
+      paddingVertical: 14,
+      backgroundColor: 'transparent',
+    }}>
     <Pressable
       className="mr-4 ml-5 flex-row items-center active:opacity-50"
       onPress={onPressCountryCode}>

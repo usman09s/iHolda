@@ -55,7 +55,7 @@ const useDropOffLocationListActions = () => {
     if (item.isAvailable === false) {
       return setShowClosedDropOffLocationPopup(true);
     }
-    navigate('PlasticConfirmation', { locationId: item._id });
+    navigate('PlasticConfirmation', { locationId: item._id, location: item });
   };
 
   useEffect(

@@ -2,12 +2,12 @@ import { Image, ScrollView, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Button from 'components/Button';
 import { useSelector } from 'react-redux';
-import { userImageSelector } from 'store/auth/userSelectors';
+import { profileImageSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 
 const ReferralCodeSuccessfulScreen = () => {
   const { navigate } = useNavigation();
-  const userImage = useSelector(userImageSelector);
+  const userImage = useSelector(profileImageSelector);
 
   return (
     <View className="flex-1 bg-blue justify-evenly px-7">
@@ -19,8 +19,7 @@ const ReferralCodeSuccessfulScreen = () => {
             </Text>
             <View className="flex-row self-center mb-20">
               <View className="overflow-hidden border-white rounded-3xl border-4  -rotate-30 ">
-                {/* <Image source={{ uri: userImage }} className="w-28 h-28" /> */}
-                <Image source={userImage} className="w-28 h-28" />
+                <Image source={{ uri: userImage }} className="w-28 h-28" />
               </View>
               <View className="overflow-hidden border-white  rounded-3xl border-4   -left-8 top-2 rotate-30">
                 <Image source={{ uri: 'https://i.pravatar.cc/150?img=33' }} className="w-28 h-28" />

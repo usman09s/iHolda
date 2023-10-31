@@ -16,7 +16,6 @@ const BiggestBottle = require('../../../../assets/images/biggestBottle.png');
 
 const AgentPlasticConfirmationScreen = () => {
   const agentPlasticSizes = useSelector(agentPlasticSizeSelector);
-  console.log(agentPlasticSizes);
   const {
     username,
     plastics,

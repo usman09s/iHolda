@@ -16,19 +16,22 @@ import { CashAndPointsFixture } from 'utils/fixtures';
 import { parseApiError } from 'utils/helpers';
 
 import { PlasticStackParamList } from '../PlasticStackNavigator';
-import { setPlasticSupplyData } from 'store/plastic/userPlasticSlice';
+import { selectQrCodeData, setPlasticSupplyData, setQrCode } from 'store/plastic/userPlasticSlice';
 
 export const usePlasticConfirmationActions = () => {
   const dispatch = useAppDispatch();
   const { params } = useRoute<RouteProp<PlasticStackParamList>>();
   const { navigate } = useNavigation<NavigationProp<PlasticStackParamList>>();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalText, setModalText] = useState('');
 
   const plasticId = useSelector(plasticIdSelector);
   const addedPlastics = useSelector(addedPlasticSelector);
   const totalPrice = useSelector(addedPlasticTotalPriceSelector);
   const totalPlastic = useSelector(plasticCountTotalSelector);
+  const userQrCode = useSelector(selectQrCodeData);
 
-  const addPlastics = useMutation('dropOffLocations', Api.addPlastics);
+  const addPlastics = useMutation(Api.addPlastics);
   const updatePlastics = useMutation('dropOffLocations', Api.updatePlastics);
   const updatePlasticRatios = useMutation('dropOffLocations', Api.updatePlasticRatios);
 
@@ -50,35 +53,33 @@ export const usePlasticConfirmationActions = () => {
     [addPlastics, updatePlasticRatios, updatePlastics],
   );
 
-  const getUserQrCode = async (qrCode: any) => {
+  const onSuccessPlastics = async data => {
+    dispatch(setPlasticSupplyData(data.data));
+    dispatch(setQrCode(data.plasticQrCode));
     try {
-      const response = await fetch(`http://ihold.yameenyousuf.com/api/user/qr?q=${qrCode}`);
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-      const result = await response.json();
-      return result;
+      navigate('PlasticQRCode', {
+        plasticInformation: userQrCode,
+        location: params.location,
+      });
     } catch (error) {
       console.error('Error fetching user QR code:', error);
-      throw error;
     }
   };
 
-  const onSuccessPlastics = async data => {
-    dispatch(setPlasticSupplyData(data.data));
-    console.log(data, 'ssssss');
-    console.log('Success Plastics');
-    try {
-      const qrCodeResult = await getUserQrCode(data.data.plasticQrCode); // Call your API function here
-      console.log('QR Code Result:', qrCodeResult);
-      navigate('PlasticQRCode', { plasticInformation: qrCodeResult });
-    } catch (error) {
-      console.error('Error fetching user QR code:', error);
+  const onErrorPlastics = error => {
+    if (error.response.status === 409) {
+      setModalText('You already have a pending plastic delivery');
+    } else {
+      setModalText('Error Occured. Please try again');
     }
+    modalClose();
+  };
+
+  const modalClose = () => {
+    setModalVisible(!modalVisible);
   };
 
   const onPressConfirm = () => {
-    console.log(params);
     const commonParams = {
       communityPointRatio: selectedRatio.point * 100,
       virtualMoneyRatio: selectedRatio.cash * 100,
@@ -98,6 +99,7 @@ export const usePlasticConfirmationActions = () => {
     // }
     addPlastics.mutate(commonParams, {
       onSuccess: onSuccessPlastics,
+      onError: onErrorPlastics,
     });
   };
 
@@ -110,5 +112,8 @@ export const usePlasticConfirmationActions = () => {
     addedPlastics,
     selectedRatio,
     onPressConfirm,
+    modalVisible,
+    modalClose,
+    modalText,
   };
 };
