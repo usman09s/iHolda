@@ -21,7 +21,7 @@ const PlasticItem = ({ image, count = 0, onPressDecrease, onPressIncrease, id }:
           source={image}
           style={{
             width: units.vw * 20,
-            height: units.vh * 22,
+            height: units.vh * 20,
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: 15,

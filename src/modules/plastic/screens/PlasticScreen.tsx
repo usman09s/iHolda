@@ -53,7 +53,7 @@ const PlasticScreen = () => {
   return (
     <ScrollView
       className="flex-1 bg-white py-4"
-      contentContainerStyle={{ justifyContent: 'space-between' }}>
+      contentContainerStyle={{ justifyContent: 'space-between', paddingBottom: 16 }}>
       <View className="px-6">
         <Header onPressLeft={goBack} leftComponent={<Icons.CrossIcon />} />
       </View>
