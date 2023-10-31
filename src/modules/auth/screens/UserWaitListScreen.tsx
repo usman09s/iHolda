@@ -20,10 +20,10 @@ const UserWaitListScreen = () => {
   const copyToClipboard = async (value: string) => await Clipboard.setStringAsync(value);
 
   return (
-    <View className="pt-10 bg-petrol flex-1 px-7 ">
-      <ScrollView className="flex-1" contentContainerStyle={{ flex: 1 }}>
+    <View className="pt-10 bg-petrol flex-1 px-7">
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex-1 justify-evenly">
-          <View>
+          <View style={{ marginTop: verticalScale(80), marginBottom: verticalScale(30) }}>
             <Image
               source={{ uri: userImage }}
               className="w-28 h-28 rounded-full self-center"
@@ -51,7 +51,7 @@ const UserWaitListScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
-          <View className="self-center">
+          <View className="self-center" style={{ paddingTop: verticalScale(50) }}>
             <Text
               className={text({ class: 'text-white text-center' })}
               style={{ fontSize: moderateScale(26), fontWeight: '500' }}>
@@ -74,7 +74,7 @@ const UserWaitListScreen = () => {
               on the waiting list
             </Text>
           </View>
-          <View>
+          <View style={{ marginTop: verticalScale(30), paddingTop: verticalScale(30) }}>
             <Text className={text({ class: 'text-white mb-8 text-center', type: 'm13' })}>
               If you don’t have a referral code, you can wait for full launch or request a referral
               code from an iHolda user.
