@@ -26,7 +26,8 @@ const EnterOptScreen = () => {
 
   const { error, isLoading, mutate } = useMutation(Api.resetPinCodeConfirm, {
     onSuccess: result => {
-      if (result.status === 200) {
+      console.log(result, 'mmmmmm');
+      if (result.message === 'OTP verified successfully') {
         navigate('ResetPin', { phone: params.phone });
       }
     },
@@ -70,12 +71,13 @@ const EnterOptScreen = () => {
         </Pressable>
         {__DEV__ && (
           <Text className={text({ type: 'm13', class: 'text-white text-center mb-2' })}>
-            {Api._otp} is showed for only dev mode
+            {params?.otp} is showed for only dev mode
           </Text>
         )}
         <Button
           title="Continue"
           type="borderedSolid"
+          extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
           isLoading={isLoading}
           onPress={onPressContinue}
           disabled={isLoading || otp.length !== 6}

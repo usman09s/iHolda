@@ -69,6 +69,7 @@ const ConfirmOtpScreen = () => {
         <Button
           title="Continue"
           type="borderedSolid"
+          extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
           isLoading={isLoading}
           onPress={onPressContinue}
           disabled={isLoading || otp.length !== 6}

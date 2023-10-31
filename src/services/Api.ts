@@ -226,21 +226,29 @@ class ApiClass {
     await this.externalApi
       .url('otp/generate')
       .post({ phone: phoneNumber })
-      .json(result => result);
+      .json(result => {
+        console.log(result, 'eeeeeee');
+        return result;
+      });
 
   resetPinCodeConfirm = async ({ phoneNumber, code }: { phoneNumber: string; code: string }) =>
     await this.externalApi
       .url('otp/verify')
       .put({ otp: code })
-      .json(result => result);
+      .json(result => {
+        console.log(result, 'cohewoihdoiehoid');
+        return result;
+      });
 
   resetPinCodeFromCode = async ({ phoneNumber, pin }: { phoneNumber: string; pin: number }) =>
     await this.externalApi
       .url('auth/reset-password')
       .put({ password: pin, confirmPassword: pin })
-      .json(result => result);
+      .json(result => {
+        console.log(result, 'dddddddddddddd');
+        return result;
+      });
 
-  // Plastic
   getPlasticSizes = async (): Promise<PlasticItemType[]> =>
     await this.externalApi
       .url('plastic/sizes?page=1')

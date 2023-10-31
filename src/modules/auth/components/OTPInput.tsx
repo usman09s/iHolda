@@ -52,13 +52,14 @@ const OTPInput = ({ onChangeOtp = () => null }: { onChangeOtp: (value: string) =
   };
 
   const inputClassName =
-    'border-b1 border-white self-start w-14 h-14 rounded-full text-center text-white font-Medium text-20';
+    'self-start w-14 h-14 rounded-full text-center text-white font-Medium text-20';
 
   return (
     <View className="flex-row justify-between mb-4">
       {refs.map((ref, index) => (
         <TextInput
           ref={ref}
+          style={{ borderColor: 'white', borderWidth: 2 }}
           key={index}
           maxLength={1}
           selectionColor={'white'}

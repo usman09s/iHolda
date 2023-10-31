@@ -82,6 +82,7 @@ const EnterReferralCodeScreen = () => {
           <Button
             title="Confirm"
             customContainer="self-center"
+            type="borderedSolid"
             extraStyles={{ borderWidth: 5, borderColor: 'white', width: 200 }}
             onPress={onContinue}
           />

@@ -75,11 +75,13 @@ const UserWaitListScreen = () => {
                 onPress={goBack}
                 title="Enter code"
                 customContainer="self-center"
+                type="borderedSolid"
                 extraStyles={{ borderWidth: 5, borderColor: 'white', width: '50%', height: 70 }}
               />
               <Button
                 title="Exit"
                 customContainer="self-center"
+                type="borderedSolid"
                 onPress={() => dispatch(StackActions.popToTop())}
                 extraStyles={{ borderWidth: 5, borderColor: 'white', width: '40%', height: 70 }}
               />

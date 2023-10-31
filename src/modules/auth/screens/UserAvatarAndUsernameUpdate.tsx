@@ -153,6 +153,7 @@ const UserAvatarAndUsernameUpdate = () => {
             title="Continue"
             onPress={onContinue}
             type="borderedSolid"
+            extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
             disabled={isContinueButtonDisabled}
             isLoading={updateUsername.isLoading || uploadImage.isLoading}
             customContainer={`self-center mt-4 ${isContinueButtonDisabled && 'opacity-50'}`}
