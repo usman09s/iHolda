@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Pressable, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Pressable, ScrollView, Text, View } from 'react-native';
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import Button from 'components/Button';
 import ErrorModal from 'components/ErrorModal';
@@ -15,6 +15,7 @@ import OTPInput from '../components/OTPInput';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { userSelector } from 'store/auth/userSelectors';
+import { horizontalScale, verticalScale } from '../../../utils/helpers';
 
 const EnterOptScreen = () => {
   const [otp, setOtp] = useState('');
@@ -44,8 +45,13 @@ const EnterOptScreen = () => {
   };
 
   return (
-    <View className="flex-1 bg-blue justify-center px-7">
-      <KeyboardAvoidingView behavior="position">
+    <View
+      className="flex-1 bg-blue justify-center"
+      style={{ paddingHorizontal: horizontalScale(12) }}>
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ marginTop: verticalScale(120) }}>
         <View className="mb-20">
           <Text className={text({ type: 'b44', class: 'text-white' })}>
             Confirm{'\n'}sms OTP code
@@ -83,7 +89,7 @@ const EnterOptScreen = () => {
           disabled={isLoading || otp.length !== 6}
           customContainer={`self-center ${otp.length !== 6 && ' opacity-40'} `}
         />
-      </KeyboardAvoidingView>
+      </ScrollView>
       <ErrorModal errorText={enterOtpMutationErrorMessage} />
     </View>
   );

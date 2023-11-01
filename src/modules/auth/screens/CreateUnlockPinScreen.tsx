@@ -46,7 +46,7 @@ const CreateUnlockPinScreen = () => {
           if (result.message === 'Register successful') {
             dispatch(setQrCode(result.data.user.userQrCode));
             console.log(result.data.userQrCode, 'dwhceonewoncoi');
-            dispatch(setTokensAndQueryId({ accessToken: result.data.accessToken }));
+            // dispatch(setTokensAndQueryId({ accessToken: result.data.accessToken }));
             navigate('EnterReferralCode');
           }
         },

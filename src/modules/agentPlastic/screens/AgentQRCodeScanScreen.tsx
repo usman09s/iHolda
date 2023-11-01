@@ -52,7 +52,7 @@ const AgentQRCodeScanScreen = () => {
 
       if (response.status === 200) {
         const result = response.data;
-        if (result.message === 'qr code verified') {
+        if (result.message === 'qr code verified' && result.isDelivered === false) {
           dispatch(setScannedPlastic(result.data));
           dispatch(setUserPlasticAgent(result.data));
           navigate('AgentPlasticConfirmation', result.data);
