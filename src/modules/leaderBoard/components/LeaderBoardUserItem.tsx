@@ -3,6 +3,7 @@ import Icons from 'components/Icons';
 import { text } from 'theme/text';
 import { RankItemType } from 'types/LeaderBoardTypes';
 import { units } from 'utils/helpers';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 type Props = RankItemType;
 
@@ -13,7 +14,7 @@ const LeaderBoardUserItem = ({ point, pointStatus, avatar, position, username }:
     <View className="flex-row items-center">
       <Text className={text({ type: 'm16', class: 'w-8' })}>{position}</Text>
       <View className="border-4 border-saffron rounded-full self-center ml-4 mr-4">
-        <Image className="h-10 w-10 rounded-full" source={{ uri: avatar }} />
+        <Image className="h-10 w-10 rounded-full" source={{ uri: getImageLink(avatar) }} />
       </View>
       <Text className={text({ type: 'm13' })}>{username}</Text>
     </View>

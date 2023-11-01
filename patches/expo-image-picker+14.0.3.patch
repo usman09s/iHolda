@@ -1,0 +1,1427 @@
+diff --git a/node_modules/expo-image-picker/CHANGELOG.md b/node_modules/expo-image-picker/CHANGELOG.md
+index 9a737f4..85c540d 100644
+--- a/node_modules/expo-image-picker/CHANGELOG.md
++++ b/node_modules/expo-image-picker/CHANGELOG.md
+@@ -10,61 +10,6 @@
+ 
+ ### 💡 Others
+ 
+-## 14.3.2 — 2023-07-23
+-
+-### 💡 Others
+-
+-- On Android, restore behavior from [#22658](https://github.com/expo/expo/pull/22658). ([#23617](https://github.com/expo/expo/pull/23617) by [@alanhughes](https://github.com/alanjhughes))
+-
+-## 14.3.1 - 2023-07-04
+-
+-### 🐛 Bug fixes
+-
+-- Fix manifest merger build fail on Android. ([#23191](https://github.com/expo/expo/pull/23191) by [@alexandrius](https://github.com/alexandrius))
+-- [Android] Fix backported photo picker crashing with null intent. ([#23224](https://github.com/expo/expo/pull/23224) by [@thespacemanatee](https://github.com/thespacemanatee))
+-
+-## 14.3.0 — 2023-06-13
+-
+-### 🎉 New features
+-
+-- Added ability to choose the preferred asset representation mode on iOS 14+. ([#22456](https://github.com/expo/expo/pull/22456) by [@thespacemanatee](https://github.com/thespacemanatee))
+-- Updated the Android image picker to use a [more streamlined and modern interface](https://developer.android.com/training/data-storage/shared/photopicker), closely resembling the one on iOS. [#22658](https://github.com/expo/expo/pull/22658) by [@fobos531](https://github.com/fobos531)
+-
+-### 🐛 Bug fixes
+-
+-- Fixed Android build warnings for Gradle version 8. ([#22537](https://github.com/expo/expo/pull/22537), [#22609](https://github.com/expo/expo/pull/22609) by [@kudo](https://github.com/kudo))
+-- Fixed an issue that allowed picking non-image/video files when passing `MediaTypeOptions.All` ([#22606](https://github.com/expo/expo/pull/22606) by [@fobos531](https://github.com/fobos531))
+-
+-## 14.2.0 — 2023-05-08
+-
+-### 🎉 New features
+-
+-- Added ability to choose the camera-facing type. ([#22143](https://github.com/expo/expo/pull/22143) by [@YoussefHenna](https://github.com/YoussefHenna))
+-
+-### 🐛 Bug fixes
+-
+-- Fix images unexpectedly being converted to `.png` when opening `.bmp` files and selecting any quality in `ImagePickerOptions`. ([#21361](https://github.com/expo/expo/pull/21361) by [@behenate](https://github.com/behenate))
+-- Fix issue where the array of permissions could end up empty causing an exception. ([#21589](https://github.com/expo/expo/pull/21589) by [@alanhughes](https://github.com/alanjhughes))
+-- Fix rotated videos returning incorrect width/height. [#12573](https://github.com/expo/expo/issues/12573) ([#21758](https://github.com/expo/expo/pull/21758) by [@mmmulani](https://github.com/mmmulani))
+-- Fix NullPointerException for launchCameraAsync on Android 13. ([#22123](https://github.com/expo/expo/pull/22123) by [@witheroux](https://github.com/witheroux))
+-- [Android] Fix image picker returning inverted dimensions when selecting vertical images without editing. ([#22383](https://github.com/expo/expo/pull/22383) by [@behenate](https://github.com/behenate))
+-
+-## 14.1.1 — 2023-02-09
+-
+-### ⚠️ Notices
+-
+-- Removed deprecated fields from pick result type and deprecated `UIImagePickerPresentationStyle` enum values. ([#21078](https://github.com/expo/expo/pull/21078) by [@Simek](https://github.com/Simek))
+-
+-## 14.1.0 — 2023-01-26
+-
+-### 🎉 New features
+-
+-- Add support for [granular permissions](https://developer.android.com/about/versions/13/behavior-changes-13) on Android 13. ([#20908](https://github.com/expo/expo/pull/20908) by [@alanhughes](https://github.com/alanjhughes))
+-
+-### 💡 Others
+-
+-- On Android bump `compileSdkVersion` and `targetSdkVersion` to `33`. ([#20721](https://github.com/expo/expo/pull/20721) by [@lukmccall](https://github.com/lukmccall))
+-
+ ## 14.0.3 — 2022-12-30
+ 
+ ### 💡 Others
+diff --git a/node_modules/expo-image-picker/README.md b/node_modules/expo-image-picker/README.md
+index 0f06509..3c59611 100644
+--- a/node_modules/expo-image-picker/README.md
++++ b/node_modules/expo-image-picker/README.md
+@@ -1,11 +1,4 @@
+-<p>
+-  <a href="https://docs.expo.dev/versions/latest/sdk/imagepicker/">
+-    <img
+-      src="../../.github/resources/expo-image-picker.svg"
+-      alt="expo-image-picker"
+-      height="64" />
+-  </a>
+-</p>
++# expo-image-picker
+ 
+ Provides access to the system's UI for selecting images and videos from the phone's library or taking a photo with the camera.
+ 
+@@ -16,7 +9,7 @@ Provides access to the system's UI for selecting images and videos from the phon
+ 
+ # Installation in managed Expo projects
+ 
+-For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects, please follow the installation instructions in the [API documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/imagepicker/).
++For [managed](https://docs.expo.dev/versions/latest/introduction/managed-vs-bare/) Expo projects, please follow the installation instructions in the [API documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/imagepicker/).
+ 
+ # Installation in bare React Native projects
+ 
+@@ -25,7 +18,7 @@ For bare React Native projects, you must ensure that you have [installed and con
+ ### Add the package to your npm dependencies
+ 
+ ```
+-npx expo install expo-image-picker
++expo install expo-image-picker
+ ```
+ 
+ ### Configure for iOS
+@@ -62,7 +55,7 @@ This package automatically adds the `CAMERA`, `READ_EXTERNAL_STORAGE`, and `WRIT
+ 
+ > This plugin is applied automatically in EAS Build, only add the config plugin if you want to pass in extra properties.
+ 
+-After installing this npm package, add the [config plugin](https://docs.expo.dev/home/config-plugins/introduction) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
++After installing this npm package, add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
+ 
+ ```json
+ {
+@@ -72,7 +65,7 @@ After installing this npm package, add the [config plugin](https://docs.expo.dev
+ }
+ ```
+ 
+-Next, rebuild your app as described in the ["Adding custom native code"](https://docs.expo.dev/workflow/customizing/) guide.
++Next, rebuild your app as described in the ["Adding custom native code"](https://docs.expo.io/workflow/customizing/) guide.
+ 
+ ### API
+ 
+diff --git a/node_modules/expo-image-picker/android/build.gradle b/node_modules/expo-image-picker/android/build.gradle
+index 3eddb2f..46d5bc0 100644
+--- a/node_modules/expo-image-picker/android/build.gradle
++++ b/node_modules/expo-image-picker/android/build.gradle
+@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
+ apply plugin: 'maven-publish'
+ 
+ group = 'host.exp.exponent'
+-version = '14.3.2'
++version = '14.0.3'
+ 
+ buildscript {
+   def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
+@@ -22,7 +22,7 @@ buildscript {
+     if (ext.has("kotlinVersion")) {
+       ext.kotlinVersion()
+     } else {
+-      ext.safeExtGet("kotlinVersion", "1.8.10")
++      ext.safeExtGet("kotlinVersion", "1.6.10")
+     }
+   }
+ 
+@@ -35,11 +35,19 @@ buildscript {
+   }
+ }
+ 
++// Creating sources with comments
++task androidSourcesJar(type: Jar) {
++  classifier = 'sources'
++  from android.sourceSets.main.java.srcDirs
++}
++
+ afterEvaluate {
+   publishing {
+     publications {
+       release(MavenPublication) {
+         from components.release
++        // Add additional sourcesJar to artifacts
++        artifact(androidSourcesJar)
+       }
+     }
+     repositories {
+@@ -51,7 +59,7 @@ afterEvaluate {
+ }
+ 
+ android {
+-  compileSdkVersion safeExtGet("compileSdkVersion", 33)
++  compileSdkVersion safeExtGet("compileSdkVersion", 31)
+ 
+   compileOptions {
+     sourceCompatibility JavaVersion.VERSION_11
+@@ -62,30 +70,24 @@ android {
+     jvmTarget = JavaVersion.VERSION_11.majorVersion
+   }
+ 
+-  namespace "expo.modules.imagepicker"
+   defaultConfig {
+     minSdkVersion safeExtGet("minSdkVersion", 21)
+-    targetSdkVersion safeExtGet("targetSdkVersion", 33)
++    targetSdkVersion safeExtGet("targetSdkVersion", 31)
+     versionCode 22
+-    versionName "14.3.2"
++    versionName "14.0.3"
+   }
+   lintOptions {
+     abortOnError false
+   }
+-  publishing {
+-    singleVariant("release") {
+-      withSourcesJar()
+-    }
+-  }
+ }
+ 
+ dependencies {
+   implementation project(':expo-modules-core')
+ 
+-  implementation "androidx.activity:activity-ktx:1.7.2"
+-  implementation "androidx.appcompat:appcompat:1.6.1"
++  implementation "androidx.activity:activity-ktx:1.4.0"
++  implementation "androidx.appcompat:appcompat:1.4.2"
+   implementation "androidx.exifinterface:exifinterface:1.3.3"
+-  implementation "com.github.CanHub:Android-Image-Cropper:4.3.1"
++  implementation "com.github.CanHub:Android-Image-Cropper:4.3.0"
+   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${getKotlinVersion()}"
+   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
+   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3"
+diff --git a/node_modules/expo-image-picker/android/src/main/AndroidManifest.xml b/node_modules/expo-image-picker/android/src/main/AndroidManifest.xml
+index 9ea2a9d..9bdd59d 100644
+--- a/node_modules/expo-image-picker/android/src/main/AndroidManifest.xml
++++ b/node_modules/expo-image-picker/android/src/main/AndroidManifest.xml
+@@ -1,51 +1,37 @@
+-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+-  xmlns:tools="http://schemas.android.com/tools">
+-  <!-- Required for picking images from camera directly -->
+-  <uses-permission android:name="android.permission.CAMERA" />
++<manifest package="expo.modules.imagepicker"
++          xmlns:android="http://schemas.android.com/apk/res/android"
++    >
++    <!-- Required for picking images from camera directly -->
++    <uses-permission android:name="android.permission.CAMERA"/>
+ 
+-  <!-- Required for picking images from camera roll -->
+-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+-  <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+-  <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
++    <!-- Required for picking images from camera roll -->
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
++    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+ 
+-  <application>
+-    <service
+-      android:name="com.google.android.gms.metadata.ModuleDependencies"
+-      android:enabled="false"
+-      android:exported="false"
+-      tools:ignore="MissingClass">
+-      <intent-filter>
+-        <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+-      </intent-filter>
+-      <meta-data
+-        android:name="photopicker_activity:0:required"
+-        android:value="" />
+-    </service>
++    <application>
++      <activity
++        android:name="com.canhub.cropper.CropImageActivity"
++        android:theme="@style/Base.Theme.AppCompat"/>
++      <!-- https://developer.android.com/guide/topics/manifest/provider-element.html -->
++        <provider
++            android:name=".fileprovider.ImagePickerFileProvider"
++            android:authorities="${applicationId}.ImagePickerFileProvider"
++            android:exported="false"
++            android:grantUriPermissions="true">
++            <meta-data
++                android:name="android.support.FILE_PROVIDER_PATHS"
++                android:resource="@xml/image_picker_provider_paths"/>
++        </provider>
++    </application>
+ 
+-    <activity
+-      android:name="com.canhub.cropper.CropImageActivity"
+-      android:theme="@style/Base.Theme.AppCompat" />
+-    <!-- https://developer.android.com/guide/topics/manifest/provider-element.html -->
+-    <provider
+-      android:name=".fileprovider.ImagePickerFileProvider"
+-      android:authorities="${applicationId}.ImagePickerFileProvider"
+-      android:exported="false"
+-      android:grantUriPermissions="true">
+-      <meta-data
+-        android:name="android.support.FILE_PROVIDER_PATHS"
+-        android:resource="@xml/image_picker_provider_paths" />
+-    </provider>
+-  </application>
+-
+-  <queries>
+-    <intent>
+-      <!-- Required for picking images from the camera roll if targeting API 30 -->
+-      <action android:name="android.media.action.IMAGE_CAPTURE" />
+-    </intent>
+-    <intent>
+-      <!-- Required for picking images from the camera if targeting API 30 -->
+-      <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
+-    </intent>
+-  </queries>
++    <queries>
++        <intent>
++            <!-- Required for picking images from the camera roll if targeting API 30 -->
++            <action android:name="android.media.action.IMAGE_CAPTURE" />
++        </intent>
++        <intent>
++            <!-- Required for picking images from the camera if targeting API 30 -->
++            <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
++        </intent>
++    </queries>
+ </manifest>
+diff --git a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerExceptions.kt b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerExceptions.kt
+index 0a76a54..2bd5aac 100644
+--- a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerExceptions.kt
++++ b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerExceptions.kt
+@@ -10,9 +10,6 @@ internal class FailedToDeduceTypeException :
+ internal class FailedToCreateFileException(path: String, cause: Throwable? = null) :
+   CodedException("Failed to create the file '$path'", cause)
+ 
+-internal class FailedToPickMediaException :
+-  CodedException("Failed to parse PhotoPicker result")
+-
+ internal class FailedToExtractVideoMetadataException(file: File? = null, cause: Throwable? = null) :
+   CodedException("Failed to extract metadata from video file '${file?.toUri()?.toString() ?: ""}'", cause)
+ 
+diff --git a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerModule.kt b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerModule.kt
+index 5afa8b1..eb83273 100644
+--- a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerModule.kt
++++ b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerModule.kt
+@@ -1,12 +1,9 @@
+ package expo.modules.imagepicker
+ 
+ import android.Manifest
+-import android.Manifest.permission.READ_MEDIA_IMAGES
+-import android.Manifest.permission.READ_MEDIA_VIDEO
+ import android.content.Context
+ import android.content.Intent
+ import android.net.Uri
+-import android.os.Build
+ import android.os.OperationCanceledException
+ import expo.modules.core.errors.ModuleNotFoundException
+ import expo.modules.imagepicker.contracts.CameraContract
+@@ -112,7 +109,7 @@ class ImagePickerModule : Module() {
+   private lateinit var cropImageLauncher: AppContextActivityResultLauncher<CropImageContractOptions, ImagePickerContractResult>
+ 
+   private val cacheDirectory: File
+-    get() = appContext.cacheDirectory
++    get() = appContext.cacheDirectory ?: throw ModuleNotFoundException("expo.modules.interfaces.filesystem.AppDirectories")
+ 
+   /**
+    * Stores result for an operation that has been interrupted by the activity destruction.
+@@ -166,7 +163,6 @@ class ImagePickerModule : Module() {
+     when (val pickingResult = pickerLauncher()) {
+       is ImagePickerContractResult.Success -> pickingResult
+       is ImagePickerContractResult.Cancelled -> throw OperationCanceledException()
+-      is ImagePickerContractResult.Error -> throw FailedToPickMediaException()
+     }
+   }
+ 
+@@ -175,16 +171,10 @@ class ImagePickerModule : Module() {
+   // region Utils
+ 
+   private fun getMediaLibraryPermissions(writeOnly: Boolean): Array<String> =
+-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+-      listOfNotNull(
+-        READ_MEDIA_IMAGES,
+-        READ_MEDIA_VIDEO
+-      ).toTypedArray()
++    if (writeOnly) {
++      arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+     } else {
+-      listOfNotNull(
+-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+-        Manifest.permission.READ_EXTERNAL_STORAGE.takeIf { !writeOnly }
+-      ).toTypedArray()
++      arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+     }
+ 
+   private fun ensureTargetActivityIsAvailable(options: ImagePickerOptions) {
+@@ -199,13 +189,7 @@ class ImagePickerModule : Module() {
+ 
+     permissions.askForPermissions(
+       { permissionsResponse ->
+-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+-          if (permissionsResponse[Manifest.permission.CAMERA]?.status == PermissionsStatus.GRANTED) {
+-            continuation.resume(Unit)
+-          } else {
+-            continuation.resumeWithException(UserRejectedPermissionsException())
+-          }
+-        } else if (
++        if (
+           permissionsResponse[Manifest.permission.WRITE_EXTERNAL_STORAGE]?.status == PermissionsStatus.GRANTED &&
+           permissionsResponse[Manifest.permission.CAMERA]?.status == PermissionsStatus.GRANTED
+         ) {
+@@ -214,10 +198,7 @@ class ImagePickerModule : Module() {
+           continuation.resumeWithException(UserRejectedPermissionsException())
+         }
+       },
+-      *listOfNotNull(
+-        Manifest.permission.WRITE_EXTERNAL_STORAGE.takeIf { Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU },
+-        Manifest.permission.CAMERA
+-      ).toTypedArray()
++      Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA
+     )
+   }
+ 
+diff --git a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerOptions.kt b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerOptions.kt
+index 8ed5442..a928c3b 100644
+--- a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerOptions.kt
++++ b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerOptions.kt
+@@ -11,8 +11,6 @@ import expo.modules.kotlin.records.Field
+ import expo.modules.kotlin.records.Record
+ import expo.modules.kotlin.types.Enumerable
+ 
+-internal const val UNLIMITED_SELECTION: Int = 0
+-
+ internal class ImagePickerOptions : Record, Serializable {
+   @Field
+   var allowsEditing: Boolean = false
+@@ -24,10 +22,6 @@ internal class ImagePickerOptions : Record, Serializable {
+   @FloatRange(from = 0.0, to = 1.0)
+   var quality: Double = 0.2
+ 
+-  @Field
+-  @IntRange(from = 0)
+-  var selectionLimit: Int = UNLIMITED_SELECTION
+-
+   @Field
+   var base64: Boolean = false
+ 
+@@ -43,9 +37,6 @@ internal class ImagePickerOptions : Record, Serializable {
+   @Field
+   var aspect: Pair<Int, Int>? = null
+ 
+-  @Field
+-  var cameraType: CameraType = CameraType.BACK
+-
+   fun toCameraContractOptions(uri: Uri) = CameraContractOptions(uri, this)
+ 
+   fun toImageLibraryContractOptions() = ImageLibraryContractOptions(this)
+@@ -87,8 +78,3 @@ internal enum class MediaTypes(val value: String) : Enumerable {
+     const val AllMimeType = "*/*"
+   }
+ }
+-
+-internal enum class CameraType(val value: String) : Enumerable {
+-  BACK("back"),
+-  FRONT("front"),
+-}
+diff --git a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/CameraContract.kt b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/CameraContract.kt
+index 59537ba..be71151 100644
+--- a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/CameraContract.kt
++++ b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/CameraContract.kt
+@@ -8,7 +8,6 @@ import android.net.Uri
+ import android.provider.MediaStore
+ import androidx.activity.result.contract.ActivityResultContract
+ import expo.modules.imagepicker.ImagePickerOptions
+-import expo.modules.imagepicker.CameraType
+ import expo.modules.imagepicker.toMediaType
+ import expo.modules.kotlin.activityresult.AppContextActivityResultContract
+ import expo.modules.kotlin.providers.AppContextProvider
+@@ -23,7 +22,7 @@ import java.io.Serializable
+ internal class CameraContract(
+   private val appContextProvider: AppContextProvider,
+ ) : AppContextActivityResultContract<CameraContractOptions, ImagePickerContractResult> {
+-  private val contentResolver: ContentResolver
++  val contentResolver: ContentResolver
+     get() = requireNotNull(appContextProvider.appContext.reactContext) {
+       "React Application Context is null"
+     }.contentResolver
+@@ -35,15 +34,6 @@ internal class CameraContract(
+         if (input.options.mediaTypes.toCameraIntentAction() == MediaStore.ACTION_VIDEO_CAPTURE) {
+           putExtra(MediaStore.EXTRA_DURATION_LIMIT, input.options.videoMaxDuration)
+         }
+-        if (input.options.cameraType == CameraType.FRONT) {
+-          putExtra("android.intent.extras.LENS_FACING_FRONT", 1)
+-          putExtra("android.intent.extras.CAMERA_FACING", 1)
+-          putExtra("android.intent.extra.USE_FRONT_CAMERA", true)
+-        } else {
+-          putExtra("android.intent.extras.LENS_FACING_BACK", 1)
+-          putExtra("android.intent.extras.CAMERA_FACING", 0)
+-          putExtra("android.intent.extra.USE_FRONT_CAMERA", false)
+-        }
+       }
+ 
+   override fun parseResult(input: CameraContractOptions, resultCode: Int, intent: Intent?): ImagePickerContractResult =
+diff --git a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/ContractsUtils.kt b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/ContractsUtils.kt
+index f43704a..aa8906a 100644
+--- a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/ContractsUtils.kt
++++ b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/ContractsUtils.kt
+@@ -7,7 +7,6 @@ import expo.modules.imagepicker.MediaType
+  * Data required to be returned upon successful contract completion
+  */
+ internal sealed class ImagePickerContractResult private constructor() {
+-  class Success(val data: List<Pair<MediaType, Uri>>) : ImagePickerContractResult()
+   class Cancelled : ImagePickerContractResult()
+-  class Error : ImagePickerContractResult()
++  class Success(val data: List<Pair<MediaType, Uri>>) : ImagePickerContractResult()
+ }
+diff --git a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/CropImageContract.kt b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/CropImageContract.kt
+index add3051..2f04e7d 100644
+--- a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/CropImageContract.kt
++++ b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/CropImageContract.kt
+@@ -4,7 +4,6 @@ import android.app.Activity
+ import android.content.Context
+ import android.content.Intent
+ import android.net.Uri
+-import android.os.Build
+ import androidx.core.net.toFile
+ import androidx.core.net.toUri
+ import androidx.core.os.bundleOf
+@@ -55,11 +54,7 @@ internal class CropImageContract(
+   }
+ 
+   override fun parseResult(input: CropImageContractOptions, resultCode: Int, intent: Intent?): ImagePickerContractResult {
+-    val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+-      intent?.getParcelableExtra(CropImage.CROP_IMAGE_EXTRA_RESULT, CropImage.ActivityResult::class.java)
+-    } else {
+-      intent?.getParcelableExtra(CropImage.CROP_IMAGE_EXTRA_RESULT)
+-    }
++    val result = intent?.getParcelableExtra<CropImage.ActivityResult?>(CropImage.CROP_IMAGE_EXTRA_RESULT)
+     if (resultCode == Activity.RESULT_CANCELED || result == null) {
+       return ImagePickerContractResult.Cancelled()
+     }
+diff --git a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/ImageLibraryContract.kt b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/ImageLibraryContract.kt
+index e14164a..7c21f10 100644
+--- a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/ImageLibraryContract.kt
++++ b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/contracts/ImageLibraryContract.kt
+@@ -5,12 +5,7 @@ import android.content.ContentResolver
+ import android.content.Context
+ import android.content.Intent
+ import android.net.Uri
+-import androidx.activity.result.PickVisualMediaRequest
+-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+-import androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia
+ import expo.modules.imagepicker.ImagePickerOptions
+-import expo.modules.imagepicker.MediaTypes
+-import expo.modules.imagepicker.UNLIMITED_SELECTION
+ import expo.modules.imagepicker.getAllDataUris
+ import expo.modules.imagepicker.toMediaType
+ import expo.modules.kotlin.activityresult.AppContextActivityResultContract
+@@ -27,77 +22,31 @@ import java.io.Serializable
+ internal class ImageLibraryContract(
+   private val appContextProvider: AppContextProvider,
+ ) : AppContextActivityResultContract<ImageLibraryContractOptions, ImagePickerContractResult> {
+-  private val contentResolver: ContentResolver
++  val contentResolver: ContentResolver
+     get() = requireNotNull(appContextProvider.appContext.reactContext) {
+       "React Application Context is null"
+     }.contentResolver
+ 
+-  override fun createIntent(context: Context, input: ImageLibraryContractOptions): Intent {
+-    val request = PickVisualMediaRequest.Builder()
+-      .setMediaType(
+-        when (input.options.mediaTypes) {
+-          MediaTypes.VIDEOS -> {
+-            PickVisualMedia.VideoOnly
+-          }
+-
+-          MediaTypes.IMAGES -> {
+-            PickVisualMedia.ImageOnly
+-          }
+-
+-          else -> {
+-            PickVisualMedia.ImageAndVideo
+-          }
++  override fun createIntent(context: Context, input: ImageLibraryContractOptions) =
++    Intent(Intent.ACTION_GET_CONTENT)
++      .addCategory(Intent.CATEGORY_OPENABLE)
++      .setType(input.options.mediaTypes.toMimeType())
++      .apply {
++        if (input.options.allowsMultipleSelection) {
++          putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+         }
+-      )
+-      .build()
+-
+-    if (input.options.allowsMultipleSelection) {
+-      val selectionLimit = input.options.selectionLimit
+-
+-      if (selectionLimit == 1) {
+-        // If multiple selection is allowed but the limit is 1, we should ignore
+-        // the multiple selection flag and just treat it as a single selection.
+-        return PickVisualMedia().createIntent(context, request)
+-      }
+-
+-      if (selectionLimit > 1) {
+-        return PickMultipleVisualMedia(selectionLimit).createIntent(context, request)
+       }
+ 
+-      // If the selection limit is 0, it is the same as unlimited selection.
+-      if (selectionLimit == UNLIMITED_SELECTION) {
+-        return PickMultipleVisualMedia().createIntent(context, request)
+-      }
+-    }
+-
+-    return PickVisualMedia().createIntent(context, request)
+-  }
+-
+   override fun parseResult(input: ImageLibraryContractOptions, resultCode: Int, intent: Intent?) =
+     if (resultCode == Activity.RESULT_CANCELED) {
+       ImagePickerContractResult.Cancelled()
++    } else if (input.options.allowsMultipleSelection) {
++      val uris = requireNotNull(intent).getAllDataUris()
++      ImagePickerContractResult.Success(uris.map { uri -> uri.toMediaType(contentResolver) to uri })
+     } else {
+-      intent?.takeIf { resultCode == Activity.RESULT_OK }?.getAllDataUris()?.let { uris ->
+-        if (input.options.allowsMultipleSelection) {
+-          ImagePickerContractResult.Success(
+-            uris.map { uri ->
+-              uri.toMediaType(contentResolver) to uri
+-            }
+-          )
+-        } else {
+-          if (intent.data != null) {
+-            intent.data?.let {
+-              val type = it.toMediaType(contentResolver)
+-              ImagePickerContractResult.Success(listOf(type to it))
+-            }
+-          } else {
+-            uris.firstOrNull()?.let { uri ->
+-              val type = uri.toMediaType(contentResolver)
+-              ImagePickerContractResult.Success(listOf(type to uri))
+-            } ?: ImagePickerContractResult.Error()
+-          }
+-        }
+-      } ?: ImagePickerContractResult.Error()
++      val uri = requireNotNull(requireNotNull(intent).data)
++      val type = uri.toMediaType(contentResolver)
++      ImagePickerContractResult.Success(listOf(type to uri))
+     }
+ }
+ 
+diff --git a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/exporters/RawImageExporter.kt b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/exporters/RawImageExporter.kt
+index 36ce872..5d6fb38 100644
+--- a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/exporters/RawImageExporter.kt
++++ b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/exporters/RawImageExporter.kt
+@@ -2,7 +2,6 @@ package expo.modules.imagepicker.exporters
+ 
+ import android.content.ContentResolver
+ import android.graphics.BitmapFactory
+-import android.media.ExifInterface
+ import android.net.Uri
+ import expo.modules.imagepicker.copyFile
+ import java.io.File
+@@ -14,21 +13,13 @@ class RawImageExporter : ImageExporter {
+     contentResolver: ContentResolver,
+   ): ImageExportResult {
+     copyFile(source, output, contentResolver)
+-    val exifInterface = ExifInterface(output.absolutePath)
+-    val imageRotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0)
+-    val isRotatedLandscape = (imageRotation == ExifInterface.ORIENTATION_ROTATE_90 || imageRotation == ExifInterface.ORIENTATION_ROTATE_270)
+-    val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+ 
++    val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+     BitmapFactory.decodeFile(output.absolutePath, options)
+ 
+-    // Image will be rotated to orientation suggested by the exif data, because of that the width and height
+-    // returned by the picker should be switched if the image is rotated 90 or 270 degrees.
+-    val width: Int = if (isRotatedLandscape) options.outHeight else options.outWidth
+-    val height: Int = if (isRotatedLandscape) options.outWidth else options.outHeight
+-
+     return ImageExportResult(
+-      width,
+-      height,
++      options.outWidth,
++      options.outHeight,
+       output,
+     )
+   }
+diff --git a/node_modules/expo-image-picker/build/ImagePicker.d.ts b/node_modules/expo-image-picker/build/ImagePicker.d.ts
+index 5b05884..5ef3112 100644
+--- a/node_modules/expo-image-picker/build/ImagePicker.d.ts
++++ b/node_modules/expo-image-picker/build/ImagePicker.d.ts
+@@ -1,5 +1,5 @@
+ import { PermissionStatus, PermissionExpiration, PermissionHookOptions, PermissionResponse } from 'expo-modules-core';
+-import { CameraPermissionResponse, MediaLibraryPermissionResponse, ImagePickerResult, ImagePickerErrorResult, ImagePickerOptions } from './ImagePicker.types';
++import { CameraPermissionResponse, MediaLibraryPermissionResponse, ImagePickerResult, ImagePickerAsset, ImagePickerErrorResult, MediaTypeOptions, ImagePickerOptions, VideoExportPreset, ExpandImagePickerResult, ImageInfo, ImagePickerMultipleResult, ImagePickerCancelledResult, OpenFileBrowserOptions, UIImagePickerControllerQualityType, UIImagePickerPresentationStyle } from './ImagePicker.types';
+ /**
+  * Checks user's permissions for accessing camera.
+  * @return A promise that fulfills with an object of type [CameraPermissionResponse](#camerapermissionresponse).
+@@ -94,6 +94,9 @@ export declare function launchCameraAsync(options?: ImagePickerOptions): Promise
+  * the selected media assets which have a form of [`ImagePickerAsset`](#imagepickerasset).
+  */
+ export declare function launchImageLibraryAsync(options?: ImagePickerOptions): Promise<ImagePickerResult>;
+-export * from './ImagePicker.types';
+-export { PermissionStatus, PermissionExpiration, PermissionHookOptions, PermissionResponse };
++export { MediaTypeOptions, ImagePickerOptions, ImagePickerResult, ImagePickerErrorResult, ImagePickerAsset, VideoExportPreset, CameraPermissionResponse, MediaLibraryPermissionResponse, PermissionStatus, PermissionExpiration, PermissionHookOptions, PermissionResponse, ImageInfo, // deprecated
++ImagePickerMultipleResult, // deprecated
++ImagePickerCancelledResult, // deprecated
++OpenFileBrowserOptions, ExpandImagePickerResult, // deprecated
++UIImagePickerControllerQualityType, UIImagePickerPresentationStyle, };
+ //# sourceMappingURL=ImagePicker.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/expo-image-picker/build/ImagePicker.d.ts.map b/node_modules/expo-image-picker/build/ImagePicker.d.ts.map
+index 2dc16e4..95996b9 100644
+--- a/node_modules/expo-image-picker/build/ImagePicker.d.ts.map
++++ b/node_modules/expo-image-picker/build/ImagePicker.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"ImagePicker.d.ts","sourceRoot":"","sources":["../src/ImagePicker.ts"],"names":[],"mappings":"AAAA,OAAO,EACL,gBAAgB,EAChB,oBAAoB,EACpB,qBAAqB,EACrB,kBAAkB,EAInB,MAAM,mBAAmB,CAAC;AAG3B,OAAO,EACL,wBAAwB,EACxB,8BAA8B,EAC9B,iBAAiB,EACjB,sBAAsB,EACtB,kBAAkB,EACnB,MAAM,qBAAqB,CAAC;AAsE7B;;;GAGG;AACH,wBAAsB,yBAAyB,IAAI,OAAO,CAAC,wBAAwB,CAAC,CAEnF;AAGD;;;;GAIG;AACH,wBAAsB,+BAA+B,CACnD,SAAS,GAAE,OAAe,GACzB,OAAO,CAAC,8BAA8B,CAAC,CAEzC;AAGD;;;;GAIG;AACH,wBAAsB,6BAA6B,IAAI,OAAO,CAAC,wBAAwB,CAAC,CAEvF;AAGD;;;;GAIG;AACH,wBAAsB,mCAAmC,CACvD,SAAS,GAAE,OAAe,GACzB,OAAO,CAAC,8BAA8B,CAAC,CAGzC;AAGD;;;;;;;;GAQG;AACH,eAAO,MAAM,0BAA0B;;wJAOrC,CAAC;AAGH;;;;;;;;GAQG;AACH,eAAO,MAAM,oBAAoB,4JAG/B,CAAC;AAGH;;;;;;;;;;GAUG;AACH,wBAAsB,qBAAqB,IAAI,OAAO,CACpD,CAAC,iBAAiB,GAAG,sBAAsB,CAAC,EAAE,CAC/C,CAKA;AAGD;;;;;;;;;;;;;;GAcG;AACH,wBAAsB,iBAAiB,CACrC,OAAO,GAAE,kBAAuB,GAC/B,OAAO,CAAC,iBAAiB,CAAC,CAM5B;AAGD;;;;;;;;;;;;;;;;;;;GAmBG;AACH,wBAAsB,uBAAuB,CAC3C,OAAO,CAAC,EAAE,kBAAkB,GAC3B,OAAO,CAAC,iBAAiB,CAAC,CAa5B;AAED,cAAc,qBAAqB,CAAC;AAEpC,OAAO,EAAE,gBAAgB,EAAE,oBAAoB,EAAE,qBAAqB,EAAE,kBAAkB,EAAE,CAAC"}
+\ No newline at end of file
++{"version":3,"file":"ImagePicker.d.ts","sourceRoot":"","sources":["../src/ImagePicker.ts"],"names":[],"mappings":"AAAA,OAAO,EACL,gBAAgB,EAChB,oBAAoB,EACpB,qBAAqB,EACrB,kBAAkB,EAInB,MAAM,mBAAmB,CAAC;AAG3B,OAAO,EACL,wBAAwB,EACxB,8BAA8B,EAC9B,iBAAiB,EACjB,gBAAgB,EAChB,sBAAsB,EACtB,gBAAgB,EAChB,kBAAkB,EAClB,iBAAiB,EACjB,uBAAuB,EACvB,SAAS,EACT,yBAAyB,EACzB,0BAA0B,EAC1B,sBAAsB,EACtB,kCAAkC,EAClC,8BAA8B,EAC/B,MAAM,qBAAqB,CAAC;AAsE7B;;;GAGG;AACH,wBAAsB,yBAAyB,IAAI,OAAO,CAAC,wBAAwB,CAAC,CAEnF;AAGD;;;;GAIG;AACH,wBAAsB,+BAA+B,CACnD,SAAS,GAAE,OAAe,GACzB,OAAO,CAAC,8BAA8B,CAAC,CAEzC;AAGD;;;;GAIG;AACH,wBAAsB,6BAA6B,IAAI,OAAO,CAAC,wBAAwB,CAAC,CAEvF;AAGD;;;;GAIG;AACH,wBAAsB,mCAAmC,CACvD,SAAS,GAAE,OAAe,GACzB,OAAO,CAAC,8BAA8B,CAAC,CAGzC;AAGD;;;;;;;;GAQG;AACH,eAAO,MAAM,0BAA0B;;wJAOrC,CAAC;AAGH;;;;;;;;GAQG;AACH,eAAO,MAAM,oBAAoB,4JAG/B,CAAC;AAGH;;;;;;;;;;GAUG;AACH,wBAAsB,qBAAqB,IAAI,OAAO,CACpD,CAAC,iBAAiB,GAAG,sBAAsB,CAAC,EAAE,CAC/C,CAKA;AAGD;;;;;;;;;;;;;;GAcG;AACH,wBAAsB,iBAAiB,CACrC,OAAO,GAAE,kBAAuB,GAC/B,OAAO,CAAC,iBAAiB,CAAC,CAM5B;AAGD;;;;;;;;;;;;;;;;;;;GAmBG;AACH,wBAAsB,uBAAuB,CAC3C,OAAO,CAAC,EAAE,kBAAkB,GAC3B,OAAO,CAAC,iBAAiB,CAAC,CAa5B;AAED,OAAO,EACL,gBAAgB,EAChB,kBAAkB,EAClB,iBAAiB,EACjB,sBAAsB,EACtB,gBAAgB,EAChB,iBAAiB,EACjB,wBAAwB,EACxB,8BAA8B,EAC9B,gBAAgB,EAChB,oBAAoB,EACpB,qBAAqB,EACrB,kBAAkB,EAClB,SAAS,EAAE,aAAa;AACxB,yBAAyB,EAAE,aAAa;AACxC,0BAA0B,EAAE,aAAa;AACzC,sBAAsB,EACtB,uBAAuB,EAAE,aAAa;AACtC,kCAAkC,EAClC,8BAA8B,GAC/B,CAAC"}
+\ No newline at end of file
+diff --git a/node_modules/expo-image-picker/build/ImagePicker.js b/node_modules/expo-image-picker/build/ImagePicker.js
+index d50fe42..3c5672d 100644
+--- a/node_modules/expo-image-picker/build/ImagePicker.js
++++ b/node_modules/expo-image-picker/build/ImagePicker.js
+@@ -1,5 +1,6 @@
+ import { PermissionStatus, createPermissionHook, UnavailabilityError, CodedError, } from 'expo-modules-core';
+ import ExponentImagePicker from './ExponentImagePicker';
++import { MediaTypeOptions, VideoExportPreset, UIImagePickerControllerQualityType, UIImagePickerPresentationStyle, } from './ImagePicker.types';
+ function validateOptions(options) {
+     const { aspect, quality, videoMaxDuration } = options;
+     if (aspect != null) {
+@@ -29,7 +30,7 @@ const DEPRECATED_RESULT_KEYS = [
+     'fileSize',
+ ];
+ function mergeDeprecatedResult(result) {
+-    const firstAsset = result?.assets?.[0];
++    const firstAsset = result.assets?.[0];
+     const deprecatedResult = {
+         ...result,
+         get cancelled() {
+@@ -186,6 +187,6 @@ export async function launchImageLibraryAsync(options) {
+     const result = await ExponentImagePicker.launchImageLibraryAsync(options ?? {});
+     return mergeDeprecatedResult(result);
+ }
+-export * from './ImagePicker.types';
+-export { PermissionStatus };
++export { MediaTypeOptions, VideoExportPreset, PermissionStatus, // deprecated
++UIImagePickerControllerQualityType, UIImagePickerPresentationStyle, };
+ //# sourceMappingURL=ImagePicker.js.map
+\ No newline at end of file
+diff --git a/node_modules/expo-image-picker/build/ImagePicker.js.map b/node_modules/expo-image-picker/build/ImagePicker.js.map
+index 783b9bb..4db07c9 100644
+--- a/node_modules/expo-image-picker/build/ImagePicker.js.map
++++ b/node_modules/expo-image-picker/build/ImagePicker.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"ImagePicker.js","sourceRoot":"","sources":["../src/ImagePicker.ts"],"names":[],"mappings":"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","sourcesContent":["import {\n  PermissionStatus,\n  PermissionExpiration,\n  PermissionHookOptions,\n  PermissionResponse,\n  createPermissionHook,\n  UnavailabilityError,\n  CodedError,\n} from 'expo-modules-core';\n\nimport ExponentImagePicker from './ExponentImagePicker';\nimport {\n  CameraPermissionResponse,\n  MediaLibraryPermissionResponse,\n  ImagePickerResult,\n  ImagePickerErrorResult,\n  ImagePickerOptions,\n} from './ImagePicker.types';\n\nfunction validateOptions(options: ImagePickerOptions) {\n  const { aspect, quality, videoMaxDuration } = options;\n\n  if (aspect != null) {\n    const [x, y] = aspect;\n\n    if (x <= 0 || y <= 0) {\n      throw new CodedError(\n        'ERR_INVALID_ARGUMENT',\n        `Invalid aspect ratio values ${x}:${y}. Provide positive numbers.`\n      );\n    }\n  }\n\n  if (quality && (quality < 0 || quality > 1)) {\n    throw new CodedError(\n      'ERR_INVALID_ARGUMENT',\n      `Invalid 'quality' value ${quality}. Provide a value between 0 and 1.`\n    );\n  }\n\n  if (videoMaxDuration && videoMaxDuration < 0) {\n    throw new CodedError(\n      'ERR_INVALID_ARGUMENT',\n      `Invalid 'videoMaxDuration' value ${videoMaxDuration}. Provide a non-negative number.`\n    );\n  }\n\n  return options;\n}\n\nconst DEPRECATED_RESULT_KEYS = [\n  'uri',\n  'assetId',\n  'width',\n  'height',\n  'type',\n  'exif',\n  'base64',\n  'duration',\n  'fileName',\n  'fileSize',\n];\nfunction mergeDeprecatedResult(result: ImagePickerResult): ImagePickerResult {\n  const firstAsset = result?.assets?.[0];\n  const deprecatedResult = {\n    ...result,\n    get cancelled() {\n      console.warn(\n        'Key \"cancelled\" in the image picker result is deprecated and will be removed in SDK 48, use \"canceled\" instead'\n      );\n      return this.canceled;\n    },\n  };\n  for (const key of DEPRECATED_RESULT_KEYS) {\n    Object.defineProperty(deprecatedResult, key, {\n      get() {\n        console.warn(\n          `Key \"${key}\" in the image picker result is deprecated and will be removed in SDK 48, you can access selected assets through the \"assets\" array instead`\n        );\n        return firstAsset?.[key];\n      },\n    });\n  }\n  return deprecatedResult;\n}\n\n// @needsAudit\n/**\n * Checks user's permissions for accessing camera.\n * @return A promise that fulfills with an object of type [CameraPermissionResponse](#camerapermissionresponse).\n */\nexport async function getCameraPermissionsAsync(): Promise<CameraPermissionResponse> {\n  return ExponentImagePicker.getCameraPermissionsAsync();\n}\n\n// @needsAudit\n/**\n * Checks user's permissions for accessing photos.\n * @param writeOnly Whether to request write or read and write permissions. Defaults to `false`\n * @return A promise that fulfills with an object of type [MediaLibraryPermissionResponse](#medialibrarypermissionresponse).\n */\nexport async function getMediaLibraryPermissionsAsync(\n  writeOnly: boolean = false\n): Promise<MediaLibraryPermissionResponse> {\n  return ExponentImagePicker.getMediaLibraryPermissionsAsync(writeOnly);\n}\n\n// @needsAudit\n/**\n * Asks the user to grant permissions for accessing camera. This does nothing on web because the\n * browser camera is not used.\n * @return A promise that fulfills with an object of type [CameraPermissionResponse](#camerarollpermissionresponse).\n */\nexport async function requestCameraPermissionsAsync(): Promise<CameraPermissionResponse> {\n  return ExponentImagePicker.requestCameraPermissionsAsync();\n}\n\n// @needsAudit\n/**\n * Asks the user to grant permissions for accessing user's photo. This method does nothing on web.\n * @param writeOnly Whether to request write or read and write permissions. Defaults to `false`\n * @return A promise that fulfills with an object of type [MediaLibraryPermissionResponse](#medialibrarypermissionresponse).\n */\nexport async function requestMediaLibraryPermissionsAsync(\n  writeOnly: boolean = false\n): Promise<MediaLibraryPermissionResponse> {\n  const imagePickerMethod = ExponentImagePicker.requestMediaLibraryPermissionsAsync;\n  return imagePickerMethod(writeOnly);\n}\n\n// @needsAudit\n/**\n * Check or request permissions to access the media library.\n * This uses both `requestMediaLibraryPermissionsAsync` and `getMediaLibraryPermissionsAsync` to interact with the permissions.\n *\n * @example\n * ```ts\n * const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();\n * ```\n */\nexport const useMediaLibraryPermissions = createPermissionHook<\n  MediaLibraryPermissionResponse,\n  { writeOnly?: boolean }\n>({\n  // TODO(cedric): permission requesters should have an options param or a different requester\n  getMethod: (options) => getMediaLibraryPermissionsAsync(options?.writeOnly),\n  requestMethod: (options) => requestMediaLibraryPermissionsAsync(options?.writeOnly),\n});\n\n// @needsAudit\n/**\n * Check or request permissions to access the camera.\n * This uses both `requestCameraPermissionsAsync` and `getCameraPermissionsAsync` to interact with the permissions.\n *\n * @example\n * ```ts\n * const [status, requestPermission] = ImagePicker.useCameraPermissions();\n * ```\n */\nexport const useCameraPermissions = createPermissionHook({\n  getMethod: getCameraPermissionsAsync,\n  requestMethod: requestCameraPermissionsAsync,\n});\n\n// @needsAudit\n/**\n * Android system sometimes kills the `MainActivity` after the `ImagePicker` finishes. When this\n * happens, we lost the data selected from the `ImagePicker`. However, you can retrieve the lost\n * data by calling `getPendingResultAsync`. You can test this functionality by turning on\n * `Don't keep activities` in the developer options.\n * @return\n * - **On Android:** a promise that resolves to an array of objects of exactly same type as in\n * `ImagePicker.launchImageLibraryAsync` or `ImagePicker.launchCameraAsync` if the `ImagePicker`\n * finished successfully. Otherwise, to the array of [`ImagePickerErrorResult`](#imagepickerimagepickererrorresult).\n * - **On other platforms:** an empty array.\n */\nexport async function getPendingResultAsync(): Promise<\n  (ImagePickerResult | ImagePickerErrorResult)[]\n> {\n  if (ExponentImagePicker.getPendingResultAsync) {\n    return ExponentImagePicker.getPendingResultAsync();\n  }\n  return [];\n}\n\n// @needsAudit\n/**\n * Display the system UI for taking a photo with the camera. Requires `Permissions.CAMERA`.\n * On Android and iOS 10 `Permissions.CAMERA_ROLL` is also required. On mobile web, this must be\n * called immediately in a user interaction like a button press, otherwise the browser will block\n * the request without a warning.\n * > **Note:** Make sure that you handle `MainActivity` destruction on **Android**. See [ImagePicker.getPendingResultAsync](#imagepickergetpendingresultasync).\n * > **Notes for Web:** The system UI can only be shown after user activation (e.g. a `Button` press).\n * Therefore, calling `launchCameraAsync` in `componentDidMount`, for example, will **not** work as\n * intended. The `cancelled` event will not be returned in the browser due to platform restrictions\n * and inconsistencies across browsers.\n * @param options An `ImagePickerOptions` object.\n * @return A promise that resolves to an object with `canceled` and `assets` fields.\n * When the user canceled the action the `assets` is always `null`, otherwise it's an array of\n * the selected media assets which have a form of [`ImagePickerAsset`](#imagepickerasset).\n */\nexport async function launchCameraAsync(\n  options: ImagePickerOptions = {}\n): Promise<ImagePickerResult> {\n  if (!ExponentImagePicker.launchCameraAsync) {\n    throw new UnavailabilityError('ImagePicker', 'launchCameraAsync');\n  }\n  const result = await ExponentImagePicker.launchCameraAsync(validateOptions(options));\n  return mergeDeprecatedResult(result);\n}\n\n// @needsAudit\n/**\n * Display the system UI for choosing an image or a video from the phone's library.\n * Requires `Permissions.MEDIA_LIBRARY` on iOS 10 only. On mobile web, this must be     called\n * immediately in a user interaction like a button press, otherwise the browser will block the\n * request without a warning.\n *\n * **Animated GIFs support:** On Android, if the selected image is an animated GIF, the result image will be an\n * animated GIF too if and only if `quality` is explicitly set to `1.0` and `allowsEditing` is set to `false`.\n * Otherwise compression and/or cropper will pick the first frame of the GIF and return it as the\n * result (on Android the result will be a PNG). On iOS, both quality and cropping are supported.\n *\n * > **Notes for Web:** The system UI can only be shown after user activation (e.g. a `Button` press).\n * Therefore, calling `launchImageLibraryAsync` in `componentDidMount`, for example, will **not**\n * work as intended. The `cancelled` event will not be returned in the browser due to platform\n * restrictions and inconsistencies across browsers.\n * @param options An object extended by [`ImagePickerOptions`](#imagepickeroptions).\n * @return A promise that resolves to an object with `canceled` and `assets` fields.\n * When the user canceled the action the `assets` is always `null`, otherwise it's an array of\n * the selected media assets which have a form of [`ImagePickerAsset`](#imagepickerasset).\n */\nexport async function launchImageLibraryAsync(\n  options?: ImagePickerOptions\n): Promise<ImagePickerResult> {\n  if (!ExponentImagePicker.launchImageLibraryAsync) {\n    throw new UnavailabilityError('ImagePicker', 'launchImageLibraryAsync');\n  }\n  if (options?.allowsEditing && options.allowsMultipleSelection) {\n    console.warn(\n      '[expo-image-picker] `allowsEditing` is not supported when `allowsMultipleSelection` is enabled and will be ignored.' +\n        \"Disable either 'allowsEditing' or 'allowsMultipleSelection' in 'launchImageLibraryAsync' \" +\n        'to fix this warning.'\n    );\n  }\n  const result = await ExponentImagePicker.launchImageLibraryAsync(options ?? {});\n  return mergeDeprecatedResult(result);\n}\n\nexport * from './ImagePicker.types';\n\nexport { PermissionStatus, PermissionExpiration, PermissionHookOptions, PermissionResponse };\n"]}
+\ No newline at end of file
++{"version":3,"file":"ImagePicker.js","sourceRoot":"","sources":["../src/ImagePicker.ts"],"names":[],"mappings":"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","sourcesContent":["import {\n  PermissionStatus,\n  PermissionExpiration,\n  PermissionHookOptions,\n  PermissionResponse,\n  createPermissionHook,\n  UnavailabilityError,\n  CodedError,\n} from 'expo-modules-core';\n\nimport ExponentImagePicker from './ExponentImagePicker';\nimport {\n  CameraPermissionResponse,\n  MediaLibraryPermissionResponse,\n  ImagePickerResult,\n  ImagePickerAsset,\n  ImagePickerErrorResult,\n  MediaTypeOptions,\n  ImagePickerOptions,\n  VideoExportPreset,\n  ExpandImagePickerResult,\n  ImageInfo,\n  ImagePickerMultipleResult,\n  ImagePickerCancelledResult,\n  OpenFileBrowserOptions,\n  UIImagePickerControllerQualityType,\n  UIImagePickerPresentationStyle,\n} from './ImagePicker.types';\n\nfunction validateOptions(options: ImagePickerOptions) {\n  const { aspect, quality, videoMaxDuration } = options;\n\n  if (aspect != null) {\n    const [x, y] = aspect;\n\n    if (x <= 0 || y <= 0) {\n      throw new CodedError(\n        'ERR_INVALID_ARGUMENT',\n        `Invalid aspect ratio values ${x}:${y}. Provide positive numbers.`\n      );\n    }\n  }\n\n  if (quality && (quality < 0 || quality > 1)) {\n    throw new CodedError(\n      'ERR_INVALID_ARGUMENT',\n      `Invalid 'quality' value ${quality}. Provide a value between 0 and 1.`\n    );\n  }\n\n  if (videoMaxDuration && videoMaxDuration < 0) {\n    throw new CodedError(\n      'ERR_INVALID_ARGUMENT',\n      `Invalid 'videoMaxDuration' value ${videoMaxDuration}. Provide a non-negative number.`\n    );\n  }\n\n  return options;\n}\n\nconst DEPRECATED_RESULT_KEYS = [\n  'uri',\n  'assetId',\n  'width',\n  'height',\n  'type',\n  'exif',\n  'base64',\n  'duration',\n  'fileName',\n  'fileSize',\n];\nfunction mergeDeprecatedResult(result: ImagePickerResult): ImagePickerResult {\n  const firstAsset = result.assets?.[0];\n  const deprecatedResult = {\n    ...result,\n    get cancelled() {\n      console.warn(\n        'Key \"cancelled\" in the image picker result is deprecated and will be removed in SDK 48, use \"canceled\" instead'\n      );\n      return this.canceled;\n    },\n  };\n  for (const key of DEPRECATED_RESULT_KEYS) {\n    Object.defineProperty(deprecatedResult, key, {\n      get() {\n        console.warn(\n          `Key \"${key}\" in the image picker result is deprecated and will be removed in SDK 48, you can access selected assets through the \"assets\" array instead`\n        );\n        return firstAsset?.[key];\n      },\n    });\n  }\n  return deprecatedResult;\n}\n\n// @needsAudit\n/**\n * Checks user's permissions for accessing camera.\n * @return A promise that fulfills with an object of type [CameraPermissionResponse](#camerapermissionresponse).\n */\nexport async function getCameraPermissionsAsync(): Promise<CameraPermissionResponse> {\n  return ExponentImagePicker.getCameraPermissionsAsync();\n}\n\n// @needsAudit\n/**\n * Checks user's permissions for accessing photos.\n * @param writeOnly Whether to request write or read and write permissions. Defaults to `false`\n * @return A promise that fulfills with an object of type [MediaLibraryPermissionResponse](#medialibrarypermissionresponse).\n */\nexport async function getMediaLibraryPermissionsAsync(\n  writeOnly: boolean = false\n): Promise<MediaLibraryPermissionResponse> {\n  return ExponentImagePicker.getMediaLibraryPermissionsAsync(writeOnly);\n}\n\n// @needsAudit\n/**\n * Asks the user to grant permissions for accessing camera. This does nothing on web because the\n * browser camera is not used.\n * @return A promise that fulfills with an object of type [CameraPermissionResponse](#camerarollpermissionresponse).\n */\nexport async function requestCameraPermissionsAsync(): Promise<CameraPermissionResponse> {\n  return ExponentImagePicker.requestCameraPermissionsAsync();\n}\n\n// @needsAudit\n/**\n * Asks the user to grant permissions for accessing user's photo. This method does nothing on web.\n * @param writeOnly Whether to request write or read and write permissions. Defaults to `false`\n * @return A promise that fulfills with an object of type [MediaLibraryPermissionResponse](#medialibrarypermissionresponse).\n */\nexport async function requestMediaLibraryPermissionsAsync(\n  writeOnly: boolean = false\n): Promise<MediaLibraryPermissionResponse> {\n  const imagePickerMethod = ExponentImagePicker.requestMediaLibraryPermissionsAsync;\n  return imagePickerMethod(writeOnly);\n}\n\n// @needsAudit\n/**\n * Check or request permissions to access the media library.\n * This uses both `requestMediaLibraryPermissionsAsync` and `getMediaLibraryPermissionsAsync` to interact with the permissions.\n *\n * @example\n * ```ts\n * const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();\n * ```\n */\nexport const useMediaLibraryPermissions = createPermissionHook<\n  MediaLibraryPermissionResponse,\n  { writeOnly?: boolean }\n>({\n  // TODO(cedric): permission requesters should have an options param or a different requester\n  getMethod: (options) => getMediaLibraryPermissionsAsync(options?.writeOnly),\n  requestMethod: (options) => requestMediaLibraryPermissionsAsync(options?.writeOnly),\n});\n\n// @needsAudit\n/**\n * Check or request permissions to access the camera.\n * This uses both `requestCameraPermissionsAsync` and `getCameraPermissionsAsync` to interact with the permissions.\n *\n * @example\n * ```ts\n * const [status, requestPermission] = ImagePicker.useCameraPermissions();\n * ```\n */\nexport const useCameraPermissions = createPermissionHook({\n  getMethod: getCameraPermissionsAsync,\n  requestMethod: requestCameraPermissionsAsync,\n});\n\n// @needsAudit\n/**\n * Android system sometimes kills the `MainActivity` after the `ImagePicker` finishes. When this\n * happens, we lost the data selected from the `ImagePicker`. However, you can retrieve the lost\n * data by calling `getPendingResultAsync`. You can test this functionality by turning on\n * `Don't keep activities` in the developer options.\n * @return\n * - **On Android:** a promise that resolves to an array of objects of exactly same type as in\n * `ImagePicker.launchImageLibraryAsync` or `ImagePicker.launchCameraAsync` if the `ImagePicker`\n * finished successfully. Otherwise, to the array of [`ImagePickerErrorResult`](#imagepickerimagepickererrorresult).\n * - **On other platforms:** an empty array.\n */\nexport async function getPendingResultAsync(): Promise<\n  (ImagePickerResult | ImagePickerErrorResult)[]\n> {\n  if (ExponentImagePicker.getPendingResultAsync) {\n    return ExponentImagePicker.getPendingResultAsync();\n  }\n  return [];\n}\n\n// @needsAudit\n/**\n * Display the system UI for taking a photo with the camera. Requires `Permissions.CAMERA`.\n * On Android and iOS 10 `Permissions.CAMERA_ROLL` is also required. On mobile web, this must be\n * called immediately in a user interaction like a button press, otherwise the browser will block\n * the request without a warning.\n * > **Note:** Make sure that you handle `MainActivity` destruction on **Android**. See [ImagePicker.getPendingResultAsync](#imagepickergetpendingresultasync).\n * > **Notes for Web:** The system UI can only be shown after user activation (e.g. a `Button` press).\n * Therefore, calling `launchCameraAsync` in `componentDidMount`, for example, will **not** work as\n * intended. The `cancelled` event will not be returned in the browser due to platform restrictions\n * and inconsistencies across browsers.\n * @param options An `ImagePickerOptions` object.\n * @return A promise that resolves to an object with `canceled` and `assets` fields.\n * When the user canceled the action the `assets` is always `null`, otherwise it's an array of\n * the selected media assets which have a form of [`ImagePickerAsset`](#imagepickerasset).\n */\nexport async function launchCameraAsync(\n  options: ImagePickerOptions = {}\n): Promise<ImagePickerResult> {\n  if (!ExponentImagePicker.launchCameraAsync) {\n    throw new UnavailabilityError('ImagePicker', 'launchCameraAsync');\n  }\n  const result = await ExponentImagePicker.launchCameraAsync(validateOptions(options));\n  return mergeDeprecatedResult(result);\n}\n\n// @needsAudit\n/**\n * Display the system UI for choosing an image or a video from the phone's library.\n * Requires `Permissions.MEDIA_LIBRARY` on iOS 10 only. On mobile web, this must be     called\n * immediately in a user interaction like a button press, otherwise the browser will block the\n * request without a warning.\n *\n * **Animated GIFs support:** On Android, if the selected image is an animated GIF, the result image will be an\n * animated GIF too if and only if `quality` is explicitly set to `1.0` and `allowsEditing` is set to `false`.\n * Otherwise compression and/or cropper will pick the first frame of the GIF and return it as the\n * result (on Android the result will be a PNG). On iOS, both quality and cropping are supported.\n *\n * > **Notes for Web:** The system UI can only be shown after user activation (e.g. a `Button` press).\n * Therefore, calling `launchImageLibraryAsync` in `componentDidMount`, for example, will **not**\n * work as intended. The `cancelled` event will not be returned in the browser due to platform\n * restrictions and inconsistencies across browsers.\n * @param options An object extended by [`ImagePickerOptions`](#imagepickeroptions).\n * @return A promise that resolves to an object with `canceled` and `assets` fields.\n * When the user canceled the action the `assets` is always `null`, otherwise it's an array of\n * the selected media assets which have a form of [`ImagePickerAsset`](#imagepickerasset).\n */\nexport async function launchImageLibraryAsync(\n  options?: ImagePickerOptions\n): Promise<ImagePickerResult> {\n  if (!ExponentImagePicker.launchImageLibraryAsync) {\n    throw new UnavailabilityError('ImagePicker', 'launchImageLibraryAsync');\n  }\n  if (options?.allowsEditing && options.allowsMultipleSelection) {\n    console.warn(\n      '[expo-image-picker] `allowsEditing` is not supported when `allowsMultipleSelection` is enabled and will be ignored.' +\n        \"Disable either 'allowsEditing' or 'allowsMultipleSelection' in 'launchImageLibraryAsync' \" +\n        'to fix this warning.'\n    );\n  }\n  const result = await ExponentImagePicker.launchImageLibraryAsync(options ?? {});\n  return mergeDeprecatedResult(result);\n}\n\nexport {\n  MediaTypeOptions,\n  ImagePickerOptions,\n  ImagePickerResult,\n  ImagePickerErrorResult,\n  ImagePickerAsset,\n  VideoExportPreset,\n  CameraPermissionResponse,\n  MediaLibraryPermissionResponse,\n  PermissionStatus,\n  PermissionExpiration,\n  PermissionHookOptions,\n  PermissionResponse,\n  ImageInfo, // deprecated\n  ImagePickerMultipleResult, // deprecated\n  ImagePickerCancelledResult, // deprecated\n  OpenFileBrowserOptions,\n  ExpandImagePickerResult, // deprecated\n  UIImagePickerControllerQualityType,\n  UIImagePickerPresentationStyle,\n};\n"]}
+\ No newline at end of file
+diff --git a/node_modules/expo-image-picker/build/ImagePicker.types.d.ts b/node_modules/expo-image-picker/build/ImagePicker.types.d.ts
+index 3a69540..270b79b 100644
+--- a/node_modules/expo-image-picker/build/ImagePicker.types.d.ts
++++ b/node_modules/expo-image-picker/build/ImagePicker.types.d.ts
+@@ -4,7 +4,7 @@ import { PermissionResponse } from 'expo-modules-core';
+  */
+ export type CameraPermissionResponse = PermissionResponse;
+ /**
+- * Extends `PermissionResponse` type exported by `expo-modules-core`, containing additional iOS-specific field.
++ * Extends `PermissionResponse` type exported by `expo-modules-core` and contains additional iOS-specific field.
+  */
+ export type MediaLibraryPermissionResponse = PermissionResponse & {
+     /**
+@@ -160,36 +160,39 @@ export declare enum UIImagePickerPresentationStyle {
+      *
+      * @platform ios 13+
+      */
+-    AUTOMATIC = "automatic"
+-}
+-/**
+- * Picker preferred asset representation mode. Its values are directly mapped to the [`PHPickerConfigurationAssetRepresentationMode`](https://developer.apple.com/documentation/photokit/phpickerconfigurationassetrepresentationmode).
+- *
+- * @platform ios
+- */
+-export declare enum UIImagePickerPreferredAssetRepresentationMode {
++    AUTOMATIC = "automatic",
+     /**
+-     * A mode that indicates that the system chooses the appropriate asset representation.
++     * @deprecated Use `UIImagePickerPresentationStyle.FULL_SCREEN` instead.
+      */
+-    Automatic = "automatic",
++    FullScreen = "fullScreen",
+     /**
+-     * A mode that uses the most compatible asset representation.
++     * @deprecated Use `UIImagePickerPresentationStyle.PAGE_SHEET` instead.
+      */
+-    Compatible = "compatible",
++    PageSheet = "pageSheet",
+     /**
+-     * A mode that uses the current representation to avoid transcoding, if possible.
++     * @deprecated Use `UIImagePickerPresentationStyle.FORM_SHEET` instead.
+      */
+-    Current = "current"
+-}
+-export declare enum CameraType {
++    FormSheet = "formSheet",
++    /**
++     * @deprecated Use `UIImagePickerPresentationStyle.CURRENT_CONTEXT` instead.
++     */
++    CurrentContext = "currentContext",
+     /**
+-     * Back/rear camera.
++     * @deprecated Use `UIImagePickerPresentationStyle.OVER_FULL_SCREEN` instead.
+      */
+-    back = "back",
++    OverFullScreen = "overFullScreen",
+     /**
+-     * Front camera
++     * @deprecated Use `UIImagePickerPresentationStyle.OVER_CURRENT_CONTEXT` instead.
+      */
+-    front = "front"
++    OverCurrentContext = "overCurrentContext",
++    /**
++     * @deprecated Use `UIImagePickerPresentationStyle.POPOVER` instead.
++     */
++    Popover = "popover",
++    /**
++     * @deprecated Use `UIImagePickerPresentationStyle.AUTOMATIC` instead.
++     */
++    Automatic = "automatic"
+ }
+ /**
+  * @hidden
+@@ -278,34 +281,77 @@ export type ImagePickerErrorResult = {
+      */
+     exception?: string;
+ };
+-/**
+- * Type representing successful and canceled pick result.
+- */
+-export type ImagePickerResult = ImagePickerSuccessResult | ImagePickerCanceledResult;
+-/**
+- * Type representing successful pick result.
+- */
+-export type ImagePickerSuccessResult = {
++export type ImagePickerResult = {
+     /**
+-     * Boolean flag set to `false` showing that the request was successful.
++     * An array of picked assets or `null` when the request was canceled.
+      */
+-    canceled: false;
++    assets: ImagePickerAsset[] | null;
++    /**
++     * Boolean flag which shows if request was canceled. If asset data have been returned this should
++     * always be `false`.
++     */
++    canceled: boolean;
++    /**
++     * @deprecated Use `canceled` instead.
++     */
++    cancelled?: boolean;
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    selected?: ImagePickerAsset[];
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    uri?: string;
+     /**
+-     * An array of picked assets.
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
+      */
++    assetId?: string | null;
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    width?: number;
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    height?: number;
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    type?: 'image' | 'video';
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    fileName?: string | null;
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    fileSize?: number;
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    exif?: Record<string, any> | null;
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    base64?: string | null;
++    /**
++     * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++     */
++    duration?: number | null;
++} & (ImagePickerSuccessResult | ImagePickerCanceledResult);
++/**
++ * @hidden
++ */
++export type ImagePickerSuccessResult = {
++    canceled: false;
+     assets: ImagePickerAsset[];
+ };
+ /**
+- * Type representing canceled pick result.
++ * @hidden
+  */
+ export type ImagePickerCanceledResult = {
+-    /**
+-     * Boolean flag set to `true` showing that the request was canceled.
+-     */
+     canceled: true;
+-    /**
+-     * `null` signifying that the request was canceled.
+-     */
+     assets: null;
+ };
+ /**
+@@ -323,9 +369,8 @@ export type ImagePickerOptions = {
+      * Whether to show a UI to edit the image after it is picked. On Android the user can crop and
+      * rotate the image and on iOS simply crop it.
+      *
+-     * > - Cropping multiple images is not supported - this option is mutually exclusive with `allowsMultipleSelection`.
+-     * > - On iOS, this option is ignored if `allowsMultipleSelection` is enabled.
+-     * > - On iOS cropping a `.bmp` image will convert it to `.png`.
++     * > Cropping multiple images is not supported - this option is mutually exclusive with `allowsMultipleSelection`.
++     * > On iOS, this option is ignored if `allowsMultipleSelection` is enabled.
+      *
+      * @default false
+      * @platform ios
+@@ -396,7 +441,6 @@ export type ImagePickerOptions = {
+      * Setting the value to `0` sets the selection limit to the maximum that the system supports.
+      *
+      * @platform ios 14+
+-     * @platform android
+      * @default 0
+      */
+     selectionLimit?: number;
+@@ -427,22 +471,6 @@ export type ImagePickerOptions = {
+      * @platform ios
+      */
+     presentationStyle?: UIImagePickerPresentationStyle;
+-    /**
+-     * Selects the camera-facing type. The `CameraType` enum provides two options:
+-     * `front` for the front-facing camera and `back` for the back-facing camera.
+-     * - **On Android**, the behavior of this option may vary based on the camera app installed on the device.
+-     * @default CameraType.back
+-     * @platform ios
+-     * @platform android
+-     */
+-    cameraType?: CameraType;
+-    /**
+-     * Choose [preferred asset representation mode](https://developer.apple.com/documentation/photokit/phpickerconfigurationassetrepresentationmode)
+-     * to use when loading assets.
+-     * @default ImagePicker.UIImagePickerPreferredAssetRepresentationMode.Automatic
+-     * @platform ios 14+
+-     */
+-    preferredAssetRepresentationMode?: UIImagePickerPreferredAssetRepresentationMode;
+ };
+ export type OpenFileBrowserOptions = {
+     /**
+diff --git a/node_modules/expo-image-picker/build/ImagePicker.types.d.ts.map b/node_modules/expo-image-picker/build/ImagePicker.types.d.ts.map
+index ae062f2..2621a8e 100644
+--- a/node_modules/expo-image-picker/build/ImagePicker.types.d.ts.map
++++ b/node_modules/expo-image-picker/build/ImagePicker.types.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"ImagePicker.types.d.ts","sourceRoot":"","sources":["../src/ImagePicker.types.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,MAAM,mBAAmB,CAAC;AAGvD;;GAEG;AACH,MAAM,MAAM,wBAAwB,GAAG,kBAAkB,CAAC;AAG1D;;GAEG;AACH,MAAM,MAAM,8BAA8B,GAAG,kBAAkB,GAAG;IAChE;;OAEG;IACH,gBAAgB,CAAC,EAAE,KAAK,GAAG,SAAS,GAAG,MAAM,CAAC;CAC/C,CAAC;AAGF,oBAAY,gBAAgB;IAC1B;;OAEG;IACH,GAAG,QAAQ;IACX;;OAEG;IACH,MAAM,WAAW;IACjB;;OAEG;IACH,MAAM,WAAW;CAClB;AAGD,oBAAY,iBAAiB;IAC3B;;;;OAIG;IACH,WAAW,IAAI;IACf;;;;OAIG;IACH,UAAU,IAAI;IACd;;;;OAIG;IACH,aAAa,IAAI;IACjB;;;;OAIG;IACH,cAAc,IAAI;IAClB;;;;OAIG;IACH,YAAY,IAAI;IAChB;;;;OAIG;IACH,YAAY,IAAI;IAChB;;;;OAIG;IACH,aAAa,IAAI;IACjB;;;;OAIG;IACH,cAAc,IAAI;IAClB;;;;OAIG;IACH,cAAc,IAAI;IAClB;;;;OAIG;IACH,cAAc,IAAI;IAClB;;;;OAIG;IACH,cAAc,KAAK;CACpB;AAGD,oBAAY,kCAAkC;IAC5C;;OAEG;IACH,IAAI,IAAI;IACR;;OAEG;IACH,MAAM,IAAI;IACV;;OAEG;IACH,GAAG,IAAI;IACP;;OAEG;IACH,UAAU,IAAI;IACd;;OAEG;IACH,cAAc,IAAI;IAClB;;OAEG;IACH,aAAa,IAAI;CAClB;AAED;;;;GAIG;AACH,oBAAY,8BAA8B;IACxC;;OAEG;IACH,WAAW,eAAe;IAC1B;;OAEG;IACH,UAAU,cAAc;IACxB;;OAEG;IACH,UAAU,cAAc;IACxB;;OAEG;IACH,eAAe,mBAAmB;IAClC;;OAEG;IACH,gBAAgB,mBAAmB;IACnC;;OAEG;IACH,oBAAoB,uBAAuB;IAC3C;;OAEG;IACH,OAAO,YAAY;IACnB;;;;;OAKG;IACH,SAAS,cAAc;CACxB;AAED;;;;GAIG;AACH,oBAAY,6CAA6C;IACvD;;OAEG;IACH,SAAS,cAAc;IACvB;;OAEG;IACH,UAAU,eAAe;IACzB;;OAEG;IACH,OAAO,YAAY;CACpB;AAED,oBAAY,UAAU;IACpB;;OAEG;IACH,IAAI,SAAS;IACb;;OAEG;IACH,KAAK,UAAU;CAChB;AAED;;;GAGG;AACH,MAAM,MAAM,SAAS,GAAG,gBAAgB,CAAC;AAEzC;;GAEG;AACH,MAAM,MAAM,gBAAgB,GAAG;IAC7B;;;OAGG;IACH,GAAG,EAAE,MAAM,CAAC;IACZ;;;;;;;;;OASG;IACH,OAAO,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;IACxB;;OAEG;IACH,KAAK,EAAE,MAAM,CAAC;IACd;;OAEG;IACH,MAAM,EAAE,MAAM,CAAC;IACf;;OAEG;IACH,IAAI,CAAC,EAAE,OAAO,GAAG,OAAO,CAAC;IACzB;;;;;OAKG;IACH,QAAQ,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;IACzB;;;;OAIG;IACH,QAAQ,CAAC,EAAE,MAAM,CAAC;IAClB;;;;OAIG;IACH,IAAI,CAAC,EAAE,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,GAAG,IAAI,CAAC;IAClC;;;;;;;;;;OAUG;IACH,MAAM,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;IACvB;;OAEG;IACH,QAAQ,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;CAC1B,CAAC;AAGF,MAAM,MAAM,sBAAsB,GAAG;IACnC;;OAEG;IACH,IAAI,EAAE,MAAM,CAAC;IACb;;OAEG;IACH,OAAO,EAAE,MAAM,CAAC;IAChB;;OAEG;IACH,SAAS,CAAC,EAAE,MAAM,CAAC;CACpB,CAAC;AAGF;;GAEG;AACH,MAAM,MAAM,iBAAiB,GAAG,wBAAwB,GAAG,yBAAyB,CAAC;AAErF;;GAEG;AACH,MAAM,MAAM,wBAAwB,GAAG;IACrC;;OAEG;IACH,QAAQ,EAAE,KAAK,CAAC;IAChB;;OAEG;IACH,MAAM,EAAE,gBAAgB,EAAE,CAAC;CAC5B,CAAC;AAEF;;GAEG;AACH,MAAM,MAAM,yBAAyB,GAAG;IACtC;;OAEG;IACH,QAAQ,EAAE,IAAI,CAAC;IACf;;OAEG;IACH,MAAM,EAAE,IAAI,CAAC;CACd,CAAC;AAEF;;;GAGG;AACH,MAAM,MAAM,0BAA0B,GAAG,yBAAyB,CAAC;AAEnE;;;GAGG;AACH,MAAM,MAAM,yBAAyB,GAAG,iBAAiB,CAAC;AAG1D,MAAM,MAAM,kBAAkB,GAAG;IAC/B;;;;;;;;;;;OAWG;IACH,aAAa,CAAC,EAAE,OAAO,CAAC;IACxB;;;;OAIG;IACH,MAAM,CAAC,EAAE,CAAC,MAAM,EAAE,MAAM,CAAC,CAAC;IAC1B;;;;;;;;;;;OAWG;IACH,OAAO,CAAC,EAAE,MAAM,CAAC;IACjB;;;OAGG;IACH,UAAU,CAAC,EAAE,gBAAgB,CAAC;IAC9B;;;OAGG;IACH,IAAI,CAAC,EAAE,OAAO,CAAC;IACf;;OAEG;IACH,MAAM,CAAC,EAAE,OAAO,CAAC;IACjB;;;;;;OAMG;IACH,iBAAiB,CAAC,EAAE,iBAAiB,CAAC;IACtC;;;;OAIG;IACH,YAAY,CAAC,EAAE,kCAAkC,CAAC;IAClD;;;;;;;;;;OAUG;IACH,uBAAuB,CAAC,EAAE,OAAO,CAAC;IAClC;;;;;;;OAOG;IACH,cAAc,CAAC,EAAE,MAAM,CAAC;IACxB;;;;;;;;;OASG;IACH,gBAAgB,CAAC,EAAE,OAAO,CAAC;IAC3B;;;;;;;OAOG;IACH,gBAAgB,CAAC,EAAE,MAAM,CAAC;IAC1B;;;;;OAKG;IACH,iBAAiB,CAAC,EAAE,8BAA8B,CAAC;IACnD;;;;;;;OAOG;IACH,UAAU,CAAC,EAAE,UAAU,CAAC;IACxB;;;;;OAKG;IACH,gCAAgC,CAAC,EAAE,6CAA6C,CAAC;CAClF,CAAC;AAGF,MAAM,MAAM,sBAAsB,GAAG;IACnC;;;OAGG;IACH,UAAU,EAAE,gBAAgB,CAAC;IAE7B,OAAO,CAAC,EAAE,OAAO,CAAC;IAClB;;;OAGG;IACH,uBAAuB,EAAE,OAAO,CAAC;IACjC;;OAEG;IACH,MAAM,EAAE,OAAO,CAAC;CACjB,CAAC;AAEF;;;GAGG;AACH,MAAM,MAAM,uBAAuB,CAAC,CAAC,SAAS,kBAAkB,GAAG,sBAAsB,IACvF,CAAC,SAAS;IACR,uBAAuB,EAAE,IAAI,CAAC;CAC/B,GACG,iBAAiB,GACjB,iBAAiB,CAAC"}
+\ No newline at end of file
++{"version":3,"file":"ImagePicker.types.d.ts","sourceRoot":"","sources":["../src/ImagePicker.types.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
+diff --git a/node_modules/expo-image-picker/build/ImagePicker.types.js b/node_modules/expo-image-picker/build/ImagePicker.types.js
+index 146c680..bb6c822 100644
+--- a/node_modules/expo-image-picker/build/ImagePicker.types.js
++++ b/node_modules/expo-image-picker/build/ImagePicker.types.js
+@@ -154,36 +154,37 @@ export var UIImagePickerPresentationStyle;
+      * @platform ios 13+
+      */
+     UIImagePickerPresentationStyle["AUTOMATIC"] = "automatic";
+-})(UIImagePickerPresentationStyle || (UIImagePickerPresentationStyle = {}));
+-/**
+- * Picker preferred asset representation mode. Its values are directly mapped to the [`PHPickerConfigurationAssetRepresentationMode`](https://developer.apple.com/documentation/photokit/phpickerconfigurationassetrepresentationmode).
+- *
+- * @platform ios
+- */
+-export var UIImagePickerPreferredAssetRepresentationMode;
+-(function (UIImagePickerPreferredAssetRepresentationMode) {
+     /**
+-     * A mode that indicates that the system chooses the appropriate asset representation.
++     * @deprecated Use `UIImagePickerPresentationStyle.FULL_SCREEN` instead.
++     */
++    UIImagePickerPresentationStyle["FullScreen"] = "fullScreen";
++    /**
++     * @deprecated Use `UIImagePickerPresentationStyle.PAGE_SHEET` instead.
++     */
++    UIImagePickerPresentationStyle["PageSheet"] = "pageSheet";
++    /**
++     * @deprecated Use `UIImagePickerPresentationStyle.FORM_SHEET` instead.
+      */
+-    UIImagePickerPreferredAssetRepresentationMode["Automatic"] = "automatic";
++    UIImagePickerPresentationStyle["FormSheet"] = "formSheet";
+     /**
+-     * A mode that uses the most compatible asset representation.
++     * @deprecated Use `UIImagePickerPresentationStyle.CURRENT_CONTEXT` instead.
+      */
+-    UIImagePickerPreferredAssetRepresentationMode["Compatible"] = "compatible";
++    UIImagePickerPresentationStyle["CurrentContext"] = "currentContext";
+     /**
+-     * A mode that uses the current representation to avoid transcoding, if possible.
++     * @deprecated Use `UIImagePickerPresentationStyle.OVER_FULL_SCREEN` instead.
+      */
+-    UIImagePickerPreferredAssetRepresentationMode["Current"] = "current";
+-})(UIImagePickerPreferredAssetRepresentationMode || (UIImagePickerPreferredAssetRepresentationMode = {}));
+-export var CameraType;
+-(function (CameraType) {
++    UIImagePickerPresentationStyle["OverFullScreen"] = "overFullScreen";
+     /**
+-     * Back/rear camera.
++     * @deprecated Use `UIImagePickerPresentationStyle.OVER_CURRENT_CONTEXT` instead.
+      */
+-    CameraType["back"] = "back";
++    UIImagePickerPresentationStyle["OverCurrentContext"] = "overCurrentContext";
+     /**
+-     * Front camera
++     * @deprecated Use `UIImagePickerPresentationStyle.POPOVER` instead.
+      */
+-    CameraType["front"] = "front";
+-})(CameraType || (CameraType = {}));
++    UIImagePickerPresentationStyle["Popover"] = "popover";
++    /**
++     * @deprecated Use `UIImagePickerPresentationStyle.AUTOMATIC` instead.
++     */
++    UIImagePickerPresentationStyle["Automatic"] = "automatic";
++})(UIImagePickerPresentationStyle || (UIImagePickerPresentationStyle = {}));
+ //# sourceMappingURL=ImagePicker.types.js.map
+\ No newline at end of file
+diff --git a/node_modules/expo-image-picker/build/ImagePicker.types.js.map b/node_modules/expo-image-picker/build/ImagePicker.types.js.map
+index e34787d..09893f0 100644
+--- a/node_modules/expo-image-picker/build/ImagePicker.types.js.map
++++ b/node_modules/expo-image-picker/build/ImagePicker.types.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"ImagePicker.types.js","sourceRoot":"","sources":["../src/ImagePicker.types.ts"],"names":[],"mappings":"AAmBA,cAAc;AACd,MAAM,CAAN,IAAY,gBAaX;AAbD,WAAY,gBAAgB;IAC1B;;OAEG;IACH,+BAAW,CAAA;IACX;;OAEG;IACH,qCAAiB,CAAA;IACjB;;OAEG;IACH,qCAAiB,CAAA;AACnB,CAAC,EAbW,gBAAgB,KAAhB,gBAAgB,QAa3B;AAED,cAAc;AACd,MAAM,CAAN,IAAY,iBAmEX;AAnED,WAAY,iBAAiB;IAC3B;;;;OAIG;IACH,uEAAe,CAAA;IACf;;;;OAIG;IACH,qEAAc,CAAA;IACd;;;;OAIG;IACH,2EAAiB,CAAA;IACjB;;;;OAIG;IACH,6EAAkB,CAAA;IAClB;;;;OAIG;IACH,yEAAgB,CAAA;IAChB;;;;OAIG;IACH,yEAAgB,CAAA;IAChB;;;;OAIG;IACH,2EAAiB,CAAA;IACjB;;;;OAIG;IACH,6EAAkB,CAAA;IAClB;;;;OAIG;IACH,6EAAkB,CAAA;IAClB;;;;OAIG;IACH,6EAAkB,CAAA;IAClB;;;;OAIG;IACH,8EAAmB,CAAA;AACrB,CAAC,EAnEW,iBAAiB,KAAjB,iBAAiB,QAmE5B;AAED,cAAc;AACd,MAAM,CAAN,IAAY,kCAyBX;AAzBD,WAAY,kCAAkC;IAC5C;;OAEG;IACH,2FAAQ,CAAA;IACR;;OAEG;IACH,+FAAU,CAAA;IACV;;OAEG;IACH,yFAAO,CAAA;IACP;;OAEG;IACH,uGAAc,CAAA;IACd;;OAEG;IACH,+GAAkB,CAAA;IAClB;;OAEG;IACH,6GAAiB,CAAA;AACnB,CAAC,EAzBW,kCAAkC,KAAlC,kCAAkC,QAyB7C;AAED;;;;GAIG;AACH,MAAM,CAAN,IAAY,8BAoCX;AApCD,WAAY,8BAA8B;IACxC;;OAEG;IACH,4DAA0B,CAAA;IAC1B;;OAEG;IACH,0DAAwB,CAAA;IACxB;;OAEG;IACH,0DAAwB,CAAA;IACxB;;OAEG;IACH,oEAAkC,CAAA;IAClC;;OAEG;IACH,qEAAmC,CAAA;IACnC;;OAEG;IACH,6EAA2C,CAAA;IAC3C;;OAEG;IACH,qDAAmB,CAAA;IACnB;;;;;OAKG;IACH,yDAAuB,CAAA;AACzB,CAAC,EApCW,8BAA8B,KAA9B,8BAA8B,QAoCzC;AAED;;;;GAIG;AACH,MAAM,CAAN,IAAY,6CAaX;AAbD,WAAY,6CAA6C;IACvD;;OAEG;IACH,wEAAuB,CAAA;IACvB;;OAEG;IACH,0EAAyB,CAAA;IACzB;;OAEG;IACH,oEAAmB,CAAA;AACrB,CAAC,EAbW,6CAA6C,KAA7C,6CAA6C,QAaxD;AAED,MAAM,CAAN,IAAY,UASX;AATD,WAAY,UAAU;IACpB;;OAEG;IACH,2BAAa,CAAA;IACb;;OAEG;IACH,6BAAe,CAAA;AACjB,CAAC,EATW,UAAU,KAAV,UAAU,QASrB","sourcesContent":["import { PermissionResponse } from 'expo-modules-core';\n\n// @needsAudit\n/**\n * Alias for `PermissionResponse` type exported by `expo-modules-core`.\n */\nexport type CameraPermissionResponse = PermissionResponse;\n\n// @needsAudit\n/**\n * Extends `PermissionResponse` type exported by `expo-modules-core`, containing additional iOS-specific field.\n */\nexport type MediaLibraryPermissionResponse = PermissionResponse & {\n  /**\n   * @platform ios\n   */\n  accessPrivileges?: 'all' | 'limited' | 'none';\n};\n\n// @needsAudit\nexport enum MediaTypeOptions {\n  /**\n   * Images and videos.\n   */\n  All = 'All',\n  /**\n   * Only videos.\n   */\n  Videos = 'Videos',\n  /**\n   * Only images.\n   */\n  Images = 'Images',\n}\n\n// @needsAudit\nexport enum VideoExportPreset {\n  /**\n   * Resolution: __Unchanged__ •\n   * Video compression: __None__ •\n   * Audio compression: __None__\n   */\n  Passthrough = 0,\n  /**\n   * Resolution: __Depends on the device__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  LowQuality = 1,\n  /**\n   * Resolution: __Depends on the device__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  MediumQuality = 2,\n  /**\n   * Resolution: __Depends on the device__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  HighestQuality = 3,\n  /**\n   * Resolution: __640 × 480__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_640x480 = 4,\n  /**\n   * Resolution: __960 × 540__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_960x540 = 5,\n  /**\n   * Resolution: __1280 × 720__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_1280x720 = 6,\n  /**\n   * Resolution: __1920 × 1080__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_1920x1080 = 7,\n  /**\n   * Resolution: __3840 × 2160__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_3840x2160 = 8,\n  /**\n   * Resolution: __1920 × 1080__ •\n   * Video compression: __HEVC__ •\n   * Audio compression: __AAC__\n   */\n  HEVC_1920x1080 = 9,\n  /**\n   * Resolution: __3840 × 2160__ •\n   * Video compression: __HEVC__ •\n   * Audio compression: __AAC__\n   */\n  HEVC_3840x2160 = 10,\n}\n\n// @needsAudit\nexport enum UIImagePickerControllerQualityType {\n  /**\n   * Highest available resolution.\n   */\n  High = 0,\n  /**\n   * Depends on the device.\n   */\n  Medium = 1,\n  /**\n   * Depends on the device.\n   */\n  Low = 2,\n  /**\n   * 640 × 480\n   */\n  VGA640x480 = 3,\n  /**\n   * 1280 × 720\n   */\n  IFrame1280x720 = 4,\n  /**\n   * 960 × 540\n   */\n  IFrame960x540 = 5,\n}\n\n/**\n * Picker presentation style. Its values are directly mapped to the [`UIModalPresentationStyle`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621355-modalpresentationstyle).\n *\n * @platform ios\n */\nexport enum UIImagePickerPresentationStyle {\n  /**\n   * A presentation style in which the presented picker covers the screen.\n   */\n  FULL_SCREEN = 'fullScreen',\n  /**\n   * A presentation style that partially covers the underlying content.\n   */\n  PAGE_SHEET = 'pageSheet',\n  /**\n   * A presentation style that displays the picker centered in the screen.\n   */\n  FORM_SHEET = 'formSheet',\n  /**\n   * A presentation style where the picker is displayed over the app's content.\n   */\n  CURRENT_CONTEXT = 'currentContext',\n  /**\n   * A presentation style in which the picker view covers the screen.\n   */\n  OVER_FULL_SCREEN = 'overFullScreen',\n  /**\n   * A presentation style where the picker is displayed over the app's content.\n   */\n  OVER_CURRENT_CONTEXT = 'overCurrentContext',\n  /**\n   * A presentation style where the picker is displayed in a popover view.\n   */\n  POPOVER = 'popover',\n  /**\n   * The default presentation style chosen by the system.\n   * On older iOS versions, falls back to `WebBrowserPresentationStyle.FullScreen`.\n   *\n   * @platform ios 13+\n   */\n  AUTOMATIC = 'automatic',\n}\n\n/**\n * Picker preferred asset representation mode. Its values are directly mapped to the [`PHPickerConfigurationAssetRepresentationMode`](https://developer.apple.com/documentation/photokit/phpickerconfigurationassetrepresentationmode).\n *\n * @platform ios\n */\nexport enum UIImagePickerPreferredAssetRepresentationMode {\n  /**\n   * A mode that indicates that the system chooses the appropriate asset representation.\n   */\n  Automatic = 'automatic',\n  /**\n   * A mode that uses the most compatible asset representation.\n   */\n  Compatible = 'compatible',\n  /**\n   * A mode that uses the current representation to avoid transcoding, if possible.\n   */\n  Current = 'current',\n}\n\nexport enum CameraType {\n  /**\n   * Back/rear camera.\n   */\n  back = 'back',\n  /**\n   * Front camera\n   */\n  front = 'front',\n}\n\n/**\n * @hidden\n * @deprecated Use `ImagePickerAsset` instead\n */\nexport type ImageInfo = ImagePickerAsset;\n\n/**\n * Represents an asset (image or video) returned by the image picker or camera.\n */\nexport type ImagePickerAsset = {\n  /**\n   * URI to the local image or video file (usable as the source of an `Image` element, in the case of\n   * an image) and `width` and `height` specify the dimensions of the media.\n   */\n  uri: string;\n  /**\n   * The unique ID that represents the picked image or video, if picked from the library. It can be used\n   * by [expo-media-library](./media-library) to manage the picked asset.\n   *\n   * > This might be `null` when the ID is unavailable or the user gave limited permission to access the media library.\n   * > On Android, the ID is unavailable when the user selects a photo by directly browsing file system.\n   *\n   * @platform ios\n   * @platform android\n   */\n  assetId?: string | null;\n  /**\n   * Width of the image or video.\n   */\n  width: number;\n  /**\n   * Height of the image or video.\n   */\n  height: number;\n  /**\n   * The type of the asset.\n   */\n  type?: 'image' | 'video';\n  /**\n   * Preferred filename to use when saving this item. This might be `null` when the name is unavailable\n   * or user gave limited permission to access the media library.\n   *\n   * @platform ios\n   */\n  fileName?: string | null;\n  /**\n   * File size of the picked image or video, in bytes.\n   *\n   * @platform ios\n   */\n  fileSize?: number;\n  /**\n   * The `exif` field is included if the `exif` option is truthy, and is an object containing the\n   * image's EXIF data. The names of this object's properties are EXIF tags and the values are the\n   * respective EXIF values for those tags.\n   */\n  exif?: Record<string, any> | null;\n  /**\n   * When the `base64` option is truthy, it is a Base64-encoded string of the selected image's JPEG data, otherwise `null`.\n   * If you prepend this with `'data:image/jpeg;base64,'` to create a data URI,\n   * you can use it as the source of an `Image` element; for example:\n   * ```ts\n   * <Image\n   *   source={{ uri: 'data:image/jpeg;base64,' + asset.base64 }}\n   *   style={{ width: 200, height: 200 }}\n   * />\n   * ```\n   */\n  base64?: string | null;\n  /**\n   * Length of the video in milliseconds or `null` if the asset is not a video.\n   */\n  duration?: number | null;\n};\n\n// @needsAudit\nexport type ImagePickerErrorResult = {\n  /**\n   * The error code.\n   */\n  code: string;\n  /**\n   * The error message.\n   */\n  message: string;\n  /**\n   * The exception which caused the error.\n   */\n  exception?: string;\n};\n\n// @needsAudit\n/**\n * Type representing successful and canceled pick result.\n */\nexport type ImagePickerResult = ImagePickerSuccessResult | ImagePickerCanceledResult;\n\n/**\n * Type representing successful pick result.\n */\nexport type ImagePickerSuccessResult = {\n  /**\n   * Boolean flag set to `false` showing that the request was successful.\n   */\n  canceled: false;\n  /**\n   * An array of picked assets.\n   */\n  assets: ImagePickerAsset[];\n};\n\n/**\n * Type representing canceled pick result.\n */\nexport type ImagePickerCanceledResult = {\n  /**\n   * Boolean flag set to `true` showing that the request was canceled.\n   */\n  canceled: true;\n  /**\n   * `null` signifying that the request was canceled.\n   */\n  assets: null;\n};\n\n/**\n * @hidden\n * @deprecated Use `ImagePickerResult` instead.\n */\nexport type ImagePickerCancelledResult = ImagePickerCanceledResult;\n\n/**\n * @hidden\n * @deprecated `ImagePickerMultipleResult` has been deprecated in favor of `ImagePickerResult`.\n */\nexport type ImagePickerMultipleResult = ImagePickerResult;\n\n// @needsAudit\nexport type ImagePickerOptions = {\n  /**\n   * Whether to show a UI to edit the image after it is picked. On Android the user can crop and\n   * rotate the image and on iOS simply crop it.\n   *\n   * > - Cropping multiple images is not supported - this option is mutually exclusive with `allowsMultipleSelection`.\n   * > - On iOS, this option is ignored if `allowsMultipleSelection` is enabled.\n   * > - On iOS cropping a `.bmp` image will convert it to `.png`.\n   *\n   * @default false\n   * @platform ios\n   * @platform android\n   */\n  allowsEditing?: boolean;\n  /**\n   * An array with two entries `[x, y]` specifying the aspect ratio to maintain if the user is\n   * allowed to edit the image (by passing `allowsEditing: true`). This is only applicable on\n   * Android, since on iOS the crop rectangle is always a square.\n   */\n  aspect?: [number, number];\n  /**\n   * Specify the quality of compression, from `0` to `1`. `0` means compress for small size,\n   * `1` means compress for maximum quality.\n   * > Note: If the selected image has been compressed before, the size of the output file may be\n   * > bigger than the size of the original image.\n   *\n   * > Note: On iOS, if a `.bmp` or `.png` image is selected from the library, this option is ignored.\n   *\n   * @default 0.2\n   * @platform ios\n   * @platform android\n   */\n  quality?: number;\n  /**\n   * Choose what type of media to pick.\n   * @default ImagePicker.MediaTypeOptions.Images\n   */\n  mediaTypes?: MediaTypeOptions;\n  /**\n   * Whether to also include the EXIF data for the image. On iOS the EXIF data does not include GPS\n   * tags in the camera case.\n   */\n  exif?: boolean;\n  /**\n   * Whether to also include the image data in Base64 format.\n   */\n  base64?: boolean;\n  /**\n   * Specify preset which will be used to compress selected video.\n   * @default ImagePicker.VideoExportPreset.Passthrough\n   * @platform ios 11+\n   * @deprecated See [`videoExportPreset`](https://developer.apple.com/documentation/uikit/uiimagepickercontroller/2890964-videoexportpreset?language=objc)\n   * in Apple documentation.\n   */\n  videoExportPreset?: VideoExportPreset;\n  /**\n   * Specify the quality of recorded videos. Defaults to the highest quality available for the device.\n   * @default ImagePicker.UIImagePickerControllerQualityType.High\n   * @platform ios\n   */\n  videoQuality?: UIImagePickerControllerQualityType;\n  /**\n   * Whether or not to allow selecting multiple media files at once.\n   *\n   * > Cropping multiple images is not supported - this option is mutually exclusive with `allowsEditing`.\n   * > If this option is enabled, then `allowsEditing` is ignored.\n   *\n   * @default false\n   * @platform ios 14+\n   * @platform android\n   * @platform web\n   */\n  allowsMultipleSelection?: boolean;\n  /**\n   * The maximum number of items that user can select. Applicable when `allowsMultipleSelection` is enabled.\n   * Setting the value to `0` sets the selection limit to the maximum that the system supports.\n   *\n   * @platform ios 14+\n   * @platform android\n   * @default 0\n   */\n  selectionLimit?: number;\n  /**\n   * Whether to display number badges when assets are selected. The badges are numbered\n   * in selection order. Assets are then returned in the exact same order they were selected.\n   *\n   * > Assets should be returned in the selection order regardless of this option,\n   * > but there is no guarantee that it is always true when this option is disabled.\n   *\n   * @platform ios 15+\n   * @default false\n   */\n  orderedSelection?: boolean;\n  /**\n   * Maximum duration, in seconds, for video recording. Setting this to `0` disables the limit.\n   * Defaults to `0` (no limit).\n   * - **On iOS**, when `allowsEditing` is set to `true`, maximum duration is limited to 10 minutes.\n   *   This limit is applied automatically, if `0` or no value is specified.\n   * - **On Android**, effect of this option depends on support of installed camera app.\n   * - **On Web** this option has no effect - the limit is browser-dependant.\n   */\n  videoMaxDuration?: number;\n  /**\n   * Choose [presentation style](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621355-modalpresentationstyle?language=objc)\n   * to customize view during taking photo/video.\n   * @default ImagePicker.UIImagePickerPresentationStyle.Automatic\n   * @platform ios\n   */\n  presentationStyle?: UIImagePickerPresentationStyle;\n  /**\n   * Selects the camera-facing type. The `CameraType` enum provides two options:\n   * `front` for the front-facing camera and `back` for the back-facing camera.\n   * - **On Android**, the behavior of this option may vary based on the camera app installed on the device.\n   * @default CameraType.back\n   * @platform ios\n   * @platform android\n   */\n  cameraType?: CameraType;\n  /**\n   * Choose [preferred asset representation mode](https://developer.apple.com/documentation/photokit/phpickerconfigurationassetrepresentationmode)\n   * to use when loading assets.\n   * @default ImagePicker.UIImagePickerPreferredAssetRepresentationMode.Automatic\n   * @platform ios 14+\n   */\n  preferredAssetRepresentationMode?: UIImagePickerPreferredAssetRepresentationMode;\n};\n\n// @needsAudit\nexport type OpenFileBrowserOptions = {\n  /**\n   * Choose what type of media to pick.\n   * @default ImagePicker.MediaTypeOptions.Images\n   */\n  mediaTypes: MediaTypeOptions;\n  // @docsMissing\n  capture?: boolean;\n  /**\n   * Whether or not to allow selecting multiple media files at once.\n   * @platform web\n   */\n  allowsMultipleSelection: boolean;\n  /**\n   * Whether to also include the image data in Base64 format.\n   */\n  base64: boolean;\n};\n\n/**\n * @hidden\n * @deprecated Use `ImagePickerResult` or `OpenFileBrowserOptions` instead.\n */\nexport type ExpandImagePickerResult<T extends ImagePickerOptions | OpenFileBrowserOptions> =\n  T extends {\n    allowsMultipleSelection: true;\n  }\n    ? ImagePickerResult\n    : ImagePickerResult;\n"]}
+\ No newline at end of file
++{"version":3,"file":"ImagePicker.types.js","sourceRoot":"","sources":["../src/ImagePicker.types.ts"],"names":[],"mappings":"AAmBA,cAAc;AACd,MAAM,CAAN,IAAY,gBAaX;AAbD,WAAY,gBAAgB;IAC1B;;OAEG;IACH,+BAAW,CAAA;IACX;;OAEG;IACH,qCAAiB,CAAA;IACjB;;OAEG;IACH,qCAAiB,CAAA;AACnB,CAAC,EAbW,gBAAgB,KAAhB,gBAAgB,QAa3B;AAED,cAAc;AACd,MAAM,CAAN,IAAY,iBAmEX;AAnED,WAAY,iBAAiB;IAC3B;;;;OAIG;IACH,uEAAe,CAAA;IACf;;;;OAIG;IACH,qEAAc,CAAA;IACd;;;;OAIG;IACH,2EAAiB,CAAA;IACjB;;;;OAIG;IACH,6EAAkB,CAAA;IAClB;;;;OAIG;IACH,yEAAgB,CAAA;IAChB;;;;OAIG;IACH,yEAAgB,CAAA;IAChB;;;;OAIG;IACH,2EAAiB,CAAA;IACjB;;;;OAIG;IACH,6EAAkB,CAAA;IAClB;;;;OAIG;IACH,6EAAkB,CAAA;IAClB;;;;OAIG;IACH,6EAAkB,CAAA;IAClB;;;;OAIG;IACH,8EAAmB,CAAA;AACrB,CAAC,EAnEW,iBAAiB,KAAjB,iBAAiB,QAmE5B;AAED,cAAc;AACd,MAAM,CAAN,IAAY,kCAyBX;AAzBD,WAAY,kCAAkC;IAC5C;;OAEG;IACH,2FAAQ,CAAA;IACR;;OAEG;IACH,+FAAU,CAAA;IACV;;OAEG;IACH,yFAAO,CAAA;IACP;;OAEG;IACH,uGAAc,CAAA;IACd;;OAEG;IACH,+GAAkB,CAAA;IAClB;;OAEG;IACH,6GAAiB,CAAA;AACnB,CAAC,EAzBW,kCAAkC,KAAlC,kCAAkC,QAyB7C;AAED;;;;GAIG;AACH,MAAM,CAAN,IAAY,8BAoEX;AApED,WAAY,8BAA8B;IACxC;;OAEG;IACH,4DAA0B,CAAA;IAC1B;;OAEG;IACH,0DAAwB,CAAA;IACxB;;OAEG;IACH,0DAAwB,CAAA;IACxB;;OAEG;IACH,oEAAkC,CAAA;IAClC;;OAEG;IACH,qEAAmC,CAAA;IACnC;;OAEG;IACH,6EAA2C,CAAA;IAC3C;;OAEG;IACH,qDAAmB,CAAA;IACnB;;;;;OAKG;IACH,yDAAuB,CAAA;IACvB;;OAEG;IACH,2DAAyB,CAAA;IACzB;;OAEG;IACH,yDAAuB,CAAA;IACvB;;OAEG;IACH,yDAAuB,CAAA;IACvB;;OAEG;IACH,mEAAiC,CAAA;IACjC;;OAEG;IACH,mEAAiC,CAAA;IACjC;;OAEG;IACH,2EAAyC,CAAA;IACzC;;OAEG;IACH,qDAAmB,CAAA;IACnB;;OAEG;IACH,yDAAuB,CAAA;AACzB,CAAC,EApEW,8BAA8B,KAA9B,8BAA8B,QAoEzC","sourcesContent":["import { PermissionResponse } from 'expo-modules-core';\n\n// @needsAudit\n/**\n * Alias for `PermissionResponse` type exported by `expo-modules-core`.\n */\nexport type CameraPermissionResponse = PermissionResponse;\n\n// @needsAudit\n/**\n * Extends `PermissionResponse` type exported by `expo-modules-core` and contains additional iOS-specific field.\n */\nexport type MediaLibraryPermissionResponse = PermissionResponse & {\n  /**\n   * @platform ios\n   */\n  accessPrivileges?: 'all' | 'limited' | 'none';\n};\n\n// @needsAudit\nexport enum MediaTypeOptions {\n  /**\n   * Images and videos.\n   */\n  All = 'All',\n  /**\n   * Only videos.\n   */\n  Videos = 'Videos',\n  /**\n   * Only images.\n   */\n  Images = 'Images',\n}\n\n// @needsAudit\nexport enum VideoExportPreset {\n  /**\n   * Resolution: __Unchanged__ •\n   * Video compression: __None__ •\n   * Audio compression: __None__\n   */\n  Passthrough = 0,\n  /**\n   * Resolution: __Depends on the device__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  LowQuality = 1,\n  /**\n   * Resolution: __Depends on the device__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  MediumQuality = 2,\n  /**\n   * Resolution: __Depends on the device__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  HighestQuality = 3,\n  /**\n   * Resolution: __640 × 480__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_640x480 = 4,\n  /**\n   * Resolution: __960 × 540__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_960x540 = 5,\n  /**\n   * Resolution: __1280 × 720__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_1280x720 = 6,\n  /**\n   * Resolution: __1920 × 1080__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_1920x1080 = 7,\n  /**\n   * Resolution: __3840 × 2160__ •\n   * Video compression: __H.264__ •\n   * Audio compression: __AAC__\n   */\n  H264_3840x2160 = 8,\n  /**\n   * Resolution: __1920 × 1080__ •\n   * Video compression: __HEVC__ •\n   * Audio compression: __AAC__\n   */\n  HEVC_1920x1080 = 9,\n  /**\n   * Resolution: __3840 × 2160__ •\n   * Video compression: __HEVC__ •\n   * Audio compression: __AAC__\n   */\n  HEVC_3840x2160 = 10,\n}\n\n// @needsAudit\nexport enum UIImagePickerControllerQualityType {\n  /**\n   * Highest available resolution.\n   */\n  High = 0,\n  /**\n   * Depends on the device.\n   */\n  Medium = 1,\n  /**\n   * Depends on the device.\n   */\n  Low = 2,\n  /**\n   * 640 × 480\n   */\n  VGA640x480 = 3,\n  /**\n   * 1280 × 720\n   */\n  IFrame1280x720 = 4,\n  /**\n   * 960 × 540\n   */\n  IFrame960x540 = 5,\n}\n\n/**\n * Picker presentation style. Its values are directly mapped to the [`UIModalPresentationStyle`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621355-modalpresentationstyle).\n *\n * @platform ios\n */\nexport enum UIImagePickerPresentationStyle {\n  /**\n   * A presentation style in which the presented picker covers the screen.\n   */\n  FULL_SCREEN = 'fullScreen',\n  /**\n   * A presentation style that partially covers the underlying content.\n   */\n  PAGE_SHEET = 'pageSheet',\n  /**\n   * A presentation style that displays the picker centered in the screen.\n   */\n  FORM_SHEET = 'formSheet',\n  /**\n   * A presentation style where the picker is displayed over the app's content.\n   */\n  CURRENT_CONTEXT = 'currentContext',\n  /**\n   * A presentation style in which the picker view covers the screen.\n   */\n  OVER_FULL_SCREEN = 'overFullScreen',\n  /**\n   * A presentation style where the picker is displayed over the app's content.\n   */\n  OVER_CURRENT_CONTEXT = 'overCurrentContext',\n  /**\n   * A presentation style where the picker is displayed in a popover view.\n   */\n  POPOVER = 'popover',\n  /**\n   * The default presentation style chosen by the system.\n   * On older iOS versions, falls back to `WebBrowserPresentationStyle.FullScreen`.\n   *\n   * @platform ios 13+\n   */\n  AUTOMATIC = 'automatic',\n  /**\n   * @deprecated Use `UIImagePickerPresentationStyle.FULL_SCREEN` instead.\n   */\n  FullScreen = 'fullScreen',\n  /**\n   * @deprecated Use `UIImagePickerPresentationStyle.PAGE_SHEET` instead.\n   */\n  PageSheet = 'pageSheet',\n  /**\n   * @deprecated Use `UIImagePickerPresentationStyle.FORM_SHEET` instead.\n   */\n  FormSheet = 'formSheet',\n  /**\n   * @deprecated Use `UIImagePickerPresentationStyle.CURRENT_CONTEXT` instead.\n   */\n  CurrentContext = 'currentContext',\n  /**\n   * @deprecated Use `UIImagePickerPresentationStyle.OVER_FULL_SCREEN` instead.\n   */\n  OverFullScreen = 'overFullScreen',\n  /**\n   * @deprecated Use `UIImagePickerPresentationStyle.OVER_CURRENT_CONTEXT` instead.\n   */\n  OverCurrentContext = 'overCurrentContext',\n  /**\n   * @deprecated Use `UIImagePickerPresentationStyle.POPOVER` instead.\n   */\n  Popover = 'popover',\n  /**\n   * @deprecated Use `UIImagePickerPresentationStyle.AUTOMATIC` instead.\n   */\n  Automatic = 'automatic',\n}\n\n/**\n * @hidden\n * @deprecated Use `ImagePickerAsset` instead\n */\nexport type ImageInfo = ImagePickerAsset;\n\n/**\n * Represents an asset (image or video) returned by the image picker or camera.\n */\nexport type ImagePickerAsset = {\n  /**\n   * URI to the local image or video file (usable as the source of an `Image` element, in the case of\n   * an image) and `width` and `height` specify the dimensions of the media.\n   */\n  uri: string;\n  /**\n   * The unique ID that represents the picked image or video, if picked from the library. It can be used\n   * by [expo-media-library](./media-library) to manage the picked asset.\n   *\n   * > This might be `null` when the ID is unavailable or the user gave limited permission to access the media library.\n   * > On Android, the ID is unavailable when the user selects a photo by directly browsing file system.\n   *\n   * @platform ios\n   * @platform android\n   */\n  assetId?: string | null;\n  /**\n   * Width of the image or video.\n   */\n  width: number;\n  /**\n   * Height of the image or video.\n   */\n  height: number;\n  /**\n   * The type of the asset.\n   */\n  type?: 'image' | 'video';\n  /**\n   * Preferred filename to use when saving this item. This might be `null` when the name is unavailable\n   * or user gave limited permission to access the media library.\n   *\n   * @platform ios\n   */\n  fileName?: string | null;\n  /**\n   * File size of the picked image or video, in bytes.\n   *\n   * @platform ios\n   */\n  fileSize?: number;\n  /**\n   * The `exif` field is included if the `exif` option is truthy, and is an object containing the\n   * image's EXIF data. The names of this object's properties are EXIF tags and the values are the\n   * respective EXIF values for those tags.\n   */\n  exif?: Record<string, any> | null;\n  /**\n   * When the `base64` option is truthy, it is a Base64-encoded string of the selected image's JPEG data, otherwise `null`.\n   * If you prepend this with `'data:image/jpeg;base64,'` to create a data URI,\n   * you can use it as the source of an `Image` element; for example:\n   * ```ts\n   * <Image\n   *   source={{ uri: 'data:image/jpeg;base64,' + asset.base64 }}\n   *   style={{ width: 200, height: 200 }}\n   * />\n   * ```\n   */\n  base64?: string | null;\n  /**\n   * Length of the video in milliseconds or `null` if the asset is not a video.\n   */\n  duration?: number | null;\n};\n\n// @needsAudit\nexport type ImagePickerErrorResult = {\n  /**\n   * The error code.\n   */\n  code: string;\n  /**\n   * The error message.\n   */\n  message: string;\n  /**\n   * The exception which caused the error.\n   */\n  exception?: string;\n};\n\n// @needsAudit\nexport type ImagePickerResult = {\n  /**\n   * An array of picked assets or `null` when the request was canceled.\n   */\n  assets: ImagePickerAsset[] | null;\n  /**\n   * Boolean flag which shows if request was canceled. If asset data have been returned this should\n   * always be `false`.\n   */\n  canceled: boolean;\n  /**\n   * @deprecated Use `canceled` instead.\n   */\n  cancelled?: boolean;\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  selected?: ImagePickerAsset[];\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  uri?: string;\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  assetId?: string | null;\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  width?: number;\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  height?: number;\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  type?: 'image' | 'video';\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  fileName?: string | null;\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  fileSize?: number;\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  exif?: Record<string, any> | null;\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  base64?: string | null;\n  /**\n   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.\n   */\n  duration?: number | null;\n} & (ImagePickerSuccessResult | ImagePickerCanceledResult);\n\n/**\n * @hidden\n */\nexport type ImagePickerSuccessResult = {\n  canceled: false;\n  assets: ImagePickerAsset[];\n};\n\n/**\n * @hidden\n */\nexport type ImagePickerCanceledResult = {\n  canceled: true;\n  assets: null;\n};\n\n/**\n * @hidden\n * @deprecated Use `ImagePickerResult` instead.\n */\nexport type ImagePickerCancelledResult = ImagePickerCanceledResult;\n\n/**\n * @hidden\n * @deprecated `ImagePickerMultipleResult` has been deprecated in favor of `ImagePickerResult`.\n */\nexport type ImagePickerMultipleResult = ImagePickerResult;\n\n// @needsAudit\nexport type ImagePickerOptions = {\n  /**\n   * Whether to show a UI to edit the image after it is picked. On Android the user can crop and\n   * rotate the image and on iOS simply crop it.\n   *\n   * > Cropping multiple images is not supported - this option is mutually exclusive with `allowsMultipleSelection`.\n   * > On iOS, this option is ignored if `allowsMultipleSelection` is enabled.\n   *\n   * @default false\n   * @platform ios\n   * @platform android\n   */\n  allowsEditing?: boolean;\n  /**\n   * An array with two entries `[x, y]` specifying the aspect ratio to maintain if the user is\n   * allowed to edit the image (by passing `allowsEditing: true`). This is only applicable on\n   * Android, since on iOS the crop rectangle is always a square.\n   */\n  aspect?: [number, number];\n  /**\n   * Specify the quality of compression, from `0` to `1`. `0` means compress for small size,\n   * `1` means compress for maximum quality.\n   * > Note: If the selected image has been compressed before, the size of the output file may be\n   * > bigger than the size of the original image.\n   *\n   * > Note: On iOS, if a `.bmp` or `.png` image is selected from the library, this option is ignored.\n   *\n   * @default 0.2\n   * @platform ios\n   * @platform android\n   */\n  quality?: number;\n  /**\n   * Choose what type of media to pick.\n   * @default ImagePicker.MediaTypeOptions.Images\n   */\n  mediaTypes?: MediaTypeOptions;\n  /**\n   * Whether to also include the EXIF data for the image. On iOS the EXIF data does not include GPS\n   * tags in the camera case.\n   */\n  exif?: boolean;\n  /**\n   * Whether to also include the image data in Base64 format.\n   */\n  base64?: boolean;\n  /**\n   * Specify preset which will be used to compress selected video.\n   * @default ImagePicker.VideoExportPreset.Passthrough\n   * @platform ios 11+\n   * @deprecated See [`videoExportPreset`](https://developer.apple.com/documentation/uikit/uiimagepickercontroller/2890964-videoexportpreset?language=objc)\n   * in Apple documentation.\n   */\n  videoExportPreset?: VideoExportPreset;\n  /**\n   * Specify the quality of recorded videos. Defaults to the highest quality available for the device.\n   * @default ImagePicker.UIImagePickerControllerQualityType.High\n   * @platform ios\n   */\n  videoQuality?: UIImagePickerControllerQualityType;\n  /**\n   * Whether or not to allow selecting multiple media files at once.\n   *\n   * > Cropping multiple images is not supported - this option is mutually exclusive with `allowsEditing`.\n   * > If this option is enabled, then `allowsEditing` is ignored.\n   *\n   * @default false\n   * @platform ios 14+\n   * @platform android\n   * @platform web\n   */\n  allowsMultipleSelection?: boolean;\n  /**\n   * The maximum number of items that user can select. Applicable when `allowsMultipleSelection` is enabled.\n   * Setting the value to `0` sets the selection limit to the maximum that the system supports.\n   *\n   * @platform ios 14+\n   * @default 0\n   */\n  selectionLimit?: number;\n  /**\n   * Whether to display number badges when assets are selected. The badges are numbered\n   * in selection order. Assets are then returned in the exact same order they were selected.\n   *\n   * > Assets should be returned in the selection order regardless of this option,\n   * > but there is no guarantee that it is always true when this option is disabled.\n   *\n   * @platform ios 15+\n   * @default false\n   */\n  orderedSelection?: boolean;\n  /**\n   * Maximum duration, in seconds, for video recording. Setting this to `0` disables the limit.\n   * Defaults to `0` (no limit).\n   * - **On iOS**, when `allowsEditing` is set to `true`, maximum duration is limited to 10 minutes.\n   *   This limit is applied automatically, if `0` or no value is specified.\n   * - **On Android**, effect of this option depends on support of installed camera app.\n   * - **On Web** this option has no effect - the limit is browser-dependant.\n   */\n  videoMaxDuration?: number;\n  /**\n   * Choose [presentation style](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621355-modalpresentationstyle?language=objc)\n   * to customize view during taking photo/video.\n   * @default ImagePicker.UIImagePickerPresentationStyle.Automatic\n   * @platform ios\n   */\n  presentationStyle?: UIImagePickerPresentationStyle;\n};\n\n// @needsAudit\nexport type OpenFileBrowserOptions = {\n  /**\n   * Choose what type of media to pick.\n   * @default ImagePicker.MediaTypeOptions.Images\n   */\n  mediaTypes: MediaTypeOptions;\n  // @docsMissing\n  capture?: boolean;\n  /**\n   * Whether or not to allow selecting multiple media files at once.\n   * @platform web\n   */\n  allowsMultipleSelection: boolean;\n  /**\n   * Whether to also include the image data in Base64 format.\n   */\n  base64: boolean;\n};\n\n/**\n * @hidden\n * @deprecated Use `ImagePickerResult` or `OpenFileBrowserOptions` instead.\n */\nexport type ExpandImagePickerResult<T extends ImagePickerOptions | OpenFileBrowserOptions> =\n  T extends {\n    allowsMultipleSelection: true;\n  }\n    ? ImagePickerResult\n    : ImagePickerResult;\n"]}
+\ No newline at end of file
+diff --git a/node_modules/expo-image-picker/ios/ImagePickerModule.swift b/node_modules/expo-image-picker/ios/ImagePickerModule.swift
+index 1abb9da..57ce901 100644
+--- a/node_modules/expo-image-picker/ios/ImagePickerModule.swift
++++ b/node_modules/expo-image-picker/ios/ImagePickerModule.swift
+@@ -142,9 +142,6 @@ public class ImagePickerModule: Module, OnMediaPickingResultHandler {
+     // selection limit = 1 --> single selection, reflects the old picker behavior
+     configuration.selectionLimit = options.allowsMultipleSelection ? options.selectionLimit : SINGLE_SELECTION
+     configuration.filter = options.mediaTypes.toPickerFilter()
+-    if #available(iOS 14, *) {
+-      configuration.preferredAssetRepresentationMode = options.preferredAssetRepresentationMode.toAssetRepresentationMode()
+-    }
+     if #available(iOS 15, *) {
+       configuration.selection = options.orderedSelection ? .ordered : .default
+     }
+diff --git a/node_modules/expo-image-picker/ios/ImagePickerOptions.swift b/node_modules/expo-image-picker/ios/ImagePickerOptions.swift
+index ae7883d..382fe2c 100644
+--- a/node_modules/expo-image-picker/ios/ImagePickerOptions.swift
++++ b/node_modules/expo-image-picker/ios/ImagePickerOptions.swift
+@@ -41,9 +41,7 @@ internal struct ImagePickerOptions: Record {
+   @Field
+   var presentationStyle: PresentationStyle = .automatic
+ 
+-  @Field
+-  var preferredAssetRepresentationMode: PreferredAssetRepresentationMode = .automatic
+-
++  // TODO: (bbarthec): undocumented
+   @Field
+   var cameraType: CameraType = .back
+ 
+@@ -96,24 +94,6 @@ internal enum PresentationStyle: String, EnumArgument {
+   }
+ }
+ 
+-internal enum PreferredAssetRepresentationMode: String, EnumArgument {
+-  case automatic
+-  case compatible
+-  case current
+-
+-  @available(iOS 14.0, *)
+-  func toAssetRepresentationMode() -> PHPickerConfiguration.AssetRepresentationMode {
+-    switch self {
+-    case .automatic:
+-      return .automatic
+-    case .compatible:
+-      return .compatible
+-    case .current:
+-      return .current
+-    }
+-  }
+-}
+-
+ internal enum VideoQuality: Int, EnumArgument {
+   case typeHigh = 0
+   case typeMedium = 1
+diff --git a/node_modules/expo-image-picker/ios/MediaHandler.swift b/node_modules/expo-image-picker/ios/MediaHandler.swift
+index 3aec6f4..162708d 100644
+--- a/node_modules/expo-image-picker/ios/MediaHandler.swift
++++ b/node_modules/expo-image-picker/ios/MediaHandler.swift
+@@ -85,11 +85,7 @@ internal struct MediaHandler {
+       // as calling this already requires media library permission, we can access it here
+       // if user gave limited permissions, in the worst case this will be null
+       let asset = mediaInfo[.phAsset] as? PHAsset
+-      var fileName = asset?.value(forKey: "filename") as? String
+-      // Extension will change to png when editing BMP files, reflect that change in fileName
+-      if let unwrappedName = fileName {
+-        fileName = replaceFileExtension(fileName: unwrappedName, targetExtension: fileExtension.lowercased())
+-      }
++      let fileName = asset?.value(forKey: "filename") as? String
+       let fileSize = getFileSize(from: targetUrl)
+ 
+       let base64 = try ImageUtils.optionallyReadBase64From(imageData: imageData,
+@@ -255,22 +251,6 @@ internal struct MediaHandler {
+ 
+   // MARK: - utils
+ 
+-  private func replaceFileExtension(fileName: String, targetExtension: String) -> String {
+-    if !fileName.lowercased().hasSuffix(targetExtension.lowercased()) {
+-      return deleteFileExtension(fileName: fileName) + targetExtension
+-    }
+-    return fileName
+-  }
+-
+-  private func deleteFileExtension(fileName: String) -> String {
+-    var components = fileName.components(separatedBy: ".")
+-    guard components.count > 1 else {
+-      return fileName
+-    }
+-    components.removeLast()
+-    return components.joined(separator: ".")
+-  }
+-
+   private func generateUrl(withFileExtension: String) throws -> URL {
+     guard let fileSystem = self.fileSystem else {
+       throw FileSystemModuleNotFoundException()
+@@ -358,7 +338,7 @@ private struct ImageUtils {
+       return (data, ".png")
+ 
+     case .some(let s) where s.contains("ext=BMP"):
+-      if options.allowsEditing {
++      if options.allowsEditing || options.quality != nil {
+         // switch to png if editing
+         let data = image.pngData()
+         return (data, ".png")
+@@ -395,13 +375,6 @@ private struct ImageUtils {
+     let preferredFormat = itemProvider.registeredTypeIdentifiers.first
+ 
+     switch preferredFormat {
+-    case UTType.bmp.identifier:
+-      if options.allowsEditing {
+-        // switch to png if editing
+-        let data = image.pngData()
+-        return (data, ".png")
+-      }
+-      return (rawData, ".bmp")
+     case UTType.png.identifier:
+       let data = image.pngData()
+       return (data, ".png")
+@@ -616,12 +589,8 @@ private struct VideoUtils {
+ 
+   static func readSizeFrom(url: URL) -> CGSize? {
+     let asset = AVURLAsset(url: url)
+-    guard let assetTrack = asset.tracks(withMediaType: .video).first else {
+-      return nil
+-    }
+-    // The video could be rotated and the resulting transform can result in a negative width/height.
+-    let size = assetTrack.naturalSize.applying(assetTrack.preferredTransform)
+-    return CGSize(width: abs(size.width), height: abs(size.height))
++    let size: CGSize? = asset.tracks(withMediaType: .video).first?.naturalSize
++    return size
+   }
+ 
+   static func readVideoUrlFrom(mediaInfo: MediaInfo) -> URL? {
+diff --git a/node_modules/expo-image-picker/src/ImagePicker.ts b/node_modules/expo-image-picker/src/ImagePicker.ts
+index 24e9e5a..b1f288c 100644
+--- a/node_modules/expo-image-picker/src/ImagePicker.ts
++++ b/node_modules/expo-image-picker/src/ImagePicker.ts
+@@ -13,8 +13,18 @@ import {
+   CameraPermissionResponse,
+   MediaLibraryPermissionResponse,
+   ImagePickerResult,
++  ImagePickerAsset,
+   ImagePickerErrorResult,
++  MediaTypeOptions,
+   ImagePickerOptions,
++  VideoExportPreset,
++  ExpandImagePickerResult,
++  ImageInfo,
++  ImagePickerMultipleResult,
++  ImagePickerCancelledResult,
++  OpenFileBrowserOptions,
++  UIImagePickerControllerQualityType,
++  UIImagePickerPresentationStyle,
+ } from './ImagePicker.types';
+ 
+ function validateOptions(options: ImagePickerOptions) {
+@@ -61,7 +71,7 @@ const DEPRECATED_RESULT_KEYS = [
+   'fileSize',
+ ];
+ function mergeDeprecatedResult(result: ImagePickerResult): ImagePickerResult {
+-  const firstAsset = result?.assets?.[0];
++  const firstAsset = result.assets?.[0];
+   const deprecatedResult = {
+     ...result,
+     get cancelled() {
+@@ -247,6 +257,24 @@ export async function launchImageLibraryAsync(
+   return mergeDeprecatedResult(result);
+ }
+ 
+-export * from './ImagePicker.types';
+-
+-export { PermissionStatus, PermissionExpiration, PermissionHookOptions, PermissionResponse };
++export {
++  MediaTypeOptions,
++  ImagePickerOptions,
++  ImagePickerResult,
++  ImagePickerErrorResult,
++  ImagePickerAsset,
++  VideoExportPreset,
++  CameraPermissionResponse,
++  MediaLibraryPermissionResponse,
++  PermissionStatus,
++  PermissionExpiration,
++  PermissionHookOptions,
++  PermissionResponse,
++  ImageInfo, // deprecated
++  ImagePickerMultipleResult, // deprecated
++  ImagePickerCancelledResult, // deprecated
++  OpenFileBrowserOptions,
++  ExpandImagePickerResult, // deprecated
++  UIImagePickerControllerQualityType,
++  UIImagePickerPresentationStyle,
++};
+diff --git a/node_modules/expo-image-picker/src/ImagePicker.types.ts b/node_modules/expo-image-picker/src/ImagePicker.types.ts
+index 8a8b895..a5f27a8 100644
+--- a/node_modules/expo-image-picker/src/ImagePicker.types.ts
++++ b/node_modules/expo-image-picker/src/ImagePicker.types.ts
+@@ -8,7 +8,7 @@ export type CameraPermissionResponse = PermissionResponse;
+ 
+ // @needsAudit
+ /**
+- * Extends `PermissionResponse` type exported by `expo-modules-core`, containing additional iOS-specific field.
++ * Extends `PermissionResponse` type exported by `expo-modules-core` and contains additional iOS-specific field.
+  */
+ export type MediaLibraryPermissionResponse = PermissionResponse & {
+   /**
+@@ -172,37 +172,38 @@ export enum UIImagePickerPresentationStyle {
+    * @platform ios 13+
+    */
+   AUTOMATIC = 'automatic',
+-}
+-
+-/**
+- * Picker preferred asset representation mode. Its values are directly mapped to the [`PHPickerConfigurationAssetRepresentationMode`](https://developer.apple.com/documentation/photokit/phpickerconfigurationassetrepresentationmode).
+- *
+- * @platform ios
+- */
+-export enum UIImagePickerPreferredAssetRepresentationMode {
+   /**
+-   * A mode that indicates that the system chooses the appropriate asset representation.
++   * @deprecated Use `UIImagePickerPresentationStyle.FULL_SCREEN` instead.
+    */
+-  Automatic = 'automatic',
++  FullScreen = 'fullScreen',
+   /**
+-   * A mode that uses the most compatible asset representation.
++   * @deprecated Use `UIImagePickerPresentationStyle.PAGE_SHEET` instead.
+    */
+-  Compatible = 'compatible',
++  PageSheet = 'pageSheet',
+   /**
+-   * A mode that uses the current representation to avoid transcoding, if possible.
++   * @deprecated Use `UIImagePickerPresentationStyle.FORM_SHEET` instead.
+    */
+-  Current = 'current',
+-}
+-
+-export enum CameraType {
++  FormSheet = 'formSheet',
+   /**
+-   * Back/rear camera.
++   * @deprecated Use `UIImagePickerPresentationStyle.CURRENT_CONTEXT` instead.
+    */
+-  back = 'back',
++  CurrentContext = 'currentContext',
+   /**
+-   * Front camera
++   * @deprecated Use `UIImagePickerPresentationStyle.OVER_FULL_SCREEN` instead.
+    */
+-  front = 'front',
++  OverFullScreen = 'overFullScreen',
++  /**
++   * @deprecated Use `UIImagePickerPresentationStyle.OVER_CURRENT_CONTEXT` instead.
++   */
++  OverCurrentContext = 'overCurrentContext',
++  /**
++   * @deprecated Use `UIImagePickerPresentationStyle.POPOVER` instead.
++   */
++  Popover = 'popover',
++  /**
++   * @deprecated Use `UIImagePickerPresentationStyle.AUTOMATIC` instead.
++   */
++  Automatic = 'automatic',
+ }
+ 
+ /**
+@@ -297,36 +298,79 @@ export type ImagePickerErrorResult = {
+ };
+ 
+ // @needsAudit
+-/**
+- * Type representing successful and canceled pick result.
+- */
+-export type ImagePickerResult = ImagePickerSuccessResult | ImagePickerCanceledResult;
++export type ImagePickerResult = {
++  /**
++   * An array of picked assets or `null` when the request was canceled.
++   */
++  assets: ImagePickerAsset[] | null;
++  /**
++   * Boolean flag which shows if request was canceled. If asset data have been returned this should
++   * always be `false`.
++   */
++  canceled: boolean;
++  /**
++   * @deprecated Use `canceled` instead.
++   */
++  cancelled?: boolean;
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  selected?: ImagePickerAsset[];
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  uri?: string;
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  assetId?: string | null;
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  width?: number;
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  height?: number;
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  type?: 'image' | 'video';
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  fileName?: string | null;
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  fileSize?: number;
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  exif?: Record<string, any> | null;
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  base64?: string | null;
++  /**
++   * @deprecated This field is deprecated and will be removed in SDK 48, you can access selected assets through the `assets` array instead.
++   */
++  duration?: number | null;
++} & (ImagePickerSuccessResult | ImagePickerCanceledResult);
+ 
+ /**
+- * Type representing successful pick result.
++ * @hidden
+  */
+ export type ImagePickerSuccessResult = {
+-  /**
+-   * Boolean flag set to `false` showing that the request was successful.
+-   */
+   canceled: false;
+-  /**
+-   * An array of picked assets.
+-   */
+   assets: ImagePickerAsset[];
+ };
+ 
+ /**
+- * Type representing canceled pick result.
++ * @hidden
+  */
+ export type ImagePickerCanceledResult = {
+-  /**
+-   * Boolean flag set to `true` showing that the request was canceled.
+-   */
+   canceled: true;
+-  /**
+-   * `null` signifying that the request was canceled.
+-   */
+   assets: null;
+ };
+ 
+@@ -348,9 +392,8 @@ export type ImagePickerOptions = {
+    * Whether to show a UI to edit the image after it is picked. On Android the user can crop and
+    * rotate the image and on iOS simply crop it.
+    *
+-   * > - Cropping multiple images is not supported - this option is mutually exclusive with `allowsMultipleSelection`.
+-   * > - On iOS, this option is ignored if `allowsMultipleSelection` is enabled.
+-   * > - On iOS cropping a `.bmp` image will convert it to `.png`.
++   * > Cropping multiple images is not supported - this option is mutually exclusive with `allowsMultipleSelection`.
++   * > On iOS, this option is ignored if `allowsMultipleSelection` is enabled.
+    *
+    * @default false
+    * @platform ios
+@@ -421,7 +464,6 @@ export type ImagePickerOptions = {
+    * Setting the value to `0` sets the selection limit to the maximum that the system supports.
+    *
+    * @platform ios 14+
+-   * @platform android
+    * @default 0
+    */
+   selectionLimit?: number;
+@@ -452,22 +494,6 @@ export type ImagePickerOptions = {
+    * @platform ios
+    */
+   presentationStyle?: UIImagePickerPresentationStyle;
+-  /**
+-   * Selects the camera-facing type. The `CameraType` enum provides two options:
+-   * `front` for the front-facing camera and `back` for the back-facing camera.
+-   * - **On Android**, the behavior of this option may vary based on the camera app installed on the device.
+-   * @default CameraType.back
+-   * @platform ios
+-   * @platform android
+-   */
+-  cameraType?: CameraType;
+-  /**
+-   * Choose [preferred asset representation mode](https://developer.apple.com/documentation/photokit/phpickerconfigurationassetrepresentationmode)
+-   * to use when loading assets.
+-   * @default ImagePicker.UIImagePickerPreferredAssetRepresentationMode.Automatic
+-   * @platform ios 14+
+-   */
+-  preferredAssetRepresentationMode?: UIImagePickerPreferredAssetRepresentationMode;
+ };
+ 
+ // @needsAudit

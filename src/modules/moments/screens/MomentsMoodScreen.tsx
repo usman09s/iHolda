@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Button from 'components/Button';
@@ -9,6 +9,7 @@ import Api from 'services/Api';
 import { matchedUserSelector, postMomentsParamsSelector } from 'store/moments/momentsSelectors';
 import { resetState, setMood } from 'store/moments/momentsSlice';
 import { text } from 'theme/text';
+import mime from 'mime';
 
 import MoodSlider from '../components/MoodSlider';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
@@ -17,26 +18,61 @@ import { getImageLink } from '../helpers/imageHelpers';
 import { EMOTIONS } from '../constants';
 
 const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
   const pressedBtn = useRef<'SKIP' | 'DONE'>();
   const matchedUser = route?.params.matchedUser;
 
-  const { mutate, isLoading } = useMutation(Api.postMoments);
+  // const { mutate, isLoading } = useMutation(Api.postMoments);
   const postMomentsParams = useSelector(postMomentsParamsSelector);
   const { data } = useQuery('currentUserProfile', Api.getUserProfile);
   const { reset } = useNavigation<NavigationProp<MomentsStackParamList>>();
 
+  async function postData(url = '', data: FormData) {
+    setIsLoading(true);
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: data,
+    });
+    setIsLoading(false);
+    return { ...response.json(), status: response.status };
+  }
+
   const goToMomentsUpload = () => {
     if (!matchedUser || !data) return;
+    if (isLoading) return;
 
     let formdata = new FormData();
     const mediaUri = postMomentsParams.moments[0].file;
-    const mediaType = postMomentsParams.moments[0].type.toLowerCase();
-    const media: any = {
-      uri: mediaUri,
-      type: mediaType,
-      name: 'moment.jpeg',
-    };
+    const mediaType = postMomentsParams.moments[0].type;
+
+    let imageObject, videoObject;
+
+    if (mediaUri) {
+      const imageUri = 'file:///' + mediaUri.split('file:/').join('');
+
+      imageObject = {
+        name: mediaUri.split('/').pop(),
+        type: mime.getType(imageUri),
+        uri: mediaUri,
+      };
+
+      const newVideoUri = 'file:///' + mediaUri.split('file:/').join('');
+
+      videoObject = {
+        name: mediaUri.split('/').pop(),
+        height: 1920,
+        width: 1080,
+        type: mime.getType(newVideoUri),
+        uri: mediaUri,
+      };
+    }
+
+    const media: any = mediaType === 'PHOTO' ? imageObject : videoObject;
 
     const moodScale = EMOTIONS.findIndex(e => e === postMomentsParams.mood) + 1;
 
@@ -44,7 +80,7 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
 
     formdata.append('post[text]', postMomentsParams.caption);
     formdata.append('post[visibility]', 'Public');
-    formdata.append('post[media]', media, 'file');
+    formdata.append('post[media]', media);
     formdata.append('post[subText]', '');
     formdata.append('post[mediaType]', mediaType);
     formdata.append('users[0][user]', data?.data.user._id);
@@ -52,22 +88,26 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
     // formdata.append('users', users);
     formdata.append('mood', moodScale.toString());
 
-    reset({
-      index: 0,
-      routes: [{ name: 'MomentsUpload', params: matchedUser }],
+    postData(Api.baseUrl + 'met', formdata).then(data => {
+      if (data.status !== 200) return alert('Something went wrong');
+      reset({
+        index: 0,
+        routes: [{ name: 'MomentsUpload', params: matchedUser }],
+      });
+      dispatch(resetState());
     });
-    dispatch(resetState());
+
     return;
 
-    mutate(formdata, {
-      onSuccess: data => {
-        reset({
-          index: 0,
-          routes: [{ name: 'MomentsUpload' }],
-        });
-        dispatch(resetState());
-      },
-    });
+    // mutate(formdata, {
+    //   onSuccess: data => {
+    //     reset({
+    //       index: 0,
+    //       routes: [{ name: 'MomentsUpload' }],
+    //     });
+    //     dispatch(resetState());
+    //   },
+    // });
   };
 
   return (

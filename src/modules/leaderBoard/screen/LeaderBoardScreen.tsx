@@ -9,7 +9,7 @@ import Meetups from '../containers/Meetups';
 import TeamUp from '../containers/Teamup';
 
 const LeaderBoardScreen = () => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
 
   return (
     <View className="bg-black flex-1">
@@ -35,7 +35,7 @@ const LeaderBoardScreen = () => {
           onPressTabItem={() => setTabIndex(2)}
         />
       </View>
-      {tabIndex === 0 && <Community />}
+      {/* {tabIndex === 0 && <Community />} */}
       {tabIndex === 1 && <Meetups />}
       {tabIndex === 2 && <TeamUp />}
     </View>

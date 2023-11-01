@@ -21,6 +21,7 @@ import { allMomentsSelector } from 'store/moments/momentsSelectors';
 import { addMoment, resetState } from 'store/moments/momentsSlice';
 import { PostTypes } from 'types/MomentsTypes';
 import { TEXT_POST_COLOR } from '../constants';
+import * as ImagePicker from 'expo-image-picker';
 
 const PostCameraScreen = () => {
   const [cameraType, setCameraType] = useState<CameraType>(CameraType.back);
@@ -37,6 +38,7 @@ const PostCameraScreen = () => {
 
   const [_, requestPermission] = MediaLibrary.usePermissions();
   const { pickImage, pickedImage, pickingLoading } = usePickImageAndUpload();
+  const [__, requestImagePickerPermission] = ImagePicker.useCameraPermissions();
   const { ratio, cameraRef, isRecording, setMediaType, recordTimeCounter, onPressRecordButton } =
     useSelfieActions();
   const dispatch = useDispatch();
@@ -138,10 +140,17 @@ const PostCameraScreen = () => {
     handleProceed();
   }, [pickedImage]);
 
+  const getPermissions = async () => {
+    requestImagePickerPermission();
+  };
+
   useEffect(() => {
     dispatch(resetState());
 
     setMediaType('VIDEO');
+
+    getPermissions();
+
     getLastMediaFromGallery();
 
     return () => {
@@ -163,7 +172,9 @@ const PostCameraScreen = () => {
         )}
         {postType === 'Text' && (
           <>
-            <View className={`w-full h-full z-40 bg-[${TEXT_POST_COLOR}]`}></View>
+            <View
+              style={{ backgroundColor: TEXT_POST_COLOR }}
+              className={`w-full h-full z-40`}></View>
             <TextInput
               value={postTxt}
               onChangeText={setPostTxt}
@@ -182,7 +193,7 @@ const PostCameraScreen = () => {
           </>
         )}
         <View
-          className="flex-1 absolute z-50 justify-between px-6"
+          className={`flex-1 absolute z-50 justify-between px-6`}
           style={{ width: width, height: height, paddingBottom: bottom || 16 }}>
           <Header
             showBackIcon

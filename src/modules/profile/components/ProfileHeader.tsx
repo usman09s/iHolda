@@ -7,6 +7,7 @@ import { units } from 'utils/helpers';
 import ProfileTabs from './ProfileTabs';
 import ScrolledHeader from './ScrolledHeader';
 import ScrolledHeaderRight from './ScrolledHeaderRight';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 type Props = {
   top: number;
@@ -57,7 +58,10 @@ const ProfileHeader = ({
       <Animated.View
         style={[{ height: headerImageHeight }, animatedHeaderStyle]}
         className={'z-30 flex-row overflow-hidden w-full'}>
-        <Image className="w-full h-full absolute bg-black" source={{ uri: hederThumbnail }} />
+        <Image
+          className="w-full h-full absolute bg-black"
+          source={{ uri: getImageLink(hederThumbnail) }}
+        />
         <View className=" h-full justify-end px-6" style={{ paddingBottom: units.vh * 2 }}>
           <View className="flex-row">
             <Text className={text({ type: 'b20', class: 'text-white mr-1 mb-3' })}>{username}</Text>

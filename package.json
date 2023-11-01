@@ -12,7 +12,8 @@
     "validate": "yarn prettier --check \"./src/**/*.{ts,tsx,js,jsx}\" && yarn lint ",
     "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx}\"",
     "format:test": "prettier --write \"./src/**/*.spec.{ts,tsx,js,jsx}\"",
-    "husky:install": "husky install"
+    "husky:install": "husky install",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.3.1",
@@ -29,7 +30,7 @@
     "expo-camera": "~13.4.2",
     "expo-clipboard": "^4.3.1",
     "expo-file-system": "~15.4.3",
-    "expo-image-picker": "~14.3.2",
+    "expo-image-picker": "~14.0.2",
     "expo-linear-gradient": "~12.3.0",
     "expo-location": "~16.1.0",
     "expo-media-library": "~15.4.1",
@@ -38,7 +39,10 @@
     "expo-status-bar": "~1.6.0",
     "expo-updates": "~0.18.12",
     "expo-video-player": "^2.2.0",
+    "mime": "^3.0.0",
     "nativewind": "^2.0.11",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-native": "0.72.4",
     "react-native-pager-view": "^6.2.1",
@@ -53,6 +57,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/mime": "^3.0.3",
     "@types/react": "~18.2.14",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.5.0",

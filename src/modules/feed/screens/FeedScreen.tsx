@@ -28,7 +28,6 @@ const FeedScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const {} = useAppNavigation<NavigationProp<FeedStackParamList>>();
   const { data, refetch, isLoading } = useQuery('feeds', Api.getFeed);
-  console.log('🚀 ~ file: FeedScreen.tsx:30 ~ FeedScreen ~ data:', data);
   const { top } = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
 
@@ -52,7 +51,7 @@ const FeedScreen = () => {
             android: height - top - tabBarHeight + 10,
           }),
         }}>
-        <FeedItem image={imageUri} />
+        <FeedItem likes={item.likes?.length} comments={item.comments?.length} id={item._id} caption={item.text} subText={item.subText} image={imageUri} />
       </Pressable>
     );
   };

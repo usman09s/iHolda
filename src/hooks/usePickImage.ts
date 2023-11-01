@@ -15,6 +15,8 @@ const usePickImage = () => {
     mediaTypes: ImagePicker.MediaTypeOptions = ImagePicker.MediaTypeOptions.Images,
     allowsEditing = true,
   ) => {
+   
+
     setPickingLoading(true);
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes,
@@ -22,7 +24,11 @@ const usePickImage = () => {
       base64: true,
       aspect: [1, 1],
       quality: 0.7,
-    }).catch(() => null);
+    }).catch((err) => {
+      console.log(err);
+      return null;
+    });
+    console.log("🚀 ~ file: usePickImage.ts:26 ~ usePickImage ~ result:", result)
 
     if (!result?.canceled) {
       

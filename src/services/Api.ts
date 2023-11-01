@@ -27,6 +27,7 @@ class ApiClass {
   token = '';
   refreshToken = '';
   queryId = '';
+  baseUrl = 'http://ihold.yameenyousuf.com/api/';
 
   _otp = 0;
   _headers = {
@@ -34,7 +35,7 @@ class ApiClass {
   };
 
   constructor() {
-    this.externalApi = wretch('http://ihold.yameenyousuf.com/api/')
+    this.externalApi = wretch(this.baseUrl)
       .options({
         credentials: 'include',
       })
@@ -534,9 +535,27 @@ class ApiClass {
       })
       .get()
       .json(result => result);
+
+  getMetLeaderboard = async (): Promise<any> =>
+    await this.externalApi
+      .url('met/user/leaderboard?page=1')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result.data.data);
+
   getQuizs = async (): Promise<{ data: { quiz: Quiz } }> =>
     await this.externalApi
       .url('quiz/' + QUIZ_ID)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getFollowers = async (): Promise<{ data: { quiz: Quiz } }> =>
+    await this.externalApi
+      .url('user/followers/')
       .headers({
         ...this._getAuthorization(this.token),
       })
@@ -546,6 +565,17 @@ class ApiClass {
   createPost = async (reqBody: FormData): Promise<PostMomentsResponse> =>
     await this.externalApi
       .url('post/')
+      .headers({
+        ...this._getAuthorization(this.token),
+        'Content-Type': 'multipart/form-data',
+      })
+      .post(reqBody)
+      // .res();
+      .json(result => result);
+
+  sharePost = async (reqBody: { postId: string }): Promise<any> =>
+    await this.externalApi
+      .url('post/share')
       .headers({
         ...this._getAuthorization(this.token),
       })
