@@ -47,7 +47,7 @@ const Meetup = () => {
         className="flex-1"
         ListEmptyComponent={<ActivityIndicator />}
         stickyHeaderIndices={[currenUserIndex - 3]}
-        keyExtractor={item => item.userId.toString()}
+        keyExtractor={(item, i) => i?.toString()}
         contentContainerStyle={{ backgroundColor: 'white' }}
         renderItem={({ item }) => <LeaderBoardUserItem {...item} />}
         ListHeaderComponent={<LeaderBoardUsersHeader winners={winners} />}

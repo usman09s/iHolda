@@ -12,10 +12,13 @@ import { setUserInfo } from 'store/auth/userSlice';
 import { parseApiError } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'store/auth/userSelectors';
 
 export const useSignInActions = () => {
   const dispatch = useAppDispatch();
   const [pin, setPin] = useState('');
+  const userInfo = useSelector(userSelector);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const { navigate, reset } = useAppNavigation<
     NavigationProp<
@@ -28,21 +31,25 @@ export const useSignInActions = () => {
   const { mutate, isLoading, error } = useMutation(Api.signIn);
   const sendCodeMutation = useMutation(Api.sendCodeForForgotPin);
   const sharedValue = useSharedValue(44);
+  const sharedPadding = useSharedValue(40);
   const sharedSpaceHeightValue = useSharedValue(80);
   const isVisible = useKeyboardVisible();
 
   useEffect(() => {
     if (isVisible) {
-      sharedValue.value = 24;
-      sharedSpaceHeightValue.value = 40;
+      sharedValue.value = 44;
+      sharedSpaceHeightValue.value = 70;
+      sharedPadding.value = 110;
     } else {
       sharedValue.value = 44;
-      sharedSpaceHeightValue.value = 80;
+      sharedSpaceHeightValue.value = 70;
+      sharedPadding.value = 0;
     }
   }, [isVisible]);
 
   const animatedTextStyle = useAnimatedStyle(() => ({
     fontSize: withTiming(sharedValue.value),
+    paddingTop: withTiming(sharedPadding.value),
   }));
 
   const animatedSpaceHeightStyle = useAnimatedStyle(() => ({
@@ -63,7 +70,9 @@ export const useSignInActions = () => {
     mutate(
       {
         pin,
-        phone: params.phone,
+        phone: userInfo.phone,
+        countryCode: userInfo.countryCode,
+        fcmToken: '1234567',
       },
       {
         onSuccess: result => {
@@ -102,7 +111,7 @@ export const useSignInActions = () => {
 
             dispatch(
               setUserInfo({
-                phone: params.phone,
+                phone: userInfo.phone,
                 userImage: userImage.image.image,
                 query_id: userData.user.query_id,
                 username: userData.user.username,
@@ -125,9 +134,10 @@ export const useSignInActions = () => {
     sendCodeMutation.mutate(
       { phoneNumber: params.phone },
       {
-        onSuccess: () => {
+        onSuccess: result => {
           setShowConfirmationModal(false);
-          navigate('EnterOtp', { phone: params.phone });
+          console.log(result.data.otp, 'lklklklkk');
+          navigate('EnterOtp', { phone: params.phone, otp: result.data.otp });
         },
       },
     );

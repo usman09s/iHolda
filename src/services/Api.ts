@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { QUIZ_ID } from 'modules/moments/constants';
 import { DecodePlasticsQrResponseType } from 'types/AgentPlasticTypes';
 import {
   LoginParameters,
@@ -17,6 +18,8 @@ import {
   DropOffLocationItemType,
   PlasticItemType,
 } from 'types/PlasticTypes';
+import { GetPostsResponseType } from 'types/PostsTypes';
+import { Quiz } from 'types/QuizTypes';
 import wretch from 'wretch';
 
 class ApiClass {
@@ -24,6 +27,7 @@ class ApiClass {
   token = '';
   refreshToken = '';
   queryId = '';
+  baseUrl = 'http://ihold.yameenyousuf.com/api/';
 
   _otp = 0;
   _headers = {
@@ -31,7 +35,7 @@ class ApiClass {
   };
 
   constructor() {
-    this.externalApi = wretch('http://ihold.yameenyousuf.com/api/')
+    this.externalApi = wretch(this.baseUrl)
       .options({
         credentials: 'include',
       })
@@ -79,7 +83,7 @@ class ApiClass {
       })
       .json((result): VerifyPhoneBeforeRegisterResponse => {
         this._otp = result.data.otp;
-
+        console.log(phone);
         return {
           ...result,
           navigateTo:
@@ -119,13 +123,19 @@ class ApiClass {
         throw { message: JSON.parse(err.message)?.message };
       });
 
-  signIn = async ({ phone, pin }: LoginParameters): Promise<SignInResponseType> =>
+  signIn = async ({
+    phone,
+    pin,
+    countryCode,
+    fcmToken,
+  }: LoginParameters): Promise<SignInResponseType> =>
     await this.externalApi
       .url('auth/login')
       .post({
         phone: phone,
         password: pin,
-        fcmToken: phone,
+        fcmToken: fcmToken,
+        countryCode: countryCode,
       })
       .json((result: SignInResponseType) => {
         this.token = result.data.accessToken;
@@ -178,13 +188,30 @@ class ApiClass {
       .post({ pin })
       .json(result => result);
 
+  authRegister = async ({ userName, phone, dob, password, countryCode, fcmToken }: any) => {
+    try {
+      return await this.externalApi
+        .url('auth/register')
+        .post({
+          userName,
+          phone,
+          dob,
+          password,
+          countryCode,
+          fcmToken,
+        })
+        .json(result => {
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
   setReferralCode = async ({ referralCode }: { referralCode: string }) =>
     await this.externalApi
-      .url('referrals/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
-      .post({ referral_code: referralCode })
+      .url('user/referral-code')
+      .put({ referralCode: referralCode.toString() })
       .json(result => result);
 
   getWaitingList = async () =>
@@ -201,31 +228,38 @@ class ApiClass {
 
   sendCodeForForgotPin = async ({ phoneNumber }: { phoneNumber: string }) =>
     await this.externalApi
-      .url('reset/forgot-pin/send-code/?delete-retry=yes')
+      .url('otp/generate')
       .post({ phone: phoneNumber })
-      .json(result => result);
+      .json(result => {
+        console.log(result, 'eeeeeee');
+        return result;
+      });
 
   resetPinCodeConfirm = async ({ phoneNumber, code }: { phoneNumber: string; code: string }) =>
     await this.externalApi
-      .url('reset/reset-pin-code/confirm/')
-      .post({ phone: phoneNumber, code })
-      .json(result => result);
+      .url('otp/verify')
+      .put({ otp: code })
+      .json(result => {
+        console.log(result, 'cohewoihdoiehoid');
+        return result;
+      });
 
   resetPinCodeFromCode = async ({ phoneNumber, pin }: { phoneNumber: string; pin: number }) =>
     await this.externalApi
-      .url('reset/reset-pin/from-code/')
-      .post({ phone: phoneNumber, pin })
-      .json(result => result);
+      .url('auth/reset-password')
+      .put({ password: pin, confirmPassword: pin })
+      .json(result => {
+        console.log(result, 'dddddddddddddd');
+        return result;
+      });
 
-  // Plastic
   getPlasticSizes = async (): Promise<PlasticItemType[]> =>
     await this.externalApi
-      .url('plastics/sizes/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic/sizes?page=1')
       .get()
-      .json(result => result);
+      .json(result => {
+        return result.data.data;
+      });
 
   getClosestDropOffLocations = async ({
     latitude,
@@ -235,42 +269,46 @@ class ApiClass {
     longitude: number;
   }): Promise<DropOffLocationItemType[]> =>
     await this.externalApi
-      .url(`plastics/drop-off-locations/?lat=${latitude}&lon=${longitude}`)
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic/agents?page=1')
       .get()
-      .json(result => result);
+      .json(result => {
+        console.log(result.data.data);
+        return result.data.data;
+      });
 
   getDropOffLocations = async (): Promise<DropOffLocationItemType[]> =>
     await this.externalApi
-      .url('plastics/drop-off-locations/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic/agents?page=1')
       .get()
-      .json(result => result);
+      .json(result => {
+        console.log(result);
+        return result;
+      });
 
   addPlastics = async ({
-    userType,
-    sizes,
-    dropOffLocation,
+    communityPointRatio,
+    virtualMoneyRatio,
+    plastics,
+    plasticAgent,
   }: {
-    dropOffLocation: number;
-    userType: 'AGENT' | 'USER';
-    sizes: { size: number; quantity: number }[];
+    plasticAgent: string;
+    virtualMoneyRatio: any;
+    communityPointRatio: any;
+    plastics: { size: number; quantity: number }[];
   }): Promise<AddPlasticResponseType> =>
     await this.externalApi
-      .url('plastics/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic')
       .post({
-        sizes: sizes,
-        user_type: userType,
-        dropoff_location: dropOffLocation,
+        plasticAgent: plasticAgent,
+        virtualMoneyRatio: virtualMoneyRatio,
+        communityPointRatio: communityPointRatio,
+        plastics: plastics,
       })
-      .json(result => result);
+      .json(result => {
+        console.log(plastics);
+        console.log(result);
+        return result;
+      });
 
   updatePlasticsSizes = async ({
     sizes,
@@ -347,37 +385,45 @@ class ApiClass {
       })
       .json(result => result);
 
-  checkUserIsAgent = async (): Promise<{
-    agentId: number;
-    isAgent: boolean;
-    todayDelivery: number;
-    totalDelivery: number;
-  }> =>
+  // checkUserIsAgent = async (): Promise<{
+  //   agentId: number;
+  //   isAgent: boolean;
+  //   todayDelivery: number;
+  //   totalDelivery: number;
+  // }> =>
+  //   await this.externalApi
+  //     .url('plastics/plastic-agents/check/')
+  //     .headers({
+  //       ...this._getAuthorization(this.token),
+  //     })
+  //     .get()
+  //     .json(result => {
+  //       let isAgent = undefined;
+  //       try {
+  //         isAgent =
+  //           result.details.includes('authenticated user is agent.') ||
+  //           result.details.includes('user is agent') ||
+  //           result.details.includes('is agent');
+  //       } catch {
+  //         isAgent = false;
+  //       }
+
+  //       return {
+  //         isAgent,
+  //         agentId: result.id,
+  //         totalDelivery: result.total_delivery,
+  //         todayDelivery: result.today_delivery,
+  //         dropoff_locations: result.dropoff_locations,
+  //         ...result,
+  //       };
+  //     });
+
+  checkUserIsAgent = async () =>
     await this.externalApi
-      .url('plastics/plastic-agents/check/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url('plastic/agent/count/652e726f397bc8f89cbd5a6c')
       .get()
       .json(result => {
-        let isAgent = undefined;
-        try {
-          isAgent =
-            result.details.includes('authenticated user is agent.') ||
-            result.details.includes('user is agent') ||
-            result.details.includes('is agent');
-        } catch {
-          isAgent = false;
-        }
-
-        return {
-          isAgent,
-          agentId: result.id,
-          totalDelivery: result.total_delivery,
-          todayDelivery: result.today_delivery,
-          dropoff_locations: result.dropoff_locations,
-          ...result,
-        };
+        return result.data;
       });
 
   getTotalPlasticsToday = async (): Promise<boolean> =>
@@ -389,14 +435,13 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  getPlasticsFuture = async ({ locationId }: { locationId: number }): Promise<boolean> =>
+  getPlasticsFuture = async () =>
     await this.externalApi
-      .url(`plastics/?is_delivered=false&dropoff-location-id=${locationId}`)
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
+      .url(`plastic/upcoming`)
       .get()
-      .json(result => result);
+      .json(result => {
+        return result.data;
+      });
 
   getPlasticsAll = async (): Promise<boolean> =>
     await this.externalApi
@@ -416,35 +461,41 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  decodeQrCode = async ({
-    ...params
-  }: {
-    query_id: string;
-    plastic_id: string;
-    encrypted_data: string;
-  }): Promise<DecodePlasticsQrResponseType> =>
-    await this.externalApi
-      .url('plastics/qrcode/')
-      .headers({
-        ...this._getAuthorization(this.token),
-      })
-      .post({ key: 'iHolda_Secret_Key', ...params })
-      .json(result => result);
+  // decodeQrCode = async ({
+  //   ...params
+  // }: {
+  //   query_id: string;
+  //   plastic_id: string;
+  //   encrypted_data: string;
+  // }): Promise<DecodePlasticsQrResponseType> =>
+  //   await this.externalApi
+  //     .url('plastics/qrcode/')
+  //     .headers({
+  //       ...this._getAuthorization(this.token),
+  //     })
+  //     .post({ key: 'iHolda_Secret_Key', ...params })
+  //     .json(result => result);
 
   approvedPlasticDelivery = async ({
-    queryId,
     plasticId,
+    plastics,
+    queryId,
   }: {
     queryId: string;
     plasticId: number;
+    plastics: any;
   }): Promise<unknown> =>
     await this.externalApi
-      .url('plastics/delivery/')
-      .headers({
-        ...this._getAuthorization(this.token),
+      .url('plastic/complete')
+      .post({
+        plasticId: queryId,
+        plasticAgent: plasticId,
+        ...(plastics ? { plastics } : null),
       })
-      .post({ query_id: queryId, plastic_id: plasticId })
-      .json(result => result);
+      .json(result => {
+        console.log(result, 'asjdqjpojpwqej api');
+        return result;
+      });
 
   getUserProfile = async (): Promise<SignInResponseType> =>
     await this.externalApi
@@ -466,35 +517,20 @@ class ApiClass {
 
   postMeetup = async ({ queryId }: { queryId: string }): Promise<PostMomentsResponse> =>
     await this.externalApi
-      .url('meetups/?latitude=35.6762&longitude=139.6503')
+      .url(`user/qr?q=${queryId}`)
       .headers({
         ...this._getAuthorization(this.token),
       })
-      .post({
-        key: 'iHolda_Secret_Key',
-        query_id: queryId,
-      })
+      .get()
       .json(result => result);
 
-  postMoments = async ({
-    caption,
-    moments,
-    meetupId,
-  }: {
-    meetupId: number;
-    caption: string;
-    moments: { file: string }[];
-  }): Promise<PostMomentsResponse> =>
+  postMoments = async (reqBody: FormData): Promise<PostMomentsResponse> =>
     await this.externalApi
-      .url('moments/')
+      .url('met/')
       .headers({
         ...this._getAuthorization(this.token),
       })
-      .post({
-        caption,
-        moments,
-        meetup_id: meetupId,
-      })
+      .post(reqBody)
       .json(result => result);
 
   getMoments = async (): Promise<GetMomentsResponseType[]> =>
@@ -506,6 +542,15 @@ class ApiClass {
       .get()
       .json(result => result);
 
+  getFeed = async (): Promise<GetPostsResponseType> =>
+    await this.externalApi
+      .url('post/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result.data);
+
   getCommunityPointsRank = async (): Promise<CommunityRankItemType[]> =>
     await this.externalApi
       .url('wallets/get-by/?community-points=highest&period=month')
@@ -513,6 +558,52 @@ class ApiClass {
         ...this._getAuthorization(this.token),
       })
       .get()
+      .json(result => result);
+
+  getMetLeaderboard = async (): Promise<any> =>
+    await this.externalApi
+      .url('met/user/leaderboard?page=1')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result.data.data);
+
+  getQuizs = async (): Promise<{ data: { quiz: Quiz } }> =>
+    await this.externalApi
+      .url('quiz/' + QUIZ_ID)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getFollowers = async (): Promise<{ data: { quiz: Quiz } }> =>
+    await this.externalApi
+      .url('user/followers/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  createPost = async (reqBody: FormData): Promise<PostMomentsResponse> =>
+    await this.externalApi
+      .url('post/')
+      .headers({
+        ...this._getAuthorization(this.token),
+        'Content-Type': 'multipart/form-data',
+      })
+      .post(reqBody)
+      // .res();
+      .json(result => result);
+
+  sharePost = async (reqBody: { postId: string }): Promise<any> =>
+    await this.externalApi
+      .url('post/share')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post(reqBody)
       .json(result => result);
 }
 

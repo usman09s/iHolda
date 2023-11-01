@@ -18,7 +18,12 @@ const usePickImage = () => {
 
     if (!result?.canceled) {
       const imageFormat = getImageFormatFromUrl(result?.assets[0].uri);
-      setPickedImage(`data:image/${imageFormat};base64,${result?.assets[0].base64}`);
+      setPickedImage({
+        base64: `data:image/${imageFormat};base64,${result?.assets[0].base64}`,
+        uri: result?.assets[0].uri,
+        format: imageFormat,
+        type: result?.assets[0].type,
+      });
     }
 
     setPickingLoading(false);

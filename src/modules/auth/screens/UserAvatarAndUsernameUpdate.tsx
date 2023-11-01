@@ -28,6 +28,7 @@ import { parseApiError, units } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import { useAnimatedComponentStyle } from '../hooks/useAnimatedComponentStyle';
+import Header from 'components/Header/Header';
 
 const UserAvatarAndUsernameUpdate = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,7 @@ const UserAvatarAndUsernameUpdate = () => {
   const uploadImage = useMutation(Api.uploadImage, {});
   const updateUsername = useMutation(Api.updateUsername, {});
   const isVisibleKeyboard = useKeyboardVisible();
+  console.log(pickedImage);
   const { Spacing, customSizeAnimatedStyle } = useAnimatedComponentStyle({
     customSize: 176,
   });
@@ -49,11 +51,20 @@ const UserAvatarAndUsernameUpdate = () => {
     [uploadImage.error, updateUsername.error],
   );
 
+  const onUsernameChange = newUsername => {
+    if (!newUsername.startsWith('@')) {
+      setUsername(`@${newUsername}`);
+    } else {
+      setUsername(newUsername);
+    }
+  };
+
   const onContinue = async () => {
+    const cleanedUsername = username.replace('@', '');
     dispatch(
       setUserImageAndUsername({
-        username,
-        image: pickedImage,
+        username: cleanedUsername,
+        image: pickedImage?.uri,
       }),
     );
 
@@ -72,13 +83,16 @@ const UserAvatarAndUsernameUpdate = () => {
     //   .catch(() => null);
   };
 
-  const isContinueButtonDisabled = !username || !pickedImage;
+  const isContinueButtonDisabled = !username || /\s/.test(username) || !pickedImage?.base64;
   LayoutAnimation.easeInEaseOut();
 
   return (
     <View
       className="flex-1 bg-blue justify-center px-7"
       style={{ justifyContent: isVisibleKeyboard ? 'flex-end' : 'center' }}>
+      <View style={{ bottom: 60 }}>
+        <Header showBackIcon backIconColor="white" />
+      </View>
       <KeyboardAvoidingView
         behavior={Platform.select({
           ios: 'position',
@@ -95,7 +109,7 @@ const UserAvatarAndUsernameUpdate = () => {
               <Animated.View
                 className="border-4 border-dustGray rounded-full overflow-hidden bg-altoGray  w-44 h-44 self-center justify-center items-center"
                 style={customSizeAnimatedStyle}>
-                {!pickedImage && (
+                {!pickedImage?.base64 && (
                   <Animated.View
                     style={customSizeAnimatedStyle}
                     className={isVisibleKeyboard ? 'p-4' : 'p-10'}>
@@ -109,12 +123,12 @@ const UserAvatarAndUsernameUpdate = () => {
                     className="absolute z-10 bg-black-o-40 w-44 h-44"
                   />
                 )}
-                {pickedImage && (
+                {pickedImage?.base64 && (
                   <Animated.View style={customSizeAnimatedStyle}>
                     <Image
                       className="w-full h-full"
                       resizeMode="contain"
-                      source={{ uri: pickedImage }}
+                      source={{ uri: pickedImage.uri }}
                     />
                   </Animated.View>
                 )}
@@ -127,8 +141,9 @@ const UserAvatarAndUsernameUpdate = () => {
               Username
             </Text>
             <Input
-              onChangeText={setUsername}
-              placeholder="like @bayuga"
+              onChangeText={onUsernameChange}
+              value={username}
+              placeholder="e.g bayuga"
               customInputClass="text-20"
               placeholderTextColor={colors['white-o-60']}
             />
@@ -138,6 +153,7 @@ const UserAvatarAndUsernameUpdate = () => {
             title="Continue"
             onPress={onContinue}
             type="borderedSolid"
+            extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
             disabled={isContinueButtonDisabled}
             isLoading={updateUsername.isLoading || uploadImage.isLoading}
             customContainer={`self-center mt-4 ${isContinueButtonDisabled && 'opacity-50'}`}

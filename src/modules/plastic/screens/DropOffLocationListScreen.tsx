@@ -21,6 +21,8 @@ const DropOffLocationListScreen = () => {
     setShowClosedDropOffLocationPopup,
   } = useDropOffLocationListActions();
 
+  const filteredData = data ? data.filter(item => item.name.includes(searchKeyword)) : [];
+
   const renderItem: ListRenderItem<DropOffLocationItemType> = ({ item }) => (
     <DropOffLocationItem location={item} onPressLocation={onPressLocation(item)} />
   );
@@ -46,7 +48,8 @@ const DropOffLocationListScreen = () => {
           onChangeText={setSearchKeyword}
           placeholder="search town"
           placeholderTextColor={colors['black-o-30']}
-          className="border-b1 border-black-o-10 rounded-xl text-black py-4"
+          className="rounded-xl text-black py-4"
+          style={{ marginHorizontal: 30, borderColor: 'gray', borderWidth: 1 }}
         />
       </View>
       {isLoading || (!data && <ActivityIndicator className="mb-4 flex-1" color={colors.blue} />)}
@@ -55,7 +58,7 @@ const DropOffLocationListScreen = () => {
         keyboardDismissMode="on-drag"
         ListEmptyComponent={emptyListItem}
         showsVerticalScrollIndicator={false}
-        data={!!searchKeyword ? locationResult : data || []}
+        data={!!searchKeyword ? filteredData : data || []}
       />
       <LocationClosedPopup
         visible={showClosedDropOffLocationPopup}

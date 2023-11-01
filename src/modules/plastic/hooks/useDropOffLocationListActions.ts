@@ -51,10 +51,11 @@ const useDropOffLocationListActions = () => {
   }, [data, searchKeyword]);
 
   const onPressLocation = (item: DropOffLocationItemType) => () => {
-    if (item.state === 'Closed') {
+    console.log(item._id);
+    if (item.isAvailable === false) {
       return setShowClosedDropOffLocationPopup(true);
     }
-    navigate('PlasticConfirmation', { locationId: item.id });
+    navigate('PlasticConfirmation', { locationId: item._id, location: item });
   };
 
   useEffect(

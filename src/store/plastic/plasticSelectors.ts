@@ -21,7 +21,7 @@ export const addedPlasticSelector = createSelector(plasticSelector, plastics =>
   plastics.plasticSizes
     .map(plastic => ({
       ...plastic,
-      price: plastic.count * Number(plastic.price_per_plastic) || 0,
+      price: plastic.count * Number(plastic.price) || 0,
     }))
     .filter(plastic => plastic.count > 0),
 );

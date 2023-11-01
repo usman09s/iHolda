@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import Button from 'components/Button';
@@ -14,6 +14,8 @@ import { AuthStackParamList } from '../AuthStackNavigator';
 import CountriesModal from '../components/CountriesModal';
 import PhoneConfirmationModal from '../components/PhoneConfirmationModal';
 import PhoneInput from '../components/PhoneInput';
+import { setCountryCode } from 'store/auth/userSlice';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 
 const SignUpScreen = () => {
   const { countries } = useLoadCountries();
@@ -22,6 +24,7 @@ const SignUpScreen = () => {
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
   const [showPhoneConfirmationModal, setShowPhoneConfirmationModal] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<CountryCodeType>(INITIAL_SELECTED_COUNTRY);
+  const dispatch = useAppDispatch();
 
   const { isLoading, mutate } = useMutation(Api.verifyPhoneBeforeRegister, {
     onSuccess: data => {
@@ -30,10 +33,8 @@ const SignUpScreen = () => {
 
         return;
       }
-
       if (data.navigateTo === 'SignIn') {
         const formattedPhone = `${selectedCountry.phone}${phoneNumber}`;
-
         navigate('SignIn', {
           phone: formattedPhone.substring(1, formattedPhone.length),
         });
@@ -43,46 +44,53 @@ const SignUpScreen = () => {
     },
   });
 
+  useEffect(() => {
+    if (selectedCountry !== INITIAL_SELECTED_COUNTRY) {
+      setPhoneNumber('');
+    }
+  }, [selectedCountry]);
+
   const onPressContinue = () => {
     if (phoneNumber.length < 4) {
       return;
     }
-
     setShowPhoneConfirmationModal(false);
 
     const formattedPhone = `${selectedCountry.phone}${phoneNumber}`;
-
+    const formattedPhoneWithoutPlus = formattedPhone.replace(/\+/g, '');
+    console.log(formattedPhoneWithoutPlus, 'ssss');
+    dispatch(
+      setCountryCode({
+        countryCode: selectedCountry.countryCode,
+        phone: formattedPhoneWithoutPlus,
+      }),
+    );
     mutate({
-      phone: formattedPhone.substring(1, formattedPhone.length),
+      phone: formattedPhone.substring(1, formattedPhone.length).toString(),
     });
   };
 
   return (
     <View className="pt-10 bg-blue flex-1 px-7 justify-center">
-      <KeyboardAvoidingView
-        behavior={Platform.select({
-          android: undefined,
-          ios: 'position',
-        })}>
-        <Text className={text({ type: 'b44', class: 'text-white mb-16' })}>
-          Enter your{'\n'}Phone Number
-        </Text>
-        <PhoneInput
-          value={phoneNumber}
-          editable={!isLoading}
-          onChangeText={setPhoneNumber}
-          selectedCountry={selectedCountry}
-          onPressCountryCode={() => setShowCountriesModal(true)}
-        />
-        <Button
-          title="Continue"
-          type="borderedSolid"
-          isLoading={isLoading}
-          onPress={() => setShowPhoneConfirmationModal(true)}
-          disabled={isLoading || !phoneNumber || phoneNumber.length < 4}
-          customContainer={`self-center mt-20 ${phoneNumber.length < 4 && ' opacity-40'} `}
-        />
-      </KeyboardAvoidingView>
+      <Text className={text({ type: 'b44', class: 'text-white mb-16' })}>
+        Enter your{'\n'}Phone Number
+      </Text>
+      <PhoneInput
+        value={phoneNumber}
+        editable={!isLoading}
+        onChangeText={setPhoneNumber}
+        selectedCountry={selectedCountry}
+        onPressCountryCode={() => setShowCountriesModal(true)}
+      />
+      <Button
+        title="Continue"
+        type="borderedSolid"
+        extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
+        isLoading={isLoading}
+        onPress={() => setShowPhoneConfirmationModal(true)}
+        disabled={isLoading || !phoneNumber || phoneNumber.length < 4}
+        customContainer={`self-center mt-20 ${phoneNumber.length < 4 && ' opacity-40'} `}
+      />
       <CountriesModal
         countries={countries}
         visible={showCountriesModal}

@@ -10,6 +10,7 @@ import MainProfessionProfileScreen from './screens/MainProfessionProfile';
 import OtherUserProfileScreen from './screens/OtherUserProfileScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SideProfessionProfileScreen from './screens/SideProfessionProfile';
+import FollowersScreen from './screens/FollowersScreen';
 
 export type ProfileStackParamList = {
   Profile: undefined;
@@ -21,6 +22,7 @@ export type ProfileStackParamList = {
   CompletedJobDetails: undefined;
   MainProfessionProfile: undefined;
   SideProfessionProfile: undefined;
+  Followers: undefined;
 };
 
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
@@ -37,6 +39,11 @@ export default function ProfileStackNavigator() {
   return (
     <ProfileStack.Navigator screenOptions={commonScreenOptions}>
       <ProfileStack.Screen options={commonOptions} name="Profile" component={ProfileScreen} />
+      <ProfileStack.Screen
+        options={commonOptions}
+        name="Followers"
+        component={FollowersScreen}
+      />
       <ProfileStack.Screen
         options={commonOptions}
         name="OtherUserProfile"

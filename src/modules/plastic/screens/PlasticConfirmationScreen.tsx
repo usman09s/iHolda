@@ -11,6 +11,7 @@ import AddedPlasticTotalInformation from '../components/AddedPlasticTotalInforma
 import RatioBar from '../components/RatioBar';
 import ResultBarCashAndPoints from '../components/ResultBarCashAndPoint';
 import { usePlasticConfirmationActions } from '../hooks/usePlasticConfirmationActions';
+import CustomErrorModal from 'components/ErrorModal/errorModal';
 
 const PlasticConfirmationScreen = () => {
   const {
@@ -22,15 +23,18 @@ const PlasticConfirmationScreen = () => {
     addedPlastics,
     selectedRatio,
     onPressConfirm,
+    modalVisible,
+    modalClose,
+    modalText,
   } = usePlasticConfirmationActions();
 
   return (
     <View className="bg-milkWhite px-7 flex-1">
       <Header showBackIcon title="Confirmation" />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1 my-6" showsVerticalScrollIndicator={false}>
         <AddedPlasticInformationLabel />
         {addedPlastics.map(plastic => (
-          <AddedPlasticInformationStats key={plastic.id} plastic={plastic} />
+          <AddedPlasticInformationStats key={plastic._id} plastic={plastic} />
         ))}
         <AddedPlasticTotalInformation totalPlastic={totalPlastic} totalPrice={totalPrice} />
         <View>
@@ -64,6 +68,12 @@ const PlasticConfirmationScreen = () => {
         />
       </ScrollView>
       <ErrorModal errorText={errorMessage} />
+      <CustomErrorModal
+        visible={modalVisible}
+        errorText={modalText}
+        onClose={modalClose}
+        buttonTitle="CLOSE"
+      />
     </View>
   );
 };

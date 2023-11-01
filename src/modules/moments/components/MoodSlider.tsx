@@ -3,9 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Slider } from '@miblanchard/react-native-slider';
 import colors from 'theme/colors';
+import { EMOTIONS } from '../constants';
 
 const MoodSlider = ({ onChangeMood }: { onChangeMood: (value: string) => void }) => {
-  const emotions = ['🥹', '😔', '😐', '😄', '😍'];
+  const emotions = EMOTIONS;
   const [value, setValue] = useState(0);
   const sliderValue = useSharedValue(0);
 
@@ -33,9 +34,9 @@ const MoodSlider = ({ onChangeMood }: { onChangeMood: (value: string) => void })
 
   return (
     <>
-      <View className="flex-row justify-between h-18 items-center">
+      <View className="flex-row justify-between items-center h-28">
         {emotions.map((emotion, index) => (
-          <View key={emotion} className="h-24 items-center justify-center">
+          <View key={emotion} className="items-center justify-center">
             <Animated.Text style={moods[index]}>{emotion}</Animated.Text>
           </View>
         ))}

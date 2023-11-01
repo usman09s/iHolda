@@ -1,1739 +1,1486 @@
 {
-    "countries": [
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddeb",
-        "name": "Afghanistan",
-        "phone": "+93"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddf1",
-        "name": "Albania",
-        "phone": "+355"
-      },
-      {
-        "emoji": "\ud83c\udde9\ud83c\uddff",
-        "name": "Algeria",
-        "phone": "+213"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddf8",
-        "name": "American Samoa",
-        "phone": "+1684"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\udde9",
-  
-        "name": "Andorra",
-  
-        "phone": "+376"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddf4",
-  
-        "name": "Angola",
-  
-        "phone": "+244"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddee",
-  
-        "name": "Anguilla",
-  
-        "phone": "+1264"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddf6",
-  
-        "name": "Antarctica",
-  
-        "phone": "+672"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddec",
-  
-        "name": "Antigua and Barbuda",
-  
-        "phone": "+1268"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddf7",
-  
-        "name": "Argentina",
-  
-        "phone": "+54"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddf2",
-  
-        "name": "Armenia",
-  
-        "phone": "+374"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddfc",
-  
-        "name": "Aruba",
-  
-        "phone": "+297"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddfa",
-  
-        "name": "Australia",
-  
-        "phone": "+61"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddf9",
-  
-        "name": "Austria",
-  
-        "phone": "+43"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddff",
-  
-        "name": "Azerbaijan",
-  
-        "phone": "+994"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddf8",
-  
-        "name": "Bahamas",
-  
-        "phone": "+1242"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\udded",
-  
-        "name": "Bahrain",
-  
-        "phone": "+973"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\udde9",
-  
-        "name": "Bangladesh",
-  
-        "phone": "+880"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\udde7",
-  
-        "name": "Barbados",
-  
-        "phone": "+1246"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddfe",
-  
-        "name": "Belarus",
-  
-        "phone": "+375"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddea",
-  
-        "name": "Belgium",
-  
-        "phone": "+32"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddff",
-  
-        "name": "Belize",
-  
-        "phone": "+501"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddef",
-  
-        "name": "Benin",
-  
-        "phone": "+229"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddf2",
-  
-        "name": "Bermuda",
-  
-        "phone": "+1441"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddf9",
-  
-        "name": "Bhutan",
-  
-        "phone": "+975"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddf4",
-  
-        "name": "Bolivia",
-  
-        "phone": "+591"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddf6",
-  
-        "name": "Bonaire",
-  
-        "phone": "+5997"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\udde6",
-  
-        "name": "Bosnia and Herzegovina",
-  
-        "phone": "+387"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddfc",
-  
-        "name": "Botswana",
-  
-        "phone": "+267"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddfb",
-  
-        "name": "Bouvet Island",
-  
-        "phone": "+47"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddf7",
-  
-        "name": "Brazil",
-  
-        "phone": "+55"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\uddf4",
-  
-        "name": "British Indian Ocean Territory",
-  
-        "phone": "+246"
-      },
-      {
-        "emoji": "\ud83c\uddfb\ud83c\uddec",
-  
-        "name": "British Virgin Islands",
-  
-        "phone": "+1284"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddf3",
-  
-        "name": "Brunei",
-  
-        "phone": "+673"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddec",
-  
-        "name": "Bulgaria",
-  
-        "phone": "+359"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddeb",
-  
-        "name": "Burkina Faso",
-  
-        "phone": "+226"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddee",
-  
-        "name": "Burundi",
-  
-        "phone": "+257"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\udded",
-  
-        "name": "Cambodia",
-  
-        "phone": "+855"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddf2",
-  
-        "name": "Cameroon",
-  
-        "phone": "+237"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\udde6",
-  
-        "name": "Canada",
-  
-        "phone": "+1"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddfb",
-  
-        "name": "Cape Verde",
-  
-        "phone": "+238"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddfe",
-  
-        "name": "Cayman Islands",
-  
-        "phone": "+1345"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddeb",
-  
-        "name": "Central African Republic",
-  
-        "phone": "+236"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\udde9",
-  
-        "name": "Chad",
-  
-        "phone": "+235"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddf1",
-  
-        "name": "Chile",
-  
-        "phone": "+56"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddf3",
-  
-        "name": "China",
-  
-        "phone": "+86"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddfd",
-  
-        "name": "Christmas Island",
-  
-        "phone": "+61"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\udde8",
-  
-        "name": "Cocos [Keeling] Islands",
-  
-        "phone": "+61"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddf4",
-  
-        "name": "Colombia",
-  
-        "phone": "+57"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddf2",
-  
-        "name": "Comoros",
-  
-        "phone": "+269"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddf0",
-  
-        "name": "Cook Islands",
-  
-        "phone": "+682"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddf7",
-  
-        "name": "Costa Rica",
-  
-        "phone": "+506"
-      },
-      {
-        "emoji": "\ud83c\udded\ud83c\uddf7",
-  
-        "name": "Croatia",
-  
-        "phone": "+385"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddfa",
-  
-        "name": "Cuba",
-  
-        "phone": "+53"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddfc",
-  
-        "name": "Curacao",
-  
-        "phone": "+5999"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddfe",
-  
-        "name": "Cyprus",
-  
-        "phone": "+357"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddff",
-  
-        "name": "Czech Republic",
-  
-        "phone": "+420"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\udde9",
-  
-        "name": "Democratic Republic of the Congo",
-  
-        "phone": "+243"
-      },
-      {
-        "emoji": "\ud83c\udde9\ud83c\uddf0",
-  
-        "name": "Denmark",
-  
-        "phone": "+45"
-      },
-      {
-        "emoji": "\ud83c\udde9\ud83c\uddef",
-  
-        "name": "Djibouti",
-  
-        "phone": "+253"
-      },
-      {
-        "emoji": "\ud83c\udde9\ud83c\uddf2",
-  
-        "name": "Dominica",
-  
-        "phone": "+1767"
-      },
-      {
-        "emoji": "\ud83c\udde9\ud83c\uddf4",
-  
-        "name": "Dominican Republic",
-  
-        "phone": "+1809,1829,1849"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddf1",
-  
-        "name": "East Timor",
-  
-        "phone": "+670"
-      },
-      {
-        "emoji": "\ud83c\uddea\ud83c\udde8",
-  
-        "name": "Ecuador",
-  
-        "phone": "+593"
-      },
-      {
-        "emoji": "\ud83c\uddea\ud83c\uddec",
-  
-        "name": "Egypt",
-  
-        "phone": "+20"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddfb",
-  
-        "name": "El Salvador",
-  
-        "phone": "+503"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddf6",
-  
-        "name": "Equatorial Guinea",
-  
-        "phone": "+240"
-      },
-      {
-        "emoji": "\ud83c\uddea\ud83c\uddf7",
-  
-        "name": "Eritrea",
-  
-        "phone": "+291"
-      },
-      {
-        "emoji": "\ud83c\uddea\ud83c\uddea",
-  
-        "name": "Estonia",
-  
-        "phone": "+372"
-      },
-      {
-        "emoji": "\ud83c\uddea\ud83c\uddf9",
-  
-        "name": "Ethiopia",
-  
-        "phone": "+251"
-      },
-      {
-        "emoji": "\ud83c\uddeb\ud83c\uddf0",
-  
-        "name": "Falkland Islands",
-  
-        "phone": "+500"
-      },
-      {
-        "emoji": "\ud83c\uddeb\ud83c\uddf4",
-  
-        "name": "Faroe Islands",
-  
-        "phone": "+298"
-      },
-      {
-        "emoji": "\ud83c\uddeb\ud83c\uddef",
-  
-        "name": "Fiji",
-  
-        "phone": "+679"
-      },
-      {
-        "emoji": "\ud83c\uddeb\ud83c\uddee",
-  
-        "name": "Finland",
-  
-        "phone": "+358"
-      },
-      {
-        "emoji": "\ud83c\uddeb\ud83c\uddf7",
-  
-        "name": "France",
-  
-        "phone": "+33"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddeb",
-  
-        "name": "French Guiana",
-  
-        "phone": "+594"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddeb",
-  
-        "name": "French Polynesia",
-  
-        "phone": "+689"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddeb",
-  
-        "name": "French Southern Territories",
-  
-        "phone": "+262"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\udde6",
-  
-        "name": "Gabon",
-  
-        "phone": "+241"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddf2",
-  
-        "name": "Gambia",
-  
-        "phone": "+220"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddea",
-  
-        "name": "Georgia",
-  
-        "phone": "+995"
-      },
-      {
-        "emoji": "\ud83c\udde9\ud83c\uddea",
-  
-        "name": "Germany",
-  
-        "phone": "+49"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\udded",
-  
-        "name": "Ghana",
-  
-        "phone": "+233"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddee",
-  
-        "name": "Gibraltar",
-  
-        "phone": "+350"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddf7",
-  
-        "name": "Greece",
-  
-        "phone": "+30"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddf1",
-  
-        "name": "Greenland",
-  
-        "phone": "+299"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\udde9",
-  
-        "name": "Grenada",
-  
-        "phone": "+1473"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddf5",
-  
-        "name": "Guadeloupe",
-  
-        "phone": "+590"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddfa",
-  
-        "name": "Guam",
-  
-        "phone": "+1671"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddf9",
-  
-        "name": "Guatemala",
-  
-        "phone": "+502"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddec",
-  
-        "name": "Guernsey",
-  
-        "phone": "+44"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddf3",
-  
-        "name": "Guinea",
-  
-        "phone": "+224"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddfc",
-  
-        "name": "Guinea-Bissau",
-  
-        "phone": "+245"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddfe",
-  
-        "name": "Guyana",
-  
-        "phone": "+592"
-      },
-      {
-        "emoji": "\ud83c\udded\ud83c\uddf9",
-  
-        "name": "Haiti",
-  
-        "phone": "+509"
-      },
-      {
-        "emoji": "\ud83c\udded\ud83c\uddf2",
-  
-        "name": "Heard Island and McDonald Islands",
-  
-        "phone": "+61"
-      },
-      {
-        "emoji": "\ud83c\udded\ud83c\uddf3",
-  
-        "name": "Honduras",
-  
-        "phone": "+504"
-      },
-      {
-        "emoji": "\ud83c\udded\ud83c\uddf0",
-  
-        "name": "Hong Kong",
-  
-        "phone": "+852"
-      },
-      {
-        "emoji": "\ud83c\udded\ud83c\uddfa",
-  
-        "name": "Hungary",
-  
-        "phone": "+36"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\uddf8",
-  
-        "name": "Iceland",
-  
-        "phone": "+354"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\uddf3",
-  
-        "name": "India",
-  
-        "phone": "+91"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\udde9",
-  
-        "name": "Indonesia",
-  
-        "phone": "+62"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\uddf7",
-  
-        "name": "Iran",
-  
-        "phone": "+98"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\uddf6",
-  
-        "name": "Iraq",
-  
-        "phone": "+964"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\uddea",
-  
-        "name": "Ireland",
-  
-        "phone": "+353"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\uddf2",
-  
-        "name": "Isle of Man",
-  
-        "phone": "+44"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\uddf1",
-  
-        "name": "Israel",
-  
-        "phone": "+972"
-      },
-      {
-        "emoji": "\ud83c\uddee\ud83c\uddf9",
-  
-        "name": "Italy",
-  
-        "phone": "+39"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddee",
-  
-        "name": "Ivory Coast",
-  
-        "phone": "+225"
-      },
-      {
-        "emoji": "\ud83c\uddef\ud83c\uddf2",
-  
-        "name": "Jamaica",
-  
-        "phone": "+1876"
-      },
-      {
-        "emoji": "\ud83c\uddef\ud83c\uddf5",
-  
-        "name": "Japan",
-  
-        "phone": "+81"
-      },
-      {
-        "emoji": "\ud83c\uddef\ud83c\uddea",
-  
-        "name": "Jersey",
-  
-        "phone": "+44"
-      },
-      {
-        "emoji": "\ud83c\uddef\ud83c\uddf4",
-  
-        "name": "Jordan",
-  
-        "phone": "+962"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddff",
-  
-        "name": "Kazakhstan",
-  
-        "phone": "+76,77"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddea",
-  
-        "name": "Kenya",
-  
-        "phone": "+254"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddee",
-  
-        "name": "Kiribati",
-  
-        "phone": "+686"
-      },
-      {
-        "emoji": "\ud83c\uddfd\ud83c\uddf0",
-  
-        "name": "Kosovo",
-  
-        "phone": "+377,381,383,386"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddfc",
-  
-        "name": "Kuwait",
-  
-        "phone": "+965"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddec",
-  
-        "name": "Kyrgyzstan",
-  
-        "phone": "+996"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\udde6",
-  
-        "name": "Laos",
-  
-        "phone": "+856"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\uddfb",
-  
-        "name": "Latvia",
-  
-        "phone": "+371"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\udde7",
-  
-        "name": "Lebanon",
-  
-        "phone": "+961"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\uddf8",
-  
-        "name": "Lesotho",
-  
-        "phone": "+266"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\uddf7",
-  
-        "name": "Liberia",
-  
-        "phone": "+231"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\uddfe",
-  
-        "name": "Libya",
-  
-        "phone": "+218"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\uddee",
-  
-        "name": "Liechtenstein",
-  
-        "phone": "+423"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\uddf9",
-  
-        "name": "Lithuania",
-  
-        "phone": "+370"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\uddfa",
-  
-        "name": "Luxembourg",
-  
-        "phone": "+352"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf4",
-  
-        "name": "Macao",
-  
-        "phone": "+853"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddec",
-  
-        "name": "Madagascar",
-  
-        "phone": "+261"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddfc",
-  
-        "name": "Malawi",
-  
-        "phone": "+265"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddfe",
-  
-        "name": "Malaysia",
-  
-        "phone": "+60"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddfb",
-  
-        "name": "Maldives",
-  
-        "phone": "+960"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf1",
-  
-        "name": "Mali",
-  
-        "phone": "+223"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf9",
-  
-        "name": "Malta",
-  
-        "phone": "+356"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\udded",
-  
-        "name": "Marshall Islands",
-  
-        "phone": "+692"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf6",
-  
-        "name": "Martinique",
-  
-        "phone": "+596"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf7",
-  
-        "name": "Mauritania",
-  
-        "phone": "+222"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddfa",
-  
-        "name": "Mauritius",
-  
-        "phone": "+230"
-      },
-      {
-        "emoji": "\ud83c\uddfe\ud83c\uddf9",
-  
-        "name": "Mayotte",
-  
-        "phone": "+262"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddfd",
-  
-        "name": "Mexico",
-  
-        "phone": "+52"
-      },
-      {
-        "emoji": "\ud83c\uddeb\ud83c\uddf2",
-  
-        "name": "Micronesia",
-  
-        "phone": "+691"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\udde9",
-  
-        "name": "Moldova",
-  
-        "phone": "+373"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\udde8",
-  
-        "name": "Monaco",
-  
-        "phone": "+377"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf3",
-  
-        "name": "Mongolia",
-  
-        "phone": "+976"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddea",
-  
-        "name": "Montenegro",
-  
-        "phone": "+382"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf8",
-  
-        "name": "Montserrat",
-  
-        "phone": "+1664"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\udde6",
-  
-        "name": "Morocco",
-  
-        "phone": "+212"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddff",
-  
-        "name": "Mozambique",
-  
-        "phone": "+258"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf2",
-  
-        "name": "Myanmar [Burma]",
-  
-        "phone": "+95"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\udde6",
-  
-        "name": "Namibia",
-  
-        "phone": "+264"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddf7",
-  
-        "name": "Nauru",
-  
-        "phone": "+674"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddf5",
-  
-        "name": "Nepal",
-  
-        "phone": "+977"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddf1",
-  
-        "name": "Netherlands",
-  
-        "phone": "+31"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\udde8",
-  
-        "name": "New Caledonia",
-  
-        "phone": "+687"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddff",
-  
-        "name": "New Zealand",
-  
-        "phone": "+64"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddee",
-  
-        "name": "Nicaragua",
-  
-        "phone": "+505"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddea",
-  
-        "name": "Niger",
-  
-        "phone": "+227"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddec",
-  
-        "name": "Nigeria",
-  
-        "phone": "+234"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddfa",
-  
-        "name": "Niue",
-  
-        "phone": "+683"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddeb",
-  
-        "name": "Norfolk Island",
-  
-        "phone": "+672"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddf5",
-  
-        "name": "North Korea",
-  
-        "phone": "+850"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf0",
-  
-        "name": "North Macedonia",
-  
-        "phone": "+389"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddf5",
-  
-        "name": "Northern Mariana Islands",
-  
-        "phone": "+1670"
-      },
-      {
-        "emoji": "\ud83c\uddf3\ud83c\uddf4",
-  
-        "name": "Norway",
-  
-        "phone": "+47"
-      },
-      {
-        "emoji": "\ud83c\uddf4\ud83c\uddf2",
-  
-        "name": "Oman",
-  
-        "phone": "+968"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddf0",
-  
-        "name": "Pakistan",
-  
-        "phone": "+92"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddfc",
-  
-        "name": "Palau",
-  
-        "phone": "+680"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddf8",
-  
-        "name": "Palestine",
-  
-        "phone": "+970"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\udde6",
-  
-        "name": "Panama",
-  
-        "phone": "+507"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddec",
-  
-        "name": "Papua New Guinea",
-  
-        "phone": "+675"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddfe",
-  
-        "name": "Paraguay",
-  
-        "phone": "+595"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddea",
-  
-        "name": "Peru",
-  
-        "phone": "+51"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\udded",
-  
-        "name": "Philippines",
-  
-        "phone": "+63"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddf3",
-  
-        "name": "Pitcairn Islands",
-  
-        "phone": "+64"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddf1",
-  
-        "name": "Poland",
-  
-        "phone": "+48"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddf9",
-  
-        "name": "Portugal",
-  
-        "phone": "+351"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddf7",
-  
-        "name": "Puerto Rico",
-  
-        "phone": "+1787,1939"
-      },
-      {
-        "emoji": "\ud83c\uddf6\ud83c\udde6",
-  
-        "name": "Qatar",
-  
-        "phone": "+974"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\uddec",
-  
-        "name": "Republic of the Congo",
-  
-        "phone": "+242"
-      },
-      {
-        "emoji": "\ud83c\uddf7\ud83c\uddf4",
-  
-        "name": "Romania",
-  
-        "phone": "+40"
-      },
-      {
-        "emoji": "\ud83c\uddf7\ud83c\uddfa",
-  
-        "name": "Russia",
-  
-        "phone": "+7"
-      },
-      {
-        "emoji": "\ud83c\uddf7\ud83c\uddfc",
-  
-        "name": "Rwanda",
-  
-        "phone": "+250"
-      },
-      {
-        "emoji": "\ud83c\uddf7\ud83c\uddea",
-  
-        "name": "R\u00e9union",
-  
-        "phone": "+262"
-      },
-      {
-        "emoji": "\ud83c\udde7\ud83c\uddf1",
-  
-        "name": "Saint Barth\u00e9lemy",
-  
-        "phone": "+590"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\udded",
-  
-        "name": "Saint Helena",
-  
-        "phone": "+290"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddf3",
-  
-        "name": "Saint Kitts and Nevis",
-  
-        "phone": "+1869"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\udde8",
-  
-        "name": "Saint Lucia",
-  
-        "phone": "+1758"
-      },
-      {
-        "emoji": "\ud83c\uddf2\ud83c\uddeb",
-  
-        "name": "Saint Martin",
-  
-        "phone": "+590"
-      },
-      {
-        "emoji": "\ud83c\uddf5\ud83c\uddf2",
-  
-        "name": "Saint Pierre and Miquelon",
-  
-        "phone": "+508"
-      },
-      {
-        "emoji": "\ud83c\uddfb\ud83c\udde8",
-  
-        "name": "Saint Vincent and the Grenadines",
-  
-        "phone": "+1784"
-      },
-      {
-        "emoji": "\ud83c\uddfc\ud83c\uddf8",
-  
-        "name": "Samoa",
-  
-        "phone": "+685"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddf2",
-  
-        "name": "San Marino",
-  
-        "phone": "+378"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\udde6",
-  
-        "name": "Saudi Arabia",
-  
-        "phone": "+966"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddf3",
-  
-        "name": "Senegal",
-  
-        "phone": "+221"
-      },
-      {
-        "emoji": "\ud83c\uddf7\ud83c\uddf8",
-  
-        "name": "Serbia",
-  
-        "phone": "+381"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\udde8",
-  
-        "name": "Seychelles",
-  
-        "phone": "+248"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddf1",
-  
-        "name": "Sierra Leone",
-  
-        "phone": "+232"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddec",
-  
-        "name": "Singapore",
-  
-        "phone": "+65"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddfd",
-  
-        "name": "Sint Maarten",
-  
-        "phone": "+1721"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddf0",
-  
-        "name": "Slovakia",
-  
-        "phone": "+421"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddee",
-  
-        "name": "Slovenia",
-  
-        "phone": "+386"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\udde7",
-  
-        "name": "Solomon Islands",
-  
-        "phone": "+677"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddf4",
-  
-        "name": "Somalia",
-  
-        "phone": "+252"
-      },
-      {
-        "emoji": "\ud83c\uddff\ud83c\udde6",
-  
-        "name": "South Africa",
-  
-        "phone": "+27"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\uddf8",
-  
-        "name": "South Georgia and the South Sandwich Islands",
-  
-        "phone": "+500"
-      },
-      {
-        "emoji": "\ud83c\uddf0\ud83c\uddf7",
-  
-        "name": "South Korea",
-  
-        "phone": "+82"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddf8",
-  
-        "name": "South Sudan",
-  
-        "phone": "+211"
-      },
-      {
-        "emoji": "\ud83c\uddea\ud83c\uddf8",
-  
-        "name": "Spain",
-  
-        "phone": "+34"
-      },
-      {
-        "emoji": "\ud83c\uddf1\ud83c\uddf0",
-  
-        "name": "Sri Lanka",
-  
-        "phone": "+94"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\udde9",
-  
-        "name": "Sudan",
-  
-        "phone": "+249"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddf7",
-  
-        "name": "Suriname",
-  
-        "phone": "+597"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddef",
-  
-        "name": "Svalbard and Jan Mayen",
-  
-        "phone": "+4779"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddff",
-  
-        "name": "Swaziland",
-  
-        "phone": "+268"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddea",
-  
-        "name": "Sweden",
-  
-        "phone": "+46"
-      },
-      {
-        "emoji": "\ud83c\udde8\ud83c\udded",
-  
-        "name": "Switzerland",
-  
-        "phone": "+41"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddfe",
-  
-        "name": "Syria",
-  
-        "phone": "+963"
-      },
-      {
-        "emoji": "\ud83c\uddf8\ud83c\uddf9",
-  
-        "name": "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
-  
-        "phone": "+239"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddfc",
-  
-        "name": "Taiwan",
-  
-        "phone": "+886"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddef",
-  
-        "name": "Tajikistan",
-  
-        "phone": "+992"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddff",
-  
-        "name": "Tanzania",
-  
-        "phone": "+255"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\udded",
-  
-        "name": "Thailand",
-  
-        "phone": "+66"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddec",
-  
-        "name": "Togo",
-  
-        "phone": "+228"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddf0",
-  
-        "name": "Tokelau",
-  
-        "phone": "+690"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddf4",
-  
-        "name": "Tonga",
-  
-        "phone": "+676"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddf9",
-  
-        "name": "Trinidad and Tobago",
-  
-        "phone": "+1868"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddf3",
-  
-        "name": "Tunisia",
-  
-        "phone": "+216"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddf7",
-  
-        "name": "Turkey",
-  
-        "phone": "+90"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddf2",
-  
-        "name": "Turkmenistan",
-  
-        "phone": "+993"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\udde8",
-  
-        "name": "Turks and Caicos Islands",
-  
-        "phone": "+1649"
-      },
-      {
-        "emoji": "\ud83c\uddf9\ud83c\uddfb",
-  
-        "name": "Tuvalu",
-  
-        "phone": "+688"
-      },
-      {
-        "emoji": "\ud83c\uddfa\ud83c\uddf2",
-  
-        "name": "U.S. Minor Outlying Islands",
-  
-        "phone": "+1"
-      },
-      {
-        "emoji": "\ud83c\uddfb\ud83c\uddee",
-  
-        "name": "U.S. Virgin Islands",
-  
-        "phone": "+1340"
-      },
-      {
-        "emoji": "\ud83c\uddfa\ud83c\uddec",
-  
-        "name": "Uganda",
-  
-        "phone": "+256"
-      },
-      {
-        "emoji": "\ud83c\uddfa\ud83c\udde6",
-  
-        "name": "Ukraine",
-  
-        "phone": "+380"
-      },
-      {
-        "emoji": "\ud83c\udde6\ud83c\uddea",
-  
-        "name": "United Arab Emirates",
-  
-        "phone": "+971"
-      },
-      {
-        "emoji": "\ud83c\uddec\ud83c\udde7",
-  
-        "name": "United Kingdom",
-  
-        "phone": "+44"
-      },
-      {
-        "emoji": "\ud83c\uddfa\ud83c\uddf8",
-  
-        "name": "United States",
-  
-        "phone": "+1"
-      },
-      {
-        "emoji": "\ud83c\uddfa\ud83c\uddfe",
-  
-        "name": "Uruguay",
-  
-        "phone": "+598"
-      },
-      {
-        "emoji": "\ud83c\uddfa\ud83c\uddff",
-  
-        "name": "Uzbekistan",
-  
-        "phone": "+998"
-      },
-      {
-        "emoji": "\ud83c\uddfb\ud83c\uddfa",
-  
-        "name": "Vanuatu",
-  
-        "phone": "+678"
-      },
-      {
-        "emoji": "\ud83c\uddfb\ud83c\udde6",
-  
-        "name": "Vatican City",
-  
-        "phone": "+379"
-      },
-      {
-        "emoji": "\ud83c\uddfb\ud83c\uddea",
-  
-        "name": "Venezuela",
-  
-        "phone": "+58"
-      },
-      {
-        "emoji": "\ud83c\uddfb\ud83c\uddf3",
-  
-        "name": "Vietnam",
-  
-        "phone": "+84"
-      },
-      {
-        "emoji": "\ud83c\uddfc\ud83c\uddeb",
-  
-        "name": "Wallis and Futuna",
-  
-        "phone": "+681"
-      },
-      {
-        "emoji": "\ud83c\uddea\ud83c\udded",
-  
-        "name": "Western Sahara",
-  
-        "phone": "+212"
-      },
-      {
-        "emoji": "\ud83c\uddfe\ud83c\uddea",
-  
-        "name": "Yemen",
-  
-        "phone": "+967"
-      },
-      {
-        "emoji": "\ud83c\uddff\ud83c\uddf2",
-  
-        "name": "Zambia",
-  
-        "phone": "+260"
-      },
-      {
-        "emoji": "\ud83c\uddff\ud83c\uddfc",
-  
-        "name": "Zimbabwe",
-  
-        "phone": "+263"
-      }
-    ]
-  }
+  "countries": [
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddeb",
+      "name": "Afghanistan",
+      "phone": "+93",
+      "countryCode": "AF"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddf1",
+      "name": "Albania",
+      "phone": "+355",
+      "countryCode": "AL"
+    },
+    {
+      "emoji": "\ud83c\udde9\ud83c\uddff",
+      "name": "Algeria",
+      "phone": "+213",
+      "countryCode": "DZ"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddf8",
+      "name": "American Samoa",
+      "phone": "+1684",
+      "countryCode": "AS"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\udde9",
+      "name": "Andorra",
+      "phone": "+376",
+      "countryCode": "AD"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddf4",
+      "name": "Angola",
+      "phone": "+244",
+      "countryCode": "AO"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddee",
+      "name": "Anguilla",
+      "phone": "+1264",
+      "countryCode": "AI"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddf6",
+      "name": "Antarctica",
+      "phone": "+672",
+      "countryCode": "AQ"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddec",
+      "name": "Antigua and Barbuda",
+      "phone": "+1268",
+      "countryCode": "AG"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddf7",
+      "name": "Argentina",
+      "phone": "+54",
+      "countryCode": "AR"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddf2",
+      "name": "Armenia",
+      "phone": "+374",
+      "countryCode": "AM"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddfc",
+      "name": "Aruba",
+      "phone": "+297",
+      "countryCode": "AW"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddfa",
+      "name": "Australia",
+      "phone": "+61",
+      "countryCode": "AU"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddf9",
+      "name": "Austria",
+      "phone": "+43",
+      "countryCode": "AT"
+    },
+    {
+      "emoji": "\ud83c\udde6\ud83c\uddff",
+      "name": "Azerbaijan",
+      "phone": "+994",
+      "countryCode": "AZ"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddf8",
+      "name": "Bahamas",
+      "phone": "+1242",
+      "countryCode": "BS"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\udded",
+      "name": "Bahrain",
+      "phone": "+973",
+      "countryCode": "BH"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\udde9",
+      "name": "Bangladesh",
+      "phone": "+880",
+      "countryCode": "BD"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\udde7",
+      "name": "Barbados",
+      "phone": "+1246",
+      "countryCode": "BB"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddfe",
+      "name": "Belarus",
+      "phone": "+375",
+      "countryCode": "BY"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddea",
+      "name": "Belgium",
+      "phone": "+32",
+      "countryCode": "BE"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddff",
+      "name": "Belize",
+      "phone": "+501",
+      "countryCode": "BZ"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddef",
+      "name": "Benin",
+      "phone": "+229",
+      "countryCode": "BJ"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddf2",
+      "name": "Bermuda",
+      "phone": "+1441",
+      "countryCode": "BM"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddf9",
+      "name": "Bhutan",
+      "phone": "+975",
+      "countryCode": "BT"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddf4",
+      "name": "Bolivia",
+      "phone": "+591",
+      "countryCode": "BO"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddf6",
+      "name": "Bonaire",
+      "phone": "+5997",
+      "countryCode": "BQ"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\udde6",
+      "name": "Bosnia and Herzegovina",
+      "phone": "+387",
+      "countryCode": "BA"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddfc",
+      "name": "Botswana",
+      "phone": "+267",
+      "countryCode": "BW"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddfb",
+      "name": "Bouvet Island",
+      "phone": "+47",
+      "countryCode": "BV"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddf7",
+      "name": "Brazil",
+      "phone": "+55",
+      "countryCode": "BR"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\uddf4",
+      "name": "British Indian Ocean Territory",
+      "phone": "+246",
+      "countryCode": "IO"
+    },
+    {
+      "emoji": "\ud83c\uddfb\ud83c\uddec",
+      "name": "British Virgin Islands",
+      "phone": "+1284",
+      "countryCode": "VG"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddf3",
+      "name": "Brunei",
+      "phone": "+673",
+      "countryCode": "BN"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddec",
+      "name": "Bulgaria",
+      "phone": "+359",
+      "countryCode": "BG"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddeb",
+      "name": "Burkina Faso",
+      "phone": "+226",
+      "countryCode": "BF"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddee",
+      "name": "Burundi",
+      "phone": "+257",
+      "countryCode": "BI"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\udded",
+      "name": "Cambodia",
+      "phone": "+855",
+      "countryCode": "KH"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddf2",
+      "name": "Cameroon",
+      "phone": "+237",
+      "countryCode": "CM"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\udde6",
+      "name": "Canada",
+      "phone": "+1",
+      "countryCode": "CA"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddfb",
+      "name": "Cape Verde",
+      "phone": "+238",
+      "countryCode": "CV"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddfe",
+      "name": "Cayman Islands",
+      "phone": "+1345",
+      "countryCode": "KY"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddeb",
+      "name": "Central African Republic",
+      "phone": "+236",
+      "countryCode": "CF"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\udde9",
+      "name": "Chad",
+      "phone": "+235",
+      "countryCode": "TD"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddf1",
+      "name": "Chile",
+      "phone": "+56",
+      "countryCode": "CL"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddf3",
+      "name": "China",
+      "phone": "+86",
+      "countryCode": "CN"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddfd",
+      "name": "Christmas Island",
+      "phone": "+61",
+      "countryCode": "CX"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\udde8",
+      "name": "Cocos [Keeling] Islands",
+      "phone": "+61",
+      "countryCode": "CC"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddf4",
+      "name": "Colombia",
+      "phone": "+57",
+      "countryCode": "CO"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddf2",
+      "name": "Comoros",
+      "phone": "+269",
+      "countryCode": "KM"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddf0",
+      "name": "Cook Islands",
+      "phone": "+682",
+      "countryCode": "CK"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddf7",
+      "name": "Costa Rica",
+      "phone": "+506",
+      "countryCode": "CR"
+    },
+    {
+      "emoji": "\ud83c\udded\ud83c\uddf7",
+      "name": "Croatia",
+      "phone": "+385",
+      "countryCode": "HR"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddfa",
+      "name": "Cuba",
+      "phone": "+53",
+      "countryCode": "CU"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddfc",
+      "name": "Curacao",
+      "phone": "+5999",
+      "countryCode": "CW"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddfe",
+      "name": "Cyprus",
+      "phone": "+357",
+      "countryCode": "CY"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddff",
+      "name": "Czech Republic",
+      "phone": "+420",
+      "countryCode": "CZ"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\udde9",
+      "name": "Democratic Republic of the Congo",
+      "phone": "+243",
+      "countryCode": "CD"
+    },
+    {
+      "emoji": "\ud83c\udde9\ud83c\uddf0",
+      "name": "Denmark",
+      "phone": "+45",
+      "countryCode": "DK"
+    },
+    {
+      "emoji": "\ud83c\udde9\ud83c\uddef",
+      "name": "Djibouti",
+      "phone": "+253",
+      "countryCode": "DJ"
+    },
+    {
+      "emoji": "\ud83c\udde9\ud83c\uddf2",
+      "name": "Dominica",
+      "phone": "+1767",
+      "countryCode": "DM"
+    },
+    {
+      "emoji": "\ud83c\udde9\ud83c\uddf4",
+      "name": "Dominican Republic",
+      "phone": "+1809,1829,1849",
+      "countryCode": "DO"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddf1",
+      "name": "East Timor",
+      "phone": "+670",
+      "countryCode": "TL"
+    },
+    {
+      "emoji": "\ud83c\uddea\ud83c\udde8",
+      "name": "Ecuador",
+      "phone": "+593",
+      "countryCode": "EC"
+    },
+    {
+      "emoji": "\ud83c\uddea\ud83c\uddec",
+      "name": "Egypt",
+      "phone": "+20",
+      "countryCode": "EG"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddfb",
+      "name": "El Salvador",
+      "phone": "+503",
+      "countryCode": "SV"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddf6",
+      "name": "Equatorial Guinea",
+      "phone": "+240",
+      "countryCode": "GQ"
+    },
+    {
+      "emoji": "\ud83c\uddea\ud83c\uddf7",
+      "name": "Eritrea",
+      "phone": "+291",
+      "countryCode": "ER"
+    },
+    {
+      "emoji": "\ud83c\uddea\ud83c\uddea",
+      "name": "Estonia",
+      "phone": "+372",
+      "countryCode": "EE"
+    },
+    {
+      "emoji": "\ud83c\uddea\ud83c\uddf9",
+      "name": "Ethiopia",
+      "phone": "+251",
+      "countryCode": "ET"
+    },
+    {
+      "emoji": "\ud83c\uddeb\ud83c\uddf0",
+      "name": "Falkland Islands",
+      "phone": "+500",
+      "countryCode": "FK"
+    },
+    {
+      "emoji": "\ud83c\uddeb\ud83c\uddf4",
+      "name": "Faroe Islands",
+      "phone": "+298",
+      "countryCode": "FO"
+    },
+    {
+      "emoji": "\ud83c\uddeb\ud83c\uddef",
+      "name": "Fiji",
+      "phone": "+679",
+      "countryCode": "FJ"
+    },
+    {
+      "emoji": "\ud83c\uddeb\ud83c\uddee",
+      "name": "Finland",
+      "phone": "+358",
+      "countryCode": "FI"
+    },
+    {
+      "emoji": "\ud83c\uddeb\ud83c\uddf7",
+      "name": "France",
+      "phone": "+33",
+      "countryCode": "FR"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddeb",
+      "name": "French Guiana",
+      "phone": "+594",
+      "countryCode": "GF"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddeb",
+      "name": "French Polynesia",
+      "phone": "+689",
+      "countryCode": "PF"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddeb",
+      "name": "French Southern Territories",
+      "phone": "+262",
+      "countryCode": "TF"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\udde6",
+      "name": "Gabon",
+      "phone": "+241",
+      "countryCode": "GA"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddf2",
+      "name": "Gambia",
+      "phone": "+220",
+      "countryCode": "GM"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddea",
+      "name": "Georgia",
+      "phone": "+995",
+      "countryCode": "GE"
+    },
+    {
+      "emoji": "\ud83c\udde9\ud83c\uddea",
+      "name": "Germany",
+      "phone": "+49",
+      "countryCode": "DE"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\udded",
+      "name": "Ghana",
+      "phone": "+233",
+      "countryCode": "GH"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddee",
+      "name": "Gibraltar",
+      "phone": "+350",
+      "countryCode": "GI"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddf7",
+      "name": "Greece",
+      "phone": "+30",
+      "countryCode": "GR"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddf1",
+      "name": "Greenland",
+      "phone": "+299",
+      "countryCode": "GL"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\udde9",
+      "name": "Grenada",
+      "phone": "+1473",
+      "countryCode": "GD"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddf5",
+      "name": "Guadeloupe",
+      "phone": "+590",
+      "countryCode": "GP"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddfa",
+      "name": "Guam",
+      "phone": "+1671",
+      "countryCode": "GU"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddf9",
+      "name": "Guatemala",
+      "phone": "+502",
+      "countryCode": "GT"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddec",
+      "name": "Guernsey",
+      "phone": "+44",
+      "countryCode": "GG"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddf3",
+      "name": "Guinea",
+      "phone": "+224",
+      "countryCode": "GN"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddfc",
+      "name": "Guinea-Bissau",
+      "phone": "+245",
+      "countryCode": "GW"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddfe",
+      "name": "Guyana",
+      "phone": "+592",
+      "countryCode": "GY"
+    },
+    {
+      "emoji": "\ud83c\udded\ud83c\uddf9",
+      "name": "Haiti",
+      "phone": "+509",
+      "countryCode": "HT"
+    },
+    {
+      "emoji": "\ud83c\udded\ud83c\uddf2",
+      "name": "Heard Island and McDonald Islands",
+      "phone": "+61",
+      "countryCode": "HM"
+    },
+    {
+      "emoji": "\ud83c\udded\ud83c\uddf3",
+      "name": "Honduras",
+      "phone": "+504",
+      "countryCode": "HN"
+    },
+    {
+      "emoji": "\ud83c\udded\ud83c\uddf0",
+      "name": "Hong Kong",
+      "phone": "+852",
+      "countryCode": "HK"
+    },
+    {
+      "emoji": "\ud83c\udded\ud83c\uddfa",
+      "name": "Hungary",
+      "phone": "+36",
+      "countryCode": "HU"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\uddf8",
+      "name": "Iceland",
+      "phone": "+354",
+      "countryCode": "IS"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\uddf3",
+      "name": "India",
+      "phone": "+91",
+      "countryCode": "IN"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\udde9",
+      "name": "Indonesia",
+      "phone": "+62",
+      "countryCode": "ID"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\uddf7",
+      "name": "Iran",
+      "phone": "+98",
+      "countryCode": "IR"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\uddf6",
+      "name": "Iraq",
+      "phone": "+964",
+      "countryCode": "IQ"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\uddea",
+      "name": "Ireland",
+      "phone": "+353",
+      "countryCode": "IE"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\uddf2",
+      "name": "Isle of Man",
+      "phone": "+44",
+      "countryCode": "IM"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\uddf1",
+      "name": "Israel",
+      "phone": "+972",
+      "countryCode": "IL"
+    },
+    {
+      "emoji": "\ud83c\uddee\ud83c\uddf9",
+      "name": "Italy",
+      "phone": "+39",
+      "countryCode": "IT"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddee",
+      "name": "Ivory Coast",
+      "phone": "+225",
+      "countryCode": "CI"
+    },
+    {
+      "emoji": "\ud83c\uddef\ud83c\uddf2",
+      "name": "Jamaica",
+      "phone": "+1876",
+      "countryCode": "JM"
+    },
+    {
+      "emoji": "\ud83c\uddef\ud83c\uddf5",
+      "name": "Japan",
+      "phone": "+81",
+      "countryCode": "JP"
+    },
+    {
+      "emoji": "\ud83c\uddef\ud83c\uddea",
+      "name": "Jersey",
+      "phone": "+44",
+      "countryCode": "JE"
+    },
+    {
+      "emoji": "\ud83c\uddef\ud83c\uddf4",
+      "name": "Jordan",
+      "phone": "+962",
+      "countryCode": "JO"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddff",
+      "name": "Kazakhstan",
+      "phone": "+76,77",
+      "countryCode": "KZ"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddea",
+      "name": "Kenya",
+      "phone": "+254",
+      "countryCode": "KE"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddee",
+      "name": "Kiribati",
+      "phone": "+686",
+      "countryCode": "KI"
+    },
+    {
+      "emoji": "\ud83c\uddfd\ud83c\uddf0",
+      "name": "Kosovo",
+      "phone": "+377,381,383,386",
+      "countryCode": "XK"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddfc",
+      "name": "Kuwait",
+      "phone": "+965",
+      "countryCode": "KW"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddec",
+      "name": "Kyrgyzstan",
+      "phone": "+996",
+      "countryCode": "KG"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\udde6",
+      "name": "Laos",
+      "phone": "+856",
+      "countryCode": "LA"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\uddfb",
+      "name": "Latvia",
+      "phone": "+371",
+      "countryCode": "LV"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\udde7",
+      "name": "Lebanon",
+      "phone": "+961",
+      "countryCode": "LB"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\uddf8",
+      "name": "Lesotho",
+      "phone": "+266",
+      "countryCode": "LS"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\uddf7",
+      "name": "Liberia",
+      "phone": "+231",
+      "countryCode": "LR"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\uddfe",
+      "name": "Libya",
+      "phone": "+218",
+      "countryCode": "LY"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\uddee",
+      "name": "Liechtenstein",
+      "phone": "+423",
+      "countryCode": "LI"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\uddf9",
+      "name": "Lithuania",
+      "phone": "+370",
+      "countryCode": "LT"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\uddfa",
+      "name": "Luxembourg",
+      "phone": "+352",
+      "countryCode": "LU"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf4",
+      "name": "Macao",
+      "phone": "+853",
+      "countryCode": "MO"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\udded",
+      "name": "Madagascar",
+      "phone": "+261",
+      "countryCode": "MG"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddfc",
+      "name": "Malawi",
+      "phone": "+265",
+      "countryCode": "MW"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddfe",
+      "name": "Malaysia",
+      "phone": "+60",
+      "countryCode": "MY"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf1",
+      "name": "Mali",
+      "phone": "+223",
+      "countryCode": "ML"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf9",
+      "name": "Malta",
+      "phone": "+356",
+      "countryCode": "MT"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\udded",
+      "name": "Marshall Islands",
+      "phone": "+692",
+      "countryCode": "MH"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf6",
+      "name": "Martinique",
+      "phone": "+596",
+      "countryCode": "MQ"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf7",
+      "name": "Mauritania",
+      "phone": "+222",
+      "countryCode": "MR"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddfa",
+      "name": "Mauritius",
+      "phone": "+230",
+      "countryCode": "MU"
+    },
+    {
+      "emoji": "\ud83c\uddfe\ud83c\uddf9",
+      "name": "Mayotte",
+      "phone": "+262",
+      "countryCode": "YT"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddfd",
+      "name": "Mexico",
+      "phone": "+52",
+      "countryCode": "MX"
+    },
+    {
+      "emoji": "\ud83c\uddeb\ud83c\uddf2",
+      "name": "Micronesia",
+      "phone": "+691",
+      "countryCode": "FM"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\udde9",
+      "name": "Moldova",
+      "phone": "+373",
+      "countryCode": "MD"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf8",
+      "name": "Monaco",
+      "phone": "+377",
+      "countryCode": "MC"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf3",
+      "name": "Mongolia",
+      "phone": "+976",
+      "countryCode": "MN"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddea",
+      "name": "Montenegro",
+      "phone": "+382",
+      "countryCode": "ME"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf8",
+      "name": "Montserrat",
+      "phone": "+1664",
+      "countryCode": "MS"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\udde6",
+      "name": "Morocco",
+      "phone": "+212",
+      "countryCode": "MA"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddff",
+      "name": "Mozambique",
+      "phone": "+258",
+      "countryCode": "MZ"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf2",
+      "name": "Myanmar [Burma]",
+      "phone": "+95",
+      "countryCode": "MM"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\udde6",
+      "name": "Namibia",
+      "phone": "+264",
+      "countryCode": "NA"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddf7",
+      "name": "Nauru",
+      "phone": "+674",
+      "countryCode": "NR"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddf5",
+      "name": "Nepal",
+      "phone": "+977",
+      "countryCode": "NP"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddf1",
+      "name": "Netherlands",
+      "phone": "+31",
+      "countryCode": "NL"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\udde8",
+      "name": "New Caledonia",
+      "phone": "+687",
+      "countryCode": "NC"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddff",
+      "name": "New Zealand",
+      "phone": "+64",
+      "countryCode": "NZ"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddee",
+      "name": "Nicaragua",
+      "phone": "+505",
+      "countryCode": "NI"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddea",
+      "name": "Niger",
+      "phone": "+227",
+      "countryCode": "NE"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddec",
+      "name": "Nigeria",
+      "phone": "+234",
+      "countryCode": "NG"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddfa",
+      "name": "Niue",
+      "phone": "+683",
+      "countryCode": "NU"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddeb",
+      "name": "Norfolk Island",
+      "phone": "+672",
+      "countryCode": "NF"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddf5",
+      "name": "North Korea",
+      "phone": "+850",
+      "countryCode": "KP"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf0",
+      "name": "North Macedonia",
+      "phone": "+389",
+      "countryCode": "MK"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddf5",
+      "name": "Northern Mariana Islands",
+      "phone": "+1670",
+      "countryCode": "MP"
+    },
+    {
+      "emoji": "\ud83c\uddf3\ud83c\uddf4",
+      "name": "Norway",
+      "phone": "+47",
+      "countryCode": "NO"
+    },
+    {
+      "emoji": "\ud83c\uddf4\ud83c\uddf2",
+      "name": "Oman",
+      "phone": "+968",
+      "countryCode": "OM"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddf0",
+      "name": "Pakistan",
+      "phone": "+92",
+      "countryCode": "PK"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddfc",
+      "name": "Palau",
+      "phone": "+680",
+      "countryCode": "PW"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddf8",
+      "name": "Palestine",
+      "phone": "+970",
+      "countryCode": "PS"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\udde6",
+      "name": "Panama",
+      "phone": "+507",
+      "countryCode": "PA"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddec",
+      "name": "Papua New Guinea",
+      "phone": "+675",
+      "countryCode": "PG"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddfe",
+      "name": "Paraguay",
+      "phone": "+595",
+      "countryCode": "PY"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddea",
+      "name": "Peru",
+      "phone": "+51",
+      "countryCode": "PE"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\udded",
+      "name": "Philippines",
+      "phone": "+63",
+      "countryCode": "PH"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddf3",
+      "name": "Pitcairn Islands",
+      "phone": "+64",
+      "countryCode": "PN"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddf1",
+      "name": "Poland",
+      "phone": "+48",
+      "countryCode": "PL"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddf9",
+      "name": "Portugal",
+      "phone": "+351",
+      "countryCode": "PT"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddf7",
+      "name": "Puerto Rico",
+      "phone": "+1787,1939",
+      "countryCode": "PR"
+    },
+    {
+      "emoji": "\ud83c\uddf6\ud83c\udde6",
+      "name": "Qatar",
+      "phone": "+974",
+      "countryCode": "QA"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\uddec",
+      "name": "Republic of the Congo",
+      "phone": "+242",
+      "countryCode": "CG"
+    },
+    {
+      "emoji": "\ud83c\uddf7\ud83c\uddf4",
+      "name": "Romania",
+      "phone": "+40",
+      "countryCode": "RO"
+    },
+    {
+      "emoji": "\ud83c\uddf7\ud83c\uddfa",
+      "name": "Russia",
+      "phone": "+7",
+      "countryCode": "RU"
+    },
+    {
+      "emoji": "\ud83c\uddf7\ud83c\uddfc",
+      "name": "Rwanda",
+      "phone": "+250",
+      "countryCode": "RW"
+    },
+    {
+      "emoji": "\ud83c\uddf7\ud83c\uddfa",
+      "name": "Réunion",
+      "phone": "+262",
+      "countryCode": "RE"
+    },
+    {
+      "emoji": "\ud83c\udde7\ud83c\uddf1",
+      "name": "Saint Barthélemy",
+      "phone": "+590",
+      "countryCode": "BL"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\udded",
+      "name": "Saint Helena",
+      "phone": "+290",
+      "countryCode": "SH"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddf3",
+      "name": "Saint Kitts and Nevis",
+      "phone": "+1869",
+      "countryCode": "KN"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\udde8",
+      "name": "Saint Lucia",
+      "phone": "+1758",
+      "countryCode": "LC"
+    },
+    {
+      "emoji": "\ud83c\uddf2\ud83c\uddeb",
+      "name": "Saint Martin",
+      "phone": "+590",
+      "countryCode": "MF"
+    },
+    {
+      "emoji": "\ud83c\uddf5\ud83c\uddf2",
+      "name": "Saint Pierre and Miquelon",
+      "phone": "+508",
+      "countryCode": "PM"
+    },
+    {
+      "emoji": "\ud83c\uddfb\ud83c\udde8",
+      "name": "Saint Vincent and the Grenadines",
+      "phone": "+1784",
+      "countryCode": "VC"
+    },
+    {
+      "emoji": "\ud83c\uddfc\ud83c\uddf8",
+      "name": "Samoa",
+      "phone": "+685",
+      "countryCode": "WS"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddf2",
+      "name": "San Marino",
+      "phone": "+378",
+      "countryCode": "SM"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\udde6",
+      "name": "Saudi Arabia",
+      "phone": "+966",
+      "countryCode": "SA"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddf3",
+      "name": "Senegal",
+      "phone": "+221",
+      "countryCode": "SN"
+    },
+    {
+      "emoji": "\ud83c\uddf7\ud83c\uddf8",
+      "name": "Serbia",
+      "phone": "+381",
+      "countryCode": "RS"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\udde8",
+      "name": "Seychelles",
+      "phone": "+248",
+      "countryCode": "SC"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddf1",
+      "name": "Sierra Leone",
+      "phone": "+232",
+      "countryCode": "SL"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddec",
+      "name": "Singapore",
+      "phone": "+65",
+      "countryCode": "SG"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddfd",
+      "name": "Sint Maarten",
+      "phone": "+1721",
+      "countryCode": "SX"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddf0",
+      "name": "Slovakia",
+      "phone": "+421",
+      "countryCode": "SK"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddee",
+      "name": "Slovenia",
+      "phone": "+386",
+      "countryCode": "SI"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\udde7",
+      "name": "Solomon Islands",
+      "phone": "+677",
+      "countryCode": "SB"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddf4",
+      "name": "Somalia",
+      "phone": "+252",
+      "countryCode": "SO"
+    },
+    {
+      "emoji": "\ud83c\uddff\ud83c\udde6",
+      "name": "South Africa",
+      "phone": "+27",
+      "countryCode": "ZA"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\uddf8",
+      "name": "South Georgia and the South Sandwich Islands",
+      "phone": "+500",
+      "countryCode": "GS"
+    },
+    {
+      "emoji": "\ud83c\uddf0\ud83c\uddf7",
+      "name": "South Korea",
+      "phone": "+82",
+      "countryCode": "KR"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddf8",
+      "name": "South Sudan",
+      "phone": "+211",
+      "countryCode": "SS"
+    },
+    {
+      "emoji": "\ud83c\uddea\ud83c\uddf8",
+      "name": "Spain",
+      "phone": "+34",
+      "countryCode": "ES"
+    },
+    {
+      "emoji": "\ud83c\uddf1\ud83c\uddf0",
+      "name": "Sri Lanka",
+      "phone": "+94",
+      "countryCode": "LK"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\udde9",
+      "name": "Sudan",
+      "phone": "+249",
+      "countryCode": "SD"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddf7",
+      "name": "Suriname",
+      "phone": "+597",
+      "countryCode": "SR"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddef",
+      "name": "Svalbard and Jan Mayen",
+      "phone": "+4779",
+      "countryCode": "SJ"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddff",
+      "name": "Swaziland",
+      "phone": "+268",
+      "countryCode": "SZ"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddea",
+      "name": "Sweden",
+      "phone": "+46",
+      "countryCode": "SE"
+    },
+    {
+      "emoji": "\ud83c\udde8\ud83c\udded",
+      "name": "Switzerland",
+      "phone": "+41",
+      "countryCode": "CH"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddfe",
+      "name": "Syria",
+      "phone": "+963",
+      "countryCode": "SY"
+    },
+    {
+      "emoji": "\ud83c\uddf8\ud83c\uddf9",
+      "name": "São Tomé and Príncipe",
+      "phone": "+239",
+      "countryCode": "ST"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddfc",
+      "name": "Taiwan",
+      "phone": "+886",
+      "countryCode": "TW"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\udddf",
+      "name": "Tajikistan",
+      "phone": "+992",
+      "countryCode": "TJ"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddff",
+      "name": "Tanzania",
+      "phone": "+255",
+      "countryCode": "TZ"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\udded",
+      "name": "Thailand",
+      "phone": "+66",
+      "countryCode": "TH"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddec",
+      "name": "Togo",
+      "phone": "+228",
+      "countryCode": "TG"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddf0",
+      "name": "Tokelau",
+      "phone": "+690",
+      "countryCode": "TK"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddf4",
+      "name": "Tonga",
+      "phone": "+676",
+      "countryCode": "TO"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddf9",
+      "name": "Trinidad and Tobago",
+      "phone": "+1868",
+      "countryCode": "TT"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddf3",
+      "name": "Tunisia",
+      "phone": "+216",
+      "countryCode": "TN"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddf7",
+      "name": "Turkey",
+      "phone": "+90",
+      "countryCode": "TR"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddf2",
+      "name": "Turkmenistan",
+      "phone": "+993",
+      "countryCode": "TM"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\udde8",
+      "name": "Turks and Caicos Islands",
+      "phone": "+1649",
+      "countryCode": "TC"
+    },
+    {
+      "emoji": "\ud83c\uddf9\ud83c\uddfb",
+      "name": "Tuvalu",
+      "phone": "+688",
+      "countryCode": "TV"
+    },
+    {
+      "emoji": "\ud83c\uddfa\ud83c\uddf2",
+      "name": "U.S. Minor Outlying Islands",
+      "phone": "+1",
+      "countryCode": "UM"
+    },
+    {
+      "emoji": "\ud83c\uddfb\ud83c\uddee",
+      "name": "U.S. Virgin Islands",
+      "phone": "+1340",
+      "countryCode": "VI"
+    },
+    {
+      "emoji": "\ud83c\uddfa\ud83c\uddec",
+      "name": "Uganda",
+      "phone": "+256",
+      "countryCode": "UG"
+    },
+    {
+      "emoji": "\ud83c\uddfa\ud83c\udde6",
+      "name": "Ukraine",
+      "phone": "+380",
+      "countryCode": "UA"
+    },
+    {
+      "emoji": "\ud83c\uddec\ud83c\udde7",
+      "name": "United Kingdom",
+      "phone": "+44",
+      "countryCode": "GB"
+    },
+    {
+      "emoji": "\ud83c\uddfa\ud83c\uddf8",
+      "name": "United States",
+      "phone": "+1",
+      "countryCode": "US"
+    },
+    {
+      "emoji": "\ud83c\uddfa\ud83c\uddfe",
+      "name": "Uruguay",
+      "phone": "+598",
+      "countryCode": "UY"
+    },
+    {
+      "emoji": "\ud83c\uddfa\ud83c\uddff",
+      "name": "Uzbekistan",
+      "phone": "+998",
+      "countryCode": "UZ"
+    },
+    {
+      "emoji": "\ud83c\uddfb\ud83c\uddfa",
+      "name": "Vanuatu",
+      "phone": "+678",
+      "countryCode": "VU"
+    },
+    {
+      "emoji": "\ud83c\uddfb\ud83c\udde6",
+      "name": "Vatican City",
+      "phone": "+379",
+      "countryCode": "VA"
+    },
+    {
+      "emoji": "\ud83c\uddfb\ud83c\uddea",
+      "name": "Venezuela",
+      "phone": "+58",
+      "countryCode": "VE"
+    },
+    {
+      "emoji": "\ud83c\uddfb\ud83c\uddf3",
+      "name": "Vietnam",
+      "phone": "+84",
+      "countryCode": "VN"
+    },
+    {
+      "emoji": "\ud83c\uddfc\ud83c\uddeb",
+      "name": "Wallis and Futuna",
+      "phone": "+681",
+      "countryCode": "WF"
+    },
+    {
+      "emoji": "\ud83c\uddea\ud83c\udded",
+      "name": "Western Sahara",
+      "phone": "+212",
+      "countryCode": "EH"
+    },
+    {
+      "emoji": "\ud83c\uddfe\ud83c\uddea",
+      "name": "Yemen",
+      "phone": "+967",
+      "countryCode": "YE"
+    },
+    {
+      "emoji": "\ud83c\uddff\ud83c\uddf2",
+      "name": "Zambia",
+      "phone": "+260",
+      "countryCode": "ZM"
+    },
+    {
+      "emoji": "\ud83c\uddff\ud83c\uddfc",
+      "name": "Zimbabwe",
+      "phone": "+263",
+      "countryCode": "ZW"
+    }
+  ]
+}

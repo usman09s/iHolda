@@ -1,4 +1,4 @@
-import { Image, View } from 'react-native';
+import { Image, View, ToastAndroid } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp } from '@react-navigation/native';
 import { useAppNavigation } from 'hooks/useAppNavigation';
@@ -10,13 +10,43 @@ import FeedItemIndex from '../components/FeedItemIndex';
 
 import FeedItemActionBar from './FeedItemActionBar';
 import FeedItemDetailsBar from './FeedItemDetailsBar';
+import { useMutation } from 'react-query';
+import Api from 'services/Api';
+import Commentsui from './CommentsUi';
 
-const FeedItem = ({ image }: { image: string }) => {
+interface Props {
+  image: string;
+  username1?: string;
+  username2?: string;
+  userpic1?: string;
+  userpic2?: string;
+  caption: string;
+  subText: string;
+  id: string;
+  likes: number;
+  comments: number;
+}
+
+const FeedItem = ({
+  image,
+  username1,
+  username2,
+  userpic1,
+  userpic2,
+  caption,
+  subText,
+  id,
+  likes,
+  comments,
+}: Props) => {
   const { top } = useSafeAreaInsets();
+  const { mutate, isLoading } = useMutation(Api.sharePost);
+
   const {} = useAppNavigation<NavigationProp<AuthStackParamList>>();
 
   return (
     <View>
+      {/* <Commentsui visible setVisible={() => null} text='' /> */}
       <View
         className="absolute z-40 flex-row space-x-2 self-center items-center"
         style={{ paddingTop: top + 160 }}>
@@ -39,20 +69,35 @@ const FeedItem = ({ image }: { image: string }) => {
       <FeedItemDetailsBar
         userFirst={{
           emotion: '😄',
-          username: '@userFirst',
-          avatar: 'https://i.pravatar.cc/150?img=33',
+          username: username1 || '@userFirst',
+          avatar: userpic1 || 'https://i.pravatar.cc/150?img=33',
         }}
         userSecond={{
           emotion: '😍',
-          username: '@userSecond',
-          avatar: 'https://i.pravatar.cc/150?img=35',
+          username: username2 || '@userSecond',
+          avatar: userpic2 || 'https://i.pravatar.cc/150?img=35',
         }}
-        subText="Today - Buea, Cameroon"
-        caption="Alrionne is such an amazing human being in person. So happy to have shared a moment with her"
+        subText={subText}
+        caption={caption}
       />
       <FeedItemActionBar
+        likes={likes}
+        comments={comments}
         onPressLike={() => null}
-        onPressShare={() => null}
+        onPressShare={() => {
+          mutate(
+            { postId: id },
+            {
+              onSuccess(data) {
+                ToastAndroid.showWithGravity(
+                  'Post shared',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              },
+            },
+          );
+        }}
         onPressComment={() => null}
         onPressBookmark={() => null}
       />

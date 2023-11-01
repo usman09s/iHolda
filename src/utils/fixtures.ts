@@ -28,9 +28,10 @@ export const WelcomeComments = [
 //   emoji: '\ud83c\udde8\ud83c\uddf2',
 // };
 export const INITIAL_SELECTED_COUNTRY = {
-  phone: '+90',
+  phone: '+237',
   name: 'Cameroon',
   emoji: '\ud83c\udde8\ud83c\uddf2',
+  countryCode: 'CM',
 };
 export const CashAndPointsFixture = [
   {

@@ -36,9 +36,9 @@ export const addedPlasticTotalPriceSelector = createSelector(
     let price = 0;
 
     addedPlastics.forEach(plastic => {
-      price += plastic.price;
+      console.log(plastic);
+      price += plastic.perUnitPrice * plastic.quantity;
     });
-
     return price;
   },
 );

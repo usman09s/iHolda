@@ -4,6 +4,7 @@ import agentPlasticSlice from './agentPlastic/agentPlasticSlice';
 import userSlice from './auth/userSlice';
 import momentsSlice from './moments/momentsSlice';
 import plasticSlice from './plastic/plasticSlice';
+import userPlasticSlice from './plastic/userPlasticSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     moments: momentsSlice,
     plastic: plasticSlice,
     agentPlastic: agentPlasticSlice,
+    userPlastic: userPlasticSlice,
   },
 });
 

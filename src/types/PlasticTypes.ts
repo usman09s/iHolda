@@ -16,6 +16,8 @@ export type DropOffLocationItemType = {
   id: number;
   location: Location;
   location_name: string;
+  days: [];
+  isAvailable: boolean;
   opening_hour: string;
   state: string; // 'Close' | 'Open now'
   total_delivered_plastics: number;

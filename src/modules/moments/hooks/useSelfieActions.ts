@@ -13,7 +13,7 @@ import { useHardwarePermission } from './useHardwarePermission';
 export const useSelfieActions = () => {
   const timerRef = useRef(0);
   const dispatch = useAppDispatch();
-  const [videoDuration] = useState(5);
+  const [videoDuration] = useState(10);
   const cameraRef = useRef<Camera>(null);
   const recordedVideoDurationRef = useRef(5);
   const { bottom, top } = useSafeAreaInsets();
@@ -24,7 +24,7 @@ export const useSelfieActions = () => {
 
   const ratio = Platform.select({
     ios: '4:3',
-    android: '2:1',
+    android: '16:9',
   });
 
   const takeShot = async () => {

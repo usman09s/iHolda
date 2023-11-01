@@ -12,6 +12,9 @@ import { getHitSlop, parseApiError } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import OTPInput from '../components/OTPInput';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+import { userSelector } from 'store/auth/userSelectors';
 
 const EnterOptScreen = () => {
   const [otp, setOtp] = useState('');
@@ -19,10 +22,12 @@ const EnterOptScreen = () => {
   const { params } = useRoute<RouteProp<AuthStackParamList, 'EnterOtp'>>();
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
   const { remainingTime, resetTimer } = useTimer({ duration: 30, onTimeout: () => null });
+  const userInfo = useSelector((state: RootState) => state.user);
 
   const { error, isLoading, mutate } = useMutation(Api.resetPinCodeConfirm, {
     onSuccess: result => {
-      if (result.status === 200) {
+      console.log(result, 'mmmmmm');
+      if (result.message === 'OTP verified successfully') {
         navigate('ResetPin', { phone: params.phone });
       }
     },
@@ -31,6 +36,7 @@ const EnterOptScreen = () => {
   const enterOtpMutationErrorMessage = parseApiError(error as { message: string });
 
   const onPressContinue = () => {
+    console.log(otp);
     mutate({
       code: otp,
       phoneNumber: params?.phone,
@@ -65,16 +71,17 @@ const EnterOptScreen = () => {
         </Pressable>
         {__DEV__ && (
           <Text className={text({ type: 'm13', class: 'text-white text-center mb-2' })}>
-            {Api._otp} is showed for only dev mode
+            {params?.otp} is showed for only dev mode
           </Text>
         )}
         <Button
           title="Continue"
           type="borderedSolid"
+          extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
           isLoading={isLoading}
           onPress={onPressContinue}
-          disabled={isLoading || otp.length !== 4}
-          customContainer={`self-center ${otp.length !== 4 && ' opacity-40'} `}
+          disabled={isLoading || otp.length !== 6}
+          customContainer={`self-center ${otp.length !== 6 && ' opacity-40'} `}
         />
       </KeyboardAvoidingView>
       <ErrorModal errorText={enterOtpMutationErrorMessage} />

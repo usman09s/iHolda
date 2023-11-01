@@ -19,7 +19,7 @@ export const userImageSelector = (state: UserRootState) => state.user.user?.phot
 
 export const usernameSelector = (state: UserRootState) => state.user.user?.userName;
 
-export const profileImageSelector = createSelector(userSelector, user => user.userImage);
+export const profileImageSelector = createSelector(userSelector, user => user.user?.photo);
 
 export const userCommonInformationSelector = createSelector(userSelector, user => ({
   id: user.user?._id,

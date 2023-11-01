@@ -1,3 +1,6 @@
+import { User as LoginUser } from './AuthTypes';
+import { SelectedQA } from './QuizTypes';
+
 export type MomentType = {
   id: number;
   base64: string;
@@ -5,26 +8,31 @@ export type MomentType = {
   type: 'VIDEO' | 'PHOTO';
 };
 
+// export type PostMomentsResponse = {
+//   id: number;
+//   user_profile_mood: string;
+//   met_with: MetWith;
+//   met_with_mood: string;
+//   caption: string;
+//   meeting_count: number;
+//   _at: At;
+//   location_name: string;
+//   moments: [];
+//   views: number;
+//   viewed_by: [];
+//   has_viewed: boolean;
+//   likes: number;
+//   liked_by: [];
+//   forwards: number;
+//   forwarded_by: [];
+//   is_private: boolean;
+//   created_time_ago: string;
+//   total_moments: number;
+// };
+
 export type PostMomentsResponse = {
-  id: number;
-  user_profile_mood: string;
-  met_with: MetWith;
-  met_with_mood: string;
-  caption: string;
-  meeting_count: number;
-  _at: At;
-  location_name: string;
-  moments: [];
-  views: number;
-  viewed_by: [];
-  has_viewed: boolean;
-  likes: number;
-  liked_by: [];
-  forwards: number;
-  forwarded_by: [];
-  is_private: boolean;
-  created_time_ago: string;
-  total_moments: number;
+  data: { metBefore: boolean; user: LoginUser };
+  message: string;
 };
 
 export type MetWith = {
@@ -101,7 +109,7 @@ export type Address = {
 
 export type MatchedUserType = {
   id: number;
-  user: User;
+  user: LoginUser;
   location_name: string;
   user_profile_image: UserProfileImage;
 };
@@ -130,3 +138,9 @@ export type MomentsUser = {
   query_id: string;
   username: string;
 };
+
+export type MomentsMoodParams = { matchedUser: MatchedUserType; selectedQA?: SelectedQA[] };
+
+export type PostTypes = 'Video' | 'Audio' | 'Photo' | 'Text';
+
+export type PostScreenParams = { postType: PostTypes; text: string };

@@ -7,7 +7,7 @@ import { useAppNavigation } from 'hooks/useAppNavigation';
 import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { userPhoneSelector } from 'store/auth/userSelectors';
+import { userPhoneSelector, userSelector } from 'store/auth/userSelectors';
 import { useTimer } from 'store/auth/useTimer';
 import { text } from 'theme/text';
 import { VerifyOTPMessage } from 'types/AuthTypes';
@@ -69,6 +69,7 @@ const ConfirmOtpScreen = () => {
         <Button
           title="Continue"
           type="borderedSolid"
+          extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
           isLoading={isLoading}
           onPress={onPressContinue}
           disabled={isLoading || otp.length !== 6}

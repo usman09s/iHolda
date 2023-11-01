@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, Pressable, Text, View } from 'react-native';
+import {  Modal, Pressable, Text, View } from 'react-native';
 import Animated, { SlideInDown } from 'react-native-reanimated';
 import Button from 'components/Button';
 import Icons from 'components/Icons';
@@ -7,12 +7,25 @@ import { text } from 'theme/text';
 
 type Props = {
   errorText?: string;
+  showCutButton?: boolean;
+  btnTxt?: string;
+  onBtnPress?: () => void;
+  onBackBtnPress?: () => void;
 };
 
-const ErrorModal = ({ errorText }: Props) => {
+const ErrorModal = ({
+  errorText,
+  btnTxt = 'ok',
+  onBtnPress,
+  onBackBtnPress,
+  showCutButton = true,
+}: Props) => {
   const [visible, setVisible] = useState(!!errorText);
 
-  const onClose = () => setVisible(false);
+  const onClose = () => {
+    if (onBackBtnPress) onBackBtnPress();
+    setVisible(false);
+  };
 
   useEffect(() => {
     if (!!errorText) {
@@ -26,12 +39,18 @@ const ErrorModal = ({ errorText }: Props) => {
         <Animated.View
           className="justify-center items-center p-4 bg-white rounded-xl py-8 w-full"
           entering={SlideInDown}>
-          <Pressable onPress={onClose} className="self-end">
-            <Icons.CrossIcon />
-          </Pressable>
+          {showCutButton && (
+            <Pressable onPress={onClose} className="self-end">
+              <Icons.CrossIcon />
+            </Pressable>
+          )}
           <Icons.WarningIcon />
           <Text className={text({ type: 'r20', class: 'mt-4 mb-7' })}>{errorText}</Text>
-          <Button title="OK" customContainer="px-6" onPress={onClose} />
+          <Button
+            title={btnTxt.toUpperCase()}
+            customContainer="px-6"
+            onPress={onBtnPress ?? onClose}
+          />
         </Animated.View>
       </View>
     </Modal>
