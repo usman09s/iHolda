@@ -19,6 +19,7 @@ const AgentPlasticConfirmationScreen = () => {
   const {
     username,
     plastics,
+    params,
     // isLoading,
     errorMessage,
     buttonLoading,
@@ -43,7 +44,7 @@ const AgentPlasticConfirmationScreen = () => {
 
   return (
     <View className="px-7 bg-white flex-1">
-      <Header title={username ? username : 'bayuga'} showBackIcon />
+      <Header title={params.user ? params.user.userName : 'bayuga'} showBackIcon />
       {/* {isLoading && <ActivityIndicator color={colors.saffron} size={'large'} className="mt-4" />} */}
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingVertical: 32 }}

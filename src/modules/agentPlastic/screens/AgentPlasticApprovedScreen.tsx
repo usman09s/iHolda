@@ -15,6 +15,7 @@ import { AgentPlasticStackParamList } from '../AgentPlasticNavigator';
 
 const AgentPlasticApprovedScreen = () => {
   const { params } = useRoute<RouteProp<AgentPlasticStackParamList, 'AgentPlasticApproved'>>();
+  console.log(params, 'params');
   const { dispatch, goBack, navigate } =
     useNavigation<NavigationProp<AgentPlasticStackParamList>>();
 
@@ -25,7 +26,7 @@ const AgentPlasticApprovedScreen = () => {
         <View className="items-center">
           <Text
             className={text({ type: 'l16', class: 'text-center mb-12' })}
-            style={{ paddingHorizontal: 20 }}>
+            style={{ marginHorizontal: 25 }}>
             You approved {params.totalPlastic} Plastic drop off for @
             {params.username ? params.username : 'bayuga'}
           </Text>
