@@ -18,10 +18,13 @@ const PlasticItem = ({ image, count = 0, onPressDecrease, onPressIncrease, id }:
         <Image
           resizeMode="contain"
           className="self-center"
-          source={{
-            uri: image,
+          source={image}
+          style={{
             width: units.vw * 20,
-            height: units.vh * 22,
+            height: units.vh * 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 15,
           }}
         />
       </View>

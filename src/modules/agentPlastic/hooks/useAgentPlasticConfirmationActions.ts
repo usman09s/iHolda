@@ -27,8 +27,7 @@ export const useAgentPlasticConfirmationActions = () => {
   const addedPlasticTotalPrice = useSelector(addedPlasticTotalPriceSelector);
   const agentPlasticCountTotal = useSelector(agentPlasticCountTotalSelector);
   const { plasticId, queryId, username } = useSelector(plasticsOwnerInformationSelector);
-
-  const { mutate, isLoading } = useMutation(Api.decodeQrCode);
+  // const { mutate, isLoading } = useMutation(Api.decodeQrCode);
   const updatePlasticsSizes = useMutation(Api.updatePlasticsSizes);
   const approvedPlasticDelivery = useMutation(Api.approvedPlasticDelivery);
 
@@ -39,26 +38,19 @@ export const useAgentPlasticConfirmationActions = () => {
     if (!plasticId || !queryId) {
       return;
     }
+    const transformedPlastics = plastics.map(item => ({
+      size: item.size,
+      quantity: item.quantity,
+    }));
 
     if (isChangedPlastic) {
-      await updatePlasticsSizes.mutateAsync({
-        plasticId,
-        sizes: plastics.map(plastic => ({
-          quantity: plastic.quantity,
-          size: plastic.size,
-        })),
-      });
-
       return await approvedPlasticDelivery.mutateAsync(
-        { queryId, plasticId },
+        { plasticId, queryId, plastics: transformedPlastics },
         {
           onSuccess: () => {
-            if (!username) {
-              return;
-            }
             navigate('AgentPlasticApproved', {
               totalPlastic: agentPlasticCountTotal,
-              username,
+              username: 'Something',
             });
           },
         },
@@ -66,15 +58,12 @@ export const useAgentPlasticConfirmationActions = () => {
     }
 
     await approvedPlasticDelivery.mutateAsync(
-      { queryId, plasticId },
+      { plasticId, queryId },
       {
         onSuccess: () => {
-          if (!username) {
-            return;
-          }
           navigate('AgentPlasticApproved', {
             totalPlastic: agentPlasticCountTotal,
-            username,
+            username: 'Something',
           });
         },
       },
@@ -83,17 +72,17 @@ export const useAgentPlasticConfirmationActions = () => {
 
   useEffect(() => {
     if (params) {
-      mutate(params, {
-        onSuccess: result => {
-          dispatch(setScannedPlastic(result));
-        },
-      });
+      // mutate(params, {
+      //   onSuccess: result => {
+      //     dispatch(setScannedPlastic(result));
+      //   },
+      // });
     }
   }, [params]);
 
-  const onPressDecrease = (size: string | number) => dispatch(decreasePlasticCount(Number(size)));
+  const onPressDecrease = (size: string | number) => dispatch(decreasePlasticCount(size));
 
-  const onPressIncrease = (size: string | number) => dispatch(increasePlasticCount(Number(size)));
+  const onPressIncrease = (size: string | number) => dispatch(increasePlasticCount(size));
 
   const buttonLoading = updatePlasticsSizes.isLoading || approvedPlasticDelivery.isLoading;
 
@@ -103,7 +92,7 @@ export const useAgentPlasticConfirmationActions = () => {
   return {
     plastics,
     username,
-    isLoading,
+    // isLoading,
     errorMessage,
     buttonLoading,
     onPressConfirm,

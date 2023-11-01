@@ -14,12 +14,14 @@ export type AgentPlasticState = {
   upcomingDropOffs: unknown[];
   scannedPlastics?: ScannedPlasticItemType;
   plasticSizes: { size: number | string; quantity: number; price: number; image: string }[];
+  userPlasticAgent: any;
 };
 
 const initialState: AgentPlasticState = {
   plasticSizes: [],
   plasticId: undefined,
   upcomingDropOffs: [],
+  userPlasticAgent: null,
 };
 
 export const agentPlasticSlice = createSlice({
@@ -52,8 +54,15 @@ export const agentPlasticSlice = createSlice({
       upcomingDropOffs: action.payload,
     }),
 
+    setUserPlasticAgent: (state, action: PayloadAction<any>) => ({
+      ...state,
+      userPlasticAgent: action.payload,
+      upcomingDropOffs: action.payload.dropofflocation,
+      plasticSizes: action.payload.plastics,
+    }),
+
     setScannedPlastic: (state, action: PayloadAction<DecodePlasticsQrResponseType>) => {
-      const sizes = action.payload.sizes.map(item => ({
+      const sizes = action.payload.plastics.map(item => ({
         size: Number(item.size),
         image: item.image,
         quantity: item.quantity,
@@ -63,11 +72,11 @@ export const agentPlasticSlice = createSlice({
       return {
         ...state,
         plasticSizes: sizes,
-        queryId: action.payload.query_id,
-        plasticId: action.payload.plastic_id,
-        plasticOwner: action.payload.user_name,
+        queryId: action.payload._id,
+        plasticId: action.payload.plasticAgent,
+        plasticOwner: action.payload.userName,
         scannedPlastics: {
-          plasticId: action.payload.plastic_id,
+          plasticId: action.payload._id,
           sizes,
         },
       };
@@ -81,6 +90,7 @@ export const {
   setScannedPlastic,
   increasePlasticCount,
   decreasePlasticCount,
+  setUserPlasticAgent,
 } = agentPlasticSlice.actions;
 
 export default agentPlasticSlice.reducer;

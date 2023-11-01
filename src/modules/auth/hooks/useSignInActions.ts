@@ -72,7 +72,6 @@ export const useSignInActions = () => {
       },
       {
         onSuccess: result => {
-          console.log(pin);
           SecureStore.setItemAsync(
             'tokensAndQueryId',
             JSON.stringify({
@@ -131,9 +130,10 @@ export const useSignInActions = () => {
     sendCodeMutation.mutate(
       { phoneNumber: params.phone },
       {
-        onSuccess: () => {
+        onSuccess: result => {
           setShowConfirmationModal(false);
-          navigate('EnterOtp', { phone: params.phone });
+          console.log(result.data.otp, 'lklklklkk');
+          navigate('EnterOtp', { phone: params.phone, otp: result.data.otp });
         },
       },
     );

@@ -2,12 +2,12 @@ import { Image, ScrollView, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Button from 'components/Button';
 import { useSelector } from 'react-redux';
-import { userImageSelector } from 'store/auth/userSelectors';
+import { profileImageSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 
 const ReferralCodeSuccessfulScreen = () => {
   const { navigate } = useNavigation();
-  const userImage = useSelector(userImageSelector);
+  const userImage = useSelector(profileImageSelector);
 
   return (
     <View className="flex-1 bg-blue justify-evenly px-7">
@@ -54,6 +54,7 @@ const ReferralCodeSuccessfulScreen = () => {
             title="Close"
             customContainer="self-center"
             type="borderedSolid"
+            extraStyles={{ borderWidth: 5, borderColor: 'white', width: 180 }}
             onPress={() => navigate('PlasticStack')}
           />
         </View>

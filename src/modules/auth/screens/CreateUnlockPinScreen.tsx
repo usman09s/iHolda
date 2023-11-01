@@ -16,6 +16,8 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { setTokensAndQueryId } from 'store/auth/userSlice';
+import { setQrCode } from 'store/plastic/userPlasticSlice';
+import CustomErrorModal from 'components/ErrorModal/errorModal';
 
 const CreateUnlockPinScreen = () => {
   LayoutAnimation.linear();
@@ -23,6 +25,8 @@ const CreateUnlockPinScreen = () => {
   const { navigate } = useNavigation<NavigationProp<AuthStackParamList>>();
   const [pin, setPin] = useState('');
   const [rePin, setRePin] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorText, setErrorText] = useState();
   const { mutate, isLoading, error } = useMutation(Api.authRegister);
   const disabledButton = !pin || !rePin || pin !== rePin;
   const userInfo = useSelector(userSelector);
@@ -40,9 +44,18 @@ const CreateUnlockPinScreen = () => {
       {
         onSuccess: result => {
           if (result.message === 'Register successful') {
+            dispatch(setQrCode(result.data.user.userQrCode));
+            console.log(result.data.userQrCode, 'dwhceonewoncoi');
             dispatch(setTokensAndQueryId({ accessToken: result.data.accessToken }));
             navigate('EnterReferralCode');
           }
+        },
+        onError: data => {
+          console.log(data, 'chehiohe');
+          const errorMessageObject = JSON.parse(data.message);
+          const errorMessage = errorMessageObject.message;
+          setErrorText(errorMessage);
+          setModalVisible(true);
         },
       },
     );
@@ -85,7 +98,13 @@ const CreateUnlockPinScreen = () => {
           customContainer={disabledButton ? 'opacity-50 mb-4' : 'mb-4'}
         />
       </KeyboardAvoidingView>
-      <ErrorModal errorText={parseApiError(error)} />
+      <CustomErrorModal
+        errorText={errorText}
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        buttonTitle="CLOSE"
+      />
+      {/* <ErrorModal errorText={parseApiError(error)} /> */}
     </View>
   );
 };

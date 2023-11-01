@@ -14,8 +14,11 @@ const AgentCollectionsScreen = () => {
   const agentUser = useQuery('agentUser', Api.checkUserIsAgent);
   const { navigate } = useNavigation<NavigationProp<AgentPlasticStackParamList>>();
   const locationId = agentUser.data?.dropoff_locations?.[0]?.id;
+  // const getPlasticsFuture = useQuery(['getPlasticsFuture', locationId], () =>
+  //   Api.getPlasticsFuture({ locationId }),
+  // );
   const getPlasticsFuture = useQuery(['getPlasticsFuture', locationId], () =>
-    Api.getPlasticsFuture({ locationId }),
+    Api.getPlasticsFuture(),
   );
 
   return (
@@ -30,7 +33,7 @@ const AgentCollectionsScreen = () => {
             <ActivityIndicator color={colors.saffron} />
           ) : (
             <Text className={text({ type: 'b26', class: 'text-center' })}>
-              {agentUser.data?.totalDelivery || 0}
+              {agentUser.data.totalCount || 0}
             </Text>
           )}
         </View>
@@ -40,7 +43,7 @@ const AgentCollectionsScreen = () => {
             <ActivityIndicator color={colors.saffron} />
           ) : (
             <Text className={text({ type: 'b26', class: 'text-center' })}>
-              {agentUser.data?.todayDelivery || 0}
+              {agentUser.data.todayCount || 0}
             </Text>
           )}
         </View>
@@ -52,13 +55,13 @@ const AgentCollectionsScreen = () => {
         className="flex-1"
         initialNumToRender={10}
         maxToRenderPerBatch={5}
-        data={getPlasticsFuture.data}
+        data={getPlasticsFuture?.data?.data}
         renderItem={({ item }) => (
           <UpcomingDropOffItem
             key={item.id}
-            name={item.user.username}
-            totalPlasticCount={2}
-            avatar={item.user.user_profile.user_profile_image.image}
+            name={item.user.username ? item.user.username : 'bayuga'}
+            totalPlasticCount={item.totalAmount}
+            // avatar={item.user.user_profile.user_profile_image.image}
           />
         )}
       />

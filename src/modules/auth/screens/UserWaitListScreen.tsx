@@ -7,27 +7,39 @@ import Icons from 'components/Icons';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { userImageSelector, usernameSelector } from 'store/auth/userSelectors';
+import { profileImageSelector, usernameSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
+import { horizontalScale, verticalScale, moderateScale } from '../../../utils/helpers';
 
 const UserWaitListScreen = () => {
   const { goBack, dispatch } = useNavigation();
   const username = useSelector(usernameSelector);
-  const userImage = useSelector(userImageSelector);
+  const userImage = useSelector(profileImageSelector);
   // const { data } = useQuery('waitingList', Api.getWaitingList);
 
   const copyToClipboard = async (value: string) => await Clipboard.setStringAsync(value);
 
   return (
-    <View className="pt-10 bg-petrol flex-1 px-7 ">
-      <ScrollView className="flex-1" contentContainerStyle={{ flex: 1 }}>
+    <View className="pt-10 bg-petrol flex-1 px-7">
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex-1 justify-evenly">
-          <View>
+          <View style={{ marginTop: verticalScale(80), marginBottom: verticalScale(30) }}>
             <Image
               source={{ uri: userImage }}
-              className="w-28 h-28 rounded-full border-4 border-jupiter self-center"
+              className="w-28 h-28 rounded-full self-center"
+              style={{ borderWidth: 4, borderColor: 'white', marginBottom: verticalScale(30) }}
             />
-            <View className="border-b1 border-white-o-60 rounded-full flex-row py-4 justify-between px-7 mt-6">
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingVertical: verticalScale(14),
+                borderColor: 'white',
+                borderRadius: 40,
+                marginHorizontal: horizontalScale(30),
+                borderWidth: 2,
+                justifyContent: 'space-between',
+                paddingHorizontal: horizontalScale(18),
+              }}>
               <Text className={text({ type: 'r12', class: 'text-white-o-60' })}>Your username</Text>
               <TouchableOpacity
                 className="flex-row"
@@ -39,22 +51,30 @@ const UserWaitListScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
-          <View className="self-center">
-            <Text className={text({ type: 'm24', class: 'text-white text-center' })}>
+          <View className="self-center" style={{ paddingTop: verticalScale(50) }}>
+            <Text
+              className={text({ class: 'text-white text-center' })}
+              style={{ fontSize: moderateScale(26), fontWeight: '500' }}>
               You are currently Number
             </Text>
             <View className="border-b1 self-center px-6 py-2 rounded-2xl my-5 border-coolGreen">
               {/* {data?.id ? ( */}
-              <Text className={text({ class: 'text-white text-center', type: 'm48' })}>18</Text>
+              <Text
+                className={text({ class: 'text-white text-center' })}
+                style={{ fontSize: moderateScale(48), fontWeight: '500' }}>
+                18
+              </Text>
               {/* ) : (
                 <ActivityIndicator />
               )} */}
             </View>
-            <Text className={text({ type: 'm24', class: 'text-white text-center' })}>
+            <Text
+              className={text({ class: 'text-white text-center' })}
+              style={{ fontSize: moderateScale(22), fontWeight: '500' }}>
               on the waiting list
             </Text>
           </View>
-          <View>
+          <View style={{ marginTop: verticalScale(30), paddingTop: verticalScale(30) }}>
             <Text className={text({ class: 'text-white mb-8 text-center', type: 'm13' })}>
               If you don’t have a referral code, you can wait for full launch or request a referral
               code from an iHolda user.
@@ -63,14 +83,20 @@ const UserWaitListScreen = () => {
               <Button
                 onPress={goBack}
                 title="Enter code"
-                type="borderedSolid"
                 customContainer="self-center"
+                extraStyles={{
+                  borderWidth: 5,
+                  borderColor: 'white',
+                  width: '50%',
+                }}
+                extraTextStyles={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}
               />
               <Button
                 title="Exit"
-                type="borderedSolid"
                 customContainer="self-center"
                 onPress={() => dispatch(StackActions.popToTop())}
+                extraStyles={{ borderWidth: 5, borderColor: 'white', width: '40%' }}
+                extraTextStyles={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}
               />
             </View>
           </View>

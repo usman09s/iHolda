@@ -28,6 +28,7 @@ import { parseApiError, units } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import { useAnimatedComponentStyle } from '../hooks/useAnimatedComponentStyle';
+import Header from 'components/Header/Header';
 
 const UserAvatarAndUsernameUpdate = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,7 @@ const UserAvatarAndUsernameUpdate = () => {
   const uploadImage = useMutation(Api.uploadImage, {});
   const updateUsername = useMutation(Api.updateUsername, {});
   const isVisibleKeyboard = useKeyboardVisible();
+  console.log(pickedImage);
   const { Spacing, customSizeAnimatedStyle } = useAnimatedComponentStyle({
     customSize: 176,
   });
@@ -49,11 +51,19 @@ const UserAvatarAndUsernameUpdate = () => {
     [uploadImage.error, updateUsername.error],
   );
 
+  const onUsernameChange = newUsername => {
+    if (!newUsername.startsWith('@')) {
+      setUsername(`@${newUsername}`);
+    } else {
+      setUsername(newUsername);
+    }
+  };
+
   const onContinue = async () => {
-    if (!pickedImage?.base64) return;
+    const cleanedUsername = username.replace('@', '');
     dispatch(
       setUserImageAndUsername({
-        username,
+        username: cleanedUsername,
         image: pickedImage?.base64,
       }),
     );
@@ -73,13 +83,16 @@ const UserAvatarAndUsernameUpdate = () => {
     //   .catch(() => null);
   };
 
-  const isContinueButtonDisabled = !username || !pickedImage?.base64;
+  const isContinueButtonDisabled = !username || /\s/.test(username) || !pickedImage?.base64;
   LayoutAnimation.easeInEaseOut();
 
   return (
     <View
       className="flex-1 bg-blue justify-center px-7"
       style={{ justifyContent: isVisibleKeyboard ? 'flex-end' : 'center' }}>
+      <View style={{ bottom: 60 }}>
+        <Header showBackIcon backIconColor="white" />
+      </View>
       <KeyboardAvoidingView
         behavior={Platform.select({
           ios: 'position',
@@ -128,8 +141,9 @@ const UserAvatarAndUsernameUpdate = () => {
               Username
             </Text>
             <Input
-              onChangeText={setUsername}
-              placeholder="like @bayuga"
+              onChangeText={onUsernameChange}
+              value={username}
+              placeholder="e.g bayuga"
               customInputClass="text-20"
               placeholderTextColor={colors['white-o-60']}
             />
@@ -139,6 +153,7 @@ const UserAvatarAndUsernameUpdate = () => {
             title="Continue"
             onPress={onContinue}
             type="borderedSolid"
+            extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
             disabled={isContinueButtonDisabled}
             isLoading={updateUsername.isLoading || uploadImage.isLoading}
             customContainer={`self-center mt-4 ${isContinueButtonDisabled && 'opacity-50'}`}

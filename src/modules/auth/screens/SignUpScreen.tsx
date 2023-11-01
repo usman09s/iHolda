@@ -84,6 +84,7 @@ const SignUpScreen = () => {
         <Button
           title="Continue"
           type="borderedSolid"
+          extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
           isLoading={isLoading}
           onPress={() => setShowPhoneConfirmationModal(true)}
           disabled={isLoading || !phoneNumber || phoneNumber.length < 4}

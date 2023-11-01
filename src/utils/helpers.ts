@@ -171,3 +171,51 @@ export const getMonthAndYear = (dateString: string) => {
 
   return `${month} ${year}`;
 };
+
+const daysMap = {
+  mon: 'Monday',
+  tue: 'Tuesday',
+  wed: 'Wednesday',
+  thu: 'Thursday',
+  fri: 'Friday',
+  sat: 'Saturday',
+  sun: 'Sunday',
+};
+
+export const formatDays = days => {
+  const daysInOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  const sortedDays = days.slice().sort((a, b) => daysInOrder.indexOf(a) - daysInOrder.indexOf(b));
+
+  if (areDaysConsecutive(sortedDays, daysInOrder)) {
+    return `${capitalizeFirstLetter(sortedDays[0])}-${daysMap[sortedDays[sortedDays.length - 1]]}`;
+  }
+
+  return sortedDays
+    .map((day, index) => {
+      const isLast = index === sortedDays.length - 1;
+      const dayLabel = capitalizeFirstLetter(day);
+      return isLast ? dayLabel : dayLabel + ', ';
+    })
+    .join('');
+};
+
+const areDaysConsecutive = (days, daysInOrder) => {
+  for (let i = 0; i < days.length - 1; i++) {
+    if (daysInOrder.indexOf(days[i + 1]) - daysInOrder.indexOf(days[i]) !== 1) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const capitalizeFirstLetter = day => {
+  return day.charAt(0).toUpperCase() + day.slice(1);
+};
+
+const guidelineBaseWidth = 375;
+const guidelineBaseHeight = 812;
+
+export const horizontalScale = (size: any) => (width / guidelineBaseWidth) * size;
+export const verticalScale = (size: any) => (height / guidelineBaseHeight) * size;
+export const moderateScale = (size: any, factor = 0.5) =>
+  size + (horizontalScale(size) - size) * factor;
