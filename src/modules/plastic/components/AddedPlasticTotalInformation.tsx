@@ -21,7 +21,10 @@ const AddedPlasticTotalInformation = ({ totalPlastic, totalPrice }: Props) => (
         <Text className={text({ type: 'l13', class: 'text-center' })}>Reward</Text>
       </View>
       <View className="basis-1/2 py-3">
-        <Text className={text({ type: 'b16', class: 'text-center' })}> ={totalPrice}Cfa</Text>
+        <Text className={text({ type: 'b16', class: 'text-center' })} style={{ marginTop: -2.5 }}>
+          {' '}
+          ={totalPrice}Cfa
+        </Text>
       </View>
     </View>
   </View>
