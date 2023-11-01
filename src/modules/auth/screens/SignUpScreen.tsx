@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import Button from 'components/Button';
@@ -44,6 +44,12 @@ const SignUpScreen = () => {
     },
   });
 
+  useEffect(() => {
+    if (selectedCountry !== INITIAL_SELECTED_COUNTRY) {
+      setPhoneNumber('');
+    }
+  }, [selectedCountry]);
+
   const onPressContinue = () => {
     if (phoneNumber.length < 4) {
       return;
@@ -66,31 +72,25 @@ const SignUpScreen = () => {
 
   return (
     <View className="pt-10 bg-blue flex-1 px-7 justify-center">
-      <KeyboardAvoidingView
-        behavior={Platform.select({
-          android: undefined,
-          ios: 'position',
-        })}>
-        <Text className={text({ type: 'b44', class: 'text-white mb-16' })}>
-          Enter your{'\n'}Phone Number
-        </Text>
-        <PhoneInput
-          value={phoneNumber}
-          editable={!isLoading}
-          onChangeText={setPhoneNumber}
-          selectedCountry={selectedCountry}
-          onPressCountryCode={() => setShowCountriesModal(true)}
-        />
-        <Button
-          title="Continue"
-          type="borderedSolid"
-          extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
-          isLoading={isLoading}
-          onPress={() => setShowPhoneConfirmationModal(true)}
-          disabled={isLoading || !phoneNumber || phoneNumber.length < 4}
-          customContainer={`self-center mt-20 ${phoneNumber.length < 4 && ' opacity-40'} `}
-        />
-      </KeyboardAvoidingView>
+      <Text className={text({ type: 'b44', class: 'text-white mb-16' })}>
+        Enter your{'\n'}Phone Number
+      </Text>
+      <PhoneInput
+        value={phoneNumber}
+        editable={!isLoading}
+        onChangeText={setPhoneNumber}
+        selectedCountry={selectedCountry}
+        onPressCountryCode={() => setShowCountriesModal(true)}
+      />
+      <Button
+        title="Continue"
+        type="borderedSolid"
+        extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
+        isLoading={isLoading}
+        onPress={() => setShowPhoneConfirmationModal(true)}
+        disabled={isLoading || !phoneNumber || phoneNumber.length < 4}
+        customContainer={`self-center mt-20 ${phoneNumber.length < 4 && ' opacity-40'} `}
+      />
       <CountriesModal
         countries={countries}
         visible={showCountriesModal}

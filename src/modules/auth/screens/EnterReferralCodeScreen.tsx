@@ -8,7 +8,7 @@ import { useKeyboardVisible } from 'hooks/useKeyboardVisible';
 import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { profileImageSelector, userImageSelector } from 'store/auth/userSelectors';
+import { profileImageSelector, userImageSelector, userSelector } from 'store/auth/userSelectors';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
 import { parseApiError } from 'utils/helpers';
@@ -23,7 +23,8 @@ const EnterReferralCodeScreen = () => {
   const [referralCode, setReferralCode] = useState('');
   const { navigate } = useNavigation<NavigationProp<AuthStackParamList>>();
   const { mutate, error } = useMutation(Api.setReferralCode);
-  const userImage = useSelector(profileImageSelector);
+  const userImage = useSelector(userSelector);
+  console.log(userImage.userImage, 'wojdcoij');
   const isVisibleKeyboard = useKeyboardVisible();
 
   const onContinue = () => {
@@ -53,7 +54,7 @@ const EnterReferralCodeScreen = () => {
         </Text>
         <View className="flex-row self-center">
           <Image
-            source={{ uri: userImage }}
+            source={{ uri: userImage.userImage }}
             className={
               isVisibleKeyboard
                 ? 'w-20 h-20 rounded-3xl border-4 border-white -rotate-30'

@@ -30,40 +30,40 @@ const SignInScreen = () => {
   } = useSignInActions();
 
   return (
-    <Animated.View className={'flex-1 bg-blue justify-center px-7 pt-10'}>
-      <KeyboardAvoidingView behavior="position">
-        <View>
-          <Animated.Text
-            className={text({ type: 'b44', class: 'text-white' })}
-            style={animatedTextStyle}>
-            Enter your pin
-          </Animated.Text>
-        </View>
-        <Animated.View className="h-20" style={animatedSpaceHeightStyle} />
-        <Input
-          value={pin}
-          maxLength={4}
-          onChangeText={setPin}
-          placeholder="Enter Pin"
-          keyboardType="number-pad"
-          customInputClass="text-white py-5 text-18 text-center"
-        />
-        <Animated.View className="h-20" style={animatedSpaceHeightStyle} />
-        <Button
-          type="solid"
-          title="Login"
-          onPress={onSignIn}
-          isLoading={isLoading}
-          disabled={isLoading || pin.length !== 4}
-        />
-        <Animated.View className="h-20" style={animatedSpaceHeightStyle} />
-        <Button
-          type="ghost"
-          title="forgot pin?"
-          onPress={() => setShowConfirmationModal(true)}
-          customTextClass={text({ type: 'r20', class: 'text-white mb-4' })}
-        />
-      </KeyboardAvoidingView>
+    <Animated.View
+      className={'flex-1 bg-blue justify-center px-7 pt-10'}
+      style={{ paddingTop: 40 }}>
+      <View>
+        <Animated.Text
+          className={text({ type: 'b44', class: 'text-white' })}
+          style={animatedTextStyle}>
+          Enter your pin
+        </Animated.Text>
+      </View>
+      <Animated.View className="h-20" style={animatedSpaceHeightStyle} />
+      <Input
+        value={pin}
+        maxLength={4}
+        onChangeText={setPin}
+        placeholder="Enter Pin"
+        keyboardType="number-pad"
+        customInputClass="text-white py-5 text-18 text-center"
+      />
+      <Animated.View className="h-20" style={animatedSpaceHeightStyle} />
+      <Button
+        type="solid"
+        title="Login"
+        onPress={onSignIn}
+        isLoading={isLoading}
+        disabled={isLoading || pin.length !== 4}
+      />
+      <Animated.View className="h-20" style={animatedSpaceHeightStyle} />
+      <Button
+        type="ghost"
+        title="forgot pin?"
+        onPress={() => setShowConfirmationModal(true)}
+        customTextClass={text({ type: 'r20', class: 'text-white mb-4' })}
+      />
       <ErrorModal errorText={errorMessage} />
       <OtpPhoneConfirmationModal
         phoneNumber={params.phone}

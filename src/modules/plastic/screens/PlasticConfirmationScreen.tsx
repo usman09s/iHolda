@@ -31,7 +31,7 @@ const PlasticConfirmationScreen = () => {
   return (
     <View className="bg-milkWhite px-7 flex-1">
       <Header showBackIcon title="Confirmation" />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1 my-6" showsVerticalScrollIndicator={false}>
         <AddedPlasticInformationLabel />
         {addedPlastics.map(plastic => (
           <AddedPlasticInformationStats key={plastic._id} plastic={plastic} />

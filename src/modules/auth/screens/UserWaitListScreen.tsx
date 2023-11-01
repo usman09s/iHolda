@@ -7,15 +7,14 @@ import Icons from 'components/Icons';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { profileImageSelector, usernameSelector } from 'store/auth/userSelectors';
+import { profileImageSelector, userSelector, usernameSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 import { horizontalScale, verticalScale, moderateScale } from '../../../utils/helpers';
 
 const UserWaitListScreen = () => {
   const { goBack, dispatch } = useNavigation();
   const username = useSelector(usernameSelector);
-  const userImage = useSelector(profileImageSelector);
-  // const { data } = useQuery('waitingList', Api.getWaitingList);
+  const userImage = useSelector(userSelector);
 
   const copyToClipboard = async (value: string) => await Clipboard.setStringAsync(value);
 
@@ -25,7 +24,7 @@ const UserWaitListScreen = () => {
         <View className="flex-1 justify-evenly">
           <View style={{ marginTop: verticalScale(80), marginBottom: verticalScale(30) }}>
             <Image
-              source={{ uri: userImage }}
+              source={{ uri: userImage.userImage }}
               className="w-28 h-28 rounded-full self-center"
               style={{ borderWidth: 4, borderColor: 'white', marginBottom: verticalScale(30) }}
             />

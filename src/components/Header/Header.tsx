@@ -5,6 +5,7 @@ import Icons from 'components/Icons';
 import { useAppNavigation } from 'hooks/useAppNavigation';
 import { text } from 'theme/text';
 import { getHitSlop } from 'utils/helpers';
+import { verticalScale } from '../../utils/helpers';
 
 type Props = {
   title?: string;
@@ -36,9 +37,8 @@ const Header = ({
   return (
     <View
       className="flex-row items-center content-center justify-between"
-      style={{ marginTop: customTopHeight || top + 8, zIndex: 10 }}
-      >
-      <View className="flex-row z-20">
+      style={{ marginTop: customTopHeight || top + 8, zIndex: 10 }}>
+      <View className="flex-row z-20" style={{ top: verticalScale(7) }}>
         {showBackIcon && !leftComponent && (
           <TouchableOpacity onPress={goBack} hitSlop={getHitSlop({ value: 20 })}>
             <Icons.ArrowLeftIcon color={backIconColor} />

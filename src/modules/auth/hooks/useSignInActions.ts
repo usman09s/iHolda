@@ -31,21 +31,25 @@ export const useSignInActions = () => {
   const { mutate, isLoading, error } = useMutation(Api.signIn);
   const sendCodeMutation = useMutation(Api.sendCodeForForgotPin);
   const sharedValue = useSharedValue(44);
+  const sharedPadding = useSharedValue(40);
   const sharedSpaceHeightValue = useSharedValue(80);
   const isVisible = useKeyboardVisible();
 
   useEffect(() => {
     if (isVisible) {
-      sharedValue.value = 24;
-      sharedSpaceHeightValue.value = 40;
+      sharedValue.value = 44;
+      sharedSpaceHeightValue.value = 70;
+      sharedPadding.value = 110;
     } else {
       sharedValue.value = 44;
-      sharedSpaceHeightValue.value = 80;
+      sharedSpaceHeightValue.value = 70;
+      sharedPadding.value = 0;
     }
   }, [isVisible]);
 
   const animatedTextStyle = useAnimatedStyle(() => ({
     fontSize: withTiming(sharedValue.value),
+    paddingTop: withTiming(sharedPadding.value),
   }));
 
   const animatedSpaceHeightStyle = useAnimatedStyle(() => ({

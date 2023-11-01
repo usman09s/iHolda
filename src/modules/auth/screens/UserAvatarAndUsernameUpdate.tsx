@@ -64,7 +64,7 @@ const UserAvatarAndUsernameUpdate = () => {
     dispatch(
       setUserImageAndUsername({
         username: cleanedUsername,
-        image: pickedImage?.base64,
+        image: pickedImage?.uri,
       }),
     );
 
@@ -128,7 +128,7 @@ const UserAvatarAndUsernameUpdate = () => {
                     <Image
                       className="w-full h-full"
                       resizeMode="contain"
-                      source={{ uri: pickedImage.base64F }}
+                      source={{ uri: pickedImage.uri }}
                     />
                   </Animated.View>
                 )}

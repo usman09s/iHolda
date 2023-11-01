@@ -48,8 +48,8 @@ const DropOffLocationListScreen = () => {
           onChangeText={setSearchKeyword}
           placeholder="search town"
           placeholderTextColor={colors['black-o-30']}
-          className="border-b1 border-black-o-10 rounded-xl text-black py-4"
-          style={{ marginHorizontal: 35 }}
+          className="rounded-xl text-black py-4"
+          style={{ marginHorizontal: 30, borderColor: 'gray', borderWidth: 1 }}
         />
       </View>
       {isLoading || (!data && <ActivityIndicator className="mb-4 flex-1" color={colors.blue} />)}
