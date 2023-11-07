@@ -55,10 +55,11 @@ export const usePlasticConfirmationActions = () => {
 
   const onSuccessPlastics = async data => {
     dispatch(setPlasticSupplyData(data.data));
-    dispatch(setQrCode(data.plasticQrCode));
+    console.log(data.data.plasticQrCode, 'llllllllll');
+    dispatch(setQrCode(data.data.plasticQrCode));
     try {
       navigate('PlasticQRCode', {
-        plasticInformation: userQrCode,
+        plasticInformation: data.data.plasticQrCode,
         location: params.location,
       });
     } catch (error) {

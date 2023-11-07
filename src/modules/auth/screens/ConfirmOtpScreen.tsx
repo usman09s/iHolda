@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Pressable, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Pressable, ScrollView, Text, View } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Button from 'components/Button';
 import ErrorModal from 'components/ErrorModal';
@@ -11,7 +11,7 @@ import { userPhoneSelector, userSelector } from 'store/auth/userSelectors';
 import { useTimer } from 'store/auth/useTimer';
 import { text } from 'theme/text';
 import { VerifyOTPMessage } from 'types/AuthTypes';
-import { getHitSlop } from 'utils/helpers';
+import { getHitSlop, verticalScale } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import OTPInput from '../components/OTPInput';
@@ -36,8 +36,11 @@ const ConfirmOtpScreen = () => {
   const onPressContinue = () => mutate({ otp });
 
   return (
-    <View className="flex-1 bg-blue justify-center px-7">
-      <KeyboardAvoidingView behavior="position">
+    <View className="flex-1 bg-blue justify-center" style={{ paddingHorizontal: 10 }}>
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ marginTop: verticalScale(120) }}>
         <View className="mb-20">
           <Text className={text({ type: 'b44', class: 'text-white' })}>
             Confirm{'\n'}sms OTP code
@@ -75,7 +78,7 @@ const ConfirmOtpScreen = () => {
           disabled={isLoading || otp.length !== 6}
           customContainer={`self-center ${otp.length !== 6 && ' opacity-40'} `}
         />
-      </KeyboardAvoidingView>
+      </ScrollView>
       <ErrorModal errorText={confirmMutationErrorMessage} />
     </View>
   );

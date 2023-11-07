@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Image, KeyboardAvoidingView, LayoutAnimation, Platform, Text, View } from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  LayoutAnimation,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Button from 'components/Button';
 import ErrorModal from 'components/ErrorModal';
@@ -11,7 +19,7 @@ import Api from 'services/Api';
 import { profileImageSelector, userImageSelector, userSelector } from 'store/auth/userSelectors';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
-import { parseApiError } from 'utils/helpers';
+import { parseApiError, verticalScale } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import CustomErrorModal from 'components/ErrorModal/errorModal';
@@ -24,8 +32,7 @@ const EnterReferralCodeScreen = () => {
   const { navigate } = useNavigation<NavigationProp<AuthStackParamList>>();
   const { mutate, error } = useMutation(Api.setReferralCode);
   const userImage = useSelector(userSelector);
-  console.log(userImage.userImage, 'wojdcoij');
-  const isVisibleKeyboard = useKeyboardVisible();
+  // const isVisibleKeyboard = useKeyboardVisible();
 
   const onContinue = () => {
     mutate(
@@ -44,34 +51,24 @@ const EnterReferralCodeScreen = () => {
 
   return (
     <View className="flex-1 bg-blue px-7 justify-evenly">
-      <KeyboardAvoidingView
-        behavior={Platform.select({
-          android: undefined,
-          ios: 'position',
-        })}>
+      <ScrollView className="flex-1" contentContainerStyle={{ marginTop: verticalScale(120) }}>
         <Text className={text({ type: 'm18', class: 'text-white text-center mb-8' })}>
           Referral code
         </Text>
         <View className="flex-row self-center">
           <Image
             source={{ uri: userImage.userImage }}
-            className={
-              isVisibleKeyboard
-                ? 'w-20 h-20 rounded-3xl border-4 border-white -rotate-30'
-                : 'w-28 h-28 rounded-3xl border-4 border-white -rotate-30'
-            }
+            className={'w-28 h-28 rounded-3xl border-4 border-white -rotate-30'}
             style={{ borderColor: 'white', borderWidth: 4 }}
           />
           <View
             className={
-              isVisibleKeyboard
-                ? 'w-20 h-20 rounded-3xl border-4 border-white rotate-30 -left-8 top-2 bg-blue justify-center items-center'
-                : 'w-28 h-28 rounded-3xl border-4 border-white rotate-30 -left-8 top-2 bg-blue justify-center items-center'
+              'w-28 h-28 rounded-3xl border-4 border-white rotate-30 -left-8 top-2 bg-blue justify-center items-center'
             }>
             <Text className="text-white text-36">?</Text>
           </View>
         </View>
-        <View style={{ height: isVisibleKeyboard ? 40 : 80 }} />
+        <View style={{ height: 80 }} />
         <Input
           onChangeText={setReferralCode}
           placeholder="Enter referral code"
@@ -79,7 +76,7 @@ const EnterReferralCodeScreen = () => {
           placeholderTextColor={colors['white-o-60']}
           keyboardType="numeric"
         />
-        <View style={{ height: isVisibleKeyboard ? 32 : 64 }} />
+        <View style={{ height: 64 }} />
         <View>
           <Button
             title="Confirm"
@@ -88,7 +85,7 @@ const EnterReferralCodeScreen = () => {
             extraStyles={{ borderWidth: 5, borderColor: 'white', width: 200 }}
             onPress={onContinue}
           />
-          <View style={{ height: isVisibleKeyboard ? 16 : 32 }} />
+          <View style={{ height: 32 }} />
           <Button
             title="Skip"
             type="ghost"
@@ -96,7 +93,7 @@ const EnterReferralCodeScreen = () => {
             onPress={() => navigate('UserWaitList')}
             customTextClass={text({ type: 'm18', class: 'text-white-o-70 ' })}
           />
-          <View style={{ height: isVisibleKeyboard ? 0 : 16 }} />
+          <View style={{ height: 16 }} />
         </View>
         <CustomErrorModal
           visible={modalVisible}
@@ -104,7 +101,7 @@ const EnterReferralCodeScreen = () => {
           errorText={'Incorrect Referral code!'}
           buttonTitle="CLOSE"
         />
-      </KeyboardAvoidingView>
+      </ScrollView>
     </View>
   );
 };

@@ -7,14 +7,13 @@ import Icons from 'components/Icons';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { profileImageSelector, userSelector, usernameSelector } from 'store/auth/userSelectors';
+import { userSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 import { horizontalScale, verticalScale, moderateScale } from '../../../utils/helpers';
 
 const UserWaitListScreen = () => {
   const { goBack, dispatch } = useNavigation();
-  const username = useSelector(usernameSelector);
-  const userImage = useSelector(userSelector);
+  const user = useSelector(userSelector);
 
   const copyToClipboard = async (value: string) => await Clipboard.setStringAsync(value);
 
@@ -24,7 +23,7 @@ const UserWaitListScreen = () => {
         <View className="flex-1 justify-evenly">
           <View style={{ marginTop: verticalScale(80), marginBottom: verticalScale(30) }}>
             <Image
-              source={{ uri: userImage.userImage }}
+              source={{ uri: user.userImage }}
               className="w-28 h-28 rounded-full self-center"
               style={{ borderWidth: 4, borderColor: 'white', marginBottom: verticalScale(30) }}
             />
@@ -42,9 +41,9 @@ const UserWaitListScreen = () => {
               <Text className={text({ type: 'r12', class: 'text-white-o-60' })}>Your username</Text>
               <TouchableOpacity
                 className="flex-row"
-                onPress={() => copyToClipboard(`@${username}`)}>
+                onPress={() => copyToClipboard(`@${user.username}`)}>
                 <Text className={text({ type: 'b13', class: 'text-white mr-1' })}>
-                  {username?.startsWith('@') ? `${username}` : `@${username}`}
+                  {user.username?.startsWith('@') ? `${user.username}` : `@${user.username}`}
                 </Text>
                 <Icons.CopyIcon />
               </TouchableOpacity>

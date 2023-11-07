@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import Button from 'components/Button';
 import { useAppNavigation } from 'hooks/useAppNavigation';
@@ -16,6 +16,7 @@ import PhoneConfirmationModal from '../components/PhoneConfirmationModal';
 import PhoneInput from '../components/PhoneInput';
 import { setCountryCode } from 'store/auth/userSlice';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { verticalScale } from 'utils/helpers';
 
 const SignUpScreen = () => {
   const { countries } = useLoadCountries();
@@ -72,38 +73,43 @@ const SignUpScreen = () => {
 
   return (
     <View className="pt-10 bg-blue flex-1 px-7 justify-center">
-      <Text className={text({ type: 'b44', class: 'text-white mb-16' })}>
-        Enter your{'\n'}Phone Number
-      </Text>
-      <PhoneInput
-        value={phoneNumber}
-        editable={!isLoading}
-        onChangeText={setPhoneNumber}
-        selectedCountry={selectedCountry}
-        onPressCountryCode={() => setShowCountriesModal(true)}
-      />
-      <Button
-        title="Continue"
-        type="borderedSolid"
-        extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
-        isLoading={isLoading}
-        onPress={() => setShowPhoneConfirmationModal(true)}
-        disabled={isLoading || !phoneNumber || phoneNumber.length < 4}
-        customContainer={`self-center mt-20 ${phoneNumber.length < 4 && ' opacity-40'} `}
-      />
-      <CountriesModal
-        countries={countries}
-        visible={showCountriesModal}
-        onCloseModal={() => setShowCountriesModal(false)}
-        onPressCountry={value => setSelectedCountry(value)}
-      />
-      <PhoneConfirmationModal
-        phoneNumber={phoneNumber}
-        onPressYes={onPressContinue}
-        countryCode={selectedCountry.phone}
-        visible={showPhoneConfirmationModal}
-        onCloseModal={() => setShowPhoneConfirmationModal(false)}
-      />
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ marginTop: verticalScale(120) }}>
+        <Text className={text({ type: 'b44', class: 'text-white mb-16' })}>
+          Enter your{'\n'}Phone Number
+        </Text>
+        <PhoneInput
+          value={phoneNumber}
+          editable={!isLoading}
+          onChangeText={setPhoneNumber}
+          selectedCountry={selectedCountry}
+          onPressCountryCode={() => setShowCountriesModal(true)}
+        />
+        <Button
+          title="Continue"
+          type="borderedSolid"
+          extraStyles={{ borderWidth: 5, borderColor: 'white', width: 190 }}
+          isLoading={isLoading}
+          onPress={() => setShowPhoneConfirmationModal(true)}
+          disabled={isLoading || !phoneNumber || phoneNumber.length < 4}
+          customContainer={`self-center mt-20 ${phoneNumber.length < 4 && ' opacity-40'} `}
+        />
+        <CountriesModal
+          countries={countries}
+          visible={showCountriesModal}
+          onCloseModal={() => setShowCountriesModal(false)}
+          onPressCountry={value => setSelectedCountry(value)}
+        />
+        <PhoneConfirmationModal
+          phoneNumber={phoneNumber}
+          onPressYes={onPressContinue}
+          countryCode={selectedCountry.phone}
+          visible={showPhoneConfirmationModal}
+          onCloseModal={() => setShowPhoneConfirmationModal(false)}
+        />
+      </ScrollView>
     </View>
   );
 };

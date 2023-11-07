@@ -6,6 +6,7 @@ import {
   LayoutAnimation,
   Platform,
   Pressable,
+  ScrollView,
   Text,
   View,
 } from 'react-native';
@@ -61,6 +62,7 @@ const UserAvatarAndUsernameUpdate = () => {
 
   const onContinue = async () => {
     const cleanedUsername = username.replace('@', '');
+    console.log(username);
     dispatch(
       setUserImageAndUsername({
         username: cleanedUsername,
@@ -87,17 +89,11 @@ const UserAvatarAndUsernameUpdate = () => {
   LayoutAnimation.easeInEaseOut();
 
   return (
-    <View
-      className="flex-1 bg-blue justify-center px-7"
-      style={{ justifyContent: isVisibleKeyboard ? 'flex-end' : 'center' }}>
-      <View style={{ bottom: 60 }}>
-        <Header showBackIcon backIconColor="white" />
-      </View>
-      <KeyboardAvoidingView
-        behavior={Platform.select({
-          ios: 'position',
-          android: undefined,
-        })}>
+    <View className="flex-1 bg-blue justify-center px-7" style={{ justifyContent: 'center' }}>
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <View style={{ marginBottom: 40 }}>
+          <Header showBackIcon backIconColor="white" />
+        </View>
         <View className="w-full">
           <View>
             <Text className={text({ type: 'b20', class: 'text-center mb-6 text-white' })}>
@@ -159,9 +155,9 @@ const UserAvatarAndUsernameUpdate = () => {
             customContainer={`self-center mt-4 ${isContinueButtonDisabled && 'opacity-50'}`}
           />
         </View>
-        <View style={{ marginBottom: isVisibleKeyboard ? units.vh * 6.5 : 0 }} />
+        <View style={{ marginBottom: 0 }} />
         <Spacing />
-      </KeyboardAvoidingView>
+      </ScrollView>
       <ErrorModal errorText={errorMessage} />
     </View>
   );

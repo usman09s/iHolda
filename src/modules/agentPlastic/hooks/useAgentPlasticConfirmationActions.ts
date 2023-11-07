@@ -50,7 +50,7 @@ export const useAgentPlasticConfirmationActions = () => {
           onSuccess: () => {
             navigate('AgentPlasticApproved', {
               totalPlastic: agentPlasticCountTotal,
-              username: 'Something',
+              username: params.user.userName,
             });
           },
         },
@@ -63,7 +63,7 @@ export const useAgentPlasticConfirmationActions = () => {
         onSuccess: () => {
           navigate('AgentPlasticApproved', {
             totalPlastic: agentPlasticCountTotal,
-            username: 'Something',
+            username: params.user.userName,
           });
         },
       },
@@ -92,7 +92,7 @@ export const useAgentPlasticConfirmationActions = () => {
   return {
     plastics,
     username,
-    // isLoading,
+    params,
     errorMessage,
     buttonLoading,
     onPressConfirm,
