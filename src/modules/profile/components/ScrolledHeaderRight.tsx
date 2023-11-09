@@ -4,10 +4,12 @@ import Button from 'components/Button';
 import Icons from 'components/Icons';
 import { text } from 'theme/text';
 import { units } from 'utils/helpers';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = { top: number; isCurrentUser: boolean; activeY: SharedValue<number> };
 
 const ScrolledHeaderRight = ({ top, activeY, isCurrentUser }: Props) => {
+  const navigation = useNavigation();
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       activeY.value >= units.vh * 40 ? units.vh * 40 : activeY.value,
@@ -24,6 +26,7 @@ const ScrolledHeaderRight = ({ top, activeY, isCurrentUser }: Props) => {
           type="solid"
           customContainer="rounded-md self-center py-1 px-3 bg-white border-b1 border-black-o-20"
           customTextClass={text({ type: 'r12', class: 'text-black h-4' })}
+          onPress={() => navigation.navigate('AcceptReferenceStack')}
         />
 
         <View className="justify-around items-center mt-4">

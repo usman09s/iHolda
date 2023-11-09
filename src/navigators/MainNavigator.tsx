@@ -21,6 +21,7 @@ import { queryIdSelector, tokensSelector } from 'store/auth/userSelectors';
 import colors from 'theme/colors';
 
 import BottomTabsNavigator from './BottomTabsNavigator';
+import AcceptReferenceStackNavigator from 'modules/acceptReference/AcceptReferenceNavigator';
 
 const MainStack = createNativeStackNavigator();
 
@@ -100,6 +101,11 @@ export default function MainNavigator() {
           name="AssignedJobStack"
           options={commonOptions}
           component={AssignedJobStackNavigator}
+        />
+        <MainStack.Screen
+          name="AcceptReferenceStack"
+          options={commonOptions}
+          component={AcceptReferenceStackNavigator}
         />
       </MainStack.Navigator>
     </NavigationContainer>
