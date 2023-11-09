@@ -9,7 +9,7 @@ import PaymentReceivedActivity from '../components/PaymentReceivedActivity';
 import SharedMomentActivity from '../components/SharedMomentActivity';
 
 const ActivityScreen = () => {
-  const {} = useNavigation();
+  const navigation = useNavigation();
 
   return (
     <View className="flex-1 bg-white px-6">
@@ -63,6 +63,18 @@ const ActivityScreen = () => {
           lastUserUsername="@user3"
           subTitle="Liked your moment with "
           momentThumbnail={'https://i.pravatar.cc/150?img=36'}
+        />
+        <MultipleUsersActivity
+          avatars={{
+            user1: 'https://i.pravatar.cc/150?img=13',
+            user2: 'https://i.pravatar.cc/150?img=36',
+          }}
+          title="Reference check"
+          lastUserUsername="@user3"
+          subTitle="Do you know"
+          momentThumbnail={'https://i.pravatar.cc/150?img=36'}
+          time="4H"
+          onPress={() => navigation.navigate('AcceptReferenceStack')}
         />
       </ScrollView>
     </View>
