@@ -3,7 +3,7 @@ import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-nati
 import Button from 'components/Button';
 import { text } from 'theme/text';
 import { units } from 'utils/helpers';
-import { useAppNavigation } from 'hooks/useAppNavigation';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   top: number;
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const ScrolledHeader = ({ top, avatar, activeY, username, isCurrentUser }: Props) => {
-  const navigate = useAppNavigation();
+  const navigation = useNavigation();
   const headerHeight = units.vh * 8;
   const animatedStyle = useAnimatedStyle(() => ({
     top: interpolate(
@@ -47,7 +47,7 @@ const ScrolledHeader = ({ top, avatar, activeY, username, isCurrentUser }: Props
           title={isCurrentUser ? 'Settings' : 'Follow'}
           customContainer="rounded-md self-center py-1 px-3 bg-white border-b1 border-black-o-20"
           customTextClass={text({ type: 'r12', class: 'text-black h-4' })}
-          onPress={() => navigate('AcceptReferenceNavigator')}
+          onPress={() => navigation.navigate('RequestReferenceStack')}
         />
       </View>
     </Animated.View>

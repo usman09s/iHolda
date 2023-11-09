@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { text } from 'theme/text';
 import StatusBarItem from '../components/StatusBarItem';
 
-export const AcceptReferenceSummaryScreen = ({ navigation }: any) => {
+export const RequestReferenceSummaryScreen = ({ navigation }: any) => {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="px-6">

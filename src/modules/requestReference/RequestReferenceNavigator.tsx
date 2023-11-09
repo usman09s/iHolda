@@ -4,14 +4,14 @@ import {
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
 
-import { AcceptReferenceSummaryScreen } from './screens/AcceptReferenceSummaryScreen';
+import { RequestReferenceSummaryScreen } from './screens/RequestReferenceSummaryScreen';
 import { BasicVerificationOneScreen } from './screens/BasicVerificationOneScreen';
 import { BasicVerificationTwoScreen } from './screens/BasicVerificationTwoScreen';
 import { BasicVerificationThreeScreen } from './screens/BasicVerificationThreeScreen';
 import { AddReferenceScreen } from './screens/AddReferenceScreen';
 import { VerificationCompleteScreen } from './screens/VerficationCompleteScreen';
 
-export type AcceptReferenceStackParamList = {
+export type RequestReferenceStackParamList = {
   Summary: undefined;
   BasicVerificationOne: undefined;
   BasicVerificationTwo: undefined;
@@ -20,7 +20,7 @@ export type AcceptReferenceStackParamList = {
   VerificationComplete: undefined;
 };
 
-const AcceptReferenceStack = createNativeStackNavigator<AcceptReferenceStackParamList>();
+const AcceptReferenceStack = createNativeStackNavigator<RequestReferenceStackParamList>();
 
 const commonOptions: NativeStackNavigationOptions = {
   headerShown: false,
@@ -30,13 +30,13 @@ const commonScreenOptions: NativeStackNavigationOptions = {
   animation: 'slide_from_right',
 };
 
-export default function AcceptReferenceStackNavigator() {
+export default function RequestReferenceStackNavigator() {
   return (
     <AcceptReferenceStack.Navigator screenOptions={commonScreenOptions}>
       <AcceptReferenceStack.Screen
         options={commonOptions}
         name="Summary"
-        component={AcceptReferenceSummaryScreen}
+        component={RequestReferenceSummaryScreen}
       />
       <AcceptReferenceStack.Screen
         options={commonOptions}
