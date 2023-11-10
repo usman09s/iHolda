@@ -26,7 +26,7 @@ const ScrolledHeaderRight = ({ top, activeY, isCurrentUser }: Props) => {
           type="solid"
           customContainer="rounded-md self-center py-1 px-3 bg-white border-b1 border-black-o-20"
           customTextClass={text({ type: 'r12', class: 'text-black h-4' })}
-          onPress={() => navigation.navigate('RequestReferenceStack')}
+          onPress={() => navigation.navigate('SettingsStack')}
         />
 
         <View className="justify-around items-center mt-4">

@@ -23,6 +23,7 @@ import colors from 'theme/colors';
 import BottomTabsNavigator from './BottomTabsNavigator';
 import RequestReferenceStackNavigator from 'modules/requestReference/RequestReferenceNavigator';
 import AcceptReferenceStackNavigator from 'modules/acceptReference/AcceptReferenceStackNavigator';
+import SettingsStackNavigator from 'modules/settings/SettingsStackNavigator';
 
 const MainStack = createNativeStackNavigator();
 
@@ -112,6 +113,11 @@ export default function MainNavigator() {
           name="AcceptReferenceStack"
           options={commonOptions}
           component={AcceptReferenceStackNavigator}
+        />
+        <MainStack.Screen
+          name="SettingsStack"
+          options={commonOptions}
+          component={SettingsStackNavigator}
         />
       </MainStack.Navigator>
     </NavigationContainer>
