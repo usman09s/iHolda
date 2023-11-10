@@ -2,12 +2,23 @@ import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { View, Text } from 'react-native';
 import { Userpic } from 'react-native-userpic';
+import { text } from 'theme/text';
+import { height } from 'utils/helpers';
 
 export const ConfirmReferenceScreen = ({ navigation }: any) => {
+  const isSmallScreen = height < 700;
   return (
     <View className="px-6 flex-1">
-      <Header showBackIcon title="Confirm reference" />
-      <View className="flex-1 items-center justify-between my-36">
+      <Header
+        showBackIcon
+        centerComponent={
+          <Text className={text({ type: 'm16', class: 'mt-2 text-lg' })}>Confirm reference</Text>
+        }
+      />
+      <View
+        className={`flex-1 items-center justify-between ${
+          isSmallScreen ? 'my-16' : 'mt-32 mb-36'
+        }`}>
         <View>
           <Text className="text-center text-2xl font-bold mb-10">Do you know</Text>
           <View>

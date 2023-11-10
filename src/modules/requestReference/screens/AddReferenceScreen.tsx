@@ -2,6 +2,7 @@ import Header from 'components/Header/Header';
 import { View, Text, TextInput, FlatList } from 'react-native';
 import { text } from 'theme/text';
 import { CustomReferenceContact } from '../components/CustomReferenceContact';
+import { height } from 'utils/helpers';
 
 const dummyData = [
   { id: '1', name: 'John Doe', card: 'Credit Card', imageUri: 'https://i.pravatar.cc/100?img=1' },
@@ -52,10 +53,16 @@ const dummyData = [
 ];
 
 export const AddReferenceScreen = ({ navigation }: any) => {
+  const isSmallScreen = height < 700;
   return (
     <View className="px-6 flex-1">
-      <Header showBackIcon title="Reference" />
-      <View className="mt-12 mb-6">
+      <Header
+        showBackIcon
+        centerComponent={
+          <Text className={text({ type: 'm16', class: 'mt-2 text-lg' })}>Reference</Text>
+        }
+      />
+      <View className={`mb-6 ${isSmallScreen ? 'mt-8' : 'mt-12'}`}>
         <TextInput
           className="bg-neutral-200 rounded-3xl h-10 mx-6 px-4"
           placeholder="Search user"

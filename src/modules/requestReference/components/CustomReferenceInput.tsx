@@ -18,24 +18,22 @@ export const CustomReferenceInput = ({
   keyboardType = 'default',
   ...props
 }: CustomReferenceProps) => {
-  const handleChangeText = (text: string, previousText: string = '') => {
+  const handleChangeText = (text: string) => {
     if (props.field === 'date') {
-      if (text.length === 2 && previousText.charAt(1) === '/') {
-        text = text.slice(0, 1);
-      } else if (text.length === 5 && previousText.charAt(4) === '/') {
-        text = text.slice(0, 4);
+      const cleanedText = text.replace(/\D/g, '');
+      const limitedText = cleanedText.slice(0, 8);
+      let formattedText = '';
+      for (let i = 0; i < limitedText.length; i++) {
+        if (i === 2 || i === 4) {
+          formattedText += '/';
+        }
+        formattedText += limitedText[i];
       }
-      if (text.length === 2 && text.charAt(1) !== '/') {
-        text += '/';
-      } else if (text.length === 5 && text.charAt(4) !== '/') {
-        text = text.slice(0, 5) + '/' + text.slice(5);
-      }
-      if (text.length > 10) {
-        text = text.slice(0, 10);
-      }
-    }
 
-    props.handleChange(text);
+      props.handleChange(formattedText);
+    } else {
+      props.handleChange(text);
+    }
   };
 
   const hasError = props.error !== undefined;
