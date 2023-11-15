@@ -7,6 +7,7 @@ import Animated, { SlideInDown } from 'react-native-reanimated';
 import { text } from 'theme/text';
 
 export const DeactivateAccountScreen = ({ navigation }: any) => {
+  const [visible, setVisible] = useState(false);
   const radioButtons = useMemo(
     () => [
       {
@@ -28,6 +29,10 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
   );
 
   const [selectedId, setSelectedId] = useState('1');
+
+  const onClose = () => {
+    setVisible(false);
+  };
 
   return (
     <View className="flex-1 px-6">
@@ -63,7 +68,13 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
             title="Continue"
             customContainerClass={'w-60 py-2 border-0 bg-black'}
             customTextClass={'text-white font-normal'}
-            onPress={() => navigation.navigate('Feedback')}
+            onPress={() => {
+              if (selectedId === '2') {
+                setVisible(true); // Show modal when "delete" option is selected
+              } else {
+                navigation.navigate('Feedback');
+              }
+            }}
           />
           <CustomReferenceButton
             title="Back"
@@ -78,16 +89,29 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
           style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <Animated.View className="bg-white rounded-t-2xl p-10 pt-5" entering={SlideInDown}>
             <SafeAreaView>
-              <Text>This location is currently {'\n'}closed</Text>
-              <Text className={text({ type: 'r12', class: 'text-center' })}>
-                Select another location to drop off your plastics
+              <Text className="text-20 font-bold my-4 text-black text-center">
+                Irreversible Action
               </Text>
-              <Button
-                title="FIND ANOTHER"
-                onPress={onClose}
-                customContainer="bg-yellowishOrange rounded-md mt-8"
-                customTextClass="text-16"
-              />
+              <Text className={'text-center text-black text-base'}>
+                Are you sure you want to delete your account?
+              </Text>
+              <View className="flex-row w-full justify-between">
+                <CustomReferenceButton
+                  title="CANCEL"
+                  customContainerClass={'w-36 px-0 border-black'}
+                  customTextClass={'text-base'}
+                  onPress={onClose}
+                />
+                <CustomReferenceButton
+                  title="YES"
+                  customContainerClass={'w-28 px-0 bg-black border-black'}
+                  customTextClass={'text-base text-white'}
+                  onPress={() => {
+                    setVisible(false);
+                    navigation.navigate('Feedback');
+                  }}
+                />
+              </View>
             </SafeAreaView>
           </Animated.View>
         </View>
