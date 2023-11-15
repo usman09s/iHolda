@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
-import { View, Text } from 'react-native';
+import { View, Text, Touchable, TouchableOpacity } from 'react-native';
 import { Userpic } from 'react-native-userpic';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -9,7 +9,9 @@ export const SettingsHeader = () => {
   return (
     <View className="bg-blue items-center pt-10 pb-6">
       <View className="items-center justify-between px-6 flex-row w-full">
-        <Ionicons name="arrow-back" size={30} color="white" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={30} color="white" />
+        </TouchableOpacity>
         <Ionicons name="qr-code-sharp" size={30} color="white" />
       </View>
       <Userpic

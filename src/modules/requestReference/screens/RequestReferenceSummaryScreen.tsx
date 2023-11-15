@@ -5,7 +5,7 @@ import StatusBarItem from '../components/StatusBarItem';
 import { height } from 'utils/helpers';
 
 export const RequestReferenceSummaryScreen = ({ navigation }: any) => {
-  const isSmallScreen = height < 670;
+  const isSmallScreen = height < 700;
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="px-6">

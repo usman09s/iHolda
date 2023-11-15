@@ -261,28 +261,27 @@ class ApiClass {
         return result.data.data;
       });
 
-  getClosestDropOffLocations = async ({
-    latitude,
-    longitude,
-  }: {
-    latitude: number;
-    longitude: number;
-  }): Promise<DropOffLocationItemType[]> =>
-    await this.externalApi
-      .url('plastic/agents?page=1')
-      .get()
-      .json(result => {
-        console.log(result.data.data);
-        return result.data.data;
-      });
+  // getClosestDropOffLocations = async ({} // latitude,
+  // // longitude,
+  // : {
+  //   // latitude: number;
+  //   // longitude: number;
+  // }): Promise<DropOffLocationItemType[]> =>
+  //   await this.externalApi
+  //     .url('plastic/agents?page=1')
+  //     .get()
+  //     .json(result => {
+  //       console.log(result.data.data);
+  //       return result.data.data;
+  //     });
 
   getDropOffLocations = async (): Promise<DropOffLocationItemType[]> =>
     await this.externalApi
       .url('plastic/agents?page=1')
       .get()
       .json(result => {
-        console.log(result);
-        return result;
+        console.log(result.data.data);
+        return result.data.data;
       });
 
   addPlastics = async ({

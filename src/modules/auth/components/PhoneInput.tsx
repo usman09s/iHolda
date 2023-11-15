@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import Icons from 'components/Icons';
 import { CountryCodeType } from 'types/AuthTypes';
+import { verticalScale } from '../../../utils/helpers';
 
 type Props = {
   value: string;
@@ -24,7 +25,7 @@ const PhoneInput = ({
       borderColor: 'white',
       flexDirection: 'row',
       borderWidth: 2,
-      paddingVertical: 14,
+      paddingVertical: verticalScale(14),
       backgroundColor: 'transparent',
     }}>
     <Pressable

@@ -22,7 +22,7 @@ export const CustomSettingsInput = ({ keyboardType = 'default', ...props }: Cust
   const hasError = props.error !== undefined;
 
   return (
-    <View className={`gap-1.5 py-1.5 ${props.containerClass}`}>
+    <View className={`gap-1.5 py-0.5 ${props.containerClass}`}>
       {props.label && (
         <Text className={`text-base font-semibold ${props.customLabelClass}`}>{props.label}</Text>
       )}

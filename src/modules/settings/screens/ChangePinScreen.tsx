@@ -1,9 +1,10 @@
 import Header from 'components/Header/Header';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { CustomSettingsInput } from '../components/CustomSettingsInput';
 import { Formik } from 'formik';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import * as Yup from 'yup';
+import { height } from 'utils/helpers';
 
 const validationSchema = Yup.object().shape({
   currentPin: Yup.string()
@@ -18,6 +19,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export const ChangePinScreen = () => {
+  const isSmallScreen = height < 700;
   const initialValues = {
     currentPin: '',
     newPin: '',
@@ -27,58 +29,60 @@ export const ChangePinScreen = () => {
     console.log(values);
   };
   return (
-    <View className="px-6">
-      <Header
-        showBackIcon
-        centerComponent={
-          <Text style={{ fontSize: 16, fontWeight: '500', marginTop: 2, color: 'gray' }}>
-            Change pin
-          </Text>
-        }
-      />
-      <Formik
-        initialValues={initialValues}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}>
-        {({ handleChange, handleSubmit, values, errors }) => (
-          <View className="my-12 mx-4">
-            <CustomSettingsInput
-              label="Enter current pin"
-              placeholder="Enter Text Here"
-              field="currentPin"
-              handleChange={handleChange('currentPin')}
-              keyboardType={'numeric'}
-              value={values.currentPin}
-              error={errors.currentPin}
-            />
-            <CustomSettingsInput
-              label="New pin"
-              placeholder="Enter Text Here"
-              field="newPin"
-              handleChange={handleChange('newPin')}
-              keyboardType={'numeric'}
-              value={values.newPin}
-              error={errors.newPin}
-            />
-            <CustomSettingsInput
-              label="Confirm pin"
-              placeholder="Enter Text Here"
-              field="confirmPin"
-              handleChange={handleChange('confirmPin')}
-              keyboardType={'numeric'}
-              value={values.confirmPin}
-              error={errors.confirmPin}
-            />
-            <View style={{ alignSelf: 'center', marginTop: '60%' }}>
-              <CustomReferenceButton
-                title="Save"
-                customContainerClass={'w-44'}
-                onPress={handleSubmit}
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
+      <View className="px-6">
+        <Header
+          showBackIcon
+          centerComponent={
+            <Text style={{ fontSize: 16, fontWeight: '500', marginTop: 2, color: 'gray' }}>
+              Change pin
+            </Text>
+          }
+        />
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}>
+          {({ handleChange, handleSubmit, values, errors }) => (
+            <View className="my-12 mx-4">
+              <CustomSettingsInput
+                label="Enter current pin"
+                placeholder="Enter Text Here"
+                field="currentPin"
+                handleChange={handleChange('currentPin')}
+                keyboardType={'numeric'}
+                value={values.currentPin}
+                error={errors.currentPin}
               />
+              <CustomSettingsInput
+                label="New pin"
+                placeholder="Enter Text Here"
+                field="newPin"
+                handleChange={handleChange('newPin')}
+                keyboardType={'numeric'}
+                value={values.newPin}
+                error={errors.newPin}
+              />
+              <CustomSettingsInput
+                label="Confirm pin"
+                placeholder="Enter Text Here"
+                field="confirmPin"
+                handleChange={handleChange('confirmPin')}
+                keyboardType={'numeric'}
+                value={values.confirmPin}
+                error={errors.confirmPin}
+              />
+              <View style={{ alignSelf: 'center', marginTop: isSmallScreen ? '40%' : '60%' }}>
+                <CustomReferenceButton
+                  title="Save"
+                  customContainerClass={'w-44'}
+                  onPress={handleSubmit}
+                />
+              </View>
             </View>
-          </View>
-        )}
-      </Formik>
-    </View>
+          )}
+        </Formik>
+      </View>
+    </ScrollView>
   );
 };

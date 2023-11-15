@@ -13,7 +13,7 @@ export const ConfirmedReferenceScreen = ({ navigation, route }: any) => {
       <Header
         showBackIcon
         centerComponent={
-          <Text className={text({ type: 'm16', class: 'mt-2 text-lg' })}>Complete</Text>
+          <Text className={text({ type: 'm16', class: 'mt-2 text-lg' })}>Confirmed</Text>
         }
       />
       <View className={`flex-1 items-center justify-between ${isSmallScreen ? 'my-20' : 'my-28'}`}>

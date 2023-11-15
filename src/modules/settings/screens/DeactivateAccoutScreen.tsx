@@ -1,8 +1,10 @@
 import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { useMemo, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, Button, Modal } from 'react-native';
 import { RadioButton } from 'react-native-radio-buttons-group';
+import Animated, { SlideInDown } from 'react-native-reanimated';
+import { text } from 'theme/text';
 
 export const DeactivateAccountScreen = ({ navigation }: any) => {
   const radioButtons = useMemo(
@@ -70,6 +72,26 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
           />
         </View>
       </View>
+      <Modal statusBarTranslucent visible={visible} onRequestClose={onClose} transparent>
+        <View
+          className=" flex-1 justify-end overflow-hidden"
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <Animated.View className="bg-white rounded-t-2xl p-10 pt-5" entering={SlideInDown}>
+            <SafeAreaView>
+              <Text>This location is currently {'\n'}closed</Text>
+              <Text className={text({ type: 'r12', class: 'text-center' })}>
+                Select another location to drop off your plastics
+              </Text>
+              <Button
+                title="FIND ANOTHER"
+                onPress={onClose}
+                customContainer="bg-yellowishOrange rounded-md mt-8"
+                customTextClass="text-16"
+              />
+            </SafeAreaView>
+          </Animated.View>
+        </View>
+      </Modal>
     </View>
   );
 };

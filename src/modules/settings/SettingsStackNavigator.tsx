@@ -14,6 +14,7 @@ import { SocialMediaScreen } from './screens/SocialMediaScreen';
 import { ReferralScreen } from './screens/ReferralScreen';
 import { TutorialScreen } from './screens/TutorialScreen';
 import { MobileMoneyScreen } from './screens/MobileMoneyScreen';
+import { NameUsernameScreen } from './screens/NameUsernameScreen';
 
 export type SettingsStackParamList = {
   SettingsOption: undefined;
@@ -27,6 +28,7 @@ export type SettingsStackParamList = {
   Referrals: undefined;
   Tutorial: undefined;
   MobileMoney: undefined;
+  NameUsername: undefined;
 };
 
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
@@ -76,6 +78,11 @@ export default function SettingsStackNavigator() {
         options={commonOptions}
         name="MobileMoney"
         component={MobileMoneyScreen}
+      />
+      <SettingsStack.Screen
+        options={commonOptions}
+        name="NameUsername"
+        component={NameUsernameScreen}
       />
     </SettingsStack.Navigator>
   );

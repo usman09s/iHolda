@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Userpic } from 'react-native-userpic';
 import { FacebookIcon } from '../../../../assets/facebook';
 import { LinkIcon } from '../../../../assets/link';
+import { ReferralGiftIcon } from '../../../../assets/referralGift';
 
 const InvitedUser = ({ avatar }) => {
   return (
@@ -36,7 +37,7 @@ const DummyInvitedUsers = [
 
 export const ReferralScreen = () => {
   return (
-    <View className="px-0">
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
       <View className="px-5">
         <Header
           showBackIcon
@@ -62,6 +63,9 @@ export const ReferralScreen = () => {
               <Text className="text-sm font-normal">Total reward paid</Text>
             </View>
           </View>
+        </View>
+        <View style={{ alignItems: 'center', paddingBottom: 5 }}>
+          <ReferralGiftIcon widthAndHeight={'90'} />
         </View>
         <View className="items-center justify-center">
           <TouchableOpacity
@@ -96,7 +100,7 @@ export const ReferralScreen = () => {
             ))}
           </ScrollView>
         </View>
-        <View className="ml-5">
+        <View className="ml-5 pb-6">
           <Text className="mb-2">
             Pending invites <MaterialIcons name="error" color="red" />
           </Text>
@@ -107,6 +111,6 @@ export const ReferralScreen = () => {
           </ScrollView>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };

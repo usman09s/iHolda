@@ -1,8 +1,8 @@
 import Svg, { Path } from 'react-native-svg';
 
-export const ReferralGiftIcon = () => {
+export const ReferralGiftIcon = ({ widthAndHeight = '45' }: any) => {
   return (
-    <Svg width="45" height="45" viewBox="0 0 32 32" fill="none">
+    <Svg width={widthAndHeight} height={widthAndHeight} viewBox="0 0 32 32" fill="none">
       <Path
         d="M24.8881 30H7.11191C5.94084 30 5 29.0705 5 27.9136V15L15.8771 11.9399L27 15V27.9136C27 29.0606 26.0592 30 24.8881 30Z"
         fill="#ffb91f"

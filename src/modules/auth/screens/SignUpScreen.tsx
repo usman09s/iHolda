@@ -16,7 +16,7 @@ import PhoneConfirmationModal from '../components/PhoneConfirmationModal';
 import PhoneInput from '../components/PhoneInput';
 import { setCountryCode } from 'store/auth/userSlice';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { verticalScale } from 'utils/helpers';
+import { height, verticalScale } from 'utils/helpers';
 
 const SignUpScreen = () => {
   const { countries } = useLoadCountries();
@@ -26,6 +26,7 @@ const SignUpScreen = () => {
   const [showPhoneConfirmationModal, setShowPhoneConfirmationModal] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<CountryCodeType>(INITIAL_SELECTED_COUNTRY);
   const dispatch = useAppDispatch();
+  const isSmallScreen = height < 700;
 
   const { isLoading, mutate } = useMutation(Api.verifyPhoneBeforeRegister, {
     onSuccess: data => {
@@ -74,10 +75,11 @@ const SignUpScreen = () => {
   return (
     <View className="pt-10 bg-blue flex-1 px-7 justify-center">
       <ScrollView
-        className="flex-1"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ marginTop: verticalScale(120) }}>
-        <Text className={text({ type: 'b44', class: 'text-white mb-16' })}>
+        contentContainerStyle={{ marginTop: verticalScale(120), flexGrow: 1 }}>
+        <Text
+          className="mb-16"
+          style={{ fontSize: isSmallScreen ? 42 : 48, color: 'white', fontWeight: '600' }}>
           Enter your{'\n'}Phone Number
         </Text>
         <PhoneInput

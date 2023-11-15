@@ -18,8 +18,8 @@ export const CustomReferenceButton = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`bg-transparent px-12 py-2 items-center justify-center mt-4 border-sky-600 border-8 rounded-full ${customContainerClass}`}
-      style={extraStyles}>
+      className={`bg-transparent px-12 py-2 items-center justify-center mt-4 border-sky-600 rounded-full ${customContainerClass}`}
+      style={[{ borderWidth: 5 }, extraStyles]}>
       <Text className={`text-black text-center text-lg font-medium ${customTextClass}`}>
         {title}
       </Text>

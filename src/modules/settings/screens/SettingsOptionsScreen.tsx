@@ -1,11 +1,11 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import { SettingsHeader } from '../components/SettingsHeader';
 import { CustomSettingOption } from '../components/CustomSettingOption';
 import { ReferralGiftIcon } from '../../../../assets/referralGift';
 
 export const SettingsOptionScreen = ({ navigation }: any) => {
   return (
-    <View>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
       <SettingsHeader />
       <Pressable
         className="flex-row items-center bg-zinc-200 px-6 py-3 mx-6 mt-4 rounded-2xl"
@@ -37,6 +37,6 @@ export const SettingsOptionScreen = ({ navigation }: any) => {
           onPress={() => navigation.navigate('Language')}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };

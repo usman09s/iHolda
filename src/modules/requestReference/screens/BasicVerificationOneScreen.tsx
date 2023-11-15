@@ -8,7 +8,7 @@ import { height } from 'utils/helpers';
 
 export const BasicVerificationOneScreen = ({ navigation }: any) => {
   const [selectedOption, setSelectedOption] = useState(null);
-  const isSmallScreen = height < 670;
+  const isSmallScreen = height < 700;
 
   const selectOption = option => {
     setSelectedOption(option);

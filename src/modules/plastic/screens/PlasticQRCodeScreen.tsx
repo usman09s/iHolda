@@ -24,7 +24,7 @@ const PlasticQRCodeScreen = () => {
   const [id, setId] = useState(userQrCode);
 
   return (
-    <ScrollView className="bg-milkWhite">
+    <ScrollView className="bg-milkWhite" showsVerticalScrollIndicator={false}>
       <View className="px-7 flex-1">
         <Header title="Go to drop off location" />
         <Text className={text({ type: 'l13', class: 'mb-2 mt-12' })}>
@@ -43,7 +43,7 @@ const PlasticQRCodeScreen = () => {
         <Text className={text({ type: 'l13', class: 'mt-12 mb-7 text-center' })}>
           Present your QR code at drop off location{' '}
         </Text>
-        <View className="self-center">
+        <View className="self-center pb-8">
           {/* <Image
             resizeMode="stretch"
             className="w-full h-full border-[7px] rounded-xl self-center"
