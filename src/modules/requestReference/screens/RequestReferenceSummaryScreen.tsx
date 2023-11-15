@@ -1,21 +1,28 @@
 import Header from 'components/Header/Header';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Dimensions } from 'react-native';
 import { text } from 'theme/text';
 import StatusBarItem from '../components/StatusBarItem';
+import { height } from 'utils/helpers';
 
 export const RequestReferenceSummaryScreen = ({ navigation }: any) => {
+  const isSmallScreen = height < 670;
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="px-6">
-        <Header showBackIcon={true} title="Verification" />
+        <Header
+          showBackIcon
+          centerComponent={
+            <Text className={text({ type: 'm16', class: 'mt-2 text-lg' })}>Verification</Text>
+          }
+        />
       </View>
-      <View className="mt-16 mb-16">
+      <View className={`mt-16 ${isSmallScreen ? 'mb-8' : 'mb-16'}`}>
         <Text className={'text-7xl text-center font-bold'}>10%</Text>
         <Text className={text({ type: 'b18', class: 'text-center text-black mx-6 ' })}>
           Complete
         </Text>
       </View>
-      <View className="px-4">
+      <View className={`px-4 ${isSmallScreen ? 'pb-8' : ''}`}>
         <StatusBarItem status={'completed'} title={'Registration'} />
         <StatusBarItem
           status={'pending'}

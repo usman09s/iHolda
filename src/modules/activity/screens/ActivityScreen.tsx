@@ -70,7 +70,7 @@ const ActivityScreen = () => {
             user2: 'https://i.pravatar.cc/150?img=36',
           }}
           title="Reference check"
-          lastUserUsername="@user3"
+          lastUserUsername="@user3 ?"
           subTitle="Do you know"
           momentThumbnail={'https://i.pravatar.cc/150?img=36'}
           time="4H"
