@@ -140,7 +140,7 @@ class ApiClass {
       .json((result: SignInResponseType) => {
         this.token = result.data.accessToken;
         this.refreshToken = result.data.refreshToken;
-
+        console.log(result, 'yuyuyi');
         return result;
       });
 
