@@ -1,7 +1,7 @@
 import { Platform, Pressable, Text, View } from 'react-native';
 import { text } from 'theme/text';
 import { DropOffLocationItemType } from 'types/PlasticTypes';
-import { formatDays } from 'utils/helpers';
+import { formatDays, height } from 'utils/helpers';
 
 type Props = {
   location: DropOffLocationItemType;
@@ -9,6 +9,7 @@ type Props = {
 };
 
 const DropOffLocationItem = ({ location, onPressLocation }: Props) => {
+  const isSmallScreen = height < 700;
   const calculateDisplayHours = (openingHour: any, closingHour: any) => {
     const parseHour = (hour: any) => {
       const parts = hour.split(':');
@@ -38,7 +39,9 @@ const DropOffLocationItem = ({ location, onPressLocation }: Props) => {
       })}`}>
       <View className="flex-row justify-between items-center">
         <View>
-          <Text className={text({ type: 'r16' })}>{location?.name || ''}</Text>
+          <Text className={`${isSmallScreen ? 'text-14 font-Regular' : 'text-16 font-Regular'}`}>
+            {location?.name || ''}
+          </Text>
         </View>
         <Text
           className={text({
@@ -48,14 +51,29 @@ const DropOffLocationItem = ({ location, onPressLocation }: Props) => {
           {location?.isAvailable ? 'Open now' : 'Closed'}
         </Text>
       </View>
-      <Text className={text({ type: 'r12', class: 'text-black-o-70' })}>
+      <Text
+        className={`${
+          isSmallScreen
+            ? 'text-10 font-Regular text-black-o-70'
+            : 'text-12 font-Regular text-black-o-70'
+        }`}>
         {location?.dropoffLocation.address || ''}
       </Text>
       <View className="flex-row justify-between mt-2">
-        <Text className={text({ type: 'r10', class: 'text-black-o-60' })}>
+        <Text
+          className={`${
+            isSmallScreen
+              ? 'text-8 font-Regular text-black-o-60'
+              : 'text-10 font-Regular text-black-o-60'
+          }`}>
           Open from {calculateDisplayHours(location?.openingHour, location?.closingHour)}
         </Text>
-        <Text className={text({ type: 'r10', class: 'text-black-o-60' })}>
+        <Text
+          className={`${
+            isSmallScreen
+              ? 'text-8 font-Regular text-black-o-60'
+              : 'text-10 font-Regular text-black-o-60'
+          }`}>
           {formatDays(location?.days)}
         </Text>
       </View>

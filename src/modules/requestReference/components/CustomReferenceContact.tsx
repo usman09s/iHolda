@@ -17,7 +17,8 @@ export const CustomReferenceContact = ({ data }: any) => {
       <CustomReferenceButton
         title="SELECT"
         onPress={() => navigation.goBack()}
-        customContainerClass={'border-black py-0 mt-0 border-4 px-3.5'}
+        customContainerClass={'border-black py-0 mt-0 px-3.5'}
+        extraStyles={{ borderWidth: 3 }}
         customTextClass={'text-12 font-bold'}
       />
     </View>

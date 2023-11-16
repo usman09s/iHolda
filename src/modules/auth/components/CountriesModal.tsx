@@ -29,7 +29,7 @@ const CountriesModal = ({ visible, onCloseModal, countries, onPressCountry }: Pr
 
   return (
     <Modal statusBarTranslucent visible={visible} onRequestClose={onCloseModal} transparent>
-      <View className=" flex-1 justify-center items-center px-4 overflow-hidden">
+      <View className="flex-1 justify-center items-center px-4 overflow-hidden">
         <Animated.View
           entering={SlideInDown}
           className="bg-white my-20 w-full rounded-2xl px-4 overflow-hidden">

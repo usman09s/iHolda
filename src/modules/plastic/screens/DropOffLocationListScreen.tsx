@@ -8,8 +8,11 @@ import { DropOffLocationItemType } from 'types/PlasticTypes';
 import DropOffLocationItem from '../components/DropOffLocationItem';
 import LocationClosedPopup from '../components/LocationClosedPopup';
 import useDropOffLocationListActions from '../hooks/useDropOffLocationListActions';
+import { height } from 'utils/helpers';
 
 const DropOffLocationListScreen = () => {
+  const isSmallScreen = height < 700;
+  console.log(height);
   const {
     data,
     isLoading,
@@ -21,7 +24,9 @@ const DropOffLocationListScreen = () => {
     setShowClosedDropOffLocationPopup,
   } = useDropOffLocationListActions();
 
-  const filteredData = data ? data.filter(item => item.name.includes(searchKeyword)) : [];
+  const filteredData = Array.isArray(data)
+    ? data.filter(item => item.name.includes(searchKeyword))
+    : [];
 
   const renderItem: ListRenderItem<DropOffLocationItemType> = ({ item }) => (
     <DropOffLocationItem location={item} onPressLocation={onPressLocation(item)} />
@@ -42,7 +47,15 @@ const DropOffLocationListScreen = () => {
 
   return (
     <View className="bg-milkWhite px-7 flex-1">
-      <Header showBackIcon title="Select drop off location" />
+      <Header
+        showBackIcon
+        centerComponent={
+          <Text
+            className={`mt-2 ${isSmallScreen ? 'text-16 font-semibold' : 'text-20 font-semibold'}`}>
+            Select drop off location
+          </Text>
+        }
+      />
       <View className="mb-7 mt-6">
         <Input
           onChangeText={setSearchKeyword}

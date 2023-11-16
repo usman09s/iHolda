@@ -13,6 +13,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { setScannedPlastic, setUserPlasticAgent } from 'store/agentPlastic/agentPlasticSlice';
 // import ErrorModal from 'components/ErrorModal';
 import CustomErrorModal from 'components/ErrorModal/errorModal';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
 const AgentQRCodeScanScreen = () => {
   const isFocused = useIsFocused();
@@ -48,6 +49,7 @@ const AgentQRCodeScanScreen = () => {
   const handleContinuePress = async () => {
     try {
       const apiUrl = `http://ihold.yameenyousuf.com/api/plastic/scan/${qrCode}/${plasticAgent}`;
+      console.log(apiUrl, 'hofheoihf');
       const response = await axios.get(apiUrl);
 
       if (response.status === 200) {
@@ -75,9 +77,9 @@ const AgentQRCodeScanScreen = () => {
         <View
           className="overflow-hidden rounded-xl self-center mt-4 border-white border-b1"
           style={sizes}>
-          {permission?.granted && isFocused && (
-            <Camera onBarCodeScanned={onBarCodeScanned} style={sizes} />
-          )}
+          {/* {permission?.granted && isFocused && ( */}
+          <BarCodeScanner onBarCodeScanned={onBarCodeScanned} style={sizes} />
+          {/* )} */}
         </View>
       </View>
       <View className="px-7 mt-8">

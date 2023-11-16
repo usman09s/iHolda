@@ -50,8 +50,8 @@ const EnterReferralCodeScreen = () => {
   };
 
   return (
-    <View className="flex-1 bg-blue px-7 justify-evenly">
-      <ScrollView className="flex-1" contentContainerStyle={{ marginTop: verticalScale(120) }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+      <View className="flex-1 bg-blue px-7 justify-evenly pt-14">
         <Text className={text({ type: 'm18', class: 'text-white text-center mb-8' })}>
           Referral code
         </Text>
@@ -68,7 +68,7 @@ const EnterReferralCodeScreen = () => {
             <Text className="text-white text-36">?</Text>
           </View>
         </View>
-        <View style={{ height: 80 }} />
+        <View style={{ height: verticalScale(80) }} />
         <Input
           onChangeText={setReferralCode}
           placeholder="Enter referral code"
@@ -76,7 +76,7 @@ const EnterReferralCodeScreen = () => {
           placeholderTextColor={colors['white-o-60']}
           keyboardType="numeric"
         />
-        <View style={{ height: 64 }} />
+        <View style={{ height: verticalScale(64) }} />
         <View>
           <Button
             title="Confirm"
@@ -85,15 +85,15 @@ const EnterReferralCodeScreen = () => {
             extraStyles={{ borderWidth: 5, borderColor: 'white', width: 200 }}
             onPress={onContinue}
           />
-          <View style={{ height: 32 }} />
+          <View style={{ height: verticalScale(35) }} />
           <Button
             title="Skip"
             type="ghost"
-            customContainer="self-center"
+            customContainer="self-center pb-8"
             onPress={() => navigate('UserWaitList')}
             customTextClass={text({ type: 'm18', class: 'text-white-o-70 ' })}
           />
-          <View style={{ height: 16 }} />
+          <View style={{ height: verticalScale(16) }} />
         </View>
         <CustomErrorModal
           visible={modalVisible}
@@ -101,8 +101,8 @@ const EnterReferralCodeScreen = () => {
           errorText={'Incorrect Referral code!'}
           buttonTitle="CLOSE"
         />
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
