@@ -9,7 +9,7 @@ import { width } from 'utils/helpers';
 import CustomErrorModal from 'components/ErrorModal/errorModal';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-export const DiscountQrCodeScreen = () => {
+export const DiscountQrCodeScreen = ({ navigation }: any) => {
   const isFocused = useIsFocused();
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [qrCode, setQrCode] = useState('');
@@ -34,6 +34,7 @@ export const DiscountQrCodeScreen = () => {
   const onBarCodeScanned = async ({ type, data }: any) => {
     if (data) {
       setQrCode(data);
+      navigation.navigate('TotalDiscount');
     }
   };
 

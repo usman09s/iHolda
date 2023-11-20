@@ -37,6 +37,13 @@ export const SettingsOptionScreen = ({ navigation }: any) => {
           onPress={() => navigation.navigate('Language')}
         />
       </View>
+      <Pressable
+        className="items-center mt-10 mb-12"
+        onPress={() => {
+          navigation.goBack();
+        }}>
+        <Text className="text-base text-red-600 font-semibold">Logout</Text>
+      </Pressable>
     </ScrollView>
   );
 };

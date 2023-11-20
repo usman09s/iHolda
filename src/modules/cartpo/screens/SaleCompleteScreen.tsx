@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CheckmarkIcon } from '../../../../assets/referralGift';
+import { StackActions } from '@react-navigation/native';
 
 export const SaleCompleteScreen = () => {
   return (
@@ -24,7 +25,9 @@ export const SaleCompleteScreen = () => {
         <Text className="text-center text-2xl mt-6">Sale complete</Text>
       </View>
       <View>
-        <TouchableOpacity className="bg-gray-300 px-12 rounded-full">
+        <TouchableOpacity
+          className="bg-gray-300 px-12 rounded-full"
+          onPress={() => StackActions.pop(3)}>
           <Text className="text-center text-2xl my-1">Home</Text>
         </TouchableOpacity>
       </View>

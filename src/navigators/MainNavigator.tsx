@@ -57,7 +57,9 @@ export default function MainNavigator() {
 
   return (
     <NavigationContainer>
-      <MainStack.Navigator screenOptions={commonScreenOptions} initialRouteName={'CartpoTab'}>
+      <MainStack.Navigator
+        screenOptions={commonScreenOptions}
+        initialRouteName={status === 'SUCCESS' ? 'BottomTabs' : 'Auth'}>
         <MainStack.Screen options={commonOptions} name="Auth" component={AuthStackNavigator} />
         <MainStack.Screen
           name="BottomTabs"

@@ -76,7 +76,10 @@ const SignUpScreen = () => {
     <View className="pt-10 bg-blue flex-1 px-7 justify-center">
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ marginTop: verticalScale(120), flexGrow: 1 }}>
+        contentContainerStyle={{
+          marginTop: isSmallScreen ? verticalScale(80) : verticalScale(120),
+          flexGrow: 1,
+        }}>
         <Text
           className="mb-16"
           style={{ fontSize: isSmallScreen ? 42 : 48, color: 'white', fontWeight: '600' }}>

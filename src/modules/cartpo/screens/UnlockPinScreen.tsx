@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { CustomSettingsInput } from 'modules/settings/components/CustomSettingsInput';
 import * as Yup from 'yup';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
-import { verticalScale } from 'utils/helpers';
+import { height, verticalScale } from 'utils/helpers';
 
 const initialValues = {
   pin: '',
@@ -19,9 +19,12 @@ const validationSchema = Yup.object().shape({
 });
 
 export const UnlockPinScreen = ({ navigation }: any) => {
+  const isSmallScreen = height < 700;
   const handleSubmit = values => {
-    console.log('Form values:', values);
-    navigation.navigate('Calculator');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'CartpoTab' }],
+    });
   };
 
   return (
@@ -31,24 +34,25 @@ export const UnlockPinScreen = ({ navigation }: any) => {
         justifyContent: 'center',
       }}
       showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps>
+      keyboardShouldPersistTaps="always">
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}>
         {({ handleChange, handleSubmit, values, errors }) => (
-          <View className="px-6 py-12">
+          <View className="px-6 my-12">
             <Text
               style={{
                 fontSize: 30,
                 width: '60%',
                 color: '#7f7e7e',
                 fontWeight: '700',
-                marginBottom: 20,
+                marginBottom: verticalScale(20),
               }}>
               Enter unlock pin
             </Text>
-            <View style={{ marginVertical: verticalScale(180) }}>
+            <View
+              style={{ marginVertical: isSmallScreen ? verticalScale(120) : verticalScale(170) }}>
               <CustomSettingsInput
                 label="Enter pin"
                 placeholder="34312"
@@ -63,7 +67,11 @@ export const UnlockPinScreen = ({ navigation }: any) => {
             </View>
             <CustomReferenceButton
               customContainerClass={'rounded-xl w-72 self-center h-14'}
-              extraStyles={{ borderWidth: 0, backgroundColor: 'rgb(51,70,252)', marginTop: 20 }}
+              extraStyles={{
+                borderWidth: 0,
+                backgroundColor: 'rgb(51,70,252)',
+                marginTop: verticalScale(20),
+              }}
               title={'Login'}
               customTextClass={'text-white'}
               onPress={handleSubmit}

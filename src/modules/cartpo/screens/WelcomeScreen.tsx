@@ -36,14 +36,14 @@ export const WelcomeScreen = ({ navigation }: any) => {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}>
         {({ handleChange, handleSubmit, values, errors }) => (
-          <View className="px-6 py-12">
+          <View className="px-6 my-12">
             <Text
               style={{
                 fontSize: 30,
                 width: '70%',
                 color: '#7f7e7e',
                 fontWeight: '700',
-                marginBottom: 20,
+                marginBottom: verticalScale(20),
               }}>
               Welcome To Cartpo
             </Text>
@@ -62,7 +62,11 @@ export const WelcomeScreen = ({ navigation }: any) => {
             </View>
             <CustomReferenceButton
               customContainerClass={'rounded-xl w-72 self-center h-14'}
-              extraStyles={{ borderWidth: 0, backgroundColor: 'rgb(51,70,252)', marginTop: 20 }}
+              extraStyles={{
+                borderWidth: 0,
+                backgroundColor: 'rgb(51,70,252)',
+                marginTop: verticalScale(20),
+              }}
               title={'Next'}
               customTextClass={'text-white'}
               onPress={handleSubmit}

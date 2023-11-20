@@ -31,24 +31,24 @@ export const ConfirmOtpScreen = ({ navigation }: any) => {
         justifyContent: 'center',
       }}
       showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps>
+      keyboardShouldPersistTaps="always">
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}>
         {({ handleChange, handleSubmit, values, errors }) => (
-          <View className="px-6 py-12">
+          <View className="px-6 my-12">
             <Text
               style={{
                 fontSize: 30,
                 width: '40%',
                 color: '#7f7e7e',
                 fontWeight: '700',
-                marginBottom: 20,
+                marginBottom: verticalScale(20),
               }}>
               Confirm OTP
             </Text>
-            <View style={{ marginVertical: verticalScale(180) }}>
+            <View style={{ marginVertical: verticalScale(170) }}>
               <CustomSettingsInput
                 label="Enter OTP"
                 placeholder="12125"
@@ -63,7 +63,11 @@ export const ConfirmOtpScreen = ({ navigation }: any) => {
             </View>
             <CustomReferenceButton
               customContainerClass={'rounded-xl w-72 self-center h-14'}
-              extraStyles={{ borderWidth: 0, backgroundColor: 'rgb(51,70,252)', marginTop: 20 }}
+              extraStyles={{
+                borderWidth: 0,
+                backgroundColor: 'rgb(51,70,252)',
+                marginTop: verticalScale(20),
+              }}
               title={'Confirm'}
               customTextClass={'text-white'}
               onPress={handleSubmit}

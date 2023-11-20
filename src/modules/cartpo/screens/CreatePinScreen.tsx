@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { CustomSettingsInput } from 'modules/settings/components/CustomSettingsInput';
 import * as Yup from 'yup';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
-import { verticalScale } from 'utils/helpers';
+import { height, verticalScale } from 'utils/helpers';
 
 const initialValues = {
   pin: '',
@@ -19,6 +19,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export const CreatePinScreen = ({ navigation }: any) => {
+  const isSmallScreen = height < 700;
   const handleSubmit = values => {
     console.log('Form values:', values);
     navigation.navigate('UnlockPin');
@@ -44,11 +45,12 @@ export const CreatePinScreen = ({ navigation }: any) => {
                 width: '30%',
                 color: '#7f7e7e',
                 fontWeight: '700',
-                marginBottom: 20,
+                marginBottom: verticalScale(20),
               }}>
               Create pin
             </Text>
-            <View style={{ marginVertical: verticalScale(180) }}>
+            <View
+              style={{ marginVertical: isSmallScreen ? verticalScale(100) : verticalScale(170) }}>
               <CustomSettingsInput
                 label="Enter pin"
                 placeholder="Enter Text Here"
@@ -70,7 +72,11 @@ export const CreatePinScreen = ({ navigation }: any) => {
             </View>
             <CustomReferenceButton
               customContainerClass={'rounded-xl w-72 self-center h-14'}
-              extraStyles={{ borderWidth: 0, backgroundColor: 'rgb(51,70,252)', marginTop: 20 }}
+              extraStyles={{
+                borderWidth: 0,
+                backgroundColor: 'rgb(51,70,252)',
+                marginTop: verticalScale(20),
+              }}
               title={'Create account'}
               customTextClass={'text-white'}
               onPress={handleSubmit}

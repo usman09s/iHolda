@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Modal, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Fontisto';
 // import Modal from 'react-native-modal'
 import Header from 'components/Header/Header';
@@ -43,7 +43,7 @@ export const TutorialScreen = () => {
   };
 
   return (
-    <View className="flex-1 px-6">
+    <ScrollView className="flex-1 px-6">
       <Header
         showBackIcon
         centerComponent={<Text className="text-black text-xl font-semibold mt-2">Tutorials</Text>}
@@ -108,6 +108,6 @@ export const TutorialScreen = () => {
           />
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 };

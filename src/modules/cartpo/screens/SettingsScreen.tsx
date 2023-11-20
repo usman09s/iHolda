@@ -55,7 +55,6 @@ const SettingsScreen = () => {
             options={[
               { label: 'Category 1', value: 'cat1' },
               { label: 'Category 2', value: 'cat2' },
-              // ... other categories
             ]}
           />
           <CustomDropdownInput

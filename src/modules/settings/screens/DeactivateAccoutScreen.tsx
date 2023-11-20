@@ -80,17 +80,15 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
               customContainerClass={'w-60 py-2 border-0 bg-black'}
               customTextClass={'text-white font-normal'}
               onPress={() => {
-                if (selectedId === '2') {
-                  setVisible(true); // Show modal when "delete" option is selected
-                } else {
-                  navigation.navigate('Feedback');
-                }
+                setVisible(true);
               }}
             />
             <CustomReferenceButton
               title="Back"
-              customContainerClass={'w-60 py-2 border-2 border-black'}
+              customContainerClass={'w-60 py-2 border-black'}
               customTextClass={'text-black font-semibold'}
+              onPress={() => navigation.goBack()}
+              extraStyles={{ borderWidth: 2 }}
             />
           </View>
         </View>
@@ -110,6 +108,7 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
                   <CustomReferenceButton
                     title="CANCEL"
                     customContainerClass={'w-36 px-0 border-black'}
+                    extraStyles={{ borderWidth: 3 }}
                     customTextClass={'text-base'}
                     onPress={onClose}
                   />

@@ -14,6 +14,8 @@ import { WithdrawSuccessfulScreen } from './screens/WithdrawSuccessfulScreen';
 import { DiscountQrCodeScreen } from './screens/DiscountQrCodeScreen';
 import { DirectPaymentScreen } from './screens/DirectPaymentScreen';
 import { SaleCompleteScreen } from './screens/SaleCompleteScreen';
+import { TotalDiscountScreen } from './screens/TotalDiscountScreen';
+import SettingsScreen from './screens/SettingsScreen';
 
 export type CartpoStackParamList = {
   Welcome: undefined;
@@ -27,6 +29,8 @@ export type CartpoStackParamList = {
   DiscountQrCode: undefined;
   DirectPayment: undefined;
   SaleComplete: undefined;
+  TotalDiscount: undefined;
+  Settings: undefined;
 };
 
 const CartpoStack = createNativeStackNavigator<CartpoStackParamList>();
@@ -48,6 +52,7 @@ export default function CartpoStackNavigator() {
       <CartpoStack.Screen options={commonOptions} name="UnlockPin" component={UnlockPinScreen} />
       <CartpoStack.Screen options={commonOptions} name="Topup" component={TopupScreen} />
       <CartpoStack.Screen options={commonOptions} name="Cashout" component={CashoutScreen} />
+      <CartpoStack.Screen options={commonOptions} name="Settings" component={SettingsScreen} />
       <CartpoStack.Screen
         options={commonOptions}
         name="WithdrawSuccessful"
@@ -67,6 +72,11 @@ export default function CartpoStackNavigator() {
         options={commonOptions}
         name="SaleComplete"
         component={SaleCompleteScreen}
+      />
+      <CartpoStack.Screen
+        options={commonOptions}
+        name="TotalDiscount"
+        component={TotalDiscountScreen}
       />
     </CartpoStack.Navigator>
   );

@@ -78,18 +78,18 @@ export const ReferralScreen = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <View className={'flex-row justify-between my-6 px-5 items-center'}>
+        <View className={'flex-row justify-between my-6 px-5 items-center w-full'}>
           <TouchableOpacity
-            className="flex-row items-center justify-center rounded-lg py-4 h-full"
-            style={{ backgroundColor: '#ECEFE3', width: '49%' }}>
-            <Text style={{ textAlign: 'center', marginRight: 10 }}>Share Referral link</Text>
+            className="flex-row items-center justify-center rounded-lg py-4 h-full bg-[#ECEFE3] w-1/2"
+            style={{ marginRight: '1%' }}>
+            <Text className="text-center mr-2">Share Referral link</Text>
             <LinkIcon />
           </TouchableOpacity>
           <TouchableOpacity
-            className="flex-row items-center justify-center rounded-lg py-4 h-full"
-            style={{ backgroundColor: '#ECEFE3', width: '49%' }}>
+            className="flex-row items-center justify-center rounded-lg py-4 h-full bg-[#ECEFE3] w-1/2"
+            style={{ marginLeft: '1%' }}>
             <FacebookIcon />
-            <Text style={{ textAlign: 'center', marginLeft: 10 }}>Share to</Text>
+            <Text className="text-center ml-2">Share to</Text>
           </TouchableOpacity>
         </View>
         <View className="ml-5">

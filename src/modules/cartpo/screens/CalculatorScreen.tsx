@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { verticalScale, horizontalScale, moderateScale } from '../../../utils/helpers';
 
 export const CalculatorScreen = ({ navigation }: any) => {
   const [inputValue, setInputValue] = useState('0');
@@ -33,12 +34,14 @@ export const CalculatorScreen = ({ navigation }: any) => {
   return (
     <View className="flex-1 px-6">
       <Header showBackIcon />
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View className="flex-row justify-center">
           <TouchableOpacity
-            className={`rounded-xl px-6 py-2 ${
-              selectedOption === 'direct' ? 'bg-blue' : 'border border-black'
-            }`}
+            className={'rounded-xl px-6 py-2'}
+            style={{
+              backgroundColor: selectedOption === 'direct' ? '#3740fe' : 'transparent',
+              borderWidth: selectedOption === 'direct' ? 0 : 1,
+            }}
             onPress={() => handleOptionPress('direct')}>
             <Text
               className={`text-black font-semibold text-center ${
@@ -49,9 +52,11 @@ export const CalculatorScreen = ({ navigation }: any) => {
           </TouchableOpacity>
           <View className="w-2" />
           <TouchableOpacity
-            className={`rounded-xl px-5 py-2 ${
-              selectedOption === 'cash' ? 'bg-blue' : 'border border-black'
-            }`}
+            className={'rounded-xl px-5 py-2'}
+            style={{
+              backgroundColor: selectedOption === 'cash' ? '#3740fe' : 'transparent',
+              borderWidth: selectedOption === 'cash' ? 0 : 1,
+            }}
             onPress={() => handleOptionPress('cash')}>
             <Text
               className={`text-black font-semibold text-center ${
@@ -63,7 +68,9 @@ export const CalculatorScreen = ({ navigation }: any) => {
         </View>
         <Text className="text-5xl text-center py-5">
           {`${inputValue}`}
-          <Text className="text-2xl font-light">CFA</Text>
+          <Text className="text-2xl font-light" style={{ lineHeight: 40 }}>
+            CFA
+          </Text>
         </Text>
         <View>
           <View style={styles.keypad}>
@@ -88,10 +95,14 @@ export const CalculatorScreen = ({ navigation }: any) => {
           </View>
           <CustomReferenceButton
             customContainerClass={'rounded-xl w-72 self-center h-14'}
-            extraStyles={{ borderWidth: 0, backgroundColor: 'rgb(51,70,252)', marginTop: 20 }}
+            extraStyles={{
+              borderWidth: 0,
+              backgroundColor: '#3740fe',
+              marginTop: verticalScale(20),
+            }}
             title={'Next'}
             customTextClass={'text-white'}
-            onPress={() => navigation.navigate('CartpoStack', { screen: 'SaleComplete' })}
+            onPress={() => navigation.navigate('CartpoStack', { screen: 'DiscountQrCode' })}
           />
         </View>
       </ScrollView>
@@ -104,27 +115,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   keypadButton: {
     width: '33%',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: verticalScale(10),
     justifyContent: 'center',
   },
   keypadButtonText: {
     fontSize: 28,
-    padding: 12,
+    padding: moderateScale(12),
     textAlign: 'center',
     borderWidth: 1,
     borderColor: '#e2e2e2',
-    borderRadius: 35,
-    width: 65,
+    borderRadius: moderateScale(35),
+    width: horizontalScale(65),
     backgroundColor: 'white',
   },
   content: {
     flexGrow: 1,
     justifyContent: 'space-between',
-    paddingVertical: 25,
+    paddingVertical: verticalScale(25),
   },
 });

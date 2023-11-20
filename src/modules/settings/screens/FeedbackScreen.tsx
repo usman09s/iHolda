@@ -22,6 +22,7 @@ export const FeedbackScreen = () => {
             className="h-72 border-black rounded-3xl py-4 px-3 text-2xl font-normal"
             textAlignVertical="top"
             style={{ borderWidth: 1, color: 'black' }}
+            multiline
           />
         </View>
         <View className="items-center">
