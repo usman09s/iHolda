@@ -2,9 +2,8 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CheckmarkIcon } from '../../../../assets/referralGift';
-import { StackActions } from '@react-navigation/native';
 
-export const SaleCompleteScreen = () => {
+export const SaleCompleteScreen = ({ navigation }: any) => {
   return (
     <View className="flex-1 items-center justify-around">
       <View>
@@ -27,7 +26,7 @@ export const SaleCompleteScreen = () => {
       <View>
         <TouchableOpacity
           className="bg-gray-300 px-12 rounded-full"
-          onPress={() => StackActions.pop(3)}>
+          onPress={() => navigation.goBack()}>
           <Text className="text-center text-2xl my-1">Home</Text>
         </TouchableOpacity>
       </View>

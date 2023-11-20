@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
-import Button from 'components/Button';
 import Header from 'components/Header/Header';
 import { text } from 'theme/text';
-import { width } from 'utils/helpers';
+import { height, width } from 'utils/helpers';
 import CustomErrorModal from 'components/ErrorModal/errorModal';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useSelector } from 'react-redux';
+import { selectSelectedOption } from 'store/cartpo/calculateSlice';
 
 export const DiscountQrCodeScreen = ({ navigation }: any) => {
   const isFocused = useIsFocused();
@@ -18,6 +19,8 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
   const scanResult = useRef<
     { encrypted_data: string; query_id: string; plastic_id: string } | undefined
   >();
+  const selectedOption = useSelector(selectSelectedOption);
+  const isSmallScreen = height < 700;
 
   useEffect(() => {
     requestPermission();
@@ -29,7 +32,10 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
     }
   }, [isFocused]);
 
-  const sizes = { width: width - 56, height: width - 56 };
+  const sizes = {
+    width: isSmallScreen ? width - 100 : width - 56,
+    height: isSmallScreen ? width - 100 : width - 56,
+  };
 
   const onBarCodeScanned = async ({ type, data }: any) => {
     if (data) {
@@ -38,8 +44,18 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
     }
   };
 
+  const outerViewStyle = isSmallScreen ? {} : { justifyContent: 'space-between' };
+
+  const handleNavigation = () => {
+    if (selectedOption === 'cash') {
+      navigation.navigate('SaleComplete');
+    } else {
+      navigation.navigate('DirectPayment');
+    }
+  };
+
   return (
-    <View className="flex-1">
+    <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
       <View className="bg-black px-7 pb-6">
         <Header showBackIcon backIconColor="white" />
         <View
@@ -48,8 +64,8 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
           <BarCodeScanner onBarCodeScanned={onBarCodeScanned} style={sizes} />
         </View>
       </View>
-      <View className="px-7 my-12 flex-column justify-between flex-1">
-        <View>
+      <View className="px-7 my-12 flex-column flex-1" style={outerViewStyle}>
+        <View style={{ marginBottom: isSmallScreen && '15%' }}>
           <Text
             className={text({
               type: 'b32',
@@ -65,17 +81,19 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
             Scan customer's QR code to verify and apply discount
           </Text>
         </View>
-        <TouchableOpacity className="mb-6">
+        <TouchableOpacity
+          className="mb-6"
+          onPress={handleNavigation}
+          style={{ marginTop: isSmallScreen && '15%' }}>
           <Text className="text-center text-2xl">Skip</Text>
         </TouchableOpacity>
       </View>
-      {/* <ErrorModal errorText={errorText} /> */}
       <CustomErrorModal
         errorText={errorText}
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         buttonTitle="CLOSE"
       />
-    </View>
+    </ScrollView>
   );
 };

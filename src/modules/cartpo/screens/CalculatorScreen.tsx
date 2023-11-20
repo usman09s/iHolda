@@ -4,10 +4,13 @@ import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { verticalScale, horizontalScale, moderateScale } from '../../../utils/helpers';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectSelectedOption, setSelectedOption } from 'store/cartpo/calculateSlice';
 
-export const CalculatorScreen = ({ navigation }: any) => {
+const CalculatorScreen = ({ navigation }: any) => {
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('0');
-  const [selectedOption, setSelectedOption] = useState('direct');
+  const selectedOption = useSelector(selectSelectedOption);
 
   const handleKeypadPress = value => {
     setInputValue(prevInputValue => {
@@ -28,7 +31,7 @@ export const CalculatorScreen = ({ navigation }: any) => {
   };
 
   const handleOptionPress = option => {
-    setSelectedOption(option);
+    dispatch(setSelectedOption(option));
   };
 
   return (
@@ -37,7 +40,7 @@ export const CalculatorScreen = ({ navigation }: any) => {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View className="flex-row justify-center">
           <TouchableOpacity
-            className={'rounded-xl px-6 py-2'}
+            className={'rounded-xl px-7 py-1'}
             style={{
               backgroundColor: selectedOption === 'direct' ? '#3740fe' : 'transparent',
               borderWidth: selectedOption === 'direct' ? 0 : 1,
@@ -52,7 +55,7 @@ export const CalculatorScreen = ({ navigation }: any) => {
           </TouchableOpacity>
           <View className="w-2" />
           <TouchableOpacity
-            className={'rounded-xl px-5 py-2'}
+            className={'rounded-xl px-6 py-2'}
             style={{
               backgroundColor: selectedOption === 'cash' ? '#3740fe' : 'transparent',
               borderWidth: selectedOption === 'cash' ? 0 : 1,
@@ -139,3 +142,5 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(25),
   },
 });
+
+export default CalculatorScreen;

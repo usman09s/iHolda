@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Image } from 'react-native';
 
-import { CalculatorScreen } from './screens/CalculatorScreen';
+import CalculatorScreen from './screens/CalculatorScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { ProfileScreen } from './screens/ProfileScreen';
