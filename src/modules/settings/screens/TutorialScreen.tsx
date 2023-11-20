@@ -4,33 +4,47 @@ import Ionicons from 'react-native-vector-icons/Fontisto';
 // import Modal from 'react-native-modal'
 import Header from 'components/Header/Header';
 import { Video, ResizeMode } from 'expo-av';
+import { height } from 'utils/helpers';
+import { verticalScale } from '../../../utils/helpers';
 const TestVideo = require('../../../../assets/testVideo.mp4');
 
 const window = Dimensions.get('window');
-
+const isSmallScreen = height < 700;
 const TutorialItem = ({ title, onPress, extraClass, extraStyles }) => {
   const containerHeight = window.height * 0.23;
 
   return (
     <TouchableOpacity
       style={[
-        { height: containerHeight, backgroundColor: '#005ac9', position: 'relative' },
+        {
+          height: containerHeight,
+          backgroundColor: '#005ac9',
+          position: 'relative',
+          justifyContent: 'center', // Ensure items are centered vertically
+          padding: isSmallScreen ? 10 : 20, // Adjust padding for small screens
+        },
         extraStyles,
       ]}
-      className={`items-center justify-center bg-blue p-4 rounded-md mt-2 pb-6 ${extraClass}`}
+      className={`items-center bg-blue rounded-md mt-2 ${extraClass}`}
       onPress={onPress}>
       <Ionicons
         name="play"
-        size={30}
+        size={isSmallScreen ? 25 : 30}
         color="white"
         style={{
-          transform: [{ rotate: '3deg' }],
-          position: 'absolute',
-          top: '45%',
-          left: '50%',
+          alignSelf: 'center',
+          marginBottom: verticalScale(25),
         }}
       />
-      <Text className="text-white mt-auto text-center font-semibold">{title}</Text>
+      <Text
+        style={{
+          color: 'white',
+          textAlign: 'center',
+          fontWeight: 'bold',
+          fontSize: isSmallScreen ? 14 : 16,
+        }}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -43,7 +57,7 @@ export const TutorialScreen = () => {
   };
 
   return (
-    <ScrollView className="flex-1 px-6">
+    <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
       <Header
         showBackIcon
         centerComponent={<Text className="text-black text-xl font-semibold mt-2">Tutorials</Text>}
@@ -51,7 +65,9 @@ export const TutorialScreen = () => {
       <View className="mt-4">
         <Text className="mt-2 font-semibold text-base">Recommended</Text>
         <TutorialItem title="How to deposit plastics" onPress={toggleModal} />
-        <Text className="mt-8 font-semibold text-base">Plastics</Text>
+        <Text className={`font-semibold text-base ${isSmallScreen ? 'mt-5' : 'mt-8'}`}>
+          Plastics
+        </Text>
         <View className="flex-row mt-2 w-full">
           <TutorialItem
             extraClass={'mr-2'}
@@ -65,7 +81,7 @@ export const TutorialScreen = () => {
             onPress={toggleModal}
           />
         </View>
-        <View className="flex-row mt-2 w-full">
+        <View className={`flex-row w-full ${isSmallScreen ? 'mt-2 mb-6' : 'mt-2'}`}>
           <TutorialItem
             extraClass={'mr-2'}
             extraStyles={{ width: '49%' }}
