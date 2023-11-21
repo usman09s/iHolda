@@ -24,6 +24,8 @@ import BottomTabsNavigator from './BottomTabsNavigator';
 import RequestReferenceStackNavigator from 'modules/requestReference/RequestReferenceNavigator';
 import AcceptReferenceStackNavigator from 'modules/acceptReference/AcceptReferenceStackNavigator';
 import SettingsStackNavigator from 'modules/settings/SettingsStackNavigator';
+import CartpoStackNavigator from 'modules/cartpo/CartpoStackNavigator';
+import CartpoTabNavigator from 'modules/cartpo/CartpoTabNavigator';
 
 const MainStack = createNativeStackNavigator();
 
@@ -119,6 +121,12 @@ export default function MainNavigator() {
           options={commonOptions}
           component={SettingsStackNavigator}
         />
+        <MainStack.Screen
+          name="CartpoStack"
+          options={commonOptions}
+          component={CartpoStackNavigator}
+        />
+        <MainStack.Screen name="CartpoTab" options={commonOptions} component={CartpoTabNavigator} />
       </MainStack.Navigator>
     </NavigationContainer>
   );

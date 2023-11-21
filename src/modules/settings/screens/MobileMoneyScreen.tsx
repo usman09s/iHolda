@@ -15,7 +15,7 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref('number')], "Confirm number doesn't match"),
 });
 
-export const MobileMoneyScreen = () => {
+export const MobileMoneyScreen = ({ navigation }: any) => {
   const initialValues = {
     number: '',
     confirmNumber: '',
@@ -23,6 +23,7 @@ export const MobileMoneyScreen = () => {
 
   const handleSubmit = values => {
     console.log(values);
+    navigation.goBack();
   };
 
   return (
@@ -73,6 +74,7 @@ export const MobileMoneyScreen = () => {
                   <CustomReferenceButton
                     title="Save"
                     customContainerClass={'w-44'}
+                    extraStyles={{ borderWidth: 5 }}
                     onPress={handleSubmit}
                   />
                 </View>

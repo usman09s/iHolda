@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref('newPin')], "Confirm pin doesn't match"),
 });
 
-export const ChangePinScreen = () => {
+export const ChangePinScreen = ({ navigation }: any) => {
   const isSmallScreen = height < 700;
   const initialValues = {
     currentPin: '',
@@ -27,6 +27,7 @@ export const ChangePinScreen = () => {
   };
   const handleSubmit = values => {
     console.log(values);
+    navigation.navigate('CartpoStack');
   };
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
@@ -77,6 +78,7 @@ export const ChangePinScreen = () => {
                   title="Save"
                   customContainerClass={'w-44'}
                   onPress={handleSubmit}
+                  extraStyles={{ borderWidth: 5 }}
                 />
               </View>
             </View>
