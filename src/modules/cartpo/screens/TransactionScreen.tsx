@@ -2,77 +2,8 @@ import { View, Text, Image, ScrollView } from 'react-native';
 import { CustomTransaction } from '../components/CustomTransaction';
 import Icon from 'react-native-vector-icons/Entypo';
 import { HamburgerIcon } from '../../../../assets/referralGift';
-
-const transactionsData = [
-  {
-    avatarComponent: (
-      <View className="flex-row">
-        <View className="rounded-full border-[3px] border-saffron bg-gray-400 justify-center items-center">
-          <View className="rounded-full border-[2px] border-white justify-center items-center">
-            <Image
-              source={{ uri: 'https://i.pravatar.cc/150?img=36' }}
-              className="w-10 h-10 rounded-full"
-            />
-          </View>
-        </View>
-        <View className="rounded-full  right-4 border-[3px] border-green-400  bg-gray-400">
-          <View className="rounded-full border-[2px] border-white justify-center items-center">
-            <Image
-              source={{ uri: 'https://i.pravatar.cc/150?img=35' }}
-              className="w-10 h-10 rounded-full"
-            />
-          </View>
-        </View>
-      </View>
-    ),
-    topText: 'Discount sale',
-    bottomText: 'to @bayuga',
-    amount: '+800',
-    type: 'positive',
-    time: '08:30 PM',
-  },
-  {
-    avatarComponent: (
-      <View className="rounded-full border-[3px] border-saffron bg-gray-400 justify-center items-center mr-3">
-        <View className="rounded-full border-[2px] border-white justify-center items-center">
-          <Image
-            source={{ uri: 'https://i.pravatar.cc/150?img=36' }}
-            className="w-10 h-10 rounded-full"
-          />
-        </View>
-      </View>
-    ),
-    topText: 'Cash sale',
-    bottomText: 'to @bayuga',
-    amount: '-500',
-    type: 'positive',
-    time: '09:30 PM',
-  },
-  {
-    avatarComponent: (
-      <View className="self-center p-2 rounded-xl mr-2" style={{ backgroundColor: '#b2ffd7' }}>
-        <Icon name="wallet" size={25} color={'green'} />
-      </View>
-    ),
-    topText: 'Sale',
-    bottomText: 'Anonymous',
-    amount: '+5000',
-    type: 'positive',
-    time: '08:45 PM',
-  },
-  {
-    avatarComponent: (
-      <View className="self-center p-2 rounded-xl mr-2" style={{ backgroundColor: '#fac4cc' }}>
-        <Icon name="wallet" size={25} color={'red'} />
-      </View>
-    ),
-    topText: 'Cash out',
-    bottomText: 'via mobile money',
-    amount: '-1800',
-    type: 'negative',
-    time: '09:00 PM',
-  },
-];
+import TransactionInOut from 'modules/profile/components/TransactionInOut';
+import Icons from 'components/Icons';
 
 const Header = () => {
   return (
@@ -86,6 +17,75 @@ const Header = () => {
   );
 };
 
+const TransactionList = () => {
+  return (
+    <View>
+      <CustomTransaction
+        avatarComponent={
+          <View className="flex-row">
+            <View className="rounded-full border-[3px] border-saffron bg-gray-400 justify-center items-center">
+              <View className="rounded-full border-[2px] border-white justify-center items-center">
+                <Image
+                  source={{ uri: 'https://i.pravatar.cc/150?img=36' }}
+                  className="w-10 h-10 rounded-full"
+                />
+              </View>
+            </View>
+            <View className="rounded-full right-4 border-[3px] border-green-400 bg-gray-400">
+              <View className="rounded-full border-[2px] border-white justify-center items-center">
+                <Image
+                  source={{ uri: 'https://i.pravatar.cc/150?img=35' }}
+                  className="w-10 h-10 rounded-full"
+                />
+              </View>
+            </View>
+          </View>
+        }
+        topText="Discount sale"
+        bottomText="to @bayuga"
+        amount="+800"
+        type="positive"
+        time="08:30 PM"
+      />
+      <CustomTransaction
+        avatarComponent={
+          <View className="rounded-full border-[3px] border-green-500 bg-gray-400 justify-center items-center mr-2">
+            <View className="rounded-full border-[2px] border-white justify-center items-center">
+              <Image
+                source={{ uri: 'https://i.pravatar.cc/150?img=36' }}
+                className="w-10 h-10 rounded-full"
+              />
+            </View>
+          </View>
+        }
+        topText="Cash sale"
+        bottomText="to @bayuga"
+        amount="-500"
+        type="positive"
+        time="09:30 PM"
+      />
+      <TransactionInOut
+        type="IN"
+        title="Sale"
+        value="- 1500 CFA"
+        subTitle="Anonymous"
+        date="08:45 PM"
+        customContainerClass="bg-[#e1e1e1] rounded-xl mb-0 my-1"
+        symbol={<Icons.CashInIcon />}
+      />
+      <TransactionInOut
+        type="OUT"
+        title="Cash out"
+        value="- 1500 CFA"
+        subTitle="via mobile money"
+        date="09:00 PM"
+        customContainerClass="bg-[#e1e1e1] rounded-xl mb-0 my-1"
+        symbol={<Icons.CashOutIcon />}
+      />
+    </View>
+  );
+};
+
 export const TransactionScreen = () => {
   return (
     <ScrollView className="mt-6" showsVerticalScrollIndicator={false}>
@@ -93,19 +93,11 @@ export const TransactionScreen = () => {
       <View className="px-6">
         <View>
           <Text className="text-lg text-black font-semibold mt-4 mb-3">Today</Text>
-          {transactionsData.map((transaction, index) => (
-            <View key={index}>
-              <CustomTransaction {...transaction} />
-            </View>
-          ))}
+          <TransactionList />
         </View>
         <View>
           <Text className="text-lg text-black font-semibold mt-4 mb-3">Yesterday</Text>
-          {transactionsData.map((transaction, index) => (
-            <View key={index}>
-              <CustomTransaction {...transaction} />
-            </View>
-          ))}
+          <TransactionList />
         </View>
       </View>
     </ScrollView>

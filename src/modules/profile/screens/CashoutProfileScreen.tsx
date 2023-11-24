@@ -1,29 +1,46 @@
 import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
-import { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { height } from 'utils/helpers';
+import { height, horizontalScale, verticalScale } from '../../../utils/helpers';
 
-export const CashoutScreen = ({ navigation }: any) => {
+export const CashoutProfileScreen = ({ navigation }: any) => {
   const isSmallScreen = height < 700;
-  const [value, setValue] = useState('value');
   const handleValueChange = (value: string) => {
+    // You can do something with the selected value here
     console.log('Selected value:', value);
-    setValue(value);
   };
+
   return (
     <View className="flex-1 px-6">
-      <Header showBackIcon centerComponent={<Text>Cash out</Text>} />
+      <Header showBackIcon centerComponent={<Text className="mt-4">Cash out</Text>} />
       <View className={`py-8 flex-1 justify-between ${isSmallScreen ? 'mb-4' : 'mb-24'}`}>
-        <View className="bg-green-500 p-4 rounded-lg">
-          <Text className="text-12 font-normal text-white text-center">Wallet Balance</Text>
-          <Text className="text-3xl font-bold text-white text-center my-2 pt-4">
-            10,000<Text className="text-xs font-bold">CFA</Text>
-          </Text>
+        <View className="flex-row justify-center">
+          <View className="border border-black rounded-lg px-2 py-2">
+            <Text className="text-center text-[9px] font-semibold">Available Balance</Text>
+            <Text className="text-center text-3xl pt-4 text-green-500 font-bold">
+              15,000<Text className="text-sm">CFA</Text>
+            </Text>
+          </View>
+          <View
+            style={{
+              borderLeftWidth: 1,
+              borderColor: 'black',
+              marginHorizontal: horizontalScale(8),
+              marginVertical: verticalScale(4),
+            }}
+          />
+          <View className="border border-gray-400 rounded-lg px-2 py-2">
+            <Text className="text-center text-[9px] font-semibold text-gray-400">
+              Pending Balance
+            </Text>
+            <Text className="text-center text-3xl pt-4 text-gray-500 font-bold">
+              15,000<Text className="text-sm">CFA</Text>
+            </Text>
+          </View>
         </View>
-        <View className={`${isSmallScreen ? 'pb-8 pt-10' : 'pb-16 pt-10'}`}>
+        <View className={`pt-10 ${isSmallScreen ? 'pb-8' : 'pb-16'}`}>
           <Text className="text-center text-5xl font-bold py-6">
             0.0<Text className="text-base">cfa</Text>
           </Text>
@@ -32,7 +49,7 @@ export const CashoutScreen = ({ navigation }: any) => {
             <RNPickerSelect
               placeholder={{
                 label: 'Select',
-                value: 'value',
+                value: null,
               }}
               style={{
                 inputIOS: {
@@ -76,9 +93,7 @@ export const CashoutScreen = ({ navigation }: any) => {
             title={'Cash Out'}
             customContainerClass="border-0 bg-black py-4"
             customTextClass={'text-white text-base'}
-            onPress={() => {
-              value !== 'value' && navigation.navigate('WithdrawSuccessful');
-            }}
+            onPress={() => navigation.navigate('WithdrawSuccessful')}
           />
         </View>
       </View>

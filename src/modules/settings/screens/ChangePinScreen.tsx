@@ -78,7 +78,6 @@ export const ChangePinScreen = ({ navigation }: any) => {
                   title="Save"
                   customContainerClass={'w-44'}
                   onPress={handleSubmit}
-                  extraStyles={{ borderWidth: 5 }}
                 />
               </View>
             </View>

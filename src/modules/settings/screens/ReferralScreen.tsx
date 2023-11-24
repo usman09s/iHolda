@@ -49,18 +49,21 @@ export const ReferralScreen = () => {
         />
       </View>
       <View>
-        <View className="bg-gray-200 py-5 rounded-2xl my-6 mx-5">
-          <Text className="text-center text-base mx-12 text-zinc-600 font-normal">
-            Invite a friend and get 500F with them
-          </Text>
-          <View className="flex-row items-center justify-around mx-3 mt-4">
-            <View className="border-black rounded-xl py-3 px-4" style={{ borderWidth: 1 }}>
-              <Text className="text-center text-base font-bold">1500 F</Text>
-              <Text className="text-sm font-normal">Total reward paid</Text>
-            </View>
-            <View className="border-black rounded-xl py-3 px-4" style={{ borderWidth: 1 }}>
-              <Text className="text-center text-base font-bold">1500 F</Text>
-              <Text className="text-sm font-normal">Total reward paid</Text>
+        <View className="px-5">
+          <View className="bg-gray-200 py-5 rounded-2xl my-6 w-full">
+            <Text className="text-center text-base mx-12 text-zinc-600 font-normal">
+              Invite a friend and get 500F with them
+            </Text>
+            <View className="flex-row items-center justify-around mx-3 mt-4 px-2">
+              <View className="border-black rounded-xl py-3 w-1/2" style={{ borderWidth: 1 }}>
+                <Text className="text-center text-base font-bold">1500 F</Text>
+                <Text className="text-sm font-normal text-center">Total reward paid</Text>
+              </View>
+              <View className="w-10"></View>
+              <View className="border-black rounded-xl py-3 w-1/2" style={{ borderWidth: 1 }}>
+                <Text className="text-center text-base font-bold">1500 F</Text>
+                <Text className="text-sm font-normal text-center">Total reward paid</Text>
+              </View>
             </View>
           </View>
         </View>

@@ -42,12 +42,11 @@ export const CreatePinScreen = ({ navigation }: any) => {
             <Text
               style={{
                 fontSize: 30,
-                width: '30%',
                 color: '#7f7e7e',
                 fontWeight: '700',
                 marginBottom: verticalScale(20),
               }}>
-              Create pin
+              Create{'\n'}pin
             </Text>
             <View
               style={{ marginVertical: isSmallScreen ? verticalScale(100) : verticalScale(170) }}>

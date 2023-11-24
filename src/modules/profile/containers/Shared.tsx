@@ -8,11 +8,11 @@ const Shared = () => (
     <View className="flex-row justify-between">
       <View className="border-[0.4px] rounded-xl px-6 py-3" style={{ width: width / 2 - 32 }}>
         <Text className={text({ class: 'text-center', type: 'r13' })}>Met @bayuga</Text>
-        <Text className={text({ class: 'text-center mt-7', type: 'b13' })}>19 times</Text>
+        <Text className={text({ class: 'text-center mt-2', type: 'b13' })}>19 times</Text>
       </View>
       <View className="border-[0.4px] rounded-xl px-6 py-3" style={{ width: width / 2 - 32 }}>
-        <Text className={text({ class: 'text-center', type: 'r13' })}>Met @bayuga</Text>
-        <Text className={text({ class: 'text-center mt-7', type: 'b13' })}>19 times</Text>
+        <Text className={text({ class: 'text-center', type: 'r13' })}>Friend Rank</Text>
+        <Text className={text({ class: 'text-center mt-2', type: 'b13' })}>498</Text>
       </View>
     </View>
     <FlatList className="mt-6" data={[1, 2, 3, 4, 5, 6]} renderItem={({}) => <SharedItem />} />
@@ -44,7 +44,9 @@ const SharedItem = () => (
       </View>
       <View>
         <Text className={text({ type: 'b16' })}>You and Bayuga met</Text>
-        <Text className={text({ type: 'r12', class: 'mt-2' })}>Buea, Cameroon</Text>
+        <Text className={text({ type: 'r12', class: 'mt-2 font-bold text-gray-500' })}>
+          Buea, <Text className="font-normal">Cameroon</Text>
+        </Text>
       </View>
     </View>
     <View>

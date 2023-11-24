@@ -26,6 +26,7 @@ import AcceptReferenceStackNavigator from 'modules/acceptReference/AcceptReferen
 import SettingsStackNavigator from 'modules/settings/SettingsStackNavigator';
 import CartpoStackNavigator from 'modules/cartpo/CartpoStackNavigator';
 import CartpoTabNavigator from 'modules/cartpo/CartpoTabNavigator';
+import WalletStackNavigator from 'modules/profile/WalletStackNavigator';
 
 const MainStack = createNativeStackNavigator();
 
@@ -125,6 +126,11 @@ export default function MainNavigator() {
           name="CartpoStack"
           options={commonOptions}
           component={CartpoStackNavigator}
+        />
+        <MainStack.Screen
+          name="WalletStack"
+          options={commonOptions}
+          component={WalletStackNavigator}
         />
         <MainStack.Screen name="CartpoTab" options={commonOptions} component={CartpoTabNavigator} />
       </MainStack.Navigator>

@@ -18,7 +18,7 @@ type ProfileTabITemProps = {
 const ProfileTabItem = ({ title, isActive, onPressTabItem }: ProfileTabITemProps) => (
   <Pressable
     style={{
-      width: width / 4,
+      width: width / 3,
       borderBottomWidth: isActive ? 1 : 0,
       borderBottomColor: colors.saffron,
     }}
@@ -44,18 +44,17 @@ const ProfileTabs = ({ activeIndex, onPressTabItem, isCurrentUser }: Props) => (
       isActive={activeIndex === 1}
       onPressTabItem={onPressTabItem(1)}
     />
-    <ProfileTabItem title="Work" onPressTabItem={onPressTabItem(2)} isActive={activeIndex === 2} />
     {isCurrentUser ? (
       <ProfileTabItem
         title="Wallet"
-        onPressTabItem={onPressTabItem(3)}
-        isActive={activeIndex === 3}
+        onPressTabItem={onPressTabItem(2)}
+        isActive={activeIndex === 2}
       />
     ) : (
       <ProfileTabItem
         title="Shared"
-        onPressTabItem={onPressTabItem(4)}
-        isActive={activeIndex === 4}
+        onPressTabItem={onPressTabItem(3)}
+        isActive={activeIndex === 3}
       />
     )}
   </View>

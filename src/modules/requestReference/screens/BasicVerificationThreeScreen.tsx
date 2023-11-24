@@ -53,7 +53,6 @@ export const BasicVerificationThreeScreen = ({ navigation }: any) => {
         <CustomReferenceButton
           title="Submit"
           onPress={() => navigation.navigate('VerificationComplete')}
-          extraStyles={{ borderWidth: 5 }}
         />
       </View>
     </View>

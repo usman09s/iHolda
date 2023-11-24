@@ -23,7 +23,7 @@ export const ProfileScreen = ({ navigation }: any) => {
             className="bg-blue-200 px-3 py-1 rounded-lg"
             onPress={() => navigation.navigate('CartpoStack', { screen: 'Settings' })}
             style={{ borderWidth: 0.5, borderColor: 'gray' }}>
-            <Text className="text-blue-800">Settings</Text>
+            <Text className="text-blue-800 text-10">Settings</Text>
           </TouchableOpacity>
         </View>
         <View className="mt-6">

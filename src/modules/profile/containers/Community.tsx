@@ -40,8 +40,13 @@ const Community = () => (
         style={{ height: units.vw * 60, width: units.vw * 60 }}
         className="bg-slate-800 rounded-full justify-center items-center">
         <View
-          style={{ height: units.vw * 45, width: units.vw * 45 }}
-          className="border-green-500 border-[4px] rounded-full  justify-center items-center">
+          style={{
+            height: units.vw * 45,
+            width: units.vw * 45,
+            borderWidth: 4,
+            borderColor: '#01ff30',
+          }}
+          className="rounded-full justify-center items-center">
           <View className="flex-row items-center">
             <Text className={text({ type: 'b30', class: 'text-white' })}>270</Text>
             <View className="ml-2">

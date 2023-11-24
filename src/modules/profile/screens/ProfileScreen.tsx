@@ -9,15 +9,17 @@ import ProfileHeader from '../components/ProfileHeader';
 import Community from '../containers/Community';
 import Profile from '../containers/Profile';
 import Wallet from '../containers/Wallet';
-import Work from '../containers/Work';
+import Shared from '../containers/Shared';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ route }: any) => {
   const activeY = useSharedValue(0);
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
   const { username, avatar, invitedBy, joinedMonthAndYear } = useSelector(
     userCommonInformationSelector,
   );
+  const isCurrentUser = route.params?.isCurrentUser ?? true;
+  console.log(route.params, 'jofjeofioh');
 
   const onPressTabItem = (value: number) => () => {
     setIndex(value);
@@ -28,7 +30,7 @@ const ProfileScreen = () => {
   });
 
   const RenderedComponent =
-    [<Profile key={0} />, <Community key={1} />, <Work key={2} />, <Wallet key={3} />]?.[index] ||
+    [<Profile key={0} />, <Community key={1} />, <Wallet key={2} />, <Shared key={3} />]?.[index] ||
     [];
 
   return (
@@ -45,7 +47,7 @@ const ProfileScreen = () => {
         ListHeaderComponent={
           <ProfileHeader
             top={top}
-            isCurrentUser
+            isCurrentUser={isCurrentUser}
             avatar={avatar}
             activeY={activeY}
             username={username}

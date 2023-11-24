@@ -2,6 +2,7 @@ import { Image, Text, View } from 'react-native';
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import Icons from 'components/Icons';
 import { text } from 'theme/text';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { units } from 'utils/helpers';
 
 import ProfileTabs from './ProfileTabs';
@@ -65,7 +66,24 @@ const ProfileHeader = ({
         <View className=" h-full justify-end px-6" style={{ paddingBottom: units.vh * 2 }}>
           <View className="flex-row">
             <Text className={text({ type: 'b20', class: 'text-white mr-1 mb-3' })}>{username}</Text>
-            <Icons.BorderedVerifiedIcon />
+            {isCurrentUser ? (
+              <Icons.BorderedVerifiedIcon />
+            ) : (
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  height: 20,
+                  borderRadius: 10,
+                  top: 3,
+                }}>
+                <MaterialIcon
+                  name={'error'}
+                  color="red"
+                  size={20}
+                  style={{ transform: [{ rotate: '180deg' }] }}
+                />
+              </View>
+            )}
           </View>
           <Text className={text({ type: 'r13', class: 'text-white' })}>
             Joined {monthAndYear} invited by{' '}

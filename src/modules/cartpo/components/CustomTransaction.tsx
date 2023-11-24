@@ -9,12 +9,12 @@ export const CustomTransaction = ({
   type,
 }: any) => {
   return (
-    <View className="flex-row justify-between items-center bg-gray-200 py-3 px-4 rounded-xl my-1">
+    <View className="flex-row justify-between items-center bg-[#e1e1e1] py-3 px-4 rounded-xl my-1">
       <View className="flex-row">
         {avatarComponent}
         <View className="flex-column gap-1 justify-center">
-          <Text className="text-sm text-black font-semibold">{topText}</Text>
-          <Text className="text-xs text-gray-500">{bottomText}</Text>
+          <Text className="text-13 text-black font-semibold">{topText}</Text>
+          <Text className="text-10 text-gray-500">{bottomText}</Text>
         </View>
       </View>
       <View className="flex-column gap-1 items-end">
