@@ -91,7 +91,8 @@ export const CashoutProfileScreen = ({ navigation }: any) => {
         <View className="mx-6">
           <CustomReferenceButton
             title={'Cash Out'}
-            customContainerClass="border-0 bg-black py-4"
+            extraStyles={{ borderWidth: 0 }}
+            customContainerClass="bg-black py-4"
             customTextClass={'text-white text-base'}
             onPress={() => navigation.navigate('WithdrawSuccessful')}
           />
