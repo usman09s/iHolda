@@ -2,7 +2,7 @@ import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { View, Text } from 'react-native';
 
-export const DirectPaymentScreen = () => {
+export const DirectPaymentScreen = ({ navigation }: any) => {
   return (
     <View className="flex-1">
       <View className="px-6">
@@ -28,6 +28,7 @@ export const DirectPaymentScreen = () => {
           title="Done"
           customContainerClass={'bg-black border-0 py-3 mx-10 mb-12'}
           customTextClass={'text-white'}
+          onPress={() => navigation.navigate('SaleComplete')}
         />
       </View>
     </View>

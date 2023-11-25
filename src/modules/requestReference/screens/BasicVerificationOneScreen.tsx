@@ -57,11 +57,7 @@ export const BasicVerificationOneScreen = ({ navigation }: any) => {
           </View>
         </View>
         <View className="mt-4">
-          <CustomReferenceButton
-            title="Next"
-            onPress={handleNavigation}
-            extraStyles={{ borderWidth: 5 }}
-          />
+          <CustomReferenceButton title="Next" onPress={handleNavigation} />
         </View>
       </View>
     </View>

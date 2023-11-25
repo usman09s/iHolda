@@ -137,11 +137,7 @@ export const BasicVerificationTwoScreen = ({ navigation }: any) => {
                 </View>
               </View>
               <View className="items-center mt-20">
-                <CustomReferenceButton
-                  title="Next"
-                  onPress={handleSubmit}
-                  extraStyles={{ borderWidth: 5 }}
-                />
+                <CustomReferenceButton title="Next" onPress={handleSubmit} />
               </View>
             </View>
           )}

@@ -8,10 +8,20 @@ type Props = {
   subTitle: string;
   type: 'IN' | 'OUT';
   symbol: React.ReactNode;
+  customContainerClass?: any;
 };
 
-const TransactionInOut = ({ type, date, title, value, symbol, subTitle }: Props) => (
-  <View className="flex-row items-center justify-between bg-lightCultured px-4 py-3 rounded-md mb-4">
+const TransactionInOut = ({
+  type,
+  date,
+  title,
+  value,
+  symbol,
+  subTitle,
+  customContainerClass,
+}: Props) => (
+  <View
+    className={`flex-row items-center justify-between bg-lightCultured px-4 py-3 rounded-md mb-4 ${customContainerClass}`}>
     <View className="flex-row items-center">
       {symbol && symbol}
       <View className="ml-2">

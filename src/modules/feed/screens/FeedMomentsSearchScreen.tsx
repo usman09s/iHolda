@@ -1,5 +1,5 @@
-import { Image, Text, View } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Header from 'components/Header/Header';
 import Icons from 'components/Icons';
 import Input from 'components/Input';
@@ -10,7 +10,12 @@ import { text } from 'theme/text';
 import { FeedStackParamList } from '../FeedStackNavigator';
 
 const FeedMomentsSearchScreen = () => {
+  const navigation = useNavigation();
   const {} = useAppNavigation<NavigationProp<FeedStackParamList>>();
+
+  const handlePressUser = () => {
+    navigation.navigate('ProfileStack', { screen: 'Profile', params: { isCurrentUser: false } });
+  };
 
   return (
     <View className="bg-white flex-1 px-7">
@@ -47,7 +52,9 @@ const FeedMomentsSearchScreen = () => {
           <Text className={text({ type: 'r10' })}>Moments</Text>
         </View>
       </View>
-      <View className="bg-cultured px-4 py-3 rounded-xl flex-row mt-4">
+      <TouchableOpacity
+        className="bg-cultured px-4 py-3 rounded-xl flex-row mt-4"
+        onPress={handlePressUser}>
         <View className="rounded-full border-[3px] border-transparent">
           <Image
             source={{ uri: 'https://i.pravatar.cc/150?img=33' }}
@@ -58,7 +65,7 @@ const FeedMomentsSearchScreen = () => {
           <Text className={text({ type: 'b16' })}>Bayuga</Text>
           <Text className={text({ type: 'r10' })}>User</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

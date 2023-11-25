@@ -13,8 +13,10 @@ import {
 import { RadioButton } from 'react-native-radio-buttons-group';
 import Animated, { SlideInDown } from 'react-native-reanimated';
 import { text } from 'theme/text';
+import { height } from 'utils/helpers';
 
 export const DeactivateAccountScreen = ({ navigation }: any) => {
+  const isSmallScreen = height < 680;
   const [visible, setVisible] = useState(false);
   const radioButtons = useMemo(
     () => [
@@ -53,12 +55,14 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
             </Text>
           }
         />
-        <View className="flex-1 justify-between mt-14 mb-32">
-          <View className="gap-4">
+        <View className={`flex-1 justify-between mt-10 ${isSmallScreen ? 'mb-16' : 'mb-24'}`}>
+          <View className="gap-4 pb-10">
             {radioButtons.map(button => (
               <TouchableOpacity
                 onPress={() => setSelectedId(button.id)}
-                className="rounded-2xl py-2 pr-3 pl-5 border-black h-44"
+                className={`rounded-2xl py-2 pr-3 pl-5 border-black ${
+                  isSmallScreen ? 'min-h-fit pb-6' : 'h-44'
+                }`}
                 key={button.id}
                 style={{ borderWidth: 0.4 }}>
                 <View className="flex-row justify-between items-center">
@@ -85,10 +89,10 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
             />
             <CustomReferenceButton
               title="Back"
-              customContainerClass={'w-60 py-2 border-black'}
+              customContainerClass={'w-60 py-2'}
               customTextClass={'text-black font-semibold'}
               onPress={() => navigation.goBack()}
-              extraStyles={{ borderWidth: 2 }}
+              extraStyles={{ borderWidth: 2, borderColor: 'black' }}
             />
           </View>
         </View>

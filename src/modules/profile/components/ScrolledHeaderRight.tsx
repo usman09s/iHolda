@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import Button from 'components/Button';
 import Icons from 'components/Icons';
@@ -26,7 +26,11 @@ const ScrolledHeaderRight = ({ top, activeY, isCurrentUser }: Props) => {
           type="solid"
           customContainer="rounded-md self-center py-1 px-3 bg-white border-b1 border-black-o-20"
           customTextClass={text({ type: 'r12', class: 'text-black h-4' })}
-          onPress={() => navigation.navigate('SettingsStack')}
+          onPress={() => {
+            if (isCurrentUser) {
+              navigation.navigate('SettingsStack');
+            }
+          }}
         />
 
         <View className="justify-around items-center mt-4">

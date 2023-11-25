@@ -10,6 +10,7 @@ import Community from '../containers/Community';
 import Profile from '../containers/Profile';
 import Shared from '../containers/Shared';
 import Work from '../containers/Work';
+import Wallet from '../containers/Wallet';
 
 const OtherUserProfileScreen = () => {
   const activeY = useSharedValue(0);
@@ -28,7 +29,7 @@ const OtherUserProfileScreen = () => {
   });
 
   const RenderedComponent =
-    [<Profile key={0} />, <Community key={1} />, <Work key={2} />, <Shared key={4} />]?.[index] ||
+    [<Profile key={0} />, <Community key={1} />, <Wallet key={2} />, <Shared key={3} />]?.[index] ||
     [];
 
   return (

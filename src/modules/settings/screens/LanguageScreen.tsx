@@ -58,8 +58,7 @@ export const LanguageScreen = ({ navigation }: any) => {
           <View className="items-center">
             <CustomReferenceButton
               title="Save"
-              customContainerClass={'px-14 py-3 border-0 border-sky-500'}
-              extraStyles={{ borderWidth: 5 }}
+              customContainerClass={'px-14 py-3'}
               onPress={() => navigation.goBack()}
             />
           </View>
