@@ -6,6 +6,8 @@ import momentsSlice from './moments/momentsSlice';
 import plasticSlice from './plastic/plasticSlice';
 import userPlasticSlice from './plastic/userPlasticSlice';
 import cartpoSlice from './cartpo/calculateSlice';
+import userReferenceSlice from './userReference/userReferenceSlice';
+import notificationSlice from './notification/notificationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +17,8 @@ export const store = configureStore({
     agentPlastic: agentPlasticSlice,
     userPlastic: userPlasticSlice,
     calculator: cartpoSlice,
+    userReference: userReferenceSlice,
+    notification: notificationSlice,
   },
 });
 

@@ -19,7 +19,7 @@ export const CustomReferenceInput = ({
   ...props
 }: CustomReferenceProps) => {
   const handleChangeText = (text: string) => {
-    if (props.field === 'date') {
+    if (props.field === 'dob') {
       const cleanedText = text.replace(/\D/g, '');
       const limitedText = cleanedText.slice(0, 8);
       let formattedText = '';
