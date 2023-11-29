@@ -6,6 +6,7 @@ import { CustomReferenceInput } from '../components/CustomReferenceInput';
 import { text } from 'theme/text';
 import * as Yup from 'yup';
 import { CustomReferenceButton } from '../components/CustomReferenceButton';
+import { useRequestReferenceAction } from '../hooks/useRequestReferenceActions';
 
 const verificationSchema = Yup.object().shape({
   fullName: Yup.string()
@@ -13,7 +14,7 @@ const verificationSchema = Yup.object().shape({
     .matches(/^[A-Za-z\s]+$/, 'Invalid input')
     .min(3, 'Full name must be at least 3 characters')
     .matches(/[A-Za-z]/, 'Full name must contain atleast three letters'),
-  date: Yup.string()
+  dob: Yup.string()
     .matches(
       /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/(19|20)\d\d$/,
       'Invalid date format. Must be DD/MM/YYYY',
@@ -26,7 +27,7 @@ const verificationSchema = Yup.object().shape({
       return selectedDate instanceof Date && !isNaN(selectedDate) && selectedDate <= currentDate;
     })
     .required('Date is required'),
-  emailAddress: Yup.string().required('Email address is required').email('Invalid email address'),
+  email: Yup.string().required('Email address is required').email('Invalid email address'),
   city: Yup.string().required('City is required').min(2, 'City must be at least 2 characters'),
   country: Yup.string()
     .required('Country is required')
@@ -51,18 +52,19 @@ const verificationSchema = Yup.object().shape({
     }),
 });
 
-export const BasicVerificationTwoScreen = ({ navigation }: any) => {
+export const BasicVerificationTwoScreen = () => {
+  const { handleNavigation2 } = useRequestReferenceAction();
   const initialValues = {
     fullName: '',
-    date: '',
-    emailAddress: '',
+    dob: '',
+    email: '',
     city: '',
     country: '',
   };
 
   const handleSubmit = values => {
-    console.log(values);
-    navigation.navigate('BasicVerificationThree');
+    console.log(values, 'lajdkhs');
+    handleNavigation2(values);
   };
 
   return (
@@ -94,19 +96,19 @@ export const BasicVerificationTwoScreen = ({ navigation }: any) => {
               <CustomReferenceInput
                 label="Date"
                 placeholder="01/09/2000"
-                field="date"
-                handleChange={handleChange('date')}
+                field="dob"
+                handleChange={handleChange('dob')}
                 keyboardType={'default'}
-                value={values.date}
-                error={errors.date}
+                value={values.dob}
+                error={errors.dob}
               />
               <CustomReferenceInput
                 label="Email address"
                 placeholder="e.g name@email.com"
-                field="emailAddress"
-                handleChange={handleChange('emailAddress')}
-                value={values.emailAddress}
-                error={errors.emailAddress}
+                field="email"
+                handleChange={handleChange('email')}
+                value={values.email}
+                error={errors.email}
               />
               <View className="flex-row w-full">
                 <View className="w-1/2">

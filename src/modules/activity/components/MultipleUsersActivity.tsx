@@ -37,7 +37,7 @@ const MultipleUsersActivity = ({
         {title}
       </Text>
       <Text className={text({ type: 'r12', class: 'mt-1.5 mr-1.5' })}>
-        {subTitle} <Text className={text({ type: 'b12' })}>{lastUserUsername}</Text>
+        {subTitle} <Text className={text({ type: 'b12' })}>{lastUserUsername} ?</Text>
         <Text className={text({ type: 'm12', class: 'text-red-500' })}> {time ? time : '30s'}</Text>
       </Text>
     </View>
