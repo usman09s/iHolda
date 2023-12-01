@@ -4,15 +4,13 @@ import { Userpic } from 'react-native-userpic';
 import { CustomSettingOption } from '../components/CustomSettingOption';
 import { CustomEditProfileOption } from '../components/CustomEditProfileOption';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
+import CustomHeader from 'components/Header/CustomHeader';
 
 export const EditProfileScreen = ({ navigation }: any) => {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <View className="flex-1 px-6">
-        <Header
-          showBackIcon
-          centerComponent={<Text style={{ fontSize: 14, marginTop: 2 }}>Edit profile</Text>}
-        />
+        <CustomHeader showBackIcon title="Edit profile" />
         <View className="flex-1 justify-between mb-20">
           <View className="mt-8 mb-2">
             <Userpic
@@ -55,7 +53,8 @@ export const EditProfileScreen = ({ navigation }: any) => {
             <CustomReferenceButton
               title="Save"
               onPress={() => navigation.goBack()}
-              customContainerClass={'bg-black border-2 px-0 py-2 w-60 border-white'}
+              customContainerClass={'bg-black px-0 py-2 w-60'}
+              extraStyles={{ borderWidth: 0 }}
               customTextClass={'text-white'}
             />
           </View>

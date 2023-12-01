@@ -1,7 +1,7 @@
 import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { useMemo, useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { RadioButton } from 'react-native-radio-buttons-group';
 import { height } from 'utils/helpers';
 
@@ -42,7 +42,8 @@ export const LanguageScreen = ({ navigation }: any) => {
         <View className={`flex-1 justify-between mt-14 ${isSmallScreen ? 'mb-24' : 'mb-36'}`}>
           <View className="gap-4">
             {radioButtons.map(button => (
-              <View
+              <TouchableOpacity
+                onPress={() => setSelectedId(button.id)}
                 key={button.id}
                 className="flex-row justify-between items-center rounded-2xl py-2 pr-2 pl-4 border-black"
                 style={{ borderWidth: 1 }}>
@@ -52,7 +53,7 @@ export const LanguageScreen = ({ navigation }: any) => {
                   selected={selectedId === button.id}
                   onPress={() => setSelectedId(button.id)}
                 />
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
           <View className="items-center">

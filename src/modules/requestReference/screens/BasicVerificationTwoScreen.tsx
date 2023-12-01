@@ -27,8 +27,13 @@ const verificationSchema = Yup.object().shape({
       return selectedDate instanceof Date && !isNaN(selectedDate) && selectedDate <= currentDate;
     })
     .required('Date is required'),
-  email: Yup.string().required('Email address is required').email('Invalid email address'),
-  city: Yup.string().required('City is required').min(2, 'City must be at least 2 characters'),
+  email: Yup.string()
+    .required('Email address is required')
+    .matches(/^\S+@\S+\.\S+$/, 'Invalid email address'),
+  city: Yup.string()
+    .required('City is required')
+    .matches(/^\S.*\S$/, 'Invalid city')
+    .min(2, 'City must be at least 2 characters'),
   country: Yup.string()
     .required('Country is required')
     .min(2, 'Country must be at least 2 characters')
@@ -94,11 +99,11 @@ export const BasicVerificationTwoScreen = () => {
                 error={errors.fullName}
               />
               <CustomReferenceInput
-                label="Date"
+                label="Date of birth"
                 placeholder="01/09/2000"
                 field="dob"
                 handleChange={handleChange('dob')}
-                keyboardType={'default'}
+                keyboardType={'numeric'}
                 value={values.dob}
                 error={errors.dob}
               />

@@ -54,14 +54,14 @@ export const ProfileScreen = ({ navigation }: any) => {
                 <PieIcon />
               </View>
             </View>
-            <View className="flex-row justify-around mt-4">
-              <View className="bg-pink-100 px-4 py-6 rounded-lg">
+            <View className="flex-row justify-between mt-4">
+              <View className="bg-pink-100 py-6 rounded-lg">
                 <Text className="text-12 text-center font-semibold">Cash</Text>
                 <Text className="text-2xl font-semibold text-center pt-2">
                   10,000<Text className="font-light text-base">cfa</Text>
                 </Text>
               </View>
-              <View className="bg-pink-100 px-4 py-6 rounded-lg">
+              <View className="bg-pink-100 py-6 rounded-lg">
                 <Text className="text-12 text-center font-semibold">Other method</Text>
                 <Text className="text-2xl font-semibold text-center pt-2">
                   2000<Text className="font-light text-base">cfa</Text>
@@ -79,7 +79,7 @@ export const ProfileScreen = ({ navigation }: any) => {
             <Text className="text-3xl font-normal text-white text-center my-2">10,000cfa</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            className="bg-green-500 p-4 rounded-lg mt-3"
+            className="bg-[#01991d] p-4 rounded-lg mt-3"
             onPress={() => navigation.navigate('CartpoStack', { screen: 'Cashout' })}>
             <Text className="text-12 font-normal text-white">Wallet balance</Text>
             <Text className="text-3xl font-normal text-white text-center my-2">200cfa</Text>

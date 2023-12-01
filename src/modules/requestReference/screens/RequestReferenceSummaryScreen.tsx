@@ -17,8 +17,8 @@ export const RequestReferenceSummaryScreen = ({ navigation }: any) => {
         />
       </View>
       <View className={`mt-16 ${isSmallScreen ? 'mb-8' : 'mb-16'}`}>
-        <Text className={'text-7xl text-center font-bold'}>10%</Text>
-        <Text className={text({ type: 'b18', class: 'text-center text-black mx-6 ' })}>
+        <Text className={'text-7xl text-center font-bold tracking-tighter'}>1O%</Text>
+        <Text className={text({ type: 'b18', class: 'text-center text-black mx-6' })}>
           Complete
         </Text>
       </View>

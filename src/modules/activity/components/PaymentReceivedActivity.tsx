@@ -14,7 +14,7 @@ const PaymentReceivedActivity = ({ title, price, subTitle }: Props) => (
       <Icons.PaymentReceivedIcon />
     </View>
     <View className="ml-4 flex-1">
-      <Text numberOfLines={2} className={text({ type: 'b15' })}>
+      <Text numberOfLines={2} className={text({ type: 'b15' })} style={{ color: '#606060' }}>
         {title}
       </Text>
       <Text className={text({ type: 'r12', class: 'mt-1.5' })}>
@@ -22,7 +22,9 @@ const PaymentReceivedActivity = ({ title, price, subTitle }: Props) => (
       </Text>
     </View>
     <View>
-      <Text className={text({ type: 'b15', class: 'mt-1.5' })}>{price}</Text>
+      <Text className={text({ type: 'b15', class: 'mt-1.5' })} style={{ color: '#5e5f5e' }}>
+        {price}
+      </Text>
     </View>
   </View>
 );

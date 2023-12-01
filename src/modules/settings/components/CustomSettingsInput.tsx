@@ -31,7 +31,7 @@ export const CustomSettingsInput = ({ keyboardType = 'default', ...props }: Cust
         keyboardType={keyboardType}
         onChangeText={handleChangeText}
         value={props.value}
-        className={`bg-trasparent border-2 border-black rounded-xl h-12 px-4 w-full ${
+        className={`bg-trasparent border border-black rounded-xl h-12 px-4 w-full ${
           props.customTextInputClass
         } ${hasError ? 'border-red-600 border-2' : ''}`}
         placeholderTextColor={props.error ? 'red' : 'gray'}

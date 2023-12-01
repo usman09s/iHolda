@@ -2,6 +2,7 @@ import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { View, Text, TextInput, ScrollView } from 'react-native';
 import { height } from 'utils/helpers';
+import { moderateScale } from '../../../utils/helpers';
 
 export const FeedbackScreen = () => {
   const isSmallScreen = height < 700;
@@ -19,9 +20,9 @@ export const FeedbackScreen = () => {
           <TextInput
             placeholder="Write your feedback here...."
             placeholderTextColor={'gray'}
-            className="h-72 border-black rounded-3xl py-4 px-3 text-2xl font-normal"
+            className="h-72 border-black rounded-3xl py-4 px-3 font-normal"
             textAlignVertical="top"
-            style={{ borderWidth: 1, color: 'black' }}
+            style={{ borderWidth: 1, color: 'black', fontSize: moderateScale(22) }}
             multiline
           />
         </View>

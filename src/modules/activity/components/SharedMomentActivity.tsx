@@ -26,10 +26,10 @@ const SharedMomentActivity = ({ title, subTitle, avatars, momentThumbnail }: Pro
       </View>
     </View>
     <View className="ml-1 flex-1">
-      <Text numberOfLines={2} className={text({ type: 'b15' })}>
+      <Text numberOfLines={2} className={text({ type: 'b15' })} style={{ color: '#606060' }}>
         {title}
       </Text>
-      <Text className={text({ type: 'r12', class: ' mt-1.5' })}>
+      <Text className={text({ type: 'r12', class: ' mt-1.5' })} style={{ color: '#606060' }}>
         {subTitle} <Text className={text({ type: 'm12', class: 'text-red-500' })}>30s</Text>
       </Text>
     </View>
