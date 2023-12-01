@@ -47,7 +47,8 @@ export const MobileMoneyScreen = ({ navigation }: any) => {
           <Formik
             initialValues={initialValues}
             onSubmit={handleSubmit}
-            validationSchema={validationSchema}>
+            validationSchema={validationSchema}
+            validateOnChange={false}>
             {({ handleChange, handleSubmit, values, errors }) => (
               <View className="justify-between my-12 mx-6">
                 <View>

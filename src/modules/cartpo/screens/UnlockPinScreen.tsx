@@ -12,10 +12,10 @@ const initialValues = {
 
 const validationSchema = Yup.object().shape({
   pin: Yup.string()
-    .min(5, 'OTP must be exactly 5 characters long')
-    .max(5, 'OTP must be exactly 5 characters long')
-    .matches(/^\d+$/, 'OTP must contain only digits')
-    .required('OTP is required'),
+    .min(4, 'Unlock pin must be atleast 4 characters long')
+    .max(6, 'Unlock pin must be atleast 4 characters long')
+    .matches(/^\d+$/, 'Unlock pin must contain only digits')
+    .required('Unlock pin is required'),
 });
 
 export const UnlockPinScreen = ({ navigation }: any) => {
@@ -45,7 +45,7 @@ export const UnlockPinScreen = ({ navigation }: any) => {
               style={{
                 fontSize: 30,
                 width: '60%',
-                color: '#7f7e7e',
+                color: '#656565',
                 fontWeight: '700',
                 marginBottom: verticalScale(20),
               }}>

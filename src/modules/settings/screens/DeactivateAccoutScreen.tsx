@@ -25,7 +25,7 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
         label: 'Deactivate account',
         value: 'deactivate',
         description:
-          'If you wish to temporarily suspend your account while keeping your data intact, you can deactivate it. Your profile will be hidden and you wont receive notifications until you decide to reactivate your account.',
+          "If you wish to temporarily suspend your account while keeping your data intact, you can deactivate it. Your profile will be hidden and you won't receive notifications until you decide to reactivate your account.",
       },
       {
         id: '2',
@@ -111,14 +111,15 @@ export const DeactivateAccountScreen = ({ navigation }: any) => {
                 <View className="flex-row w-full justify-between">
                   <CustomReferenceButton
                     title="CANCEL"
-                    customContainerClass={'w-36 px-0 border-black'}
-                    extraStyles={{ borderWidth: 3 }}
+                    customContainerClass={'w-32 px-0'}
+                    extraStyles={{ borderWidth: 3, borderColor: 'black' }}
                     customTextClass={'text-base'}
                     onPress={onClose}
                   />
                   <CustomReferenceButton
                     title="YES"
-                    customContainerClass={'w-28 px-0 bg-black border-black'}
+                    customContainerClass={'w-32 px-0 bg-black'}
+                    extraStyles={{ borderWidth: 0, borderColor: 'none' }}
                     customTextClass={'text-base text-white'}
                     onPress={() => {
                       setVisible(false);

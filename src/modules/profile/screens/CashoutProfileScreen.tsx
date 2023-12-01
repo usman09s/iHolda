@@ -4,14 +4,14 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { height, horizontalScale, verticalScale } from '../../../utils/helpers';
+import SelectDropdown from 'react-native-select-dropdown';
 
 export const CashoutProfileScreen = ({ navigation }: any) => {
   const isSmallScreen = height < 700;
   const handleValueChange = (value: string) => {
-    // You can do something with the selected value here
     console.log('Selected value:', value);
   };
-
+  const options = ['12344773', '56783773', '91012333'];
   return (
     <View className="flex-1 px-6">
       <Header showBackIcon centerComponent={<Text className="mt-4">Cash out</Text>} />
@@ -45,48 +45,37 @@ export const CashoutProfileScreen = ({ navigation }: any) => {
             0.0<Text className="text-base">cfa</Text>
           </Text>
           <Text className="text-center font-semibold pb-8">TO</Text>
-          <View className="w-52 justify-center self-center bg-[#b3b2b2] rounded-full h-12 pr-8 pl-14">
-            <RNPickerSelect
-              placeholder={{
-                label: 'Select',
-                value: null,
-              }}
-              style={{
-                inputIOS: {
-                  fontSize: 18,
-                  paddingHorizontal: 10,
-                  paddingVertical: 8,
-                  fontWeight: '400',
-                  color: 'white',
-                },
-                inputAndroid: {
-                  fontSize: 18,
-                  paddingHorizontal: 10,
-                  width: '100%',
-                  paddingVertical: 8,
-                  fontWeight: '400',
-                  color: 'white',
-                },
-              }}
-              useNativeAndroidPickerStyle={false}
-              onValueChange={handleValueChange}
-              Icon={() => (
-                <View>
-                  <Icon
-                    name="keyboard-arrow-down"
-                    size={26}
-                    color={'white'}
-                    style={{ position: 'absolute', top: 9, right: 0 }}
-                  />
+          <SelectDropdown
+            data={options}
+            placeholder="Select"
+            buttonTextStyle={{ color: 'white', textAlign: 'center' }}
+            placeholderColor={'white'}
+            buttonStyle={{
+              justifyContent: 'center',
+              alignSelf: 'center',
+              backgroundColor: '#b3b2b2',
+              borderRadius: 30,
+              width: 220,
+              height: 60,
+            }}
+            onSelect={(selectedItem: string, index: number) => {
+              handleValueChange(selectedItem);
+            }}
+            buttonTextAfterSelection={(selectedItem: string, index: number) => {
+              return selectedItem;
+            }}
+            rowTextForSelection={(item: string, index: number) => {
+              return item;
+            }}
+            renderDropdownIcon={() => {
+              return (
+                <View style={{ justifyContent: 'flex-end', paddingRight: 30, paddingLeft: 0 }}>
+                  <Icon name="keyboard-arrow-down" style={{ fontSize: 28 }} color="white" />
                 </View>
-              )}
-              items={[
-                { label: '1234', value: '1234' },
-                { label: '5678', value: '5678' },
-                { label: '90123', value: '90123' },
-              ]}
-            />
-          </View>
+              );
+            }}
+            dropdownIconPosition="right"
+          />
         </View>
         <View className="mx-6">
           <CustomReferenceButton

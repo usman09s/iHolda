@@ -33,7 +33,7 @@ const MultipleUsersActivity = ({
       </View>
     </View>
     <View className="flex-1 right-4">
-      <Text numberOfLines={2} className={text({ type: 'b15' })}>
+      <Text numberOfLines={2} className={text({ type: 'b15' })} style={{ color: '#606060' }}>
         {title}
       </Text>
       <Text className={text({ type: 'r12', class: 'mt-1.5 mr-1.5' })}>

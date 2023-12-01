@@ -36,13 +36,14 @@ export const CreatePinScreen = ({ navigation }: any) => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={validationSchema}>
+        validationSchema={validationSchema}
+        validateOnChange={false}>
         {({ handleChange, handleSubmit, values, errors }) => (
           <View className="px-6 py-12">
             <Text
               style={{
                 fontSize: 30,
-                color: '#7f7e7e',
+                color: '#656565',
                 fontWeight: '700',
                 marginBottom: verticalScale(20),
               }}>
@@ -51,11 +52,13 @@ export const CreatePinScreen = ({ navigation }: any) => {
             <View
               style={{ marginVertical: isSmallScreen ? verticalScale(100) : verticalScale(170) }}>
               <CustomSettingsInput
-                label="Enter pin"
+                label="Pin"
                 placeholder="Enter Text Here"
                 field="pin"
                 handleChange={handleChange('pin')}
                 keyboardType={'numeric'}
+                customLabelClass={'text-gray-500 font-normal'}
+                customTextInputClass={'h-14'}
                 value={values.pin}
                 error={errors.pin}
               />
@@ -64,6 +67,8 @@ export const CreatePinScreen = ({ navigation }: any) => {
                 placeholder="Enter Text Here"
                 field="repeatPin"
                 handleChange={handleChange('repeatPin')}
+                customLabelClass={'text-gray-500 font-normal'}
+                customTextInputClass={'h-14'}
                 keyboardType={'numeric'}
                 value={values.repeatPin}
                 error={errors.repeatPin}

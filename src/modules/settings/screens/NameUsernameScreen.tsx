@@ -11,9 +11,22 @@ export const NameUsernameScreen = ({ route, navigation }) => {
   const placeholderText = `add your ${route.params.type === 'name' ? 'name' : '@username'}`;
 
   const validateInput = text => {
-    if (route.params.type === 'name' && /\d/.test(text)) {
-      return false; // Name cannot contain numbers
+    if (route.params.type === 'name') {
+      if (/\d/.test(text)) {
+        setError(`${route.params.type === 'name' ? 'Name' : 'Username'} is not valid`);
+        return false;
+      }
+    } else if (route.params.type === 'username') {
+      if (/\s/.test(text)) {
+        setError(`${route.params.type === 'name' ? 'Name' : 'Username'} is not valid`);
+        return false;
+      }
     }
+    if (text.trim() === '') {
+      setError(`${route.params.type === 'name' ? 'Name' : 'Username'} can not be empty`);
+      return false;
+    }
+
     return true;
   };
 
@@ -24,8 +37,6 @@ export const NameUsernameScreen = ({ route, navigation }) => {
     if (isValid) {
       console.log('Input is valid:', inputValue);
       navigation.goBack();
-    } else {
-      setError('Name cannot contain numbers');
     }
   };
 

@@ -9,7 +9,7 @@ export const WithdrawSuccessfulScreen = ({ navigation }: any) => {
     <View
       className={`px-6 items-center justify-between flex-1 ${isSmallScreen ? 'py-20' : 'py-24'}`}>
       <View>
-        <Text className="mb-8">Withdraw successful</Text>
+        <Text className="mb-8">Withdrawal successful</Text>
         <Icon
           name="check-circle-fill"
           style={{ textAlign: 'center' }}
@@ -25,7 +25,7 @@ export const WithdrawSuccessfulScreen = ({ navigation }: any) => {
           <Text className="text-white text-center text-2xl font-bold">2500cfa</Text>
         </View>
         <Text className="mx-4 pt-2 text-center">
-          2500cfa will be credited to the withdrawal account you have provided
+          2500cfa will be credited to the withdrawal account you have provided.
         </Text>
       </View>
       <View className="mt-12">

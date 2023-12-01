@@ -1,3 +1,4 @@
+import CustomHeader from 'components/Header/CustomHeader';
 import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { View, Text } from 'react-native';
@@ -25,10 +26,10 @@ export const ConfirmReferenceScreen = ({ navigation }: any) => {
 
   return (
     <View className="px-6 flex-1">
-      <Header
+      <CustomHeader
         showBackIcon
         centerComponent={
-          <Text className={text({ type: 'm16', class: 'mt-2 text-lg' })}>Confirm reference</Text>
+          <Text className={text({ type: 'm16', class: 'text-lg' })}>Confirm reference</Text>
         }
       />
       <View

@@ -8,17 +8,57 @@ import * as yup from 'yup';
 
 const SettingsScreen = ({ navigation }: any) => {
   const validationSchema = yup.object().shape({
-    ownerName: yup.string().required('Owner name is required'),
-    phoneNumber: yup.string().required('Phone number is required'),
-    emailAddress: yup.string().email('Invalid email address').required('Email address is required'),
-    shopName: yup.string().required('Shop name is required'),
+    ownerName: yup
+      .string()
+      .trim()
+      .required('Owner name is required')
+      .test('no-spaces', 'Spaces are not allowed', value => !/\s/.test(value)),
+    phoneNumber: yup
+      .string()
+      .trim()
+      .required('Phone number is required')
+      .test('no-spaces', 'Spaces are not allowed', value => !/\s/.test(value)),
+    emailAddress: yup
+      .string()
+      .trim()
+      .email('Invalid email address')
+      .required('Email address is required'),
+    shopName: yup
+      .string()
+      .trim()
+      .required('Shop name is required')
+      .test('no-spaces', 'Spaces are not allowed', value => !/\s/.test(value)),
     category: yup.string().required('Category is required'),
-    address: yup.string().required('Address is required'),
-    postCode: yup.string().required('Post code is required'),
-    city: yup.string().required('City is required'),
-    country: yup.string().required('Country is required'),
-    account: yup.string().required('Account is required'),
-    bankOrProvider: yup.string().required('Bank or provider is required'),
+    address: yup
+      .string()
+      .trim()
+      .required('Address is required')
+      .test('no-spaces', 'Spaces are not allowed', value => !/\s/.test(value)),
+    postCode: yup
+      .string()
+      .trim()
+      .required('Post code is required')
+      .test('no-spaces', 'Spaces are not allowed', value => !/\s/.test(value)),
+    city: yup
+      .string()
+      .trim()
+      .required('City is required')
+      .test('no-spaces', 'Spaces are not allowed', value => !/\s/.test(value)),
+    country: yup
+      .string()
+      .trim()
+      .required('Country is required')
+      .test('no-spaces', 'Spaces are not allowed', value => !/\s/.test(value)),
+    account: yup
+      .string()
+      .trim()
+      .required('Account is required')
+      .test('no-spaces', 'Spaces are not allowed', value => !/\s/.test(value)),
+    bankOrProvider: yup
+      .string()
+      .trim()
+      .required('Bank or provider is required')
+      .test('no-spaces', 'Spaces are not allowed', value => !/\s/.test(value)),
     percentage: yup.string().required('Bank or provider is required'),
     minAmount: yup.string().required('Bank or provider is required'),
     condition: yup.string().required('Bank or provider is required'),
@@ -116,10 +156,7 @@ const SettingsScreen = ({ navigation }: any) => {
                   type="dropdown"
                   selectedValue={values.category}
                   onValueChange={handleChange('category')}
-                  options={[
-                    { label: 'Category 1', value: 'cat1' },
-                    { label: 'Category 2', value: 'cat2' },
-                  ]}
+                  options={['Category 1', 'Category 2']}
                   errorMessage={errors.category}
                   name="category"
                 />
@@ -187,30 +224,29 @@ const SettingsScreen = ({ navigation }: any) => {
                   onValueChange={handleChange('percentage')}
                   errorMessage={errors.percentage}
                   name="percentage"
+                  keyboardType="numeric"
+                  inputStyles={{ backgroundColor: '#c4c4c4' }}
                 />
                 <CustomDropdownInput
                   title="Min amount"
                   type="dropdown"
                   selectedValue={values.minAmount}
-                  options={[
-                    { label: '2 people', value: '2people' },
-                    { label: '3 people', value: '3people' },
-                  ]}
+                  options={['2 people', '3 people']}
                   onValueChange={handleChange('minAmount')}
                   errorMessage={errors.minAmount}
                   name="minAmount"
+                  inputStyles={{ backgroundColor: '#c4c4c4' }}
+                  placeholderTextColor="#646464"
                 />
                 <CustomDropdownInput
                   title="Condition"
                   type="dropdown"
                   selectedValue={values.minAmount}
-                  options={[
-                    { label: 'Any', value: 'any' },
-                    { label: 'Condition 1', value: 'condition1' },
-                  ]}
+                  options={['Any', 'Condition 1']}
                   onValueChange={handleChange('condition')}
                   errorMessage={errors.condition}
                   name="condition"
+                  inputStyles={{ backgroundColor: '#c4c4c4' }}
                 />
               </View>
               <View className="border border-gray-500 p-4 rounded-2xl my-3">
@@ -224,30 +260,28 @@ const SettingsScreen = ({ navigation }: any) => {
                   onValueChange={handleChange('percentage1')}
                   errorMessage={errors.percentage1}
                   name="percentage1"
+                  keyboardType="numeric"
+                  inputStyles={{ backgroundColor: '#c4c4c4' }}
                 />
                 <CustomDropdownInput
                   title="Min amount"
                   type="dropdown"
                   selectedValue={values.minAmount1}
-                  options={[
-                    { label: '2 people', value: '2people' },
-                    { label: '3 people', value: '3people' },
-                  ]}
+                  options={['2 people', '3 people']}
                   onValueChange={handleChange('minAmount1')}
                   errorMessage={errors.minAmount1}
                   name="minAmount1"
+                  inputStyles={{ backgroundColor: '#c4c4c4' }}
                 />
                 <CustomDropdownInput
                   title="Condition"
                   type="dropdown"
                   selectedValue={values.condition1}
-                  options={[
-                    { label: 'Any', value: 'any' },
-                    { label: 'Condition 1', value: 'condition1' },
-                  ]}
+                  options={['Any', 'Condition 1']}
                   onValueChange={handleChange('condition1')}
                   errorMessage={errors.condition1}
                   name="condition1"
+                  inputStyles={{ backgroundColor: '#c4c4c4' }}
                 />
               </View>
               <View className="border border-gray-500 p-4 rounded-2xl mt-3 mb-6">
@@ -261,30 +295,28 @@ const SettingsScreen = ({ navigation }: any) => {
                   onValueChange={handleChange('percentage2')}
                   errorMessage={errors.percentage2}
                   name="percentage2"
+                  keyboardType="numeric"
+                  inputStyles={{ backgroundColor: '#c4c4c4' }}
                 />
                 <CustomDropdownInput
                   title="Min amount"
                   type="dropdown"
                   selectedValue={values.minAmount2}
-                  options={[
-                    { label: '2 people', value: '2people' },
-                    { label: '3 people', value: '3people' },
-                  ]}
+                  options={['2 people', '3 people']}
                   onValueChange={handleChange('minAmount2')}
                   errorMessage={errors.minAmount2}
                   name="minAmount2"
+                  inputStyles={{ backgroundColor: '#c4c4c4' }}
                 />
                 <CustomDropdownInput
                   title="Condition"
                   type="dropdown"
                   selectedValue={values.condition2}
-                  options={[
-                    { label: 'Any', value: 'any' },
-                    { label: 'Condition 1', value: 'condition1' },
-                  ]}
+                  options={['Any', 'Condition 1']}
                   onValueChange={handleChange('condition2')}
                   errorMessage={errors.condition2}
                   name="condition2"
+                  inputStyles={{ backgroundColor: '#c4c4c4' }}
                 />
               </View>
               <CustomReferenceButton

@@ -9,10 +9,10 @@ import { height } from 'utils/helpers';
 const validationSchema = Yup.object().shape({
   currentPin: Yup.string()
     .required('Current pin is required')
-    .matches(/^\d{6}$/, 'Pin must be a 6 digit number'),
+    .matches(/^\d{4}$/, 'Invalid Current Pin'),
   newPin: Yup.string()
     .required('New pin is required')
-    .matches(/^\d{6}$/, 'New pin must be a 6 digit number'),
+    .matches(/^\d{4}$/, 'Invalid New pin'),
   confirmPin: Yup.string()
     .required('Confirm pin is required')
     .oneOf([Yup.ref('newPin')], "Confirm pin doesn't match"),
@@ -43,7 +43,8 @@ export const ChangePinScreen = ({ navigation }: any) => {
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}>
+          validationSchema={validationSchema}
+          validateOnChange={false}>
           {({ handleChange, handleSubmit, values, errors }) => (
             <View className="my-12 mx-4">
               <CustomSettingsInput
