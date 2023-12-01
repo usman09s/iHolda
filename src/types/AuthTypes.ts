@@ -163,6 +163,7 @@ export type User = {
   address: string;
   fcmTokens: string[];
   online: boolean;
+  isPlasticAgent: boolean;
   followers: string[];
   following: string[];
   bookmarks: string[];

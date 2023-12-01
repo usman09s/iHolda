@@ -39,7 +39,6 @@ export default function ProfileStackNavigator() {
   return (
     <ProfileStack.Navigator screenOptions={commonScreenOptions}>
       <ProfileStack.Screen options={commonOptions} name="Profile" component={ProfileScreen} />
-      <ProfileStack.Screen options={commonOptions} name="Followers" component={FollowersScreen} />
       <ProfileStack.Screen
         options={commonOptions}
         name="OtherUserProfile"

@@ -74,7 +74,7 @@ const EnterReferralCodeScreen = () => {
           placeholder="Enter referral code"
           customInputClass="text-20 mx-7"
           placeholderTextColor={colors['white-o-60']}
-          keyboardType="numeric"
+          // keyboardType="numeric"
         />
         <View style={{ height: verticalScale(64) }} />
         <View>

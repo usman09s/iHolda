@@ -39,7 +39,7 @@ const AgentPlasticApprovedScreen = () => {
           customContainer="self-center px-10 rounded-lg bg-saffron"
           title="Close"
           onPress={() => {
-            navigate('BottomTabs');
+            navigate('Activity');
           }}
         />
       </View>

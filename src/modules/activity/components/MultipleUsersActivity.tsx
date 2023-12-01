@@ -42,7 +42,7 @@ const MultipleUsersActivity = ({
       </Text>
     </View>
     <View>
-      <Image source={{ uri: momentThumbnail }} className="w-10 h-10 rounded-md" />
+      {momentThumbnail ? <Image source={{ uri: momentThumbnail }} className="w-10 h-10 rounded-md" />: null}
     </View>
   </TouchableOpacity>
 );

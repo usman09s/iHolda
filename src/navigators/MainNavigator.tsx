@@ -27,6 +27,12 @@ import SettingsStackNavigator from 'modules/settings/SettingsStackNavigator';
 import CartpoStackNavigator from 'modules/cartpo/CartpoStackNavigator';
 import CartpoTabNavigator from 'modules/cartpo/CartpoTabNavigator';
 import WalletStackNavigator from 'modules/profile/WalletStackNavigator';
+import ActivityStackNavigator from 'modules/activity/ActivityStackNavigator';
+import PlasticCollectionScreen from 'modules/activity/screens/PlasticCollectionScan';
+import ModifyConfirmPlastic from 'modules/activity/screens/ModifyOrConfirmPlastics';
+import AgentPlasticApprovedScreen from 'modules/agentPlastic/screens/AgentPlasticApprovedScreen';
+import FollowersScreen from 'modules/profile/screens/FollowersScreen';
+import RestaurentDetail from 'modules/restaurants/screens/RestaurantDetail';
 
 const MainStack = createNativeStackNavigator();
 
@@ -72,6 +78,29 @@ export default function MainNavigator() {
           options={commonOptions}
           component={MomentsStackNavigator}
         />
+        <MainStack.Screen options={commonOptions} name="Followers" component={FollowersScreen} />
+
+        <MainStack.Screen
+          name="PlasticColllectionScan"
+          options={commonOptions}
+          component={PlasticCollectionScreen}
+        />
+        <MainStack.Screen
+          name="ModifyConfirmPlastic"
+          options={commonOptions}
+          component={ModifyConfirmPlastic}
+        />
+        <MainStack.Screen
+          name="PlasticApproveScreen"
+          options={commonOptions}
+          component={AgentPlasticApprovedScreen}
+        />
+
+        {/* <MainStack.Screen
+          name="ActivityStack"
+          options={commonOptions}
+          component={ActivityStackNavigator}
+        /> */}
         <MainStack.Screen
           name="PlasticStack"
           options={commonOptions}
@@ -131,6 +160,11 @@ export default function MainNavigator() {
           name="WalletStack"
           options={commonOptions}
           component={WalletStackNavigator}
+        />
+        <MainStack.Screen
+          name="RestaurentDetail"
+          options={commonOptions}
+          component={RestaurentDetail}
         />
         <MainStack.Screen name="CartpoTab" options={commonOptions} component={CartpoTabNavigator} />
       </MainStack.Navigator>

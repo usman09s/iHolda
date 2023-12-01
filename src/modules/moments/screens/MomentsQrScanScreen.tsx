@@ -27,7 +27,7 @@ const MomentsQrScanScreen = () => {
       console.error(error);
     },
     onSuccess: ({ data }) => {
-      console.log("🚀 ~ file: MomentsQrScanScreen.tsx:30 ~ MomentsQrScanScreen ~ data:", data)
+      console.log('🚀 ~ file: MomentsQrScanScreen.tsx:30 ~ MomentsQrScanScreen ~ data:', data);
       if (!data.metBefore) {
         navigate('MomentsMatch', {
           id: 12343,
@@ -55,7 +55,16 @@ const MomentsQrScanScreen = () => {
           },
         }),
       );
-      navigate('MomentsMatch');
+      navigate('MomentsMatch', {
+        id: 12343,
+        user: data.user,
+        location_name: 'No Location',
+        user_profile_image: {
+          id: 4545345,
+          image: data.user.photo,
+          uploaded_at: data.user.updatedAt,
+        },
+      });
     },
   });
 

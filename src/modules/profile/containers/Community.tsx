@@ -29,7 +29,8 @@ const CommunityItem = ({ count, title, subTitle, onPress }: Props) => (
   </Pressable>
 );
 
-const Community = () => (
+// TODO: add types
+const Community = ({ cp = 0, lastcp = 0 }: any) => (
   <View className="flex-1 bg-white pt-6 px-6" style={{ minHeight: height + 200 }}>
     <Text className={text({ type: 'b20', class: 'text-slate-400 mb-4' })}>
       Total{'\n'}
@@ -48,10 +49,10 @@ const Community = () => (
           }}
           className="rounded-full justify-center items-center">
           <View className="flex-row items-center">
-            <Text className={text({ type: 'b30', class: 'text-white' })}>270</Text>
+            <Text className={text({ type: 'b30', class: 'text-white' })}>{cp}</Text>
             <View className="ml-2">
               <Icons.GreenTriangleIcon />
-              <Text className={text({ type: 'm12', class: 'text-white' })}>+20</Text>
+              <Text className={text({ type: 'm12', class: 'text-white' })}>+{lastcp}</Text>
             </View>
           </View>
         </View>

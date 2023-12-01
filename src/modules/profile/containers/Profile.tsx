@@ -5,7 +5,13 @@ import ProfileDescriptionAndStats from '../components/ProfileDescriptionAndStats
 import ProfilePostItem from '../components/ProfilePostItem';
 import ProfilePostTabs from '../components/ProfilePostTabs';
 
-const Profile = () => (
+interface Props {
+  followers: string;
+  impression: string;
+  metPeople: string;
+}
+
+const Profile = ({ followers = "100k", impression = "190k", metPeople = "19 people" }: Props) => (
   <Animated.FlatList
     key={0}
     numColumns={3}
@@ -17,10 +23,10 @@ const Profile = () => (
     ListHeaderComponent={
       <>
         <ProfileDescriptionAndStats
-          followers="100k"
-          impression="190k"
-          metPeople="19 people"
-          description="Profile information are there."
+          followers={followers}
+          impression={impression}
+          metPeople={metPeople}
+          description=""
         />
         <View className="border-[0.5px] border-black-o-10" />
         <ProfilePostTabs activeIndex={0} onPressTabItem={() => () => null} />

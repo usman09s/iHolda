@@ -16,7 +16,7 @@ const MomentCameraHeader = ({
   selectedMomentId,
   matchedUserUsername,
 }: Props) => (
-  <View className="absolute z-10 w-full">
+  <View className="absolute w-full" style={{ zIndex: 9999}}>
     <Header
       customTopHeight={28}
       title={`Moments shared with ${matchedUserUsername}`}

@@ -41,7 +41,7 @@ const AddedMomentList = ({ moments, selectedMoment, listHeight }: Props) => {
   );
 
   return (
-    <View className="absolute pl-4 justify-center items-center" style={{ height: listHeight }}>
+    <View className="absolute pl-4 justify-center items-center z20" style={{ height: listHeight }}>
       <View className="h-[280px] justify-end items-end">
         <FlatList
           className="flex-1"

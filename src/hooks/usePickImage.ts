@@ -3,14 +3,18 @@ import * as ImagePicker from 'expo-image-picker';
 import { getImageFormatFromUrl } from 'utils/helpers';
 
 const usePickImage = () => {
-  const [pickedImage, setPickedImage] = useState('');
+  // TODO: make type
+  const [pickedImage, setPickedImage] = useState<any>('');
   const [pickingLoading, setPickingLoading] = useState(false);
 
-  const pickImage = async () => {
+  const pickImage = async (
+    type: ImagePicker.MediaTypeOptions = ImagePicker.MediaTypeOptions.Images,
+    allowsEditing = true
+  ) => {
     setPickingLoading(true);
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      mediaTypes: type,
+      allowsEditing,
       base64: true,
       aspect: [1, 1],
       quality: 0.7,

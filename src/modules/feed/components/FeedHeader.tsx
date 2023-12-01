@@ -37,6 +37,7 @@ const FeedHeader = () => {
           <View className="flex-1 items-end justify-center">
             <Pressable
               onPress={() => navigate('FeedMomentsSearch')}
+              // onPress={() => navigate('RestaurentDetail')}
               className="w-11 h-11 rounded-full bg-black-o-30 justify-center items-center">
               <Icons.SearchIcon />
             </Pressable>

@@ -1,4 +1,4 @@
-import { Image, Text, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Text, View } from 'react-native';
 import { ResizeMode, Video } from 'expo-av';
 import { Camera, CameraType } from 'expo-camera';
 import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
@@ -53,9 +53,9 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
             selectedMoment && onDeleteMoment(selectedMoment);
           }}
         />
-        <View style={{ height: sizes.cameraHeight }}>
+        <View style={{ height: sizes.cameraHeight,zIndex: -1 }}>
           {isFocused && !selectedMoment && showCamera && (
-            <View style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%' }}>
+            <View style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: -1 }}>
               <Camera
                 ratio={ratio}
                 ref={cameraRef}
@@ -65,11 +65,6 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
               />
             </View>
           )}
-          {/* {!selectedMoment?.id && (
-            <Text className="absolute text-white z-10 text-32 items-center top-0 bottom-0 left-0 right-0 text-center mt-44">
-              {recordTimeCounter}
-            </Text>
-          )} */}
           {selectedMoment &&
             (selectedMoment.type === 'PHOTO' ? (
               <Image source={{ uri: selectedMoment.localUri }} className="w-full h-full" />

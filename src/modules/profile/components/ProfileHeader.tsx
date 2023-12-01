@@ -66,7 +66,7 @@ const ProfileHeader = ({
         <View className=" h-full justify-end px-6" style={{ paddingBottom: units.vh * 2 }}>
           <View className="flex-row">
             <Text className={text({ type: 'b20', class: 'text-white mr-1 mb-3' })}>{username}</Text>
-            {isCurrentUser ? (
+            {/* {isCurrentUser ? (
               <Icons.BorderedVerifiedIcon />
             ) : (
               <View
@@ -83,11 +83,11 @@ const ProfileHeader = ({
                   style={{ transform: [{ rotate: '180deg' }] }}
                 />
               </View>
-            )}
+            )} */}
           </View>
           <Text className={text({ type: 'r13', class: 'text-white' })}>
             Joined {monthAndYear} invited by{' '}
-            <Text className={text({ type: 'b13' })}>{invitedBy}</Text>
+            <Text className={text({ type: 'b13' })}>@{invitedBy}</Text>
           </Text>
         </View>
         <ScrolledHeaderRight activeY={activeY} top={top} isCurrentUser={isCurrentUser} />

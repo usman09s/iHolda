@@ -214,6 +214,12 @@ class ApiClass {
       .put({ referralCode: referralCode.toString() })
       .json(result => result);
 
+  followUnFollowUseer = async (user: string, followed: boolean) =>
+    await this.externalApi
+      .url(followed ? 'user/unfollow' : 'user/follow')
+      .put({ followingUserId: user })
+      .json(result => result);
+
   getWaitingList = async () =>
     await this.externalApi
       .url(`users/?waiting-list=list&query-id=${this.queryId}`)
@@ -417,9 +423,9 @@ class ApiClass {
   //       };
   //     });
 
-  checkUserIsAgent = async () =>
+  checkUserIsAgent = async (id: string) =>
     await this.externalApi
-      .url('plastic/agent/count/652e726f397bc8f89cbd5a6c')
+      .url('plastic/agent/count/' + id)
       .get()
       .json(result => {
         return result.data;
@@ -481,7 +487,7 @@ class ApiClass {
     queryId,
   }: {
     queryId: string;
-    plasticId: number;
+    plasticId: number | string;
     plastics: any;
   }): Promise<unknown> =>
     await this.externalApi
@@ -523,6 +529,15 @@ class ApiClass {
       .get()
       .json(result => result);
 
+  agentScan = async ({ queryId, agentId }: { queryId: string; agentId: string }): Promise<any> =>
+    await this.externalApi
+      .url(`plastic/scan/${queryId}/${agentId}`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
   postMoments = async (reqBody: FormData): Promise<PostMomentsResponse> =>
     await this.externalApi
       .url('met/')
@@ -540,6 +555,22 @@ class ApiClass {
       })
       .get()
       .json(result => result);
+  getRestaurents = async (): Promise<any> =>
+    await this.externalApi
+      .url('restaurant/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getNotifications = async (): Promise<any> =>
+    await this.externalApi
+      .url('user/notifications/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result.data.data);
 
   getFeed = async (): Promise<GetPostsResponseType> =>
     await this.externalApi
@@ -576,9 +607,25 @@ class ApiClass {
       })
       .get()
       .json(result => result);
-  getFollowers = async (): Promise<{ data: { quiz: Quiz } }> =>
+  getFollowers = async (): Promise<{ data: any }> =>
     await this.externalApi
       .url('user/followers/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getMets = async (): Promise<{ data: any }> =>
+    await this.externalApi
+      .url('met/users')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getSuggestions = async (): Promise<{ data: any }> =>
+    await this.externalApi
+      .url('user/suggestions')
       .headers({
         ...this._getAuthorization(this.token),
       })
