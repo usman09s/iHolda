@@ -2,6 +2,9 @@ import { Image, ScrollView, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Antdesign from '@expo/vector-icons/AntDesign';
 
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+
 import ProfileDescriptionAndStats from '../../profile/components/ProfileDescriptionAndStats';
 import ProfilePostItem from '../../profile/components/ProfilePostItem';
 import ProfilePostTabs from '../../profile/components/ProfilePostTabs';
@@ -117,19 +120,64 @@ const Overview = ({ followers = '100k', impression = '190k', metPeople = '19 peo
         }}
       />
 
-      <View style={{ flex: 1, width: '40%', paddingLeft: 10 }}>
+      <View style={{ flex: 1, width: '40%', paddingLeft: 10 , justifyContent: "space-between"}}>
         <Image
-          style={{ width: '100%', borderRadius: 30, height: '50%' }}
+          style={{ width: '100%', borderRadius: 20, height: '49%' }}
           source={{
             uri: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
           }}
         />
         <Image
-          style={{ width: '100%', borderRadius: 30, height: '50%' }}
+          style={{ width: '100%', borderRadius: 20, height: '49%' }}
           source={{
             uri: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
           }}
         />
+      </View>
+    </View>
+
+    <View
+      style={{
+        flexDirection: 'row',
+        gap: 20,
+        marginTop: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <View style={{ alignItems: 'center' }}>
+        <View
+          style={{
+            backgroundColor: '#3cc03c',
+            height: 40,
+            // width: 40,
+            borderRadius: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 50,
+            flexDirection: 'row',
+            gap: 5,
+          }}>
+          <Ionicons name="call" color={'#FFF'} size={18} />
+          <Text style={{ color: 'white' }}>Call</Text>
+        </View>
+      </View>
+
+      <View style={{ alignItems: 'center' }}>
+        <View
+          style={{
+            backgroundColor: '#0684fa',
+            height: 40,
+            // width: 40,
+            borderRadius: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 30,
+            flexDirection: 'row',
+            gap: 5,
+          }}>
+          <FontAwesome5 name="directions" color={'#FFF'} size={20} />
+          <Text style={{ color: 'white' }}>Direction</Text>
+        </View>
       </View>
     </View>
 

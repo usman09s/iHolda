@@ -33,6 +33,9 @@ import ModifyConfirmPlastic from 'modules/activity/screens/ModifyOrConfirmPlasti
 import AgentPlasticApprovedScreen from 'modules/agentPlastic/screens/AgentPlasticApprovedScreen';
 import FollowersScreen from 'modules/profile/screens/FollowersScreen';
 import RestaurentDetail from 'modules/restaurants/screens/RestaurantDetail';
+import AddReview from 'modules/restaurants/screens/AddReview';
+import PostReview from 'modules/restaurants/screens/PostReview';
+import { ReviewSuccess } from 'modules/restaurants/screens/ReviewSuccess';
 
 const MainStack = createNativeStackNavigator();
 
@@ -165,6 +168,21 @@ export default function MainNavigator() {
           name="RestaurentDetail"
           options={commonOptions}
           component={RestaurentDetail}
+        />
+        <MainStack.Screen
+          name="AddReview"
+          options={commonOptions}
+          component={AddReview}
+        />
+        <MainStack.Screen
+          name="PostReview"
+          options={commonOptions}
+          component={PostReview}
+        />
+        <MainStack.Screen
+          name="ReviewSuccess"
+          options={commonOptions}
+          component={ReviewSuccess}
         />
         <MainStack.Screen name="CartpoTab" options={commonOptions} component={CartpoTabNavigator} />
       </MainStack.Navigator>

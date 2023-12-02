@@ -14,6 +14,7 @@ import RestaurantHeader from '../components/RastaurantsHeader';
 import Overview from './Overview';
 import Menu from './Menu';
 import Reviews from './Reviews';
+import Header from 'components/Header/Header';
 
 const RestaurentDetail = ({ route }: any) => {
   const activeY = useSharedValue(0);
@@ -44,6 +45,10 @@ const RestaurentDetail = ({ route }: any) => {
 
   return (
     <View className="flex-1 bg-white">
+        <View style={{ position: "absolute", top:0, left: 30}}>
+          <Header backIconColor='#FFFF' showBackIcon />
+        </View>
+      
       <Animated.FlatList
         numColumns={3}
         data={[RenderedComponent]}
@@ -69,6 +74,7 @@ const RestaurentDetail = ({ route }: any) => {
           />
         }
       />
+      
     </View>
   );
 };

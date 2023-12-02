@@ -2,7 +2,7 @@ import { CustomReferenceButton } from 'modules/requestReference/components/Custo
 import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 
-export const WithdrawSuccessfulScreen = ({ navigation }: any) => {
+export const WithdrawSuccessfulScreen = ({ navigation, route }: any) => {
   return (
     <View className="px-6 py-28 items-center justify-between flex-1">
       <View>
@@ -19,7 +19,7 @@ export const WithdrawSuccessfulScreen = ({ navigation }: any) => {
         <View
           className="w-80 h-20 rounded-full items-center justify-center"
           style={{ borderWidth: 1.5, borderColor: 'black' }}>
-          <Text className="text-black text-center text-2xl font-bold">2500cfa</Text>
+          <Text className="text-black text-center text-2xl font-bold">{route.params?.withdrawAmmount}cfa</Text>
         </View>
         <Text className="mx-3 pt-2 text-center">
           The amount withdrawn will be credited to the withdrawal account you have provided

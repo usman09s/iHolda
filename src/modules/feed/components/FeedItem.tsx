@@ -1,4 +1,4 @@
-import { Image, View, ToastAndroid } from 'react-native';
+import { Image, View, ToastAndroid, Text, FlatList, Dimensions, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp } from '@react-navigation/native';
 import { useAppNavigation } from 'hooks/useAppNavigation';
@@ -13,6 +13,8 @@ import FeedItemDetailsBar from './FeedItemDetailsBar';
 import { useMutation } from 'react-query';
 import Api from 'services/Api';
 import Commentsui from './CommentsUi';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
+import { useState } from 'react';
 
 interface Props {
   image: string;
@@ -25,6 +27,10 @@ interface Props {
   id: string;
   likes: number;
   comments: number;
+  media: {
+    mediaId: string;
+    mediaType: 'video' | 'image';
+  }[];
 }
 
 const FeedItem = ({
@@ -38,34 +44,65 @@ const FeedItem = ({
   id,
   likes,
   comments,
+  media,
 }: Props) => {
   const { top } = useSafeAreaInsets();
   const { mutate, isLoading } = useMutation(Api.sharePost);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const {} = useAppNavigation<NavigationProp<AuthStackParamList>>();
 
   return (
-    <View>
-      {/* <Commentsui visible setVisible={() => null} text='' /> */}
+    <View style={{ flex: 1 }}>
+      <Commentsui visible setVisible={() => null} text='' />
       <View
         className="absolute z-40 flex-row space-x-2 self-center items-center"
-        style={{ paddingTop: top + 160 }}>
-        <FeedItemIndex indexCount={10} activeIndex={1} />
+        style={{ paddingTop: top + 30 }}>
+        <FeedItemIndex indexCount={media.length} activeIndex={activeIndex} />
       </View>
       <View
         className="absolute z-20 flex-row self-center items-center right-10"
         style={{ top: units.vh * 20 }}>
-        <BorderedText>4</BorderedText>
+        <BorderedText size={50}>{activeIndex + 1}</BorderedText>
       </View>
-      <Image
-        resizeMode="cover"
-        className="w-full h-full"
-        source={{
-          uri:
-            image ||
-            'https://images.pexels.com/photos/13347119/pexels-photo-13347119.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-        }}
-      />
+      {media.length === 0 ? (
+        <Image
+          resizeMode="cover"
+          className="w-full h-full"
+          source={{
+            uri: 'https://static.vecteezy.com/system/resources/thumbnails/006/299/377/original/free-download-raining-stock-clip-free-video.jpg',
+          }}
+        />
+      ) : (
+        <View className="flex-1">
+          <FlatList
+            data={media}
+            keyExtractor={(_, i) => i.toString()}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onMomentumScrollEnd={ev => {
+              setActiveIndex(
+                Math.round(ev.nativeEvent.contentOffset.x / Dimensions.get('screen').width),
+              );
+            }}
+            renderItem={({ item }) => (
+              <Image
+                resizeMode="cover"
+                // className="h-full"
+                style={{
+                  width: Dimensions.get('screen').width,
+                  height: Dimensions.get('screen').height,
+                }}
+                source={{
+                  uri: getImageLink(item.mediaId),
+                }}
+              />
+            )}
+          />
+        </View>
+      )}
+
       <FeedItemDetailsBar
         userFirst={{
           emotion: '😄',
@@ -81,6 +118,8 @@ const FeedItem = ({
         caption={caption}
       />
       <FeedItemActionBar
+        bookmarks={0}
+        shares={0}
         likes={likes}
         comments={comments}
         onPressLike={() => null}

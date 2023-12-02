@@ -53,14 +53,6 @@ const FollowersScreen = ({ route }: any) => {
       data[userIndex] = { ...data[userIndex], followers };
 
       setData([...data])
-      // setData(prevData =>
-      //   prevData.map((d: any) =>
-      //     d._id == userId
-      //       ? { ...d, followers: [...d.followers, user?._id] }
-      //       : { ...d, followers: d.followers.filter((f: string) => f !== user?._ids) },
-      //   ),
-      // );
-      // // console.log('🚀 ~ file: FollowersScreen.tsx:45 ~ followUnfollowUser ~ res:', res);
     } catch (error) {
       // console.log('🚀 ~ followUnfollowUser ~ error:', error);
     }

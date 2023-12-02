@@ -6,6 +6,7 @@ import {
   Platform,
   Pressable,
   RefreshControl,
+  ScrollView,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -38,9 +39,9 @@ const FeedScreen = () => {
     });
   };
 
-  const renderItem = ({ item }: { item: Post; index: number }) => {
-    const imageUri = getImageLink(item.media[0]);
-    console.log(imageUri);
+  const renderItem = (item: any) => {
+    const imageUri = getImageLink(item.media[0]?.mediaId);
+    console.log(item._id);
 
     return (
       <Pressable
@@ -51,7 +52,15 @@ const FeedScreen = () => {
             android: height - top - tabBarHeight + 10,
           }),
         }}>
-        <FeedItem likes={item.likes?.length} comments={item.comments?.length} id={item._id} caption={item.text} subText={item.subText} image={imageUri} />
+        <FeedItem
+          likes={item.likes?.length}
+          comments={item.comments?.length}
+          id={item._id}
+          caption={item.text ?? ''}
+          subText={item.subText ?? ''}
+          image={imageUri}
+          media={item.media}
+        />
       </Pressable>
     );
   };
@@ -66,8 +75,16 @@ const FeedScreen = () => {
           </View>
         ))}
       <View className="absolute top-0 left-0 w-full h-full">
-        <FlatList
-          data={data?.result.posts}
+        <ScrollView>{data?.result?.posts?.map(renderItem)}</ScrollView>
+        {/* <FlatList
+          data={
+            data?.result?.posts
+              ? [
+                  ...data?.result.posts,
+                  //  ...data?.result.posts
+                ]
+              : []
+          }
           className="bg-black"
           renderItem={renderItem}
           windowSize={Platform.select({
@@ -92,7 +109,7 @@ const FeedScreen = () => {
           decelerationRate="fast"
           snapToAlignment="start"
           refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={false} />}
-        />
+        /> */}
       </View>
     </>
   );

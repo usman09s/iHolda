@@ -1,16 +1,20 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import Icons from 'components/Icons';
 import { text } from 'theme/text';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+// import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { units } from 'utils/helpers';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 import ProfileTabs from '../../profile/components/ProfileTabs';
 import ScrolledHeader from '../../profile/components/ScrolledHeader';
 import RestaurantScrolledHeaderRight from './ScrolledHeaderRight';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import RestaurantsTabs from './RestaurantsTabs';
+import Header from 'components/Header/Header';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   top: number;
@@ -37,6 +41,7 @@ const RestaurantHeader = ({
   hederThumbnail,
   onPressTabItem,
 }: Props) => {
+  const navigation = useNavigation();
   const headerImageHeight = units.vh * 40;
   const tabHeight = units.vh * 8;
 
@@ -61,36 +66,56 @@ const RestaurantHeader = ({
       <Animated.View
         style={[{ height: headerImageHeight }, animatedHeaderStyle]}
         className={'z-30 flex-row overflow-hidden w-full'}>
-        <Image
-          className="w-full h-full absolute bg-black"
-          source={{ uri: hederThumbnail }}
-        />
+        <Image className="w-full h-full absolute bg-black" source={{ uri: hederThumbnail }} />
         <View className=" h-full justify-end px-6" style={{ paddingBottom: units.vh * 2 }}>
-          <View className="flex-row">
-            <Text className={text({ type: 'b20', class: 'text-white mr-1 mb-3' })}>{username}</Text>
-            {isCurrentUser ? (
-              <Icons.BorderedVerifiedIcon />
-            ) : (
+          <View style={{ flexDirection: 'row', gap: 20 }}>
+            <View style={{ alignItems: 'center' }}>
               <View
                 style={{
-                  backgroundColor: 'white',
-                  height: 20,
-                  borderRadius: 10,
-                  top: 3,
+                  backgroundColor: '#0684fa',
+                  height: 40,
+                  width: 40,
+                  borderRadius: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                <MaterialIcon
-                  name={'error'}
-                  color="red"
-                  size={20}
-                  style={{ transform: [{ rotate: '180deg' }] }}
-                />
+                <FontAwesome5 name="directions" color={'#FFF'} size={20} />
               </View>
-            )}
+              <Text style={{ color: 'white' }}>Direction</Text>
+            </View>
+
+            <View style={{ alignItems: 'center' }}>
+              <View
+                style={{
+                  backgroundColor: '#3cc03c',
+                  height: 40,
+                  width: 40,
+                  borderRadius: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Ionicons name="call" color={'#FFF'} size={18} />
+              </View>
+              <Text style={{ color: 'white' }}>Call</Text>
+            </View>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AddReview')}
+              style={{ alignItems: 'center' }}>
+              <View
+                style={{
+                  backgroundColor: '#676766',
+                  height: 40,
+                  width: 40,
+                  borderRadius: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Ionicons name="camera-outline" color={'#FFF'} size={18} />
+              </View>
+              <Text style={{ color: 'white' }}>Add Review</Text>
+            </TouchableOpacity>
           </View>
-          <Text className={text({ type: 'r13', class: 'text-white' })}>
-            Joined {monthAndYear} invited by{' '}
-            <Text className={text({ type: 'b13' })}>{invitedBy}</Text>
-          </Text>
         </View>
         <RestaurantScrolledHeaderRight activeY={activeY} top={top} isCurrentUser={isCurrentUser} />
       </Animated.View>

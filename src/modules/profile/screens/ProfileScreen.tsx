@@ -39,7 +39,7 @@ const ProfileScreen = ({ route }: any) => {
       />,
       <Community cp={user.cp} lastcp={user?.lastCp} key={1} />,
       <Wallet key={2} />,
-      <Shared key={3} />,
+      // <Shared key={2} />,
     ]?.[index] || [];
 
   return (

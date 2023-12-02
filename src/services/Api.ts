@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { QUIZ_ID } from 'modules/moments/constants';
+import { UserMoment } from 'modules/profile/types';
 import { DecodePlasticsQrResponseType } from 'types/AgentPlasticTypes';
 import {
   LoginParameters,
@@ -538,6 +539,15 @@ class ApiClass {
       .get()
       .json(result => result);
 
+  withdrawFromWallet = async (amount: number): Promise<any> =>
+    await this.externalApi
+      .url(`plastic/withdraw`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post({ amount })
+      .json(result => result);
+
   postMoments = async (reqBody: FormData): Promise<PostMomentsResponse> =>
     await this.externalApi
       .url('met/')
@@ -546,10 +556,36 @@ class ApiClass {
       })
       .post(reqBody)
       .json(result => result);
+  getUserMoments = async (
+    userId?: string,
+    userId2?: string,
+    page?: number,
+  ): Promise<{ data: { data: UserMoment[] } }> =>
+    await this.externalApi
+      .url(
+        'met?' +
+          (userId ? `userId=${userId}` : '') +
+          (userId2 ? `userId2=${userId2}` : '') +
+          (page ? `page=${page}` : ''),
+      )
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
 
   getMoments = async (): Promise<GetMomentsResponseType[]> =>
     await this.externalApi
       .url('moments/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  getWalletBalance = async (): Promise<any> =>
+    await this.externalApi
+      .url('plastic/balance/')
       .headers({
         ...this._getAuthorization(this.token),
       })

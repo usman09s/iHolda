@@ -34,8 +34,8 @@ const FeedItemDetailsBar = ({
         colors['black-o-60'],
       ]}
       locations={[0, 0.1, 0.6, 1]}
-      className="items-center justify-between  z-20 px-3 pb-3 pt-2">
-      <View className="mr-12">
+      className="justify-between  z-20 px-3 pb-3 pt-2">
+      <View className="ml-2">
         <View className="flex-row items-center pl-6">
           <Text className="rotate-30">{userFirst.emotion}</Text>
           <Text className="-rotate-30 right-1.5">{userSecond.emotion}</Text>
@@ -60,18 +60,18 @@ const FeedItemDetailsBar = ({
             {caption}
           </Text>
         )}
-      </View>
       {!!subText && (
         <Text
           numberOfLines={1}
-          style={{ paddingBottom: units.vh * 2 }}
+          // style={{ paddingBottom: units.vh * 2 }}
           className={text({
             type: 'r15',
-            class: 'text-white text-center mt-6 px-7 ',
+            class: 'text-white mt-2',
           })}>
           {subText}
         </Text>
       )}
+      </View>
     </LinearGradient>
   </View>
 );

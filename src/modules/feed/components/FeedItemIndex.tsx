@@ -6,9 +6,8 @@ const FeedItemIndex = ({ activeIndex, indexCount }: { activeIndex: number; index
     .map((_, index) => (
       <View
         key={`${index}-feed-item-index`}
-        className={`h-[${index === activeIndex ? '3px' : '0.5px'}] ml-1.5 w-[10px] bg-${
-          index === activeIndex ? 'saffron' : 'white'
-        }`}
+        className={`ml-1.5 w-[10px]`}
+        style={{ backgroundColor: index === activeIndex ? '#f9ae2b' : 'white', height: index === activeIndex ? 3:1 }}
       />
     ));
 
