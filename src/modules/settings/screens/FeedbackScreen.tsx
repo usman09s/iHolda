@@ -3,8 +3,10 @@ import { CustomReferenceButton } from 'modules/requestReference/components/Custo
 import { View, Text, TextInput, ScrollView } from 'react-native';
 import { height } from 'utils/helpers';
 import { moderateScale } from '../../../utils/helpers';
+import { useSettingActions } from '../hooks/useSettingsActions';
 
 export const FeedbackScreen = () => {
+  const { handleDeleteAccount } = useSettingActions();
   const isSmallScreen = height < 700;
   return (
     <ScrollView className="px-6" contentContainerStyle={{ flexGrow: 1 }}>
@@ -31,6 +33,7 @@ export const FeedbackScreen = () => {
             title="Delete account"
             customContainerClass={'border-0 bg-red-600 w-4/5'}
             customTextClass={'text-white font-normal'}
+            onPress={handleDeleteAccount}
           />
         </View>
       </View>

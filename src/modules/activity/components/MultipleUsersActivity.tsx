@@ -41,9 +41,11 @@ const MultipleUsersActivity = ({
         <Text className={text({ type: 'm12', class: 'text-red-500' })}> {time ? time : '30s'}</Text>
       </Text>
     </View>
-    <View>
-      <Image source={{ uri: momentThumbnail }} className="w-10 h-10 rounded-md" />
-    </View>
+    {momentThumbnail && (
+      <View>
+        <Image source={{ uri: momentThumbnail }} className="w-10 h-10 rounded-md" />
+      </View>
+    )}
   </TouchableOpacity>
 );
 

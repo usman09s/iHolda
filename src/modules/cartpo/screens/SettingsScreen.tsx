@@ -5,6 +5,7 @@ import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import CustomHeader from 'components/Header/CustomHeader';
 
 const SettingsScreen = ({ navigation }: any) => {
   const validationSchema = yup.object().shape({
@@ -77,13 +78,9 @@ const SettingsScreen = ({ navigation }: any) => {
 
   return (
     <ScrollView style={styles.container} className="px-6">
-      <Header
+      <CustomHeader
         showBackIcon
-        centerComponent={
-          <Text className="text-base font-semibold text-gray-500" style={{ marginBottom: -20 }}>
-            Settings
-          </Text>
-        }
+        centerComponent={<Text className="text-base font-semibold text-gray-500">Settings</Text>}
       />
       <View className="py-8">
         <Text className="text-lg font-bold">Account Information</Text>
@@ -225,7 +222,8 @@ const SettingsScreen = ({ navigation }: any) => {
                   errorMessage={errors.percentage}
                   name="percentage"
                   keyboardType="numeric"
-                  inputStyles={{ backgroundColor: '#c4c4c4' }}
+                  placeholderTextColor="black"
+                  extraInputStyles={{ backgroundColor: '#b0b0b0' }}
                 />
                 <CustomDropdownInput
                   title="Min amount"
@@ -235,8 +233,8 @@ const SettingsScreen = ({ navigation }: any) => {
                   onValueChange={handleChange('minAmount')}
                   errorMessage={errors.minAmount}
                   name="minAmount"
-                  inputStyles={{ backgroundColor: '#c4c4c4' }}
-                  placeholderTextColor="#646464"
+                  placeholderTextColor="black"
+                  extraInputStyles={{ backgroundColor: '#b0b0b0' }}
                 />
                 <CustomDropdownInput
                   title="Condition"
@@ -246,7 +244,8 @@ const SettingsScreen = ({ navigation }: any) => {
                   onValueChange={handleChange('condition')}
                   errorMessage={errors.condition}
                   name="condition"
-                  inputStyles={{ backgroundColor: '#c4c4c4' }}
+                  placeholderTextColor="black"
+                  extraInputStyles={{ backgroundColor: '#b0b0b0' }}
                 />
               </View>
               <View className="border border-gray-500 p-4 rounded-2xl my-3">
@@ -261,7 +260,8 @@ const SettingsScreen = ({ navigation }: any) => {
                   errorMessage={errors.percentage1}
                   name="percentage1"
                   keyboardType="numeric"
-                  inputStyles={{ backgroundColor: '#c4c4c4' }}
+                  placeholderTextColor="black"
+                  extraInputStyles={{ backgroundColor: '#b0b0b0' }}
                 />
                 <CustomDropdownInput
                   title="Min amount"
@@ -271,7 +271,8 @@ const SettingsScreen = ({ navigation }: any) => {
                   onValueChange={handleChange('minAmount1')}
                   errorMessage={errors.minAmount1}
                   name="minAmount1"
-                  inputStyles={{ backgroundColor: '#c4c4c4' }}
+                  placeholderTextColor="black"
+                  extraInputStyles={{ backgroundColor: '#b0b0b0' }}
                 />
                 <CustomDropdownInput
                   title="Condition"
@@ -281,7 +282,8 @@ const SettingsScreen = ({ navigation }: any) => {
                   onValueChange={handleChange('condition1')}
                   errorMessage={errors.condition1}
                   name="condition1"
-                  inputStyles={{ backgroundColor: '#c4c4c4' }}
+                  placeholderTextColor="black"
+                  extraInputStyles={{ backgroundColor: '#b0b0b0' }}
                 />
               </View>
               <View className="border border-gray-500 p-4 rounded-2xl mt-3 mb-6">
@@ -296,7 +298,8 @@ const SettingsScreen = ({ navigation }: any) => {
                   errorMessage={errors.percentage2}
                   name="percentage2"
                   keyboardType="numeric"
-                  inputStyles={{ backgroundColor: '#c4c4c4' }}
+                  placeholderTextColor="black"
+                  extraInputStyles={{ backgroundColor: '#b0b0b0' }}
                 />
                 <CustomDropdownInput
                   title="Min amount"
@@ -306,7 +309,8 @@ const SettingsScreen = ({ navigation }: any) => {
                   onValueChange={handleChange('minAmount2')}
                   errorMessage={errors.minAmount2}
                   name="minAmount2"
-                  inputStyles={{ backgroundColor: '#c4c4c4' }}
+                  placeholderTextColor="black"
+                  extraInputStyles={{ backgroundColor: '#b0b0b0' }}
                 />
                 <CustomDropdownInput
                   title="Condition"
@@ -316,7 +320,8 @@ const SettingsScreen = ({ navigation }: any) => {
                   onValueChange={handleChange('condition2')}
                   errorMessage={errors.condition2}
                   name="condition2"
-                  inputStyles={{ backgroundColor: '#c4c4c4' }}
+                  placeholderTextColor="black"
+                  extraInputStyles={{ backgroundColor: '#b0b0b0' }}
                 />
               </View>
               <CustomReferenceButton

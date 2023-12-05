@@ -1,52 +1,68 @@
-import Header from 'components/Header/Header';
+// import Header from 'components/Header/Header';
 import { View, Text, ScrollView } from 'react-native';
 import { CustomSettingsInput } from '../components/CustomSettingsInput';
 import { Formik } from 'formik';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import * as Yup from 'yup';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'store/userDataSlice';
+import { useSettingActions } from '../hooks/useSettingsActions';
+import CustomHeader from 'components/Header/CustomHeader';
 
 const validationSchema = Yup.object().shape({
   number: Yup.string()
     .required('This field is required')
     .min(6, 'Number must be at least 6 characters')
-    .max(8, 'Number must be at most 8 characters'),
+    .max(9, 'Number must be at most 9 characters'),
   confirmNumber: Yup.string()
     .required('This field is required')
     .oneOf([Yup.ref('number')], "Confirm number doesn't match"),
 });
 
+const CustomPaymentAccount = ({ index, number, default: paymentDefault }) => {
+  const numStars = Math.max(0, number.length - 4);
+  const stars = '*'.repeat(numStars);
+  const formattedNumber = `${number.substring(0, 2)}${stars}${number.slice(-2)}`;
+  return (
+    <View
+      className="flex-row justify-between items-center py-3"
+      style={{ borderBottomWidth: 0.5, borderColor: 'gray' }}>
+      <Text className="text-base text-black font-semibold">{`${index}. ${formattedNumber}`}</Text>
+      <View className="flex-row items-center">
+        <Text className="text-xs font-semibold text-gray-500">Default</Text>
+        <Text className="text-base font-semibold">
+          {' '}
+          {paymentDefault ? paymentDefault.toUpperCase() : 'MTN'}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
 export const MobileMoneyScreen = ({ navigation }: any) => {
+  const { handleAddPaymentAccount } = useSettingActions();
+  const userData = useSelector(selectUser);
+  console.log(userData.linkedPaymentAccounts);
   const initialValues = {
     number: '',
     confirmNumber: '',
   };
 
-  const handleSubmit = values => {
-    console.log(values);
-    navigation.goBack();
-  };
-
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <View className="px-6">
-        <Header
+        <CustomHeader
           showBackIcon
-          centerComponent={<Text className="text-gray-500 font-semibold mt-2">Mobile money</Text>}
+          centerComponent={<Text className="text-gray-500 font-semibold">Mobile money</Text>}
         />
         <View className="mx-4 my-12">
           <Text className="text-base text-black font-semibold">Current linked accounts</Text>
-          <View
-            className="flex-row justify-between items-center py-3"
-            style={{ borderBottomWidth: 0.5, borderColor: 'gray' }}>
-            <Text className="text-base text-black font-semibold">1. 67*****84</Text>
-            <View className="flex-row items-center">
-              <Text className="text-xs font-semibold text-gray-500">Default</Text>
-              <Text className="text-base font-semibold"> MTN</Text>
-            </View>
-          </View>
+          {userData.linkedPaymentAccounts.map((account, index) => (
+            <CustomPaymentAccount key={index} index={index + 1} {...account} />
+          ))}
           <Formik
             initialValues={initialValues}
-            onSubmit={handleSubmit}
+            onSubmit={handleAddPaymentAccount}
             validationSchema={validationSchema}
             validateOnChange={false}>
             {({ handleChange, handleSubmit, values, errors }) => (

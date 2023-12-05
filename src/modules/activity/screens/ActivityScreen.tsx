@@ -11,12 +11,13 @@ import { useEffect } from 'react';
 import Api from 'services/Api';
 import { selectNotification, setNotifications } from 'store/notification/notificationSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from 'store/userDataSlice';
 
 const ActivityScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const notifications = useSelector((state: any) => state.notification.data);
-
+  const userData = useSelector(selectUser);
   useFocusEffect(() => {
     const fetchNotifications = async () => {
       try {
@@ -26,7 +27,7 @@ const ActivityScreen = () => {
         console.error('Failed to fetch notifications:', error);
       }
     };
-
+    console.log(userData, 'llloikoioo');
     fetchNotifications();
   });
 
@@ -95,22 +96,20 @@ const ActivityScreen = () => {
           const bodyWithoutUsername = notification.body.substring(0, atIndex);
           const createdAtTimestamp = new Date(notification.createdAt);
           const currentTime = new Date();
-          const hourDifference = `${Math.floor(
-            (currentTime - createdAtTimestamp) / (60 * 60 * 1000),
-          )}H`;
           if (notification.title === 'Reference check') {
+            const timeDifference = calculateTimeDifference(createdAtTimestamp, currentTime);
             return (
               <MultipleUsersActivity
                 key={index}
                 avatars={{
-                  user1: notification.sender.photo,
+                  user1: 'https://i.pravatar.cc/150?img=36',
                   user2: 'https://i.pravatar.cc/150?img=36',
                 }}
                 title={notification.title}
                 subTitle={bodyWithoutUsername}
                 lastUserUsername={`@${notification.sender.userName}`}
                 momentThumbnail={'https://i.pravatar.cc/150?img=36'}
-                time={hourDifference}
+                time={timeDifference}
                 onPress={() => handlePress(notification)}
               />
             );
@@ -119,6 +118,23 @@ const ActivityScreen = () => {
       </ScrollView>
     </View>
   );
+};
+
+const calculateTimeDifference = (createdAt, currentTime) => {
+  const timeDifferenceInSeconds = Math.floor((currentTime - createdAt) / 1000);
+
+  if (timeDifferenceInSeconds < 60) {
+    return `${timeDifferenceInSeconds}s`;
+  } else if (timeDifferenceInSeconds < 3600) {
+    const minutes = Math.floor(timeDifferenceInSeconds / 60);
+    return `${minutes}m`;
+  } else if (timeDifferenceInSeconds < 86400) {
+    const hours = Math.floor(timeDifferenceInSeconds / 3600);
+    return `${hours}h`;
+  } else {
+    const days = Math.floor(timeDifferenceInSeconds / 86400);
+    return `${days}d`;
+  }
 };
 
 export default ActivityScreen;

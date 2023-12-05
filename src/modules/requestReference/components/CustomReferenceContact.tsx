@@ -3,6 +3,7 @@ import { Userpic } from 'react-native-userpic';
 import { CustomReferenceButton } from './CustomReferenceButton';
 import { useRequestReferenceAction } from '../hooks/useRequestReferenceActions';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import CustomProfileAvatar from 'components/CustomProfileAvatar';
 
 export const CustomReferenceContact = ({ data }: any) => {
   const { updateReference } = useRequestReferenceAction();
@@ -20,10 +21,9 @@ export const CustomReferenceContact = ({ data }: any) => {
   return (
     <View className="flex-row items-center justify-between my-2.5">
       <View className="flex-row items-center">
-        <Userpic source={{ uri: photo }} size={60} />
+        <CustomProfileAvatar photo={photo} size={60} userName={userName} />
         <View className="ml-2">
           <Text className="text-black font-bold text-14">{userName}</Text>
-          {/* You can add more properties here if needed */}
         </View>
       </View>
       <CustomReferenceButton
