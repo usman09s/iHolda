@@ -13,8 +13,8 @@ import { useSettingActions } from '../hooks/useSettingsActions';
 export const SocialMediaScreen = () => {
   const [isTextInputVisible, setIsTextInputVisible] = useState([false, false, false]);
   const [linkInput, setLinkInput] = useState(['', '', '', '', '', '']);
-  const [inputError, setInputError] = useState([false, false, false, false, false, false]); // Initialize error state
-  const [activeLink, setActiveLink] = useState(null); // Track the active TextInput
+  const [inputError, setInputError] = useState([false, false, false, false, false, false]);
+  const [activeLink, setActiveLink] = useState(null);
   const dispatch = useDispatch();
   const userData = useSelector(selectUser);
   const { handleUpdateSetting } = useSettingActions();
@@ -107,7 +107,7 @@ export const SocialMediaScreen = () => {
         {userData.socialLinks.map((socialLink, index) => (
           <View key={index}>
             <CustomSocialLink
-              title={socialLink.platform}
+              title={socialLink.platform.charAt(0).toUpperCase() + socialLink.platform.slice(1)}
               rightComponent={
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   {isTextInputVisible[index] ? (

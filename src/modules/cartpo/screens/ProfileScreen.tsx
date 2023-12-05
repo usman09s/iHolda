@@ -20,10 +20,10 @@ export const ProfileScreen = ({ navigation }: any) => {
             <Text className="text-sm font-normal text-gray-500">Let's Track your Sales</Text>
           </View>
           <TouchableOpacity
-            className="bg-blue-200 px-3 py-1 rounded-lg"
-            onPress={() => navigation.navigate('CartpoStack', { screen: 'Settings' })}
+            className="bg-blue-200 px-4 mr-6 py-1.5 rounded"
+            // onPress={() => navigation.navigate('CartpoStack', { screen: 'Settings' })}
             style={{ borderWidth: 0.5, borderColor: 'gray' }}>
-            <Text className="text-blue-800 text-10">Settings</Text>
+            <Text className="text-blue-800 text-10"></Text>
           </TouchableOpacity>
         </View>
         <View className="mt-6">

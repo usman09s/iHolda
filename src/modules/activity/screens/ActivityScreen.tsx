@@ -82,12 +82,8 @@ const ActivityScreen = () => {
           subTitle="From plastic donation"
         />
         <MultipleUsersActivity
-          avatars={{
-            user1: 'https://i.pravatar.cc/150?img=13',
-            user2: 'https://i.pravatar.cc/150?img=36',
-          }}
           title="User1 & 5 others"
-          lastUserUsername="@user3"
+          lastUserUsername="user3"
           subTitle="Liked your moment with "
           momentThumbnail={'https://i.pravatar.cc/150?img=36'}
         />
@@ -101,14 +97,11 @@ const ActivityScreen = () => {
             return (
               <MultipleUsersActivity
                 key={index}
-                avatars={{
-                  user1: 'https://i.pravatar.cc/150?img=36',
-                  user2: 'https://i.pravatar.cc/150?img=36',
-                }}
+                user1Photo={notification.sender.photo}
                 title={notification.title}
                 subTitle={bodyWithoutUsername}
-                lastUserUsername={`@${notification.sender.userName}`}
-                momentThumbnail={'https://i.pravatar.cc/150?img=36'}
+                lastUserUsername={notification.sender.userName}
+                // momentThumbnail={'https://i.pravatar.cc/150?img=36'}
                 time={timeDifference}
                 onPress={() => handlePress(notification)}
               />

@@ -17,7 +17,9 @@ export const SettingsHeader = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={30} color="white" />
         </TouchableOpacity>
-        <Ionicons name="qr-code-sharp" size={30} color="white" />
+        <TouchableOpacity onPress={() => navigation.navigate('CartpoStack')}>
+          <Ionicons name="qr-code-sharp" size={30} color="white" />
+        </TouchableOpacity>
       </View>
       <CustomProfileAvatar
         userName={userData.userName}
