@@ -88,6 +88,7 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
     // formdata.append('post[subText]', '');
     formdata.append('users[0][user]', data?.data.user._id);
     formdata.append('users[1][user]', matchedUser?.user._id);
+    formdata.append('metBefore', `${matchedUser.metBefore}`);
     // formdata.append('users', users);
     formdata.append('mood', (moodScale < 0 ? 1 : moodScale).toString());
 
@@ -119,7 +120,8 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
       <Header
         centerComponent={
           <Text className={text({ type: 'r16', class: 'text-white text-center px-10' })}>
-            You met @{matchedUser?.user.userName} in person for the first time. {'\n \n'}
+            You met @{matchedUser?.user.userName} in person{' '}
+            {!matchedUser?.metBefore ? 'for the first time' : ''}. {'\n \n'}
           </Text>
         }
       />

@@ -19,7 +19,7 @@ import {
   DropOffLocationItemType,
   PlasticItemType,
 } from 'types/PlasticTypes';
-import { GetPostsResponseType } from 'types/PostsTypes';
+// import { GetPostsResponseType } from 'types/PostsTypes';
 import { Quiz } from 'types/QuizTypes';
 import wretch from 'wretch';
 
@@ -219,6 +219,12 @@ class ApiClass {
     await this.externalApi
       .url(followed ? 'user/unfollow' : 'user/follow')
       .put({ followingUserId: user })
+      .json(result => result);
+
+  updateuser = async (user: any) =>
+    await this.externalApi
+      .url('user')
+      .put(user)
       .json(result => result);
 
   getWaitingList = async () =>
@@ -503,9 +509,26 @@ class ApiClass {
         return result;
       });
 
-  getUserProfile = async (): Promise<SignInResponseType> =>
+  getUserProfile = async (userId?: string): Promise<SignInResponseType> =>
+    await this.externalApi
+      .url('user' + (userId ? '?userId=' + userId : ''))
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getUserProfile0 = async (): Promise<SignInResponseType> =>
     await this.externalApi
       .url('user')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  getMetAndFriendRank = async (userId?: string): Promise<any> =>
+    await this.externalApi
+      .url('met/user-rank?' + `userId=${userId}`)
       .headers({
         ...this._getAuthorization(this.token),
       })
@@ -608,7 +631,7 @@ class ApiClass {
       .get()
       .json(result => result.data.data);
 
-  getFeed = async (): Promise<GetPostsResponseType> =>
+  getFeed = async (): Promise<any> =>
     await this.externalApi
       .url('post/')
       .headers({
@@ -681,7 +704,15 @@ class ApiClass {
 
   sharePost = async (reqBody: { postId: string }): Promise<any> =>
     await this.externalApi
-      .url('post/share')
+      .url('post/share/' + reqBody.postId)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post(reqBody)
+      .json(result => result);
+  bookMarkPost = async (reqBody: { postId: string }): Promise<any> =>
+    await this.externalApi
+      .url('user/bookmark/' + reqBody.postId)
       .headers({
         ...this._getAuthorization(this.token),
       })

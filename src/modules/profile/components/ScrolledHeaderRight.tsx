@@ -9,17 +9,17 @@ import { TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 
-type Props = { top: number; isCurrentUser: boolean; activeY: SharedValue<number> };
+type Props = { top: number; isCurrentUser: boolean; activeY: SharedValue<number>; user: any };
 
-const ScrolledHeaderRight = ({ top, activeY, isCurrentUser }: Props) => {
+const ScrolledHeaderRight = ({ top, activeY, isCurrentUser, user: otherUser }: Props) => {
   const navigation = useNavigation();
-  const { user } = useSelector(userSelector);
+  const { user } = otherUser ? { user: otherUser } : useSelector(userSelector);
 
-  const facebook = user.socialLinks.find((s: any) => s?.platform === 'facebook').link;
-  const tiktok = user.socialLinks.find((s: any) => s?.platform === 'tiktok').link;
-  const instagram = user.socialLinks.find((s: any) => s?.platform === 'instagram').link;
-  const website = user.socialLinks.find((s: any) => s?.platform === 'website').link;
-  const snapchat = user.socialLinks.find((s: any) => s?.platform === 'snapchat')?.link;
+  const facebook = user?.socialLinks?.find((s: any) => s?.platform === 'facebook')?.link;
+  const tiktok = user?.socialLinks?.find((s: any) => s?.platform === 'tiktok')?.link;
+  const instagram = user?.socialLinks?.find((s: any) => s?.platform === 'instagram')?.link;
+  const website = user?.socialLinks?.find((s: any) => s?.platform === 'website')?.link;
+  const snapchat = user?.socialLinks?.find((s: any) => s?.platform === 'snapchat')?.link;
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -47,19 +47,19 @@ const ScrolledHeaderRight = ({ top, activeY, isCurrentUser }: Props) => {
         <View className="justify-around items-center mt-4">
           {/* Linking.openURL(this.state.url).catch(err => console.error("Couldn't load page", err)); */}
 
-          <TouchableOpacity onPress={() => Linking.openURL(tiktok)}>
+          <TouchableOpacity onPress={() => tiktok && Linking.openURL(tiktok)}>
             <Icons.TiktokIcon />
           </TouchableOpacity>
           <View style={{ height: units.vh * 2 }} />
-          <TouchableOpacity onPress={() => Linking.openURL(instagram)}>
+          <TouchableOpacity onPress={() => instagram && Linking.openURL(instagram)}>
             <Icons.InstagramIcon />
           </TouchableOpacity>
           <View style={{ height: units.vh * 2 }} />
-          <TouchableOpacity onPress={() => Linking.openURL(snapchat)}>
+          <TouchableOpacity onPress={() => snapchat && Linking.openURL(snapchat)}>
             <Icons.SnapchatIcon />
           </TouchableOpacity>
           <View style={{ height: units.vh * 2 }} />
-          <TouchableOpacity onPress={() => Linking.openURL(website)}>
+          <TouchableOpacity onPress={() => website && Linking.openURL(website)}>
             <Icons.WebsiteIcon />
           </TouchableOpacity>
         </View>

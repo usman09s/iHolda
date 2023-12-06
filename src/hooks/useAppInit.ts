@@ -9,7 +9,7 @@ import { useAppDispatch } from './useAppDispatch';
 export const userAppInit = () => {
   const dispatch = useAppDispatch();
   const [status, setStatus] = useState<'IDLE' | 'LOADING' | 'FAILED' | 'SUCCESS'>('IDLE');
-  const { data, refetch } = useQuery('currentUserProfile', Api.getUserProfile, {
+  const { data, refetch } = useQuery('currentUserProfile', Api.getUserProfile0, {
     refetchOnMount: false,
   });
 
@@ -39,6 +39,8 @@ export const userAppInit = () => {
   };
 
   const getProfile = async () => {
+    setStatus('FAILED');
+    return;
     setStatus('LOADING');
     const result = await getTokensAndQueryId('tokensAndQueryId');
 

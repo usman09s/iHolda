@@ -17,6 +17,7 @@ import { text } from 'theme/text';
 import { wW } from 'utils/helpers';
 import { useQuery } from 'react-query';
 import { useEffect, useState } from 'react';
+import { Video } from 'react-native-compressor';
 
 import { useTimer } from '../hooks/useTimer';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
@@ -106,8 +107,8 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
       body: data,
     });
     setIsLoading(false);
-    // console.log("🚀 ~ file: MomentsMoodScreen.tsx:43 ~ postData ~ response.json():", await  response.text())
-    return { ...(await response.json()), status: response.status };
+    // console.log('~ postData ~ response.text():', await response.text());
+    return response;
   }
 
   const postQuiz = async () => {
@@ -121,14 +122,23 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
     const quizId = data?.data.quiz._id;
 
     if (quizMedia) {
-      const newVideoUri = 'file:///' + element.split('file:/').join('');
+      const result = await Video.compress(
+        element,
+        {compressionMethod: "auto"},
+        (progress) => {
+          console.log('Compression Progress: ', progress);
+        }
+      );
+      console.log("🚀 ~ file: MomentsQuizScreen.tsx:132 ~ postQuiz ~ result:", result)
+      
+      const newVideoUri = 'file:///' + result.split('file:/').join('');
 
       videoObject = {
-        name: element.split('/').pop(),
-        height: 1920,
-        width: 1080,
+        name: result.split('/').pop(),
+        height: 800,
+        width: 600,
         type: mime.getType(newVideoUri),
-        uri: element,
+        uri: result,
       };
       formdata.append('recording', videoObject);
     }
@@ -136,8 +146,7 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
     formdata.append('finishedIn', '10');
     if (quizId) formdata.append('quiz', quizId);
     if (user.user?._id) formdata.append('users[0]', user.user?._id);
-    if (matchedUser?.id && typeof matchedUser?.id === 'string')
-      formdata.append('users[1]', matchedUser?.id);
+    if (matchedUser?.user._id) formdata.append('users[1]', matchedUser?.user._id);
 
     selectedQA.forEach((e, i) => {
       formdata.append(`selectedQuestions[${i}][question]`, e.question);
@@ -145,9 +154,30 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
     });
 
     const resData = await postData(Api.baseUrl + 'quiz/attempt', formdata);
+    const response = await resData.json();
 
-    if (resData.status !== 200) return alert('Something went wrong');
-    console.log('🚀 ~ postQuiz ~ resData:', resData);
+    if (resData.status !== 200) {
+      alert('Something went wrong');
+      goBack();
+      return;
+    }
+
+    const postFormData = new FormData();
+
+    if (user.user?._id) postFormData.append('users[0][user]', user.user?._id);
+    if (matchedUser?.user._id) postFormData.append('users[1][user]', matchedUser?.user._id);
+
+    postFormData.append('post[userQuiz]', response.data.attemptedQuiz._id);
+
+    postFormData.append('metBefore', `${matchedUser?.metBefore}`);
+
+    const postResData = await postData(Api.baseUrl + 'met', postFormData);
+
+    if (postResData.status !== 200) {
+      alert('Something went wrong');
+      goBack();
+      return;
+    }
 
     reset({
       index: 0,

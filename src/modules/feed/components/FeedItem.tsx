@@ -1,9 +1,19 @@
-import { Image, View, ToastAndroid, Text, FlatList, Dimensions, ScrollView } from 'react-native';
+import {
+  Image,
+  View,
+  ToastAndroid,
+  Text,
+  FlatList,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp } from '@react-navigation/native';
 import { useAppNavigation } from 'hooks/useAppNavigation';
 import { AuthStackParamList } from 'modules/auth/AuthStackNavigator';
-import { units } from 'utils/helpers';
+import { units, wW } from 'utils/helpers';
 
 import BorderedText from '../components/BorderedText';
 import FeedItemIndex from '../components/FeedItemIndex';
@@ -13,14 +23,18 @@ import FeedItemDetailsBar from './FeedItemDetailsBar';
 import { useMutation } from 'react-query';
 import Api from 'services/Api';
 import Commentsui from './CommentsUi';
-import { getImageLink } from 'modules/moments/helpers/imageHelpers';
+import { getImageLink, getVideoLink } from 'modules/moments/helpers/imageHelpers';
 import { useState } from 'react';
+import MomentCameraHeader from 'modules/moments/components/MomentCameraHeader';
+import { ResizeMode, Video } from 'expo-av';
+import AppVideo from 'components/AppVideo';
 
 interface Props {
   image: string;
   username1?: string;
   username2?: string;
   userpic1?: string;
+  useTabHeight?: boolean;
   userpic2?: string;
   caption: string;
   subText: string;
@@ -31,9 +45,18 @@ interface Props {
     mediaId: string;
     mediaType: 'video' | 'image';
   }[];
+  gotoDetailOnPress?: boolean;
+  data?: any;
+  canGoBack?: () => boolean;
+  username?: string;
+  bookmarks: number;
+  shares: number;
+  userId1: string;
+  userId2: string;
 }
 
 const FeedItem = ({
+  username,
   image,
   username1,
   username2,
@@ -45,25 +68,44 @@ const FeedItem = ({
   likes,
   comments,
   media,
+  useTabHeight = true,
+  gotoDetailOnPress = false,
+  data,
+  canGoBack = () => false,
+  bookmarks,
+  shares,
+  userId1,
+  userId2,
 }: Props) => {
   const { top } = useSafeAreaInsets();
-  const { mutate, isLoading } = useMutation(Api.sharePost);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const { mutate } = useMutation(Api.sharePost);
+  const { mutate: bookmark } = useMutation(Api.bookMarkPost);
+  const [commentModal, setCommentModal] = useState(false);
+  const [activeIndex0, setActiveIndex0] = useState(0);
 
-  const {} = useAppNavigation<NavigationProp<AuthStackParamList>>();
+  const { navigate, goBack } = useAppNavigation<NavigationProp<any>>();
 
   return (
     <View style={{ flex: 1 }}>
-      <Commentsui visible setVisible={() => null} text='' />
+      <Commentsui
+        likes={likes}
+        useTabHeight={useTabHeight}
+        visible={commentModal}
+        setVisible={() => setCommentModal(prev => !prev)}
+        text=""
+      />
+      {canGoBack() && username !== undefined && (
+        <MomentCameraHeader goBack={goBack} matchedUserUsername={username} />
+      )}
       <View
         className="absolute z-40 flex-row space-x-2 self-center items-center"
-        style={{ paddingTop: top + 30 }}>
-        <FeedItemIndex indexCount={media.length} activeIndex={activeIndex} />
+        style={{ paddingTop: top + (canGoBack() ? 50 : 30) }}>
+        <FeedItemIndex indexCount={media.length} activeIndex={activeIndex0} />
       </View>
       <View
         className="absolute z-20 flex-row self-center items-center right-10"
         style={{ top: units.vh * 20 }}>
-        <BorderedText size={50}>{activeIndex + 1}</BorderedText>
+        <BorderedText size={50}>{activeIndex0 + 1}</BorderedText>
       </View>
       {media.length === 0 ? (
         <Image
@@ -74,7 +116,7 @@ const FeedItem = ({
           }}
         />
       ) : (
-        <View className="flex-1">
+        <View className="flex-1 h-full">
           <FlatList
             data={media}
             keyExtractor={(_, i) => i.toString()}
@@ -82,28 +124,59 @@ const FeedItem = ({
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             onMomentumScrollEnd={ev => {
-              setActiveIndex(
+              setActiveIndex0(
                 Math.round(ev.nativeEvent.contentOffset.x / Dimensions.get('screen').width),
               );
             }}
-            renderItem={({ item }) => (
-              <Image
-                resizeMode="cover"
-                // className="h-full"
-                style={{
-                  width: Dimensions.get('screen').width,
-                  height: Dimensions.get('screen').height,
-                }}
-                source={{
-                  uri: getImageLink(item.mediaId),
-                }}
-              />
-            )}
+            renderItem={({ item }) => {
+              return (
+                <TouchableWithoutFeedback
+                  onPress={() =>
+                    !gotoDetailOnPress ? null : navigate('FeedDetailView', { item: data })
+                  }>
+                  {item.mediaType.includes('video') ? (
+                    <AppVideo
+                      // useNativeControls
+                      isLooping
+                      //TODO: uncomment this:
+                      // shouldPlay={true}
+                      resizeMode={ResizeMode.CONTAIN}
+                      // className="h-full w-full"
+                      style={{
+                        width: canGoBack() ? wW - 10 : wW,
+                        height: Dimensions.get('screen').height,
+                        // marginTop: 10
+                      }}
+                      source={{
+                        uri: getVideoLink(item.mediaId),
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      resizeMode="cover"
+                      // className="h-full w-full"
+                      style={{
+                        width: canGoBack() ? wW - 10 : wW,
+                        height: Dimensions.get('screen').height,
+                        // marginTop: 10
+                      }}
+                      source={{
+                        uri: getImageLink(item.mediaId),
+                      }}
+                    />
+                  )}
+                </TouchableWithoutFeedback>
+              );
+            }}
           />
         </View>
       )}
 
       <FeedItemDetailsBar
+        userId1={userId1}
+        userId2={userId2}
+        navigate={navigate}
+        paddingBottom={canGoBack() ? 30 : 12}
         userFirst={{
           emotion: '😄',
           username: username1 || '@userFirst',
@@ -111,15 +184,15 @@ const FeedItem = ({
         }}
         userSecond={{
           emotion: '😍',
-          username: username2 || '@userSecond',
-          avatar: userpic2 || 'https://i.pravatar.cc/150?img=35',
+          username: username2 || '',
+          avatar: userpic2 || '',
         }}
         subText={subText}
         caption={caption}
       />
       <FeedItemActionBar
-        bookmarks={0}
-        shares={0}
+        bookmarks={bookmarks}
+        shares={shares}
         likes={likes}
         comments={comments}
         onPressLike={() => null}
@@ -137,8 +210,21 @@ const FeedItem = ({
             },
           );
         }}
-        onPressComment={() => null}
-        onPressBookmark={() => null}
+        onPressComment={() => setCommentModal(prev => !prev)}
+        onPressBookmark={() =>
+          bookmark(
+            { postId: id },
+            {
+              onSuccess(data) {
+                ToastAndroid.showWithGravity(
+                  'Post bookmarked',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              },
+            },
+          )
+        }
       />
     </View>
   );

@@ -7,7 +7,7 @@ type Props = {
   goBack: () => void;
   selectedMomentId?: number;
   matchedUserUsername: string;
-  onDeleteMoment: () => void;
+  onDeleteMoment?: () => void;
 };
 
 const MomentCameraHeader = ({
@@ -16,24 +16,21 @@ const MomentCameraHeader = ({
   selectedMomentId,
   matchedUserUsername,
 }: Props) => (
-  <View className="absolute w-full" style={{ zIndex: 9999}}>
+  <View className="absolute w-full" style={{ zIndex: 9999 }}>
     <Header
       customTopHeight={28}
       title={`Moments shared with ${matchedUserUsername}`}
       centerComponent={
         <View className="justify-center items-center left-0 right-0 top-0 bottom-0 absolute z-10">
           <Text className={text({ type: 'b12', class: 'text-white text-center' })}>
-            Moments shared with{'\n'}
-            @{matchedUserUsername}
+            Moments shared with{'\n'}@{matchedUserUsername}
           </Text>
         </View>
       }
       onPressLeft={goBack}
-      onPressRight={onDeleteMoment}
+      onPressRight={onDeleteMoment ? onDeleteMoment : () => null}
       leftComponent={<Icons.CrossIcon color="white" className="ml-4 z-20" />}
-      rightComponent={
-        selectedMomentId && <Icons.TrashIcon color="white" className="mr-5 z-20" />
-      }
+      rightComponent={selectedMomentId && <Icons.TrashIcon color="white" className="mr-5 z-20" />}
     />
   </View>
 );

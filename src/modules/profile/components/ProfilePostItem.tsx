@@ -1,4 +1,4 @@
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, TouchableOpacity } from 'react-native';
 import BorderedText from 'modules/feed/components/BorderedText';
 import { text } from 'theme/text';
 import { width } from 'utils/helpers';
@@ -6,69 +6,73 @@ import { UserMoment } from '../types';
 import { getImageLink, getVideoLink } from '../../moments/helpers/imageHelpers';
 import { ResizeMode, Video } from 'expo-av';
 
-type Props = { index: number; item: UserMoment };
+type Props = { index: number; item: UserMoment; onPress?: (val: any) => void };
 
-const ProfilePostItem = ({ index, item }: Props) => (
-  <View
-    style={[
-      {
-        height: width / 2.4,
-        width: width / 3,
-        marginRight: 2,
-        marginBottom: 2,
-        overflow: 'hidden',
-      },
-    ]}>
-    {item.post.mediaType === 'image' ? (
-      <Image
-        className="h-full w-full"
-        source={{
-          uri: getImageLink(item.post.media[0]),
-        }}
-      />
-    ) : (
-      <Video
-        className="h-full w-full"
-        resizeMode={ResizeMode.COVER}
-        source={{
-          uri: getVideoLink(item.post.media[0]),
-        }}
-      />
-    )}
-    <View className="absolute w-10 z-20 right-4 top-2 items-center justify-center">
-      <BorderedText size={30}>{item.post.media.length}</BorderedText>
-      <Text className={text({ type: 'b12', class: 'text-white text-center' })}>Slides</Text>
-    </View>
-    <View className="absolute z-20 bottom-0 left-0 pl-2 py-2 w-full flex-row overflow-hidden items-center bg-black-o-20">
-      <View className="flex-row items-center">
-        <View className={`rounded-full border-2 border-saffron ${item.users[1] ? '' : 'mr-2'}`}>
-          <View className="rounded-full border-2 border-white">
-            <Image
-              source={{ uri: getImageLink(item.users[0]?.user.photo ?? '') }}
-              className="rounded-full h-6 w-6 "
-            />
-          </View>
-        </View>
-        {item.users[1] ? (
-          <View className="overflow-hidden rounded-full border-2 border-green-500 right-2">
-            <View className="overflow-hidden rounded-full border-2 border-white ">
+const ProfilePostItem = ({ index, item, onPress }: Props) => {
+  const media = item?.post?.userQuiz ? [item?.post?.userQuiz.recording] : item.post?.media;
+  return (
+    <TouchableOpacity
+      onPress={() => onPress && onPress(item)}
+      style={[
+        {
+          height: width / 2.4,
+          width: width / 3,
+          marginRight: 2,
+          marginBottom: 2,
+          overflow: 'hidden',
+        },
+      ]}>
+      {media[0]?.mediaType?.includes('image') ? (
+        <Image
+          className="h-full w-full"
+          source={{
+            uri: getImageLink(media[0]?.mediaId),
+          }}
+        />
+      ) : (
+        <Video
+          className="h-full w-full"
+          resizeMode={ResizeMode.COVER}
+          source={{
+            uri: getVideoLink(media[0]?.mediaId),
+          }}
+        />
+      )}
+      <View className="absolute w-10 z-20 right-4 top-2 items-center justify-center">
+        <BorderedText size={30}>{item.post.media.length}</BorderedText>
+        <Text className={text({ type: 'b12', class: 'text-white text-center' })}>Slides</Text>
+      </View>
+      <View className="absolute z-20 bottom-0 left-0 pl-2 py-2 w-full flex-row overflow-hidden items-center bg-black-o-20">
+        <View className="flex-row items-center">
+          <View className={`rounded-full border-2 border-saffron ${item.users[1] ? '' : 'mr-2'}`}>
+            <View className="rounded-full border-2 border-white">
               <Image
-                source={{ uri: getImageLink(item.users[1]?.user.photo ?? '') }}
-                className=" rounded-full h-6 w-6"
+                source={{ uri: getImageLink(item.users[0]?.user.photo ?? '') }}
+                className="rounded-full h-6 w-6 "
               />
             </View>
           </View>
-        ) : null}
-      </View>
-      <Text numberOfLines={1} className={text({ type: 'b10', class: 'w-1/2 text-white' })}>
-        with
-        <Text style={{ textTransform: 'capitalize' }}>
-          {' '}
-          {item.users[1] ? item.users[1]?.user.userName : 'Yourself'}
+          {item.users[1] ? (
+            <View className="overflow-hidden rounded-full border-2 border-green-500 right-2">
+              <View className="overflow-hidden rounded-full border-2 border-white ">
+                <Image
+                  source={{ uri: getImageLink(item.users[1]?.user.photo ?? '') }}
+                  className=" rounded-full h-6 w-6"
+                />
+              </View>
+            </View>
+          ) : null}
+        </View>
+        <Text numberOfLines={1} className={text({ type: 'b10', class: 'w-1/2 text-white' })}>
+          with
+          <Text style={{ textTransform: 'capitalize' }}>
+            {' '}
+            {item.users[1] ? item.users[1]?.user.userName : 'Yourself'}
+          </Text>
         </Text>
-      </Text>
-    </View>
-  </View>
-);
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 export default ProfilePostItem;

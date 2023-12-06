@@ -9,6 +9,7 @@ import ProfileTabs from './ProfileTabs';
 import ScrolledHeader from './ScrolledHeader';
 import ScrolledHeaderRight from './ScrolledHeaderRight';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
+import { User } from 'types/AuthTypes';
 
 type Props = {
   top: number;
@@ -21,6 +22,7 @@ type Props = {
   isCurrentUser: boolean;
   activeY: SharedValue<number>;
   onPressTabItem: (value: number) => () => void;
+  user?: User;
 };
 
 const ProfileHeader = ({
@@ -34,6 +36,7 @@ const ProfileHeader = ({
   isCurrentUser,
   hederThumbnail,
   onPressTabItem,
+  user
 }: Props) => {
   const headerImageHeight = units.vh * 40;
   const tabHeight = units.vh * 8;
@@ -90,7 +93,7 @@ const ProfileHeader = ({
             <Text className={text({ type: 'b13' })}>@{invitedBy}</Text>
           </Text>
         </View>
-        <ScrolledHeaderRight activeY={activeY} top={top} isCurrentUser={isCurrentUser} />
+        <ScrolledHeaderRight user={user} activeY={activeY} top={top} isCurrentUser={isCurrentUser} />
       </Animated.View>
       <View className="bg-white">
         <ScrolledHeader

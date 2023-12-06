@@ -36,6 +36,8 @@ import RestaurentDetail from 'modules/restaurants/screens/RestaurantDetail';
 import AddReview from 'modules/restaurants/screens/AddReview';
 import PostReview from 'modules/restaurants/screens/PostReview';
 import { ReviewSuccess } from 'modules/restaurants/screens/ReviewSuccess';
+import FeedDetailView from 'modules/feed/screens/FeedDetailView';
+import OtherUserProfileScreen from 'modules/profile/screens/OtherUserProfileScreen';
 
 const MainStack = createNativeStackNavigator();
 
@@ -169,21 +171,21 @@ export default function MainNavigator() {
           options={commonOptions}
           component={RestaurentDetail}
         />
+        <MainStack.Screen name="AddReview" options={commonOptions} component={AddReview} />
+        <MainStack.Screen name="PostReview" options={commonOptions} component={PostReview} />
+        <MainStack.Screen name="ReviewSuccess" options={commonOptions} component={ReviewSuccess} />
         <MainStack.Screen
-          name="AddReview"
+          name="FeedDetailView"
           options={commonOptions}
-          component={AddReview}
+          component={FeedDetailView}
         />
+
         <MainStack.Screen
-          name="PostReview"
           options={commonOptions}
-          component={PostReview}
+          name="OtherUserProfileMain"
+          component={OtherUserProfileScreen}
         />
-        <MainStack.Screen
-          name="ReviewSuccess"
-          options={commonOptions}
-          component={ReviewSuccess}
-        />
+
         <MainStack.Screen name="CartpoTab" options={commonOptions} component={CartpoTabNavigator} />
       </MainStack.Navigator>
     </NavigationContainer>

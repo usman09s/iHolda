@@ -97,7 +97,7 @@ const ActivityScreen = () => {
               title={item.title}
               subTitle={item.body}
               postThumbnail={
-                item.post.mediaType === 'image' ? getImageLink(item.post.media[0]) : ''
+                item.post.mediaType.includes('image') ? getImageLink(item.post.media[0]) : ''
               }
               avatars={{
                 user1: item?.userPhoto,
@@ -115,7 +115,7 @@ const ActivityScreen = () => {
               lastUserUsername=""
               subTitle={item.body}
               momentThumbnail={
-                item.post.mediaType === 'image' ? getImageLink(item.post?.media[0]) : ''
+                item.post.mediaType.includes('image') ? getImageLink(item.post?.media[0]) : ''
               }
             />
           ) : item.type === 'Followed' ? (

@@ -177,6 +177,11 @@ export type User = {
   updatedAt: string;
   location: Location;
   __v: number;
+  metCount?: number;
+  invitedBy: User;
+  cp?: number;
+  lastCp?: number;
+  socialLinks?: { platform: string; link: null | string }[];
 };
 
 export type LocationType = {

@@ -80,7 +80,7 @@ const FeedMomentsSearchScreen = () => {
     // console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:44 ~ search ~ res:', res);
 
     if (!query || page === 1) setPage(prevState => prevState + 1);
-    if (specificPage) setSearchResult(searchType.slug === 'restaurant' ? [0] : res.data);
+    if (specificPage) setSearchResult(res.data);
     else setSearchResult(prevState => prevState.concat(res.data));
   };
 
@@ -210,18 +210,25 @@ const FeedMomentsSearchScreen = () => {
         ) : (
           <View className="flex-row" style={{ flexWrap: 'wrap' }}>
             {searchResult.map((item, index) => {
-              const isUser = item?.metCount !== undefined;
-              const isFollowed = isUser ? item?.followers.includes(user?._id) : false;
+              // const isUser = item?.users && item?.users[0]?.metCount !== undefined;
+              const isUser = !item?.post;
+              const isRestaurant = item?.merchant;
+              const isFollowed = isUser ? item?.followers?.includes(user?._id) : false;
 
-              return searchType.slug === 'restaurant' ? (
+              if (index === 0) console.log(item);
+
+              return isRestaurant ? (
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('RestaurentDetail');
                   }}
-                  className="flex-1 mx-2 mb-1 ml-4">
+                  // className="flex-1 mx-2 mb-1 ml-4 bg-black w-full"
+                  className='w-full px-3 mt-2'
+                  
+                  >
                   <ImageBackground
                     source={{
-                      uri: 'https://charlotte.axios.com/wp-content/uploads/2023/07/IMG_1828.jpg',
+                      uri: getImageLink(item?.coverImage?.mediaId),
                     }}
                     resizeMode="cover"
                     className="rounded-3xl overflow-hidden w-[100%] h-[240px] items-end justify-end">
@@ -239,7 +246,7 @@ const FeedMomentsSearchScreen = () => {
                   </ImageBackground>
                   <View className="flex-row justify-between mt-1 pr-2">
                     <Text className={text({ type: 'r13', class: 'font-bold' })}>
-                      Teras Ibunya Angga
+                      {item.name}
                     </Text>
                     <View className="flex-row items-center gap-3">
                       <Antdesign name="star" color={'#ffc859'} size={15} />
@@ -249,7 +256,7 @@ const FeedMomentsSearchScreen = () => {
                   </View>
                 </TouchableOpacity>
               ) : isUser ? (
-                <View key={index} className="p-2 flex-row items-center px-4 w-full">
+                <View className="p-2 flex-row items-center px-4 w-full">
                   {item?.photo ? (
                     <Image
                       source={{
@@ -274,10 +281,10 @@ const FeedMomentsSearchScreen = () => {
                 </View>
               ) : index === 0 && searchType.slug === categories[0].slug ? null : (
                 <View className="w-[44%] mx-2 mb-1 ml-4">
-                  {item.post.media[0]?.mediaType.includes('video') ? (
+                  {/* {item.post?.media[0]?.mediaType?.includes('video') ? (
                     <Video
                       source={{
-                        uri: getVideoLink(item.post.media[0]),
+                        uri: getVideoLink(item.post?.media[0]?.mediaId),
                       }}
                       resizeMode={ResizeMode.COVER}
                       className="rounded-md w-[100%] h-[240px]"
@@ -285,19 +292,19 @@ const FeedMomentsSearchScreen = () => {
                   ) : (
                     <Image
                       source={{
-                        uri: getImageLink(item.post.media[0]),
+                        uri: getImageLink(item.post?.media[0]?.mediaId),
                       }}
                       resizeMode="cover"
                       className="rounded-md w-[100%] h-[240px]"
                     />
-                  )}
+                  )} */}
                   <Text className={text({ type: 'r12' })}>{item.metTitle}</Text>
-                  <View className="flex-row justify-between mt-1">
+                  {/* <View className="flex-row justify-between mt-1">
                     <Text className={text({ type: 'r12' })} style={{ fontWeight: 'bold' }}>
-                      @{item.users[0]?.userName}
+                      @{item?.users ? item.users[0]?.userName : ''}
                     </Text>
-                    <Text className={text({ type: 'r12' })}>{item.post.likes.length} likes</Text>
-                  </View>
+                    <Text className={text({ type: 'r12' })}>{item.post?.likes?.length} likes</Text>
+                  </View> */}
                 </View>
               );
             })}

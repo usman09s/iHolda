@@ -55,7 +55,8 @@ const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } })
         All Done!
       </Text>
       <Text className={text({ type: 'r16', class: 'text-white text-center px-10 mb-3' })}>
-        You met {matchedUser?.user.userName} in person for the first time.
+        You met {matchedUser?.user.userName} in person{' '}
+        {!matchedUser?.metBefore ? 'for the first time' : ''}.
       </Text>
       <View className="flex-row self-center mb-2 mt-4">
         <View className="overflow-hidden border-white rounded-2xl border-4  -rotate-30 ">
@@ -76,7 +77,7 @@ const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } })
         />
       </View>
       <Text className={text({ class: 'text-white text-center mb-4' })}>
-        To celebrate your first meet up, here is{' '}
+        To celebrate your {!matchedUser?.metBefore ? 'first' : ''} meet up, here is{' '}
         <Text style={{ color: '#ffc401', fontWeight: '800' }}>50% OFF</Text> to dine in at any of
         these restaurants today.
       </Text>

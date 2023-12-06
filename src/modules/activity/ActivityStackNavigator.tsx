@@ -12,6 +12,8 @@ import PlasticApproveScreen from './screens/PlasticApproveScreen';
 import AgentPlasticApprovedScreen from 'modules/agentPlastic/screens/AgentPlasticApprovedScreen';
 import { useQuery } from 'react-query';
 import Api from 'services/Api';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'store/auth/userSelectors';
 
 export type ActivityStackParamList = {
   Activity: undefined;
@@ -31,7 +33,10 @@ const commonScreenOptions: NativeStackNavigationOptions = {
 };
 
 function ActivityStackNavigator() {
-  const { data: user } = useQuery('currentUserProfile', Api.getUserProfile);
+  // const { data: user } = useQuery('currentUserProfile', () => Api.getUserProfile());
+  // console.log("🚀 ~ file: ActivityStackNavigator.tsx:35 ~ ActivityStackNavigator ~ user:", user)
+  const user = useSelector(userSelector)
+  console.log("🚀 ~ file: ActivityStackNavigator.tsx:39 ~ ActivityStackNavigator ~ user:", user)
 
   return (
     <ActivityStack.Navigator screenOptions={commonScreenOptions}>
@@ -40,7 +45,7 @@ function ActivityStackNavigator() {
         options={commonOptions}
         component={
           user
-            ? user.data?.user?.isPlasticAgent
+            ? user?.user?.isPlasticAgent
               ? PlasticActivityScreen
               : ActivityScreen
             : ActivityScreen

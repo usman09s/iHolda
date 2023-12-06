@@ -22,7 +22,7 @@ const Wallet = () => {
       <View className="border-b1 rounded-xl p-6">
         <Text className={text({ class: 'text-center', type: 'm12' })}>Available balance</Text>
         <Text className={text({ class: 'text-center mt-7', type: 'b44' })}>
-          {data?.data?.wallet?.availableBalance}cfa
+          {data?.data?.wallet?.availableBalance ?? 0}cfa
         </Text>
         <Button
           title="Cash Out"

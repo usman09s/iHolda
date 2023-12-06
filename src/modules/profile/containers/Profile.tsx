@@ -11,6 +11,7 @@ interface Props {
   followers: string;
   impression: string;
   metPeople: string;
+  onPressMet?: any;
   metsUserId?: string;
 }
 
@@ -19,6 +20,7 @@ const Profile = ({
   impression = '190k',
   metPeople = '19 people',
   metsUserId,
+  onPressMet
 }: Props) => {
   const { data } = useQuery('usermoments', () => Api.getUserMoments(metsUserId));
 
@@ -43,7 +45,7 @@ const Profile = ({
           <ProfilePostTabs activeIndex={0} onPressTabItem={() => () => null} />
         </>
       }
-      renderItem={({ item,index }) => <ProfilePostItem item={item} index={index} />}
+      renderItem={({ item,index }) => <ProfilePostItem onPress={onPressMet} item={item} index={index} />}
     />
   );
 };

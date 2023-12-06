@@ -19,7 +19,6 @@ const ProfileScreen = ({ route }: any) => {
   const invitedBy = user.invitedBy?.userName;
   const { username, avatar, joinedMonthAndYear } = useSelector(userCommonInformationSelector);
   const isCurrentUser = route.params?.isCurrentUser ?? true;
-  console.log(route.params, 'jofjeofioh');
 
   const onPressTabItem = (value: number) => () => {
     setIndex(value);

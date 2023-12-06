@@ -27,7 +27,7 @@ const MomentsQrScanScreen = () => {
       console.error(error);
     },
     onSuccess: ({ data }) => {
-      console.log('🚀 ~ file: MomentsQrScanScreen.tsx:30 ~ MomentsQrScanScreen ~ data:', data);
+      if (!data) return alert('Invalid QR Code');
       if (!data.metBefore) {
         navigate('MomentsMatch', {
           id: 12343,
@@ -38,6 +38,7 @@ const MomentsQrScanScreen = () => {
             image: data.user.photo,
             uploaded_at: data.user.updatedAt,
           },
+          metBefore: data.metBefore,
         });
         return;
       }
@@ -47,6 +48,7 @@ const MomentsQrScanScreen = () => {
           meetupId: 123,
           id: 12343,
           user: data.user,
+          metBefore: data.metBefore,
           location_name: 'No Location',
           user_profile_image: {
             id: 123,
@@ -55,9 +57,10 @@ const MomentsQrScanScreen = () => {
           },
         }),
       );
-      navigate('MomentsMatch', {
+      navigate('MomentsSelfie', {
         id: 12343,
         user: data.user,
+        metBefore: data.metBefore,
         location_name: 'No Location',
         user_profile_image: {
           id: 4545345,
