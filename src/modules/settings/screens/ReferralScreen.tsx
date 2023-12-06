@@ -9,12 +9,21 @@ import { Userpic } from 'react-native-userpic';
 import { FacebookIcon } from '../../../../assets/facebook';
 import { LinkIcon } from '../../../../assets/link';
 import { ReferralGiftIcon } from '../../../../assets/referralGift';
+import { useSettingActions } from '../hooks/useSettingsActions';
+import { selectUser } from 'store/userDataSlice';
+import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import CustomHeader from 'components/Header/CustomHeader';
+import { selectInvitedInvitees, selectPendingInvitees } from 'store/settings/inviteeSlice';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
-const InvitedUser = ({ avatar }) => {
+const InvitedUser = ({ avatar, name }: any) => {
   return (
     <View style={{ marginRight: 8 }}>
       {avatar ? (
-        <Userpic size={56} source={{ uri: 'https://i.pravatar.cc/100?img=4' }} />
+        <Userpic size={56} source={{ uri: avatar }} />
+      ) : name ? (
+        <Userpic size={56} name={name} />
       ) : (
         <TouchableOpacity className="w-14 h-14 rounded-full bg-blue-500 items-center justify-center mb-2 border-4 border-zinc-300">
           <MaterialCommunityIcons name="plus" size={24} color="gray" />
@@ -24,27 +33,34 @@ const InvitedUser = ({ avatar }) => {
   );
 };
 
-const DummyInvitedUsers = [
-  { id: 1, avatar: 'user1.jpg' },
-  { id: 2, avatar: 'user2.jpg' },
-  { id: 3, avatar: 'user3.jpg' },
-  {},
-  {},
-  {},
-  {},
-  {},
-];
-
 export const ReferralScreen = () => {
+  const { handleGetInvitees } = useSettingActions();
+  const invitedInvitees = useSelector(selectInvitedInvitees);
+  const pendingInvitees = useSelector(selectPendingInvitees);
+  const invitedInviteesWithEmptyObjects = [...invitedInvitees];
+  const pendingInviteesWithEmptyObjects = [...pendingInvitees];
+
+  while (invitedInviteesWithEmptyObjects.length < 8) {
+    invitedInviteesWithEmptyObjects.push({});
+  }
+
+  while (pendingInviteesWithEmptyObjects.length < 8) {
+    pendingInviteesWithEmptyObjects.push({});
+  }
+
+  useFocusEffect(() => {
+    handleGetInvitees();
+  });
+
+  const userData = useSelector(selectUser);
+  const { handleReferralCopy } = useSettingActions();
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
       <View className="px-5">
-        <Header
+        <CustomHeader
           showBackIcon
           centerComponent={
-            <Text style={{ fontSize: 16, fontWeight: '500', marginTop: 2, color: 'gray' }}>
-              Referrals
-            </Text>
+            <Text style={{ fontSize: 16, fontWeight: '500', color: 'gray' }}>Referrals</Text>
           }
         />
       </View>
@@ -56,13 +72,13 @@ export const ReferralScreen = () => {
             </Text>
             <View className="flex-row items-center justify-around mx-3 mt-4 px-2">
               <View className="border-black rounded-xl py-3 w-1/2" style={{ borderWidth: 1 }}>
-                <Text className="text-center text-base font-bold">1500 F</Text>
-                <Text className="text-sm font-normal text-center">Total reward paid</Text>
+                <Text className="text-center text-base font-bold">{userData.rewardPaid} F</Text>
+                <Text className="text-xs font-normal text-center">Total reward paid</Text>
               </View>
               <View className="w-10"></View>
               <View className="border-black rounded-xl py-3 w-1/2" style={{ borderWidth: 1 }}>
-                <Text className="text-center text-base font-bold">1500 F</Text>
-                <Text className="text-sm font-normal text-center">Total reward paid</Text>
+                <Text className="text-center text-base font-bold">{userData.pendingReward} F</Text>
+                <Text className="text-xs font-normal text-center">Total reward pending</Text>
               </View>
             </View>
           </View>
@@ -73,10 +89,11 @@ export const ReferralScreen = () => {
         <View className="items-center justify-center">
           <TouchableOpacity
             className="flex-row items-center bg-neutral-200 justify-between rounded-md py-4 pr-6 pl-4"
-            style={{ width: '75%' }}>
+            style={{ width: '75%' }}
+            onPress={handleReferralCopy}>
             <Text style={{ textAlign: 'center' }}>Your Referral code</Text>
             <View className="flex-row items-center gap-2">
-              <Text>Bayu12</Text>
+              <Text>{userData.referralCode}</Text>
               <Ionicons name="copy" size={15} color="black" />
             </View>
           </TouchableOpacity>
@@ -96,10 +113,14 @@ export const ReferralScreen = () => {
           </TouchableOpacity>
         </View>
         <View className="ml-5">
-          <Text className="mb-2">{`Invited (3/8)`}</Text>
+          <Text className="mb-2">{`Invited (${invitedInvitees.length}/8)`}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {DummyInvitedUsers.map((user, index) => (
-              <InvitedUser key={index} avatar={user.avatar} />
+            {invitedInviteesWithEmptyObjects.map((invitee, index) => (
+              <InvitedUser
+                key={index}
+                avatar={invitee?.photo?.mediaId && getImageLink(invitee.photo.mediaId)}
+                name={invitee.userName && invitee.userName}
+              />
             ))}
           </ScrollView>
         </View>
@@ -108,8 +129,12 @@ export const ReferralScreen = () => {
             Pending invites <MaterialIcons name="error" color="red" />
           </Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {DummyInvitedUsers.map((user, index) => (
-              <InvitedUser key={index} avatar={user.avatar} />
+            {pendingInviteesWithEmptyObjects.map((invitee, index) => (
+              <InvitedUser
+                key={index}
+                avatar={invitee?.photo?.mediaId && getImageLink(invitee.photo.mediaId)}
+                name={invitee.userName && invitee.userName}
+              />
             ))}
           </ScrollView>
         </View>

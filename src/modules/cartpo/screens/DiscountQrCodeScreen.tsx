@@ -55,7 +55,7 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
   };
 
   return (
-    <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <View className="bg-black px-7 pb-6">
         <Header showBackIcon backIconColor="white" />
         <View

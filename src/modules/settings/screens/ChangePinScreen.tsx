@@ -5,29 +5,27 @@ import { Formik } from 'formik';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import * as Yup from 'yup';
 import { height } from 'utils/helpers';
+import { useSettingActions } from '../hooks/useSettingsActions';
 
 const validationSchema = Yup.object().shape({
-  currentPin: Yup.string()
+  oldPassword: Yup.string()
     .required('Current pin is required')
-    .matches(/^\d{6}$/, 'Pin must be a 6 digit number'),
-  newPin: Yup.string()
+    .matches(/^\d{4}$/, 'Invalid Current Pin'),
+  newPassword: Yup.string()
     .required('New pin is required')
-    .matches(/^\d{6}$/, 'New pin must be a 6 digit number'),
-  confirmPin: Yup.string()
+    .matches(/^\d{4}$/, 'Invalid New pin'),
+  confirmPassword: Yup.string()
     .required('Confirm pin is required')
-    .oneOf([Yup.ref('newPin')], "Confirm pin doesn't match"),
+    .oneOf([Yup.ref('newPassword')], "Confirm pin doesn't match"),
 });
 
-export const ChangePinScreen = ({ navigation }: any) => {
+export const ChangePinScreen = () => {
+  const { handleSubmit } = useSettingActions();
   const isSmallScreen = height < 700;
   const initialValues = {
-    currentPin: '',
-    newPin: '',
-    confirmPin: '',
-  };
-  const handleSubmit = values => {
-    console.log(values);
-    navigation.navigate('CartpoStack');
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
   };
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
@@ -43,35 +41,36 @@ export const ChangePinScreen = ({ navigation }: any) => {
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}>
+          validationSchema={validationSchema}
+          validateOnChange={false}>
           {({ handleChange, handleSubmit, values, errors }) => (
             <View className="my-12 mx-4">
               <CustomSettingsInput
                 label="Enter current pin"
                 placeholder="Enter Text Here"
-                field="currentPin"
-                handleChange={handleChange('currentPin')}
+                field="oldPassword"
+                handleChange={handleChange('oldPassword')}
                 keyboardType={'numeric'}
-                value={values.currentPin}
-                error={errors.currentPin}
+                value={values.oldPassword}
+                error={errors.oldPassword}
               />
               <CustomSettingsInput
                 label="New pin"
                 placeholder="Enter Text Here"
-                field="newPin"
-                handleChange={handleChange('newPin')}
+                field="newPassword"
+                handleChange={handleChange('newPassword')}
                 keyboardType={'numeric'}
-                value={values.newPin}
-                error={errors.newPin}
+                value={values.newPassword}
+                error={errors.newPassword}
               />
               <CustomSettingsInput
                 label="Confirm pin"
                 placeholder="Enter Text Here"
-                field="confirmPin"
-                handleChange={handleChange('confirmPin')}
+                field="confirmPassword"
+                handleChange={handleChange('confirmPassword')}
                 keyboardType={'numeric'}
-                value={values.confirmPin}
-                error={errors.confirmPin}
+                value={values.confirmPassword}
+                error={errors.confirmPassword}
               />
               <View style={{ alignSelf: 'center', marginTop: isSmallScreen ? '40%' : '60%' }}>
                 <CustomReferenceButton

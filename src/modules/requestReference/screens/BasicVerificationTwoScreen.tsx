@@ -1,11 +1,13 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Platform } from 'react-native';
 import { Formik } from 'formik';
 import Header from 'components/Header/Header';
 import { CustomReferenceInput } from '../components/CustomReferenceInput';
 import { text } from 'theme/text';
 import * as Yup from 'yup';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { CustomReferenceButton } from '../components/CustomReferenceButton';
+import { useRequestReferenceAction } from '../hooks/useRequestReferenceActions';
 
 const verificationSchema = Yup.object().shape({
   fullName: Yup.string()
@@ -13,7 +15,7 @@ const verificationSchema = Yup.object().shape({
     .matches(/^[A-Za-z\s]+$/, 'Invalid input')
     .min(3, 'Full name must be at least 3 characters')
     .matches(/[A-Za-z]/, 'Full name must contain atleast three letters'),
-  date: Yup.string()
+  dob: Yup.string()
     .matches(
       /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/(19|20)\d\d$/,
       'Invalid date format. Must be DD/MM/YYYY',
@@ -26,8 +28,13 @@ const verificationSchema = Yup.object().shape({
       return selectedDate instanceof Date && !isNaN(selectedDate) && selectedDate <= currentDate;
     })
     .required('Date is required'),
-  emailAddress: Yup.string().required('Email address is required').email('Invalid email address'),
-  city: Yup.string().required('City is required').min(2, 'City must be at least 2 characters'),
+  email: Yup.string()
+    .required('Email address is required')
+    .matches(/^\S+@\S+\.\S+$/, 'Invalid email address'),
+  city: Yup.string()
+    .required('City is required')
+    .matches(/^\S.*\S$/, 'Invalid city')
+    .min(2, 'City must be at least 2 characters'),
   country: Yup.string()
     .required('Country is required')
     .min(2, 'Country must be at least 2 characters')
@@ -51,18 +58,40 @@ const verificationSchema = Yup.object().shape({
     }),
 });
 
-export const BasicVerificationTwoScreen = ({ navigation }: any) => {
+export const BasicVerificationTwoScreen = () => {
+  const { handleNavigation2 } = useRequestReferenceAction();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [touched, setTouched] = useState(false);
+  const [date, setDate] = useState(new Date(2010, 1, 1));
   const initialValues = {
     fullName: '',
-    date: '',
-    emailAddress: '',
+    dob: '',
+    email: '',
     city: '',
     country: '',
   };
 
   const handleSubmit = values => {
-    console.log(values);
-    navigation.navigate('BasicVerificationThree');
+    console.log(values, 'lajdkhs');
+    handleNavigation2(values);
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const handleDateChange = (event, selectedDate) => {
+    setTouched(true);
+    const currentDate = selectedDate || date;
+    setDatePickerVisibility(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const formatDate = date => {
+    if (!date) return '';
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}/${date.getFullYear()}`;
   };
 
   return (
@@ -81,7 +110,7 @@ export const BasicVerificationTwoScreen = ({ navigation }: any) => {
           validationSchema={verificationSchema}
           validateOnChange={false}
           onSubmit={handleSubmit}>
-          {({ handleChange, handleSubmit, values, errors }) => (
+          {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
             <View className="my-12">
               <CustomReferenceInput
                 label="Full name"
@@ -91,22 +120,41 @@ export const BasicVerificationTwoScreen = ({ navigation }: any) => {
                 value={values.fullName}
                 error={errors.fullName}
               />
-              <CustomReferenceInput
-                label="Date"
-                placeholder="01/09/2000"
-                field="date"
-                handleChange={handleChange('date')}
-                keyboardType={'default'}
-                value={values.date}
-                error={errors.date}
-              />
+              <TouchableOpacity onPress={showDatePicker}>
+                <Text>Date of birth</Text>
+                <TextInput
+                  placeholder={'01/09/2000'}
+                  editable={false}
+                  value={touched ? formatDate(date) : ''}
+                  className={`bg-neutral-200 rounded-3xl h-12 px-4 w-full text-black ${
+                    errors.dob ? 'border-red-600 border-2' : ''
+                  }`}
+                  placeholderTextColor={'gray'}
+                />
+                <View className="h-5">
+                  {errors.dob && <Text style={{ color: 'red' }}>{errors.dob}</Text>}
+                </View>
+              </TouchableOpacity>
+              {isDatePickerVisible && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="date"
+                  maximumDate={new Date(2010, 1, 1)}
+                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  onChange={(event, selectedDate) => {
+                    handleDateChange(event, selectedDate);
+                    setFieldValue('dob', formatDate(selectedDate));
+                  }}
+                />
+              )}
               <CustomReferenceInput
                 label="Email address"
                 placeholder="e.g name@email.com"
-                field="emailAddress"
-                handleChange={handleChange('emailAddress')}
-                value={values.emailAddress}
-                error={errors.emailAddress}
+                field="email"
+                handleChange={handleChange('email')}
+                value={values.email}
+                error={errors.email}
               />
               <View className="flex-row w-full">
                 <View className="w-1/2">

@@ -29,7 +29,7 @@ const CommonActivity = ({
       </View>
     </View>
     <View className="ml-4 flex-1">
-      <Text numberOfLines={2} className={text({ type: 'b15' })}>
+      <Text numberOfLines={2} className={text({ type: 'b15' })} style={{ color: '#606060' }}>
         {title}
       </Text>
       <Text className={text({ type: 'r12', class: ' mt-1.5' })}>
@@ -40,7 +40,7 @@ const CommonActivity = ({
       {showFollowBack ? (
         <Button
           title="Follow back"
-          customContainer="bg-lightBlue px-3 py-2 rounded-md"
+          customContainer="bg-lightBlue px-2 py-1.5 rounded-md"
           customTextClass={text({ type: 'r12', class: 'text-black' })}
         />
       ) : postThumbnail ? (

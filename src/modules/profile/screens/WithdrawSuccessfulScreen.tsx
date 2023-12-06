@@ -6,7 +6,7 @@ export const WithdrawSuccessfulScreen = ({ navigation, route }: any) => {
   return (
     <View className="px-6 py-28 items-center justify-between flex-1">
       <View>
-        <Text className="mb-8 text-black">Withdraw successful</Text>
+        <Text className="mb-8 text-black">Withdrawal successful</Text>
         <Icon
           name="check-circle-fill"
           style={{ textAlign: 'center' }}
@@ -17,12 +17,12 @@ export const WithdrawSuccessfulScreen = ({ navigation, route }: any) => {
       <View>
         <Text className="text-center text-2xl font-bold py-2">Amount</Text>
         <View
-          className="w-80 h-20 rounded-full items-center justify-center"
+          className="w-72 self-center h-20 rounded-full items-center justify-center"
           style={{ borderWidth: 1.5, borderColor: 'black' }}>
           <Text className="text-black text-center text-2xl font-bold">{route.params?.withdrawAmmount}cfa</Text>
         </View>
         <Text className="mx-3 pt-2 text-center">
-          The amount withdrawn will be credited to the withdrawal account you have provided
+          The amount withdrawn will be credited to the withdrawal account you have provided.
         </Text>
       </View>
       <View className="mt-12">

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import SelectDropdown from 'react-native-select-dropdown';
 import { useField } from 'formik';
 import { horizontalScale } from 'utils/helpers';
 
 const CustomDropdownInput = ({ title, type, options, ...props }: any) => {
   const [field, meta, helpers] = useField(props.name);
-
   const hasError = meta.touched && meta.error;
 
   const inputStyles = {
@@ -19,55 +19,50 @@ const CustomDropdownInput = ({ title, type, options, ...props }: any) => {
     <View style={styles.row}>
       <Text style={styles.title}>{title}</Text>
       <Text className="font-bold">:</Text>
-      <View style={[styles.inputContainer, inputStyles]}>
-        {type === 'dropdown' ? (
-          <RNPickerSelect
-            placeholder={{
-              label: 'Value',
-              value: 'value',
-            }}
-            Icon={() => (
-              <View style={styles.dropdownIconContainer}>
-                <Icon name="keyboard-arrow-down" style={styles.dropdownIcon} />
-              </View>
-            )}
-            onValueChange={value => {
-              helpers.setValue(value); // Update Formik field value
-              props.onValueChange(value); // Call the provided onValueChange prop
-            }}
-            value={field.value}
-            useNativeAndroidPickerStyle={false}
-            items={options.map((option, index) => ({
-              label: option.label,
-              value: option.value,
-              key: index.toString(),
-            }))}
-            style={{
-              inputIOS: {
-                backgroundColor: '#e0e0e0',
-                borderRadius: 7,
-                paddingVertical: 2,
-                fontSize: 14,
-              },
-              inputAndroid: {
-                backgroundColor: '#e0e0e0',
-                borderRadius: 7,
-                paddingVertical: 2,
-                fontSize: 14,
-              },
-            }}
-          />
-        ) : (
+      {type === 'dropdown' ? (
+        <SelectDropdown
+          data={options}
+          buttonStyle={[
+            styles.inputContainer,
+            { paddingVertical: 0, paddingHorizontal: 0, paddingLeft: 7, height: 35 },
+            inputStyles,
+            props.extraInputStyles,
+          ]}
+          placeholder="Value"
+          placeholderColor={props.placeholderTextColor ? props.placeholderTextColor : '#b3b3b3'}
+          buttonTextStyle={styles.dropdownButtonText}
+          onSelect={(selectedItem, index) => {
+            console.log(selectedItem, index);
+            helpers.setValue(selectedItem);
+            props.onValueChange && props.onValueChange(selectedItem);
+          }}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          renderDropdownIcon={() => {
+            return <Icon name="keyboard-arrow-down" style={styles.dropdownIcon} />;
+          }}
+          dropdownIconPosition="right"
+        />
+      ) : (
+        <View style={[styles.inputContainer, inputStyles, props.extraInputStyles]}>
           <TextInput
             onChangeText={text => {
               helpers.setValue(text);
               props.onValueChange(text);
             }}
             placeholder="Value"
+            placeholderTextColor={
+              props.placeholderTextColor ? props.placeholderTextColor : '#b3b3b3'
+            }
             value={field.value}
+            keyboardType={props.keyboardType ? props.keyboardType : 'default'}
           />
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -91,6 +86,10 @@ const styles = StyleSheet.create({
     width: 170,
     backgroundColor: '#e0e0e0',
     borderRadius: 7,
+  },
+  dropdownButtonText: {
+    fontSize: 13,
+    textAlign: 'left',
   },
   dropdownIconContainer: {
     position: 'absolute',

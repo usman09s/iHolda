@@ -13,12 +13,12 @@ const initialValues = {
 const validationSchema = Yup.object().shape({
   phoneNumber: Yup.string()
     .min(10, 'Phone number must be at least 10 characters long')
+    .matches(/^\+/, 'Phone number must start with a plus sign')
     .required('Phone number is required'),
 });
 
 export const WelcomeScreen = ({ navigation }: any) => {
   const handleSubmit = values => {
-    // Handle form submission here
     console.log('Form values:', values);
     navigation.navigate('ConfirmOtp');
   };
@@ -34,14 +34,15 @@ export const WelcomeScreen = ({ navigation }: any) => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={validationSchema}>
+        validationSchema={validationSchema}
+        validateOnChange={false}>
         {({ handleChange, handleSubmit, values, errors }) => (
           <View className="px-6 my-12">
             <Text
               style={{
                 fontSize: 30,
                 width: '70%',
-                color: '#7f7e7e',
+                color: '#656565',
                 fontWeight: '700',
                 marginBottom: verticalScale(20),
               }}>
@@ -55,7 +56,7 @@ export const WelcomeScreen = ({ navigation }: any) => {
                 handleChange={handleChange('phoneNumber')}
                 customLabelClass={'text-gray-500 font-normal'}
                 customTextInputClass={'h-14'}
-                keyboardType={'numeric'}
+                keyboardType={'phone-pad'}
                 value={values.phoneNumber}
                 error={errors.phoneNumber}
               />

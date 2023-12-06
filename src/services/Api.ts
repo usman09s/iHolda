@@ -488,6 +488,121 @@ class ApiClass {
   //     .post({ key: 'iHolda_Secret_Key', ...params })
   //     .json(result => result);
 
+  basicVerification = async ({
+    gender,
+    fullName,
+    dob,
+    email,
+    city,
+    country,
+    referenceUsers,
+  }: {
+    gender: string;
+    fullName: string;
+    dob: string;
+    email: string;
+    city: string;
+    country: string;
+    referenceUsers: { user: string }[];
+  }) => {
+    return await this.externalApi
+      .url('user/verify/basic')
+      .put({
+        gender,
+        fullName,
+        dob,
+        email,
+        city,
+        country,
+        referenceUsers,
+      })
+      .json(result => {
+        console.log(result, 'hjhjhjhjhj');
+        return result;
+      });
+  };
+
+  searchUsers = async (searchText: string) => {
+    const apiUrl =
+      searchText.trim() === '' ? 'user/suggestions' : `user/suggestions?search=${searchText}`;
+    const result = await this.externalApi.url(apiUrl).get().json();
+    return result.data.data;
+  };
+
+  getNotifications = async () => {
+    const apiUrl = 'user/notifications';
+    const result = await this.externalApi.url(apiUrl).get().json();
+    console.log(result, 'notification');
+    return result.data;
+  };
+
+  changePassword = async ({
+    oldPassword,
+    newPassword,
+    confirmPassword,
+  }: {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }): Promise<unknown> =>
+    await this.externalApi
+      .url('user/change-password')
+      .post({
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword,
+      })
+      .json(result => {
+        console.log(result, 'asjdqjpojpwqej api');
+        return result;
+      });
+
+  deleteAccount = async () => {
+    await this.externalApi
+      .url('user/remove-account')
+      .delete()
+      .json(result => {
+        console.log(result);
+        return result;
+      });
+  };
+
+  setPaymentAccount = async ({ number, default: paymentDefault, confirmNumber }: any) => {
+    const response = await this.externalApi
+      .url('user/payment-accounts')
+      .post({
+        linkedPaymentAccounts: [
+          {
+            number: number,
+            default: paymentDefault,
+            confirmNumber: confirmNumber,
+          },
+        ],
+      })
+      .json((result: any) => {
+        console.log(result, 'payment account set successfully');
+        return result;
+      });
+
+    return response;
+  };
+
+  referenceResponse = async (userId: string, status: string) => {
+    try {
+      const requestBody = {
+        status: status,
+      };
+      const result = await this.externalApi
+        .url(`user/verify/basic/${userId}`)
+        .put(requestBody)
+        .json();
+      console.log(result);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   approvedPlasticDelivery = async ({
     plasticId,
     plastics,

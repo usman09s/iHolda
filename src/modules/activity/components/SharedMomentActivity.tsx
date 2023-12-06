@@ -33,7 +33,7 @@ const SharedMomentActivity = ({
       </View>
     </View>
     <View className="ml-1 flex-1">
-      <Text numberOfLines={2} className={text({ type: 'b15' })}>
+      <Text numberOfLines={2} className={text({ type: 'b15' })} style={{ color: '#606060' }}>
         {title}
       </Text>
       <Text className={text({ type: 'r12', class: ' mt-1.5' })}>

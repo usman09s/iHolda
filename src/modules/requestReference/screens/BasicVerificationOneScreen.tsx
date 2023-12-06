@@ -1,24 +1,14 @@
 import Button from 'components/Button';
 import Header from 'components/Header/Header';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
 import { text } from 'theme/text';
 import { CustomReferenceButton } from '../components/CustomReferenceButton';
 import { height } from 'utils/helpers';
+import { useRequestReferenceAction } from '../hooks/useRequestReferenceActions';
 
-export const BasicVerificationOneScreen = ({ navigation }: any) => {
-  const [selectedOption, setSelectedOption] = useState(null);
+export const BasicVerificationOneScreen = () => {
+  const { selectedOption, selectOption, handleNavigation1 } = useRequestReferenceAction();
   const isSmallScreen = height < 700;
-
-  const selectOption = option => {
-    setSelectedOption(option);
-  };
-
-  const handleNavigation = () => {
-    if (selectedOption !== null) {
-      navigation.navigate('BasicVerificationTwo');
-    }
-  };
 
   return (
     <View className="px-6 flex-1">
@@ -36,9 +26,9 @@ export const BasicVerificationOneScreen = ({ navigation }: any) => {
         <Text className="text-2xl font-bold py-12">Sex?</Text>
         <View className="flex flex-row mb-20 gap-6">
           <View
-            className={`${selectedOption === 'Male' ? 'border-2 border-black rounded-2xl' : ''}`}>
+            className={`${selectedOption === 'male' ? 'border-2 border-black rounded-2xl' : ''}`}>
             <TouchableOpacity
-              onPress={() => selectOption('Male')}
+              onPress={() => selectOption('male')}
               className={`w-36 h-36 rounded-2xl flex items-center justify-center ${
                 selectedOption === 'Male' ? 'border-2 border-white bg-sky-400' : 'bg-sky-200'
               }`}>
@@ -46,9 +36,9 @@ export const BasicVerificationOneScreen = ({ navigation }: any) => {
             </TouchableOpacity>
           </View>
           <View
-            className={`${selectedOption === 'Female' ? 'border-2 border-black rounded-2xl' : ''}`}>
+            className={`${selectedOption === 'female' ? 'border-2 border-black rounded-2xl' : ''}`}>
             <TouchableOpacity
-              onPress={() => selectOption('Female')}
+              onPress={() => selectOption('female')}
               className={`w-36 h-36 rounded-2xl flex items-center justify-center ${
                 selectedOption === 'Female' ? 'border-2 border-white bg-sky-400' : 'bg-sky-200'
               }`}>
@@ -57,7 +47,7 @@ export const BasicVerificationOneScreen = ({ navigation }: any) => {
           </View>
         </View>
         <View className="mt-4">
-          <CustomReferenceButton title="Next" onPress={handleNavigation} />
+          <CustomReferenceButton title="Next" onPress={handleNavigation1} />
         </View>
       </View>
     </View>

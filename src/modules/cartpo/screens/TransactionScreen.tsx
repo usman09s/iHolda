@@ -7,11 +7,15 @@ import Icons from 'components/Icons';
 
 const Header = () => {
   return (
-    <View className="flex-row justify-between items-center pt-6 px-6">
-      <View />
-      <Text className="text-base font-bold text-center text-gray-500">Transactions</Text>
-      <View className="border border-gray-400 justify-center items-center p-0.5 rounded-lg">
-        <HamburgerIcon />
+    <View
+      className="flex-row justify-between items-center pt-6 pb-3 px-6"
+      style={{ borderBottomWidth: 1, borderColor: '#dcdcdc' }}>
+      <View className="w-1/3" />
+      <Text className="w-1/3 text-base font-bold text-center text-gray-500">Transactions</Text>
+      <View className="w-1/3 items-end">
+        <View className="border border-gray-400 justify-center items-center p-0.5 rounded-lg">
+          <HamburgerIcon />
+        </View>
       </View>
     </View>
   );

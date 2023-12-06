@@ -14,6 +14,7 @@ import { parseApiError } from 'utils/helpers';
 import { AuthStackParamList } from '../AuthStackNavigator';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
+import { setUser } from 'store/userDataSlice';
 
 export const useSignInActions = () => {
   const dispatch = useAppDispatch();
@@ -86,6 +87,7 @@ export const useSignInActions = () => {
           );
           Api.setQueryIdValue(result.query_id);
           dispatch(setUserInfo(result));
+          dispatch(setUser(result));
           reset({
             index: 0,
             routes: [{ name: 'BottomTabs' }],

@@ -12,8 +12,8 @@ const initialValues = {
 
 const validationSchema = Yup.object().shape({
   otp: Yup.string()
-    .min(5, 'OTP must be exactly 5 characters long')
-    .max(5, 'OTP must be exactly 5 characters long')
+    .min(4, 'OTP must be exactly 4 characters long')
+    .max(4, 'OTP must be exactly 4 characters long')
     .matches(/^\d+$/, 'OTP must contain only digits')
     .required('OTP is required'),
 });
@@ -42,7 +42,7 @@ export const ConfirmOtpScreen = ({ navigation }: any) => {
               style={{
                 fontSize: 30,
                 width: '40%',
-                color: '#7f7e7e',
+                color: '#656565',
                 fontWeight: '700',
                 marginBottom: verticalScale(20),
               }}>

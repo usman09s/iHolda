@@ -19,21 +19,7 @@ export const CustomReferenceInput = ({
   ...props
 }: CustomReferenceProps) => {
   const handleChangeText = (text: string) => {
-    if (props.field === 'date') {
-      const cleanedText = text.replace(/\D/g, '');
-      const limitedText = cleanedText.slice(0, 8);
-      let formattedText = '';
-      for (let i = 0; i < limitedText.length; i++) {
-        if (i === 2 || i === 4) {
-          formattedText += '/';
-        }
-        formattedText += limitedText[i];
-      }
-
-      props.handleChange(formattedText);
-    } else {
-      props.handleChange(text);
-    }
+    props.handleChange(text);
   };
 
   const hasError = props.error !== undefined;

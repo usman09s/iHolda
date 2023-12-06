@@ -1,27 +1,46 @@
-import Header from 'components/Header/Header';
-import { View, Text, TextInput, ScrollView } from 'react-native';
+import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { Userpic } from 'react-native-userpic';
 import { CustomSettingOption } from '../components/CustomSettingOption';
 import { CustomEditProfileOption } from '../components/CustomEditProfileOption';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
+import CustomHeader from 'components/Header/CustomHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSettingActions } from '../hooks/useSettingsActions';
+import { selectUser } from 'store/userDataSlice';
+import { useFocusEffect } from '@react-navigation/native';
+import CustomProfileAvatar from 'components/CustomProfileAvatar';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 export const EditProfileScreen = ({ navigation }: any) => {
+  const userData = useSelector(selectUser);
+  const {
+    pickImage,
+    handleBioChange,
+    handleLocationPress,
+    cityCountry,
+    profileImage,
+    handleUpdateSetting,
+    getCityCountry,
+  } = useSettingActions();
+
+  useFocusEffect(() => {
+    getCityCountry();
+  });
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <View className="flex-1 px-6">
-        <Header
-          showBackIcon
-          centerComponent={<Text style={{ fontSize: 14, marginTop: 2 }}>Edit profile</Text>}
-        />
+        <CustomHeader showBackIcon title="Edit profile" />
         <View className="flex-1 justify-between mb-20">
-          <View className="mt-8 mb-2">
-            <Userpic
-              source={{ uri: 'https://i.pravatar.cc/100?img=5' }}
+          <TouchableOpacity className="mt-8 mb-2" onPress={pickImage}>
+            <CustomProfileAvatar
+              photo={userData.photo ? getImageLink(userData.photo.mediaId) : profileImage}
+              userName={userData.userName}
               size={85}
-              style={{ borderWidth: 5, borderColor: 'gray' }}
+              extraStyles={{ borderWidth: 3, borderColor: 'gray' }}
             />
             <Text className="text-center font-bold text-base">Edit picture</Text>
-          </View>
+          </TouchableOpacity>
           <View className="mb-8">
             <Text className="ml-5 text-base font-semibold mb-1">Edit bio</Text>
             <TextInput
@@ -30,20 +49,26 @@ export const EditProfileScreen = ({ navigation }: any) => {
               textAlignVertical="top"
               className="rounded-xl h-32 px-3 py-1 text-base"
               multiline
+              value={userData.bio}
+              onChangeText={value => handleBioChange(value)}
               style={{ borderWidth: 1, borderColor: '#aca4ac', color: 'black' }}
             />
             <View>
               <CustomEditProfileOption
                 option="User name"
-                rightComponentTitle="@bayuga"
-                onPress={() => navigation.navigate('NameUsername', { type: 'username' })}
+                rightComponentTitle={`@${userData.userName}`}
+                onPress={() => navigation.navigate('Username')}
               />
               <CustomEditProfileOption
                 option="Name"
-                rightComponentTitle="Betrand Bayuga"
-                onPress={() => navigation.navigate('NameUsername', { type: 'name' })}
+                rightComponentTitle={userData.firstName ? userData.firstName : `N/A`}
+                onPress={() => navigation.navigate('Name')}
               />
-              <CustomEditProfileOption option="Location" rightComponentTitle="none" />
+              <CustomEditProfileOption
+                option="Location"
+                rightComponentTitle={`${cityCountry !== '' ? cityCountry : 'none'}`}
+                onPress={handleLocationPress}
+              />
               <CustomEditProfileOption
                 option="Links"
                 rightComponentTitle="none"
@@ -54,8 +79,9 @@ export const EditProfileScreen = ({ navigation }: any) => {
           <View className="items-center">
             <CustomReferenceButton
               title="Save"
-              onPress={() => navigation.goBack()}
-              customContainerClass={'bg-black border-2 px-0 py-2 w-60 border-white'}
+              onPress={handleUpdateSetting}
+              customContainerClass={'bg-black px-0 py-2 w-60'}
+              extraStyles={{ borderWidth: 0 }}
               customTextClass={'text-white'}
             />
           </View>

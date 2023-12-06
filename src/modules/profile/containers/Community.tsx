@@ -60,18 +60,20 @@ const Community = ({ cp = 0, lastcp = 0 }: any) => (
     </View>
 
     <View className="mt-5 mb-8">
-      <Text className={text({ type: 'r18', class: 'text-black-o-30 text-center' })}>
+      <Text className={text({ type: 'r12', class: 'text-black-o-30 text-center' })}>
         Level <Text className={text({ type: 'b26', class: 'text-black' })}>Bronze 👍</Text>
       </Text>
-      <Text className={text({ type: 'r13', class: 'text-black px-7 text-center mt-3' })}>
+      <Text
+        className={text({ type: 'r13', class: 'text-black px-7 text-center mt-3' })}
+        style={{ color: '#938f9f' }}>
         Total community points are based on the below activities.
       </Text>
     </View>
     <View>
       <CommunityItem title="Plastics" subTitle="Total plastic rescued" count={10} />
       <CommunityItem title="Community work" subTitle="Total plastic rescued" count={10} />
-      <CommunityItem title="Meetups" subTitle="Total plastic rescued" count={10} />
-      <CommunityItem title="Verification" subTitle="Total plastic rescued" count={10} />
+      <CommunityItem title="Meetups" subTitle="Review your accounts" count={10} />
+      <CommunityItem title="Verification" subTitle="Verify your account" count={10} />
       <CommunityItem title="Campaigns" subTitle="Total plastic rescued" count={10} />
     </View>
   </View>

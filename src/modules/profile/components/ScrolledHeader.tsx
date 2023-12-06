@@ -39,7 +39,7 @@ const ScrolledHeader = ({ top, avatar, activeY, username, isCurrentUser }: Props
         animatedStyle,
       ]}>
       <View className="flex-row items-center space-x-2">
-        <Image className="h-10 w-10 rounded-full" source={{ uri: avatar }} />
+        {/* <Image className="h-10 w-10 rounded-full" source={{ uri: avatar }} /> */}
         <Text className={text({ type: 'r13', class: 'text-black' })}>{username}</Text>
       </View>
       <View>

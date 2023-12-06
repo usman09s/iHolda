@@ -5,6 +5,7 @@ import { useLoadFonts } from 'hooks/useLoadFonts';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
 import { store } from 'store/store';
+import Toast from 'react-native-toast-message';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <MainNavigator />
       </QueryClientProvider>
+      <Toast />
     </Provider>
   );
 }
