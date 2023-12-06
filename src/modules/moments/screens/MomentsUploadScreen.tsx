@@ -95,7 +95,7 @@ const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } })
                 <Image
                   resizeMode="cover"
                   className="w-full h-full"
-                  source={{ uri: getImageLink(item.media[0]) }}
+                  source={{ uri: getImageLink(item.media[0]?.mediaId) }}
                 />
               </View>
               <View className="flex-row justify-between px-2">

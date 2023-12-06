@@ -156,7 +156,10 @@ export type User = {
   phone: string;
   dob: string;
   gender: string;
-  photo: string;
+  photo: {
+    mediaType: string;
+    mediaId: string;
+  };
   email: string;
   role: string;
   isActive: boolean;

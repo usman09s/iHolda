@@ -36,7 +36,7 @@ const ProfileHeader = ({
   isCurrentUser,
   hederThumbnail,
   onPressTabItem,
-  user
+  user,
 }: Props) => {
   const headerImageHeight = units.vh * 40;
   const tabHeight = units.vh * 8;
@@ -89,11 +89,16 @@ const ProfileHeader = ({
             )} */}
           </View>
           <Text className={text({ type: 'r13', class: 'text-white' })}>
-            Joined {monthAndYear} invited by{' '}
-            <Text className={text({ type: 'b13' })}>@{invitedBy}</Text>
+            Joined {monthAndYear} {invitedBy ? 'invited by' : null}{' '}
+            <Text className={text({ type: 'b13' })}>{invitedBy && '@' + invitedBy}</Text>
           </Text>
         </View>
-        <ScrolledHeaderRight user={user} activeY={activeY} top={top} isCurrentUser={isCurrentUser} />
+        <ScrolledHeaderRight
+          user={user}
+          activeY={activeY}
+          top={top}
+          isCurrentUser={isCurrentUser}
+        />
       </Animated.View>
       <View className="bg-white">
         <ScrolledHeader

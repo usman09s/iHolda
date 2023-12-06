@@ -33,7 +33,15 @@ const OtherUserProfileScreen = ({ route }: any) => {
   const invitedBy = data?.data.user?.invitedBy?.userName;
   const username = data?.data?.user.userName;
   const avatar = data?.data?.user.photo?.mediaId;
-  const joinedMonthAndYear = 'June 2023';
+
+  const dateString = data?.data?.user.createdAt;
+  const date = new Date(dateString);
+
+  const formattedDate = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+  console.log(formattedDate); // Output: "December 2023"
+
+  const joinedMonthAndYear = formattedDate;
   // const { joinedMonthAndYear } = useSelector(userCommonInformationSelector);
 
   const onPressTabItem = (value: number) => () => {
@@ -61,7 +69,7 @@ const OtherUserProfileScreen = ({ route }: any) => {
       <Shared
         userId={data?.data?.user._id ?? ''}
         userName={data?.data?.user.userName ?? ''}
-        loginUserId={user?._id ?? ""}
+        loginUserId={user?._id ?? ''}
         key={3}
       />,
     ]?.[index] || [];

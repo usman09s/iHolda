@@ -764,9 +764,41 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  getMetLeaderboard = async (): Promise<any> =>
+  getMetLeaderboard = async (): Promise<
+    {
+      _id: string;
+      user: {
+        _id: string;
+        userName: string;
+        firstName: null | string;
+        lastName: null | string;
+        photo: null | { mediaType: string; mediaId: string };
+      };
+      metCount: 1;
+    }[]
+  > =>
     await this.externalApi
       .url('met/user/leaderboard?page=1')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result.data.data);
+  getMetPairLeaderboard = async (): Promise<
+    {
+      _id: string;
+      users: {
+        _id: string;
+        userName: string;
+        firstName: null | string;
+        lastName: null | string;
+        photo: null | { mediaType: string; mediaId: string };
+      }[];
+      metCount: 1;
+    }[]
+  > =>
+    await this.externalApi
+      .url('met/pair/leaderboard?page=1')
       .headers({
         ...this._getAuthorization(this.token),
       })

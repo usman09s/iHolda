@@ -260,7 +260,7 @@ const FeedMomentsSearchScreen = () => {
                   {item?.photo ? (
                     <Image
                       source={{
-                        uri: getImageLink(item?.photo),
+                        uri: getImageLink(item?.photo?.mediaId),
                       }}
                       resizeMode="cover"
                       style={{ width: 40, height: 40, borderRadius: 50, marginHorizontal: 10 }}
@@ -268,7 +268,7 @@ const FeedMomentsSearchScreen = () => {
                   ) : null}
                   <View style={{ flex: 1 }}>
                     <Text className="font-semibold">{item.userName}</Text>
-                    <Text className="text-gray-500">Met {item?.metCount} people</Text>
+                    <Text className="text-gray-500">Met {item?.metPeopleCount} people</Text>
                   </View>
                   <View>
                     <TouchableOpacity
