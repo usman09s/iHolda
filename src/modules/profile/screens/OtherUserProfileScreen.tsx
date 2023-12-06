@@ -32,7 +32,7 @@ const OtherUserProfileScreen = ({ route }: any) => {
 
   const invitedBy = data?.data.user?.invitedBy?.userName;
   const username = data?.data?.user.userName;
-  const avatar = data?.data?.user.photo;
+  const avatar = data?.data?.user.photo?.mediaId;
   const joinedMonthAndYear = 'June 2023';
   // const { joinedMonthAndYear } = useSelector(userCommonInformationSelector);
 

@@ -57,13 +57,13 @@ const ProfileScreen = ({ route }: any) => {
           <ProfileHeader
             top={top}
             isCurrentUser={isCurrentUser}
-            avatar={avatar}
+            avatar={avatar.mediaId}
             activeY={activeY}
             username={username}
             activeIndex={index}
             key={'profileHeader'}
             invitedBy={invitedBy}
-            hederThumbnail={userData.photo?.mediaId}
+            hederThumbnail={avatar.mediaId}
             monthAndYear={joinedMonthAndYear}
             onPressTabItem={onPressTabItem}
           />

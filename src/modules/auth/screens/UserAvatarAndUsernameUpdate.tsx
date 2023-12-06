@@ -100,7 +100,7 @@ const UserAvatarAndUsernameUpdate = () => {
               Profile picture
             </Text>
             <Pressable
-              onPress={pickImage}
+              onPress={()=>pickImage()}
               style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}>
               <Animated.View
                 className="border-4 border-dustGray rounded-full overflow-hidden bg-altoGray  w-44 h-44 self-center justify-center items-center"

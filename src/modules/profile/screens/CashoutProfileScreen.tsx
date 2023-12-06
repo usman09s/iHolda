@@ -7,6 +7,7 @@ import { height, horizontalScale, verticalScale } from '../../../utils/helpers';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import Api from 'services/Api';
+import SelectDropdown from 'react-native-select-dropdown';
 
 export const CashoutProfileScreen = ({ navigation, route }: any) => {
   const [withdrawAmmount, setWithdrawAmmount] = useState(0);
@@ -23,7 +24,6 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
     },
   });
 
-import SelectDropdown from 'react-native-select-dropdown';
 
   const isSmallScreen = height < 700;
   const handleValueChange = (value: string) => {

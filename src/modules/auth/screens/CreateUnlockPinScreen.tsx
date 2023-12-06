@@ -18,6 +18,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { setTokensAndQueryId } from 'store/auth/userSlice';
 import { setQrCode } from 'store/plastic/userPlasticSlice';
 import CustomErrorModal from 'components/ErrorModal/errorModal';
+import mime from 'mime';
 
 const CreateUnlockPinScreen = () => {
   LayoutAnimation.linear();
@@ -33,8 +34,6 @@ const CreateUnlockPinScreen = () => {
   const dispatch = useAppDispatch();
 
   const onConfirm = () => {
-    console.log("🚀 ~ file: CreateUnlockPinScreen.tsx:37 ~ onConfirm ~ userInfo:", userInfo)
-    return;
     mutate(
       {
         password: pin.toString(),
@@ -50,33 +49,9 @@ const CreateUnlockPinScreen = () => {
             console.log(result.data.userQrCode, 'dwhceonewoncoi');
             // dispatch(setTokensAndQueryId({ accessToken: result.data.accessToken }));
 
-            var formdata = new FormData();
-            if (!userInfo.username) return;
-            formdata.append('firstName', userInfo.username);
-            formdata.append('bio', "Embracing life's journey");
-            formdata.append('address', 'abcd street');
-            formdata.append('userName', userInfo.username);
-            formdata.append('socialLinks[0][platform]', 'facebook');
-            formdata.append('socialLinks[0][link]', 'facebook.com/profile.php');
-            formdata.append('socialLinks[2][platform]', 'tiktok');
-            formdata.append('socialLinks[2][link]', 'facenpo');
-            formdata.append('socialLinks[3][platform]', 'youtube');
-            formdata.append('socialLinks[3][link]', 'facenpo');
-            formdata.append('socialLinks[4][platform]', 'twitter');
-            formdata.append('socialLinks[4][link]', 'facenpo');
-            formdata.append('socialLinks[5][platform]', 'instagram');
-            formdata.append('socialLinks[5][link]', 'instagram.com');
-            formdata.append('socialLinks[1][platform]', 'website');
-            formdata.append('socialLinks[1][link]', 'webstie.com');
-            formdata.append(
-              'photo',
-              fileInput.files[0],
-              '/C:/Users/Usman/Downloads/file_example_JPG_500kB.jpg',
-            );
+            
 
-            Api.updateuser(formdata).then(() => {
-              navigate('EnterReferralCode');
-            });
+            navigate('EnterReferralCode');
           }
         },
         onError: data => {

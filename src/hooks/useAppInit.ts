@@ -40,8 +40,8 @@ export const userAppInit = () => {
   };
 
   const getProfile = async () => {
-    setStatus('FAILED');
-    return;
+    // setStatus('FAILED');
+    // return;
     setStatus('LOADING');
     const result = await getTokensAndQueryId('tokensAndQueryId');
 

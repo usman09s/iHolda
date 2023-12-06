@@ -11,11 +11,14 @@ import { useQuery } from 'react-query';
 import Api from 'services/Api';
 import { useEffect } from 'react';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
+import { useDispatch } from 'react-redux';
+import { selectNotification } from 'store/notification/notificationSlice';
 
 const ActivityScreen = () => {
   const notifications = useQuery('getNotifications', Api.getNotifications);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
   function getTimeDifference(dateString: string) {
     const currentDate = new Date();
@@ -43,6 +46,13 @@ const ActivityScreen = () => {
     }
   }
 
+  const handlePress = (notification: any) => {
+    dispatch(selectNotification(notification));
+    if (notification.title === 'Reference check') {
+      navigation.navigate('AcceptReferenceStack');
+    }
+  };
+
   useEffect(() => {
     if (isFocused) notifications.refetch();
   }, [isFocused]);
@@ -61,7 +71,9 @@ const ActivityScreen = () => {
                 user1: item.met?.users[0]?.photo,
                 user2: item.met?.users[1]?.photo,
               }}
-              momentThumbnail={item.post?.mediaType === 'image' ? getImageLink(item.post?.media[0]) : ''}
+              momentThumbnail={
+                item.post?.mediaType === 'image' ? getImageLink(item.post?.media[0]) : ''
+              }
               title={item.title}
               subTitle={item.body}
               time={getTimeDifference(item.createdAt)}
@@ -77,7 +89,8 @@ const ActivityScreen = () => {
               time={getTimeDifference(item.createdAt)}
               subTitle={item.body}
               momentThumbnail={''}
-              onPress={() => navigation.navigate('AcceptReferenceStack')}
+              // onPress={() => navigation.navigate('AcceptReferenceStack')}
+              onPress={() => handlePress(item)}
             />
           ) : item.type === 'Invite' ? (
             <CommonActivity
