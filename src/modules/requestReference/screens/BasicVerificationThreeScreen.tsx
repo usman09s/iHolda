@@ -8,6 +8,8 @@ import { height } from 'utils/helpers';
 import { useSelector } from 'react-redux';
 import { useRequestReferenceAction } from '../hooks/useRequestReferenceActions';
 import { Userpic } from 'react-native-userpic';
+import CustomProfileAvatar from 'components/CustomProfileAvatar';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 export const BasicVerificationThreeScreen = () => {
   const {
@@ -53,7 +55,11 @@ export const BasicVerificationThreeScreen = () => {
               className="w-32 h-32 rounded-full bg-blue-500 items-center justify-center mb-2 border-2 border-zinc-400"
               onPress={() => handleAddReference1()}>
               {referenceUsers.length > 0 ? (
-                <Userpic name={referenceUsers[0].userName} size={110} />
+                <CustomProfileAvatar
+                  userName={referenceUsers[0].userName}
+                  photo={getImageLink(referenceUsers[0].photo?.mediaId)}
+                  size={110}
+                />
               ) : (
                 <MaterialCommunityIcons name="plus" size={40} color="gray" />
               )}
@@ -67,7 +73,11 @@ export const BasicVerificationThreeScreen = () => {
               className="w-32 h-32 rounded-full bg-blue-500 items-center justify-center mb-2 border-2 border-zinc-400"
               onPress={() => handleAddReference2()}>
               {referenceUsers.length > 1 ? (
-                <Userpic name={referenceUsers[1].userName} size={110} />
+                <CustomProfileAvatar
+                  userName={referenceUsers[1].userName}
+                  photo={getImageLink(referenceUsers[1].photo?.mediaId)}
+                  size={110}
+                />
               ) : (
                 <MaterialCommunityIcons name="plus" size={40} color="gray" />
               )}

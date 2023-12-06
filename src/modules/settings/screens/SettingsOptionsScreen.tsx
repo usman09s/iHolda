@@ -2,8 +2,10 @@ import { View, Text, Pressable, ScrollView } from 'react-native';
 import { SettingsHeader } from '../components/SettingsHeader';
 import { CustomSettingOption } from '../components/CustomSettingOption';
 import { ReferralGiftIcon } from '../../../../assets/referralGift';
+import { useSettingActions } from '../hooks/useSettingsActions';
 
 export const SettingsOptionScreen = ({ navigation }: any) => {
+  const { logout } = useSettingActions();
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
       <SettingsHeader />
@@ -37,11 +39,7 @@ export const SettingsOptionScreen = ({ navigation }: any) => {
           onPress={() => navigation.navigate('Language')}
         />
       </View>
-      <Pressable
-        className="items-center mt-10 mb-12"
-        onPress={() => {
-          navigation.goBack();
-        }}>
+      <Pressable className="items-center mt-10 mb-12" onPress={logout}>
         <Text className="text-base text-red-600 font-semibold">Logout</Text>
       </Pressable>
     </ScrollView>

@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Platform } from 'react-native';
 import { Formik } from 'formik';
 import Header from 'components/Header/Header';
 import { CustomReferenceInput } from '../components/CustomReferenceInput';
 import { text } from 'theme/text';
 import * as Yup from 'yup';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { CustomReferenceButton } from '../components/CustomReferenceButton';
 import { useRequestReferenceAction } from '../hooks/useRequestReferenceActions';
 
@@ -59,6 +60,9 @@ const verificationSchema = Yup.object().shape({
 
 export const BasicVerificationTwoScreen = () => {
   const { handleNavigation2 } = useRequestReferenceAction();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [touched, setTouched] = useState(false);
+  const [date, setDate] = useState(new Date(2010, 1, 1));
   const initialValues = {
     fullName: '',
     dob: '',
@@ -70,6 +74,24 @@ export const BasicVerificationTwoScreen = () => {
   const handleSubmit = values => {
     console.log(values, 'lajdkhs');
     handleNavigation2(values);
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const handleDateChange = (event, selectedDate) => {
+    setTouched(true);
+    const currentDate = selectedDate || date;
+    setDatePickerVisibility(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const formatDate = date => {
+    if (!date) return '';
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}/${date.getFullYear()}`;
   };
 
   return (
@@ -88,7 +110,7 @@ export const BasicVerificationTwoScreen = () => {
           validationSchema={verificationSchema}
           validateOnChange={false}
           onSubmit={handleSubmit}>
-          {({ handleChange, handleSubmit, values, errors }) => (
+          {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
             <View className="my-12">
               <CustomReferenceInput
                 label="Full name"
@@ -98,15 +120,34 @@ export const BasicVerificationTwoScreen = () => {
                 value={values.fullName}
                 error={errors.fullName}
               />
-              <CustomReferenceInput
-                label="Date of birth"
-                placeholder="01/09/2000"
-                field="dob"
-                handleChange={handleChange('dob')}
-                keyboardType={'numeric'}
-                value={values.dob}
-                error={errors.dob}
-              />
+              <TouchableOpacity onPress={showDatePicker}>
+                <Text>Date of birth</Text>
+                <TextInput
+                  placeholder={'01/09/2000'}
+                  editable={false}
+                  value={touched ? formatDate(date) : ''}
+                  className={`bg-neutral-200 rounded-3xl h-12 px-4 w-full text-black ${
+                    errors.dob ? 'border-red-600 border-2' : ''
+                  }`}
+                  placeholderTextColor={'gray'}
+                />
+                <View className="h-5">
+                  {errors.dob && <Text style={{ color: 'red' }}>{errors.dob}</Text>}
+                </View>
+              </TouchableOpacity>
+              {isDatePickerVisible && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="date"
+                  maximumDate={new Date(2010, 1, 1)}
+                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  onChange={(event, selectedDate) => {
+                    handleDateChange(event, selectedDate);
+                    setFieldValue('dob', formatDate(selectedDate));
+                  }}
+                />
+              )}
               <CustomReferenceInput
                 label="Email address"
                 placeholder="e.g name@email.com"

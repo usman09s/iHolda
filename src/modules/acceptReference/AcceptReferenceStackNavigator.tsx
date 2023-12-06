@@ -23,7 +23,9 @@ const commonScreenOptions: NativeStackNavigationOptions = {
 
 export default function AcceptReferenceStackNavigator() {
   return (
-    <AcceptReferenceStack.Navigator screenOptions={commonScreenOptions}>
+    <AcceptReferenceStack.Navigator
+      screenOptions={commonScreenOptions}
+      initialRouteName="ConfirmReference">
       <AcceptReferenceStack.Screen
         options={commonOptions}
         name="ConfirmReference"

@@ -3,9 +3,23 @@ import { View, Text, ScrollView, Dimensions } from 'react-native';
 import { text } from 'theme/text';
 import StatusBarItem from '../components/StatusBarItem';
 import { height } from 'utils/helpers';
+import { selectUser } from 'store/userDataSlice';
+import { useSelector } from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 export const RequestReferenceSummaryScreen = ({ navigation }: any) => {
+  const userData = useSelector(selectUser);
   const isSmallScreen = height < 700;
+
+  const handleToastShow = () => {
+    Toast.show({
+      type: 'error',
+      text1: 'Please wait for the user to accept.',
+      text2: 'You already have a basic verification pending.',
+      visibilityTime: 1800,
+    });
+  };
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="px-6">
@@ -25,13 +39,21 @@ export const RequestReferenceSummaryScreen = ({ navigation }: any) => {
       <View className={`px-4 ${isSmallScreen ? 'pb-8' : ''}`}>
         <StatusBarItem status={'completed'} title={'Registration'} />
         <StatusBarItem
-          status={'pending'}
+          status={
+            userData.basicVerification !== null && userData.basicVerification.isVerified === false
+              ? 'pending'
+              : 'completed'
+          }
           title={'Basic verification'}
-          onPress={() => navigation.navigate('BasicVerificationOne')}
+          onPress={() => {
+            userData.basicVerification === null
+              ? navigation.navigate('BasicVerificationOne')
+              : handleToastShow();
+          }}
         />
-        <StatusBarItem status={'pending'} title={'Community verification'} />
-        <StatusBarItem status={'pending'} title={'ID verification'} />
-        <StatusBarItem status={'pending'} title={'After 1 year anniversary assessment'} />
+        <StatusBarItem title={'Community verification'} />
+        <StatusBarItem title={'ID verification'} />
+        <StatusBarItem title={'After 1 year anniversary assessment'} />
       </View>
     </ScrollView>
   );

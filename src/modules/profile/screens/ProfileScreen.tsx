@@ -10,6 +10,7 @@ import Community from '../containers/Community';
 import Profile from '../containers/Profile';
 import Wallet from '../containers/Wallet';
 import Shared from '../containers/Shared';
+import { selectUser } from 'store/userDataSlice';
 
 const ProfileScreen = ({ route }: any) => {
   const activeY = useSharedValue(0);
@@ -18,6 +19,7 @@ const ProfileScreen = ({ route }: any) => {
   const { username, avatar, invitedBy, joinedMonthAndYear } = useSelector(
     userCommonInformationSelector,
   );
+  const userData = useSelector(selectUser);
   const isCurrentUser = route.params?.isCurrentUser ?? true;
   console.log(route.params, 'jofjeofioh');
 
@@ -54,7 +56,7 @@ const ProfileScreen = ({ route }: any) => {
             activeIndex={index}
             key={'profileHeader'}
             invitedBy={invitedBy}
-            hederThumbnail={avatar}
+            hederThumbnail={userData.photo?.mediaId}
             monthAndYear={joinedMonthAndYear}
             onPressTabItem={onPressTabItem}
           />

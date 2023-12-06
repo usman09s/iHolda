@@ -523,6 +523,57 @@ class ApiClass {
     return result.data;
   };
 
+  changePassword = async ({
+    oldPassword,
+    newPassword,
+    confirmPassword,
+  }: {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }): Promise<unknown> =>
+    await this.externalApi
+      .url('user/change-password')
+      .post({
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword,
+      })
+      .json(result => {
+        console.log(result, 'asjdqjpojpwqej api');
+        return result;
+      });
+
+  deleteAccount = async () => {
+    await this.externalApi
+      .url('user/remove-account')
+      .delete()
+      .json(result => {
+        console.log(result);
+        return result;
+      });
+  };
+
+  setPaymentAccount = async ({ number, default: paymentDefault, confirmNumber }: any) => {
+    const response = await this.externalApi
+      .url('user/payment-accounts')
+      .post({
+        linkedPaymentAccounts: [
+          {
+            number: number,
+            default: paymentDefault,
+            confirmNumber: confirmNumber,
+          },
+        ],
+      })
+      .json((result: any) => {
+        console.log(result, 'payment account set successfully');
+        return result;
+      });
+
+    return response;
+  };
+
   referenceResponse = async (userId: string, status: string) => {
     try {
       const requestBody = {

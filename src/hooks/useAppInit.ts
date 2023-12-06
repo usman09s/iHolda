@@ -5,6 +5,7 @@ import Api from 'services/Api';
 import { setTokensAndQueryId, setUserInfo } from 'store/auth/userSlice';
 
 import { useAppDispatch } from './useAppDispatch';
+import { setUser } from 'store/userDataSlice';
 
 export const userAppInit = () => {
   const dispatch = useAppDispatch();
@@ -45,6 +46,7 @@ export const userAppInit = () => {
     if (result) {
       await refetch()
         .then(response => {
+          dispatch(setUser(response.data.data.user));
           setStatus(response.data ? 'SUCCESS' : 'FAILED');
         })
         .catch(() => setStatus('FAILED'));

@@ -1,7 +1,7 @@
 import CustomHeader from 'components/Header/CustomHeader';
-import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { View, Text } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { Userpic } from 'react-native-userpic';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
@@ -20,6 +20,11 @@ export const ConfirmReferenceScreen = ({ navigation }: any) => {
     } else if (status === 'rejected') {
       navigation.navigate('ReferenceComplete', { type: 'reject' });
     } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Unexpected error occured',
+        text2: 'Please try later',
+      });
       return;
     }
   };

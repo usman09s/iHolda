@@ -38,20 +38,20 @@ const CustomHeader = ({
     <View
       className="flex-row items-center content-center justify-between self-center"
       style={{ marginTop: customTopHeight || top + 8, zIndex: 10 }}>
-      <View className="w-1/3">
+      <View className="w-1/4">
         {showBackIcon && (
           <TouchableOpacity onPress={goBack} hitSlop={getHitSlop({ value: 20 })}>
             <Icons.ArrowLeftIcon color={backIconColor} />
           </TouchableOpacity>
         )}
       </View>
-      <View className="w-1/3 items-center">
+      <View className="w-1/2 items-center">
         {title && !centerComponent && (
           <Text style={[{ fontSize: 14, textAlign: 'center' }, extraTitleStyles]}>{title}</Text>
         )}
         {!!centerComponent && centerComponent}
       </View>
-      <View className="w-1/3">
+      <View className="w-1/4">
         {!!rightComponent && (
           <Pressable onPress={onPressRight} hitSlop={getHitSlop({ value: 20 })}>
             {rightComponent}

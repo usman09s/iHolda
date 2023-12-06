@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import Api from 'services/Api';
+import { selectUser, setUser } from 'store/userDataSlice';
 import {
   setGender,
   setReferences,
@@ -15,6 +16,7 @@ export const useRequestReferenceAction = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchText, setSearchText] = useState('');
   const dispatch = useDispatch();
+  const userData = useSelector(selectUser);
   const searchUsersMutation = useMutation(Api.searchUsers);
   const userReferenceData = useSelector((state: any) => state.userReference.verificationData);
   const userGender = useSelector((state: any) => state.userReference.gender);
@@ -74,7 +76,6 @@ export const useRequestReferenceAction = () => {
       const parts = userReferenceData.dob.split('/');
       if (parts.length === 3) {
         const modifiedDob = `${parts[2]}-${parts[1]}-${parts[0]}`;
-
         const verificationData = {
           gender: userGender,
           fullName: userReferenceData.fullName,
@@ -86,10 +87,17 @@ export const useRequestReferenceAction = () => {
             user: reference._id,
           })),
         };
+
+        const updatedUserData = {
+          ...userData,
+          basicVerification: verificationData,
+        };
+
         const verificationResult = await Api.basicVerification(verificationData);
 
         if (verificationResult.message === 'Basic verification updated successfully') {
           navigation.navigate('VerificationComplete');
+          dispatch(setUser(updatedUserData));
         } else {
           console.error('Basic verification failed.');
         }
