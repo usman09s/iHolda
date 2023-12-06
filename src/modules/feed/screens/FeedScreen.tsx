@@ -6,6 +6,7 @@ import {
   Platform,
   Pressable,
   RefreshControl,
+  ScrollView,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -26,24 +27,26 @@ import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 const FeedScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const {} = useAppNavigation<NavigationProp<FeedStackParamList>>();
+  const { navigate } = useAppNavigation<NavigationProp<FeedStackParamList>>();
   const { data, refetch, isLoading } = useQuery('feeds', Api.getFeed);
   const { top } = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
 
   const onRefresh = () => {
-    setRefreshing(true);
+    // setRefreshing(true);
     refetch().finally(() => {
       setRefreshing(false);
     });
   };
 
-  const renderItem = ({ item }: { item: Post; index: number }) => {
-    const imageUri = getImageLink(item.media[0]);
-    console.log(imageUri);
+  const renderItem = ({ item, index }: any) => {
+    const imageUri = getImageLink(item.media[0]?.mediaId);
+    console.log(item._id);
 
     return (
       <Pressable
+        key={item._id}
+        // onPress={() => navigate('FeedDetailView', {item})}
         style={{
           width: wW,
           height: Platform.select({
@@ -51,7 +54,25 @@ const FeedScreen = () => {
             android: height - top - tabBarHeight + 10,
           }),
         }}>
-        <FeedItem likes={item.likes?.length} comments={item.comments?.length} id={item._id} caption={item.text} subText={item.subText} image={imageUri} />
+        <FeedItem
+          shares={item.shareCount}
+          bookmarks={item.bookmarkCount}
+          gotoDetailOnPress={item?.user ? false : true}
+          likes={item.likes?.length}
+          comments={item.comments?.length}
+          id={item._id}
+          caption={item.text ?? ''}
+          subText={item.subText ?? ''}
+          image={imageUri}
+          media={item?.userQuiz ? [item.userQuiz.recording] : item.media}
+          data={item}
+          username1={item.users ? '@' + item.users[0].user.userName : '@' + item.user.userName}
+          username2={item.users ? '@' + item.users[1].user.userName : ''}
+          userpic1={item.users ? item.users[0].user.photo : item.user.photo}
+          userpic2={item.users ? item.users[1].user.photo : ''}
+          userId1={item.users ? item.users[0].user._id : item.user._id}
+          userId2={item.users ? item.users[1].user._id : ''}
+        />
       </Pressable>
     );
   };
@@ -66,8 +87,16 @@ const FeedScreen = () => {
           </View>
         ))}
       <View className="absolute top-0 left-0 w-full h-full">
+        {/* <ScrollView>{data?.result?.posts?.map(renderItem)}</ScrollView> */}
         <FlatList
-          data={data?.result.posts}
+          data={
+            data?.result?.posts
+              ? [
+                  ...data?.result.posts,
+                  //  ...data?.result.posts
+                ]
+              : []
+          }
           className="bg-black"
           renderItem={renderItem}
           windowSize={Platform.select({

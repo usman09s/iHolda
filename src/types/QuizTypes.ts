@@ -20,4 +20,4 @@ export type Option = {
   _id: string;
 };
 
-export type SelectedQA = { question: string; selectedOption: string };
+export type SelectedQA = { question: string; selectedOption: string; isCorrect: boolean};

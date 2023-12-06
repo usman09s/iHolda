@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
-import { userCommonInformationSelector } from 'store/auth/userSelectors';
+import { userCommonInformationSelector, userSelector } from 'store/auth/userSelectors';
 
 import ProfileHeader from '../components/ProfileHeader';
 import Community from '../containers/Community';
@@ -16,12 +16,10 @@ const ProfileScreen = ({ route }: any) => {
   const activeY = useSharedValue(0);
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
-  const { username, avatar, invitedBy, joinedMonthAndYear } = useSelector(
-    userCommonInformationSelector,
-  );
-  const userData = useSelector(selectUser);
+  const { user } = useSelector(userSelector);
+  const invitedBy = user.invitedBy?.userName;
+  const { username, avatar, joinedMonthAndYear } = useSelector(userCommonInformationSelector);
   const isCurrentUser = route.params?.isCurrentUser ?? true;
-  console.log(route.params, 'jofjeofioh');
 
   const onPressTabItem = (value: number) => () => {
     setIndex(value);
@@ -32,8 +30,17 @@ const ProfileScreen = ({ route }: any) => {
   });
 
   const RenderedComponent =
-    [<Profile key={0} />, <Community key={1} />, <Wallet key={2} />, <Shared key={3} />]?.[index] ||
-    [];
+    [
+      <Profile
+        followers={user?.followers ? user?.followers?.length.toString() : '0'}
+        impression="0"
+        metPeople={user?.metCount ? user?.metCount : 0}
+        key={0}
+      />,
+      <Community cp={user.cp} lastcp={user?.lastCp} key={1} />,
+      <Wallet key={2} />,
+      // <Shared key={2} />,
+    ]?.[index] || [];
 
   return (
     <View className="flex-1 bg-white">
@@ -50,13 +57,13 @@ const ProfileScreen = ({ route }: any) => {
           <ProfileHeader
             top={top}
             isCurrentUser={isCurrentUser}
-            avatar={avatar}
+            avatar={avatar.mediaId}
             activeY={activeY}
             username={username}
             activeIndex={index}
             key={'profileHeader'}
             invitedBy={invitedBy}
-            hederThumbnail={userData.photo?.mediaId}
+            hederThumbnail={avatar.mediaId}
             monthAndYear={joinedMonthAndYear}
             onPressTabItem={onPressTabItem}
           />

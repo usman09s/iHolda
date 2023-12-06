@@ -11,9 +11,17 @@ type Props = {
     user1: string;
     user2: string;
   };
+  time?: string;
 };
 
-const CommonActivity = ({ title, subTitle, avatars, postThumbnail, showFollowBack }: Props) => (
+const CommonActivity = ({
+  title,
+  subTitle,
+  avatars,
+  postThumbnail,
+  showFollowBack,
+  time = '30s',
+}: Props) => (
   <View className="flex-row items-center mb-7">
     <View className="flex-row">
       <View className="rounded-full bg-gray-400 justify-center items-center">
@@ -25,7 +33,7 @@ const CommonActivity = ({ title, subTitle, avatars, postThumbnail, showFollowBac
         {title}
       </Text>
       <Text className={text({ type: 'r12', class: ' mt-1.5' })}>
-        {subTitle} <Text className={text({ type: 'm12', class: 'text-red-500' })}>30s</Text>
+        {subTitle} <Text className={text({ type: 'm12', class: 'text-red-500' })}>{time}</Text>
       </Text>
     </View>
     <View>
@@ -35,9 +43,9 @@ const CommonActivity = ({ title, subTitle, avatars, postThumbnail, showFollowBac
           customContainer="bg-lightBlue px-2 py-1.5 rounded-md"
           customTextClass={text({ type: 'r12', class: 'text-black' })}
         />
-      ) : (
+      ) : postThumbnail ? (
         <Image source={{ uri: postThumbnail }} className="w-10 h-10 rounded-md" />
-      )}
+      ) : null}
     </View>
   </View>
 );

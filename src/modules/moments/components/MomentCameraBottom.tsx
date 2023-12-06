@@ -30,11 +30,11 @@ const MomentCameraBottom = ({
 }: Props) => (
   <>
     {selectedMoment && (
-      <KeyboardAvoidingView
-        behavior="position"
-        contentContainerStyle={{ flex: 1, backgroundColor: '' }}
-        className="flex-1 flex-row w-full justify-center items-center mt-2">
-        <View className="justify-center items-center" style={{ height: sectionHeight }}>
+      // <KeyboardAvoidingView
+      //   behavior="position"
+      //   contentContainerStyle={{ flex: 1, backgroundColor: '' }}
+      //   className="flex-1 flex-row w-full justify-center items-center mt-2">
+        <View className="justify-center items-center absolute bottom-0 right-0 left-0 px-6" style={{ height: sectionHeight,}}>
           <View className="flex-row">
             <Input
               value={caption}
@@ -52,7 +52,7 @@ const MomentCameraBottom = ({
             </Pressable>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      // </KeyboardAvoidingView>
     )}
     {!selectedMoment && (
       <View>

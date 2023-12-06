@@ -6,19 +6,31 @@ import { height } from 'utils/helpers';
 
 import TransactionInOut from '../components/TransactionInOut';
 import { useNavigation } from '@react-navigation/native';
+import { useQuery } from 'react-query';
+import Api from 'services/Api';
 
 const Wallet = () => {
   const navigation = useNavigation();
+  const { data } = useQuery('walletBalance', Api.getWalletBalance, { refetchOnWindowFocus: true });
+  console.log('🚀 ~ file: Wallet.tsx:15 ~ Wal ~ data:', data);
+
+  // const wallet = data.data.data?.wallet;
+  // console.log('🚀 ~ file: Wallet.tsx:17 ~ Wal ~ wallet:', data?.data?.wallet);
+  // plastic/balance
   return (
     <View className="flex-1 bg-white pt-6 px-6" style={{ minHeight: height + 200 }}>
       <View className="border-b1 rounded-xl p-6">
         <Text className={text({ class: 'text-center', type: 'm12' })}>Available balance</Text>
-        <Text className={text({ class: 'text-center mt-7', type: 'b44' })}>3650cfa</Text>
+        <Text className={text({ class: 'text-center mt-7', type: 'b44' })}>
+          {data?.data?.wallet?.availableBalance ?? 0}cfa
+        </Text>
         <Button
           title="Cash Out"
           type="solid"
           customContainer="bg-green-600 mt-6"
-          onPress={() => navigation.navigate('WalletStack')}
+          onPress={() =>
+            navigation.navigate('WalletStack', { wallet: data?.data?.wallet })
+          }
         />
       </View>
       <View className="mt-11">

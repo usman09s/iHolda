@@ -9,13 +9,14 @@ import {
 import Header from 'components/Header/Header';
 import Icons from 'components/Icons';
 import Input from 'components/Input';
+import * as FileSystem from 'expo-file-system';
 import mime from 'mime';
 
 import PostPreviewSideActionBar from '../components/PostPreviewSideActionBar';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
 import { useDispatch, useSelector } from 'react-redux';
 import { allMomentsSelector, postMomentsParamsSelector } from 'store/moments/momentsSelectors';
-import { ResizeMode, Video } from 'expo-av';
+import { ResizeMode, Video, Audio } from 'expo-av';
 import { useEffect, useRef, useState } from 'react';
 import { resetState } from 'store/moments/momentsSlice';
 import { PostScreenParams } from 'types/MomentsTypes';
@@ -23,10 +24,14 @@ import { useMutation } from 'react-query';
 import Api from 'services/Api';
 import { TEXT_POST_COLOR } from '../constants';
 
+const recording = new Audio.Recording();
+
 const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) => {
   const [caption, setCaption] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   console.log('~ isLoading:', isLoading);
+  // const [recording, setRecording] = useState<Audio.Recording | undefined>();
+  const [isRecording, setIsRecording] = useState(false);
 
   const { dispatch: dispatchNavigation, goBack } =
     useNavigation<NavigationProp<MomentsStackParamList>>();
@@ -50,6 +55,7 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
       body: data,
     });
     setIsLoading(false);
+    console.log("🚀 ~ file: PostPreviewScreen.tsx:58 ~ postData ~ response:", response);
     return { ...response.json(), status: response.status };
   }
 
@@ -91,11 +97,45 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
     if (postCaption) formdata.append('text', postCaption);
 
     postData(Api.baseUrl + 'post', formdata).then(data => {
+      console.log("🚀 ~ file: PostPreviewScreen.tsx:100 ~ postData ~ data:", data)
       if (data.status !== 200) return alert('Something went wrong');
       console.log(data);
       dispatchNavigation(StackActions.popToTop());
       goBack();
     });
+  };
+
+
+  async function startRecording() {
+    try {
+      console.log('Requesting permissions..');
+      await Audio.requestPermissionsAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+      setIsRecording(true);
+      console.log('Starting recording..');
+      await recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
+      await recording.startAsync();
+      console.log('Recording started');
+    } catch (err) {
+      console.error('Failed to start recording', err);
+    }
+  }
+
+
+  async function stopRecording() {
+    console.log('Stopping recording..');
+    setIsRecording(false);
+    await recording.stopAndUnloadAsync();
+    const uri = recording.getURI();
+    console.log('Recording stopped and stored at', uri);
+  }
+
+  const handleAudioPress = () => {
+    if (!isRecording) startRecording();
+    else stopRecording();
   };
 
   useEffect(() => {
@@ -123,6 +163,7 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
                 // useNativeControls
                 source={{
                   uri: moments[0].localUri,
+                  // overrideFileExtensionAndroid: "mp4"
                 }}
               />
             ) : postType === 'Photo' ? (
@@ -152,7 +193,7 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
               <View className="px-6">
                 <Header showBackIcon backIconColor="white" />
               </View>
-              <PostPreviewSideActionBar />
+              <PostPreviewSideActionBar onPressAudio={handleAudioPress} />
             </View>
           </View>
         ) : null}

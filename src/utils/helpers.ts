@@ -208,7 +208,9 @@ const areDaysConsecutive = (days, daysInOrder) => {
   return true;
 };
 
-const capitalizeFirstLetter = day => {
+
+const capitalizeFirstLetter = (day: string | any) => {
+  if(typeof day !== "string") return day;
   return day.charAt(0).toUpperCase() + day.slice(1);
 };
 

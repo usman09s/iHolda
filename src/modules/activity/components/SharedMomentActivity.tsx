@@ -9,9 +9,16 @@ type Props = {
     user1: string;
     user2: string;
   };
+  time?: string;
 };
 
-const SharedMomentActivity = ({ title, subTitle, avatars, momentThumbnail }: Props) => (
+const SharedMomentActivity = ({
+  title,
+  subTitle,
+  avatars,
+  momentThumbnail,
+  time = '30s',
+}: Props) => (
   <View className="flex-row items-center mb-7">
     <View className="flex-row">
       <View className="rounded-full border-[3px] border-saffron bg-gray-400 justify-center items-center">
@@ -29,8 +36,8 @@ const SharedMomentActivity = ({ title, subTitle, avatars, momentThumbnail }: Pro
       <Text numberOfLines={2} className={text({ type: 'b15' })} style={{ color: '#606060' }}>
         {title}
       </Text>
-      <Text className={text({ type: 'r12', class: ' mt-1.5' })} style={{ color: '#606060' }}>
-        {subTitle} <Text className={text({ type: 'm12', class: 'text-red-500' })}>30s</Text>
+      <Text className={text({ type: 'r12', class: ' mt-1.5' })}>
+        {subTitle} <Text className={text({ type: 'm12', class: 'text-red-500' })}>{time}</Text>
       </Text>
     </View>
     <View>

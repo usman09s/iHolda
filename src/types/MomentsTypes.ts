@@ -112,6 +112,7 @@ export type MatchedUserType = {
   user: LoginUser;
   location_name: string;
   user_profile_image: UserProfileImage;
+  metBefore: boolean;
 };
 
 export type GetMomentsResponseType = {

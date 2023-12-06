@@ -14,7 +14,7 @@ const FeedHeader = () => {
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
 
   return (
-    <View className="flex-row items-center justify-between absolute z-50">
+    <View className="flex-row items-center justify-between absolute z-50 pt-5">
       <LinearGradient
         locations={[0, 0.2, 0.6, 1]}
         style={{ paddingTop: top + units.vh * 3 }}
@@ -37,6 +37,7 @@ const FeedHeader = () => {
           <View className="flex-1 items-end justify-center">
             <Pressable
               onPress={() => navigate('FeedMomentsSearch')}
+              // onPress={() => navigate('RestaurentDetail')}
               className="w-11 h-11 rounded-full bg-black-o-30 justify-center items-center">
               <Icons.SearchIcon />
             </Pressable>

@@ -18,6 +18,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { setTokensAndQueryId } from 'store/auth/userSlice';
 import { setQrCode } from 'store/plastic/userPlasticSlice';
 import CustomErrorModal from 'components/ErrorModal/errorModal';
+import mime from 'mime';
 
 const CreateUnlockPinScreen = () => {
   LayoutAnimation.linear();
@@ -47,6 +48,9 @@ const CreateUnlockPinScreen = () => {
             dispatch(setQrCode(result.data.user.userQrCode));
             console.log(result.data.userQrCode, 'dwhceonewoncoi');
             // dispatch(setTokensAndQueryId({ accessToken: result.data.accessToken }));
+
+            
+
             navigate('EnterReferralCode');
           }
         },

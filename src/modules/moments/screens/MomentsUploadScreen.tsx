@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import Animated, { SlideInLeft } from 'react-native-reanimated';
@@ -27,12 +28,20 @@ const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } })
   // const matchedUser = useSelector(matchedUserSelector);
   const matchedUser = route?.params;
 
-  const moments = useQuery('getMoments', Api.getMoments);
+  const moments = useQuery('getRestaurents', Api.getRestaurents);
   const { data } = useQuery('currentUserProfile', Api.getUserProfile);
-  const { dispatch } = useNavigation<NavigationProp<MomentsStackParamList>>();
+  const { dispatch, reset } = useNavigation<NavigationProp<any>>();
 
   const navigateToRoot = () => {
     dispatch(StackActions.popToTop);
+  };
+
+  const onPressRestaurant = () => {
+    // RestaurentDetail
+    reset({
+      index: 1,
+      routes: [{ name: 'BottomTabs' }, { name: 'RestaurentDetail' }],
+    });
   };
 
   return (
@@ -46,14 +55,18 @@ const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } })
         All Done!
       </Text>
       <Text className={text({ type: 'r16', class: 'text-white text-center px-10 mb-3' })}>
-        You met {matchedUser?.user.userName} in person for the first time.
+        You met {matchedUser?.user.userName} in person{' '}
+        {!matchedUser?.metBefore ? 'for the first time' : ''}.
       </Text>
-      <View className="flex-row self-center mb-2">
+      <View className="flex-row self-center mb-2 mt-4">
         <View className="overflow-hidden border-white rounded-2xl border-4  -rotate-30 ">
           <Image source={{ uri: getImageLink(data?.data.user.photo) }} className="w-16 h-16" />
         </View>
         <View className="overflow-hidden border-white  rounded-2xl border-4 -left-8 top-2 rotate-30">
-          <Image source={{ uri: getImageLink(matchedUser?.user_profile_image.image) }} className="w-16 h-16" />
+          <Image
+            source={{ uri: getImageLink(matchedUser?.user_profile_image.image) }}
+            className="w-16 h-16"
+          />
         </View>
       </View>
       <View className="h-3 bg-white rounded-full overflow-hidden  my-8 mx-10">
@@ -64,24 +77,36 @@ const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } })
         />
       </View>
       <Text className={text({ class: 'text-white text-center mb-4' })}>
-        view recommended moment from friends
+        To celebrate your {!matchedUser?.metBefore ? 'first' : ''} meet up, here is{' '}
+        <Text style={{ color: '#ffc401', fontWeight: '800' }}>50% OFF</Text> to dine in at any of
+        these restaurants today.
       </Text>
       <View>
         {moments.isLoading && <ActivityIndicator />}
         <FlatList
           horizontal
-          data={moments.data || []}
+          data={moments.data?.data?.restaurantData || []}
           contentContainerStyle={styles.contentContainer}
           renderItem={({ item }) => (
-            <View className="rounded-2xl overflow-hidden border-4 mr-10 border-white">
-              <Image resizeMode="cover" style={styles.image} source={{ uri: item.file }} />
-              <View className="absolute z-10 bottom-4 left-0 right-0 items-center">
-                <Text className={text({ type: 'b16', class: 'text-white' })}>
-                  {formatDateDifference(item.created_at)}
-                </Text>
-                <Text className={text({ type: 'b16', class: 'text-white' })}>Buea, Cameroon</Text>
+            <TouchableOpacity
+              onPress={onPressRestaurant}
+              style={{ width: width / 2.1, marginRight: 15 }}>
+              <View style={styles.image} className="rounded-3xl overflow-hidden border-4 mr-10">
+                <Image
+                  resizeMode="cover"
+                  className="w-full h-full"
+                  source={{ uri: getImageLink(item.media[0]) }}
+                />
               </View>
-            </View>
+              <View className="flex-row justify-between px-2">
+                <Text
+                  style={{ width: '70%' }}
+                  className={text({ type: 'r16', class: 'text-white' })}>
+                  {item?.name}
+                </Text>
+                <Text className={text({ type: 'b16', class: 'text-white' })}>{item?.rating}.0</Text>
+              </View>
+            </TouchableOpacity>
           )}
         />
       </View>
@@ -97,7 +122,7 @@ const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } })
 
 const styles = StyleSheet.create({
   contentContainer: { paddingLeft: units.vw * 12 },
-  image: { width: width / 2.1, height: units.vh * 30 },
+  image: { height: units.vh * 30, width: '100%' },
 });
 
 export default MomentsUploadScreen;

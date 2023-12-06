@@ -27,7 +27,7 @@ const Input = ({
     {leftIcon && (
       <Pressable
         onPress={onPressLeftIcon}
-        className="absolute items-center ml-4 top-0 bottom-0  justify-center z-10">
+        className="absolute items-center ml-4 top-0 bottom-0 justify-center z-10">
         <Icons.TakePhotoIcon />
       </Pressable>
     )}
@@ -47,7 +47,8 @@ const Input = ({
     {rightIcon && (
       <Pressable
         onPress={onPressRightIcon}
-        className="absolute items-center mr-4 right-0 top-0 bottom-0  justify-center z-10">
+        className="absolute items-center mr-4 right-0 top-0 bottom-0  justify-center z-10"
+        >
         {rightIcon}
       </Pressable>
     )}

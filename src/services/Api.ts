@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { QUIZ_ID } from 'modules/moments/constants';
+import { UserMoment } from 'modules/profile/types';
 import { DecodePlasticsQrResponseType } from 'types/AgentPlasticTypes';
 import {
   LoginParameters,
@@ -18,7 +19,7 @@ import {
   DropOffLocationItemType,
   PlasticItemType,
 } from 'types/PlasticTypes';
-import { GetPostsResponseType } from 'types/PostsTypes';
+// import { GetPostsResponseType } from 'types/PostsTypes';
 import { Quiz } from 'types/QuizTypes';
 import wretch from 'wretch';
 
@@ -212,6 +213,18 @@ class ApiClass {
     await this.externalApi
       .url('user/referral-code')
       .put({ referralCode: referralCode.toString() })
+      .json(result => result);
+
+  followUnFollowUseer = async (user: string, followed: boolean) =>
+    await this.externalApi
+      .url(followed ? 'user/unfollow' : 'user/follow')
+      .put({ followingUserId: user })
+      .json(result => result);
+
+  updateuser = async (user: any) =>
+    await this.externalApi
+      .url('user')
+      .put(user)
       .json(result => result);
 
   getWaitingList = async () =>
@@ -417,9 +430,9 @@ class ApiClass {
   //       };
   //     });
 
-  checkUserIsAgent = async () =>
+  checkUserIsAgent = async (id: string) =>
     await this.externalApi
-      .url('plastic/agent/count/652e726f397bc8f89cbd5a6c')
+      .url('plastic/agent/count/' + id)
       .get()
       .json(result => {
         return result.data;
@@ -596,7 +609,7 @@ class ApiClass {
     queryId,
   }: {
     queryId: string;
-    plasticId: number;
+    plasticId: number | string;
     plastics: any;
   }): Promise<unknown> =>
     await this.externalApi
@@ -611,9 +624,26 @@ class ApiClass {
         return result;
       });
 
-  getUserProfile = async (): Promise<SignInResponseType> =>
+  getUserProfile = async (userId?: string): Promise<SignInResponseType> =>
+    await this.externalApi
+      .url('user' + (userId ? '?userId=' + userId : ''))
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getUserProfile0 = async (): Promise<SignInResponseType> =>
     await this.externalApi
       .url('user')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  getMetAndFriendRank = async (userId?: string): Promise<any> =>
+    await this.externalApi
+      .url('met/user-rank?' + `userId=${userId}`)
       .headers({
         ...this._getAuthorization(this.token),
       })
@@ -638,6 +668,24 @@ class ApiClass {
       .get()
       .json(result => result);
 
+  agentScan = async ({ queryId, agentId }: { queryId: string; agentId: string }): Promise<any> =>
+    await this.externalApi
+      .url(`plastic/scan/${queryId}/${agentId}`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+
+  withdrawFromWallet = async (amount: number): Promise<any> =>
+    await this.externalApi
+      .url(`plastic/withdraw`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post({ amount })
+      .json(result => result);
+
   postMoments = async (reqBody: FormData): Promise<PostMomentsResponse> =>
     await this.externalApi
       .url('met/')
@@ -645,6 +693,23 @@ class ApiClass {
         ...this._getAuthorization(this.token),
       })
       .post(reqBody)
+      .json(result => result);
+  getUserMoments = async (
+    userId?: string,
+    userId2?: string,
+    page?: number,
+  ): Promise<{ data: { data: UserMoment[] } }> =>
+    await this.externalApi
+      .url(
+        'met?' +
+          (userId ? `userId=${userId}` : '') +
+          (userId2 ? `userId2=${userId2}` : '') +
+          (page ? `page=${page}` : ''),
+      )
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
       .json(result => result);
 
   getMoments = async (): Promise<GetMomentsResponseType[]> =>
@@ -656,7 +721,32 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  getFeed = async (): Promise<GetPostsResponseType> =>
+  getWalletBalance = async (): Promise<any> =>
+    await this.externalApi
+      .url('plastic/balance/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getRestaurents = async (): Promise<any> =>
+    await this.externalApi
+      .url('restaurant/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getNotifications = async (): Promise<any> =>
+    await this.externalApi
+      .url('user/notifications/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result.data.data);
+
+  getFeed = async (): Promise<any> =>
     await this.externalApi
       .url('post/')
       .headers({
@@ -691,9 +781,25 @@ class ApiClass {
       })
       .get()
       .json(result => result);
-  getFollowers = async (): Promise<{ data: { quiz: Quiz } }> =>
+  getFollowers = async (): Promise<{ data: any }> =>
     await this.externalApi
       .url('user/followers/')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getMets = async (): Promise<{ data: any }> =>
+    await this.externalApi
+      .url('met/users')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getSuggestions = async (): Promise<{ data: any }> =>
+    await this.externalApi
+      .url('user/suggestions')
       .headers({
         ...this._getAuthorization(this.token),
       })
@@ -713,7 +819,15 @@ class ApiClass {
 
   sharePost = async (reqBody: { postId: string }): Promise<any> =>
     await this.externalApi
-      .url('post/share')
+      .url('post/share/' + reqBody.postId)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .post(reqBody)
+      .json(result => result);
+  bookMarkPost = async (reqBody: { postId: string }): Promise<any> =>
+    await this.externalApi
+      .url('user/bookmark/' + reqBody.postId)
       .headers({
         ...this._getAuthorization(this.token),
       })

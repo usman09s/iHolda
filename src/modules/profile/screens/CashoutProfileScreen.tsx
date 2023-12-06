@@ -4,12 +4,32 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { height, horizontalScale, verticalScale } from '../../../utils/helpers';
+import { useState } from 'react';
+import { useMutation } from 'react-query';
+import Api from 'services/Api';
 import SelectDropdown from 'react-native-select-dropdown';
 
-export const CashoutProfileScreen = ({ navigation }: any) => {
+export const CashoutProfileScreen = ({ navigation, route }: any) => {
+  const [withdrawAmmount, setWithdrawAmmount] = useState(0);
+
+
+  const { mutate, isLoading } = useMutation(Api.withdrawFromWallet, {
+    onError: error => {
+      alert("something went wrong")
+      console.error(error);
+    },
+    onSuccess: ({ data }) => {
+      console.log("🚀 ~ file: CashoutProfileScreen.tsx:20 ~ CashoutProfileScreen ~ data:", data)
+      navigation.navigate('WithdrawSuccessful', {withdrawAmmount})
+    },
+  });
+
+
   const isSmallScreen = height < 700;
   const handleValueChange = (value: string) => {
     console.log('Selected value:', value);
+
+    setWithdrawAmmount(Number(value));
   };
   const options = ['12344773', '56783773', '91012333'];
   return (
@@ -20,7 +40,8 @@ export const CashoutProfileScreen = ({ navigation }: any) => {
           <View className="border border-black rounded-lg px-2 py-2">
             <Text className="text-center text-[9px] font-semibold">Available Balance</Text>
             <Text className="text-center text-3xl pt-4 text-green-500 font-bold">
-              15,000<Text className="text-sm">CFA</Text>
+              {route.params?.wallet?.availableBalance ?? 0}
+              <Text className="text-sm">CFA</Text>
             </Text>
           </View>
           <View
@@ -36,13 +57,14 @@ export const CashoutProfileScreen = ({ navigation }: any) => {
               Pending Balance
             </Text>
             <Text className="text-center text-3xl pt-4 text-gray-500 font-bold">
-              15,000<Text className="text-sm">CFA</Text>
+              {route.params?.wallet?.pendingBalance ?? 0}
+              <Text className="text-sm">CFA</Text>
             </Text>
           </View>
         </View>
         <View className={`pt-10 ${isSmallScreen ? 'pb-8' : 'pb-16'}`}>
           <Text className="text-center text-5xl font-bold py-6">
-            0.0<Text className="text-base">cfa</Text>
+            {withdrawAmmount}.00<Text className="text-base">cfa</Text>
           </Text>
           <Text className="text-center font-semibold pb-8">TO</Text>
           <SelectDropdown
@@ -83,7 +105,8 @@ export const CashoutProfileScreen = ({ navigation }: any) => {
             extraStyles={{ borderWidth: 0 }}
             customContainerClass="bg-black py-4"
             customTextClass={'text-white text-base'}
-            onPress={() => navigation.navigate('WithdrawSuccessful')}
+            // onPress={() => navigation.navigate('WithdrawSuccessful')}
+            onPress={() => mutate(withdrawAmmount)}
           />
         </View>
       </View>

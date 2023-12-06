@@ -45,12 +45,13 @@ const MeetupAndJobButtons = ({ flow, isAbsolute = true }: Props) => {
           <Text
             className={text({
               type: 'r15',
-              class: flow === 'post' ? 'text-black mr-8' : 'text-black-o-40 mr-8',
+              // class: flow === 'post' ? 'text-black mr-8' : 'text-black-o-40 mr-8',
+              class: flow === 'post' ? 'text-black' : 'text-black-o-40',
             })}>
             Post
           </Text>
         </Pressable>
-        <Pressable
+        {/* <Pressable
           hitSlop={getHitSlop({ value: 20, left: 10, right: 40 })}
           onPress={() => {
             if (flow === 'meetup') {
@@ -69,7 +70,7 @@ const MeetupAndJobButtons = ({ flow, isAbsolute = true }: Props) => {
             })}>
             Job
           </Text>
-        </Pressable>
+        </Pressable> */}
       </View>
     </View>
   );
