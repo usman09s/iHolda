@@ -38,7 +38,7 @@ const Header = ({
     <View
       className="flex-row items-center content-center justify-between"
       style={{ marginTop: customTopHeight || top + 8, zIndex: 10 }}>
-      <View className="flex-row z-20" style={{ top: verticalScale(7) }}>
+      <View className="flex-row z-20">
         {showBackIcon && !leftComponent && (
           <TouchableOpacity onPress={goBack} hitSlop={getHitSlop({ value: 20 })}>
             <Icons.ArrowLeftIcon color={backIconColor} />
