@@ -18,6 +18,7 @@ type Props = {
   rightComponent?: React.ReactNode;
   centerComponent?: React.ReactNode;
   contextMenu?: React.ReactNode | null;
+  onPressBackIcon?: () => void;
 };
 
 const Header = ({
@@ -25,6 +26,7 @@ const Header = ({
   onPressLeft,
   onPressRight,
   showBackIcon,
+  onPressBackIcon,
   backIconColor,
   leftComponent,
   rightComponent,
@@ -40,7 +42,7 @@ const Header = ({
       style={{ marginTop: customTopHeight || top + 8, zIndex: 10 }}>
       <View className="flex-row z-20">
         {showBackIcon && !leftComponent && (
-          <TouchableOpacity onPress={goBack} hitSlop={getHitSlop({ value: 20 })}>
+          <TouchableOpacity onPress={onPressBackIcon ?? goBack} hitSlop={getHitSlop({ value: 20 })}>
             <Icons.ArrowLeftIcon color={backIconColor} />
           </TouchableOpacity>
         )}
@@ -50,7 +52,7 @@ const Header = ({
           </Pressable>
         )}
       </View>
-      <View className="justify-center items-center left-0 right-0 top-0 absolute">
+      <View className="justify-center items-center left-0 right-0 top-2 absolute">
         {title && !centerComponent && <Text className={text({ type: 'm20' })}>{title}</Text>}
       </View>
       {!!centerComponent && centerComponent}

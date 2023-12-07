@@ -27,6 +27,17 @@ import SettingsStackNavigator from 'modules/settings/SettingsStackNavigator';
 import CartpoStackNavigator from 'modules/cartpo/CartpoStackNavigator';
 import CartpoTabNavigator from 'modules/cartpo/CartpoTabNavigator';
 import WalletStackNavigator from 'modules/profile/WalletStackNavigator';
+import ActivityStackNavigator from 'modules/activity/ActivityStackNavigator';
+import PlasticCollectionScreen from 'modules/activity/screens/PlasticCollectionScan';
+import ModifyConfirmPlastic from 'modules/activity/screens/ModifyOrConfirmPlastics';
+import AgentPlasticApprovedScreen from 'modules/agentPlastic/screens/AgentPlasticApprovedScreen';
+import FollowersScreen from 'modules/profile/screens/FollowersScreen';
+import RestaurentDetail from 'modules/restaurants/screens/RestaurantDetail';
+import AddReview from 'modules/restaurants/screens/AddReview';
+import PostReview from 'modules/restaurants/screens/PostReview';
+import { ReviewSuccess } from 'modules/restaurants/screens/ReviewSuccess';
+import FeedDetailView from 'modules/feed/screens/FeedDetailView';
+import OtherUserProfileScreen from 'modules/profile/screens/OtherUserProfileScreen';
 
 const MainStack = createNativeStackNavigator();
 
@@ -72,6 +83,29 @@ export default function MainNavigator() {
           options={commonOptions}
           component={MomentsStackNavigator}
         />
+        <MainStack.Screen options={commonOptions} name="Followers" component={FollowersScreen} />
+
+        <MainStack.Screen
+          name="PlasticColllectionScan"
+          options={commonOptions}
+          component={PlasticCollectionScreen}
+        />
+        <MainStack.Screen
+          name="ModifyConfirmPlastic"
+          options={commonOptions}
+          component={ModifyConfirmPlastic}
+        />
+        <MainStack.Screen
+          name="PlasticApproveScreen"
+          options={commonOptions}
+          component={AgentPlasticApprovedScreen}
+        />
+
+        {/* <MainStack.Screen
+          name="ActivityStack"
+          options={commonOptions}
+          component={ActivityStackNavigator}
+        /> */}
         <MainStack.Screen
           name="PlasticStack"
           options={commonOptions}
@@ -132,6 +166,26 @@ export default function MainNavigator() {
           options={commonOptions}
           component={WalletStackNavigator}
         />
+        <MainStack.Screen
+          name="RestaurentDetail"
+          options={commonOptions}
+          component={RestaurentDetail}
+        />
+        <MainStack.Screen name="AddReview" options={commonOptions} component={AddReview} />
+        <MainStack.Screen name="PostReview" options={commonOptions} component={PostReview} />
+        <MainStack.Screen name="ReviewSuccess" options={commonOptions} component={ReviewSuccess} />
+        <MainStack.Screen
+          name="FeedDetailView"
+          options={commonOptions}
+          component={FeedDetailView}
+        />
+
+        <MainStack.Screen
+          options={commonOptions}
+          name="OtherUserProfileMain"
+          component={OtherUserProfileScreen}
+        />
+
         <MainStack.Screen name="CartpoTab" options={commonOptions} component={CartpoTabNavigator} />
       </MainStack.Navigator>
     </NavigationContainer>

@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux';
 import { profileImageSelector } from 'store/auth/userSelectors';
 
 const ProfileAvatar = () => {
-  const uri = useSelector(profileImageSelector);
+  const user = useSelector(profileImageSelector);
+  const uri = user?.photo.mediaId;
 
-  return uri ? <Image source={{ uri: getImageLink(uri) }} className="w-7 h-7 rounded-full" /> : null;
+  return user ? <Image source={{ uri: getImageLink(uri) }} className="w-7 h-7 rounded-full" /> : null;
 };
 
 export default ProfileAvatar;

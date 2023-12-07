@@ -10,10 +10,11 @@ import { sH, wH } from 'utils/helpers';
 
 import { useHardwarePermission } from './useHardwarePermission';
 
-export const useSelfieActions = () => {
+//TODO: add types
+export const useSelfieActions = (defaultRatio?: any, defaultVideoDuration: number = 10) => {
   const timerRef = useRef(0);
   const dispatch = useAppDispatch();
-  const [videoDuration] = useState(10);
+  const [videoDuration] = useState(defaultVideoDuration);
   const cameraRef = useRef<Camera>(null);
   const recordedVideoDurationRef = useRef(5);
   const { bottom, top } = useSafeAreaInsets();
@@ -22,10 +23,12 @@ export const useSelfieActions = () => {
   const [mediaType, setMediaType] = useState<'VIDEO' | 'PHOTO' | 'QUIZ'>('PHOTO');
   const { permissionsGranted, permissionLoading } = useHardwarePermission();
 
-  const ratio = Platform.select({
-    ios: '4:3',
-    android: '16:9',
-  });
+  const ratio = defaultRatio
+    ? defaultRatio
+    : Platform.select({
+        ios: '4:3',
+        android: '16:9',
+      });
 
   const takeShot = async () => {
     const result = await cameraRef.current?.takePictureAsync({ base64: true, quality: 0.7 });
@@ -41,22 +44,22 @@ export const useSelfieActions = () => {
 
   const startRecording = async () => {
     setIsRecording(true);
-    setTimeout(async () => {
-      const data = await cameraRef.current?.recordAsync({
-        mirror: false,
-        maxDuration: videoDuration,
-      });
+    const data = await cameraRef.current?.recordAsync({
+      mirror: false,
+      maxDuration: videoDuration,
+    });
 
-      if (data?.uri) {
-        dispatch(
-          addMoment({
-            base64: '',
-            type: 'VIDEO',
-            localUri: data?.uri || '',
-          }),
-        );
-      }
-    }, 200);
+    if (data?.uri) {
+      dispatch(
+        addMoment({
+          base64: '',
+          type: 'VIDEO',
+          localUri: data?.uri || '',
+        }),
+      );
+    }
+    // setTimeout(async () => {
+    // }, 200);
   };
 
   const onPressRecordButton = () => {

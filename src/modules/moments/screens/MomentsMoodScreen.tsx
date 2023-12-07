@@ -34,68 +34,73 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'multipart/form-data',
+        // 'Content-Type': 'multipart/form-data',
       },
       body: data,
     });
     setIsLoading(false);
-    return { ...response.json(), status: response.status };
+    // console.log("🚀 ~ file: MomentsMoodScreen.tsx:43 ~ postData ~ response.json():", await  response.text())
+    return { ...(await response.json()), status: response.status };
   }
 
-  const goToMomentsUpload = () => {
+  const goToMomentsUpload = async () => {
     if (!matchedUser || !data) return;
     if (isLoading) return;
 
     let formdata = new FormData();
-    const mediaUri = postMomentsParams.moments[0].file;
-    const mediaType = postMomentsParams.moments[0].type;
+    const metMedia = postMomentsParams.moments;
 
-    let imageObject, videoObject;
+    let imageObject: any, videoObject: any;
 
-    if (mediaUri) {
-      const imageUri = 'file:///' + mediaUri.split('file:/').join('');
+    if (metMedia.length) {
+      [...metMedia].forEach(element => {
+        if (element.type === 'PHOTO') {
+          const imageUri = 'file:///' + element.file.split('file:/').join('');
 
-      imageObject = {
-        name: mediaUri.split('/').pop(),
-        type: mime.getType(imageUri),
-        uri: mediaUri,
-      };
+          imageObject = {
+            name: element.file.split('/').pop(),
+            type: mime.getType(imageUri),
+            uri: element.file,
+          };
+          formdata.append('post[media]', imageObject);
+        }
 
-      const newVideoUri = 'file:///' + mediaUri.split('file:/').join('');
+        if (element.type === 'VIDEO') {
+          const newVideoUri = 'file:///' + element.file.split('file:/').join('');
 
-      videoObject = {
-        name: mediaUri.split('/').pop(),
-        height: 1920,
-        width: 1080,
-        type: mime.getType(newVideoUri),
-        uri: mediaUri,
-      };
+          videoObject = {
+            name: element.file.split('/').pop(),
+            height: 1920,
+            width: 1080,
+            type: mime.getType(newVideoUri),
+            uri: element.file,
+          };
+          formdata.append('post[media]', videoObject);
+        }
+      });
     }
-
-    const media: any = mediaType === 'PHOTO' ? imageObject : videoObject;
+    formdata.append('post[mediaType]', 'image');
 
     const moodScale = EMOTIONS.findIndex(e => e === postMomentsParams.mood) + 1;
 
-    // const users: any = [{ user: data?.data.user._id }, {user: matchedUser?.user._id}];
-
-    formdata.append('post[text]', postMomentsParams.caption);
+    if (postMomentsParams.caption) formdata.append('post[text]', postMomentsParams.caption);
     formdata.append('post[visibility]', 'Public');
-    formdata.append('post[media]', media);
-    formdata.append('post[subText]', '');
-    formdata.append('post[mediaType]', mediaType);
+    // formdata.append('post[subText]', '');
     formdata.append('users[0][user]', data?.data.user._id);
     formdata.append('users[1][user]', matchedUser?.user._id);
+    formdata.append('metBefore', `${matchedUser.metBefore}`);
     // formdata.append('users', users);
-    formdata.append('mood', moodScale.toString());
+    formdata.append('mood', (moodScale < 0 ? 1 : moodScale).toString());
 
-    postData(Api.baseUrl + 'met', formdata).then(data => {
-      if (data.status !== 200) return alert('Something went wrong');
-      reset({
-        index: 0,
-        routes: [{ name: 'MomentsUpload', params: matchedUser }],
-      });
-      dispatch(resetState());
+    const resData = await postData(Api.baseUrl + 'met', formdata);
+
+    console.log('🚀 ~ file: MomentsMoodScreen.tsx:100 ~ postData ~ resData:', resData);
+    if (resData.status !== 200) return alert('Something went wrong');
+    reset({
+      index: 0,
+      routes: [{ name: 'MomentsUpload', params: matchedUser }],
     });
+    dispatch(resetState());
 
     return;
 
@@ -115,7 +120,8 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
       <Header
         centerComponent={
           <Text className={text({ type: 'r16', class: 'text-white text-center px-10' })}>
-            You met @{matchedUser?.user.userName} in person for the first time. {'\n \n'}
+            You met @{matchedUser?.user.userName} in person{' '}
+            {!matchedUser?.metBefore ? 'for the first time' : ''}. {'\n \n'}
           </Text>
         }
       />

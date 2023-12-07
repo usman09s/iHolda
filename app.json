@@ -92,7 +92,8 @@
             "usesCleartextTraffic": true
           }
         }
-      ]
+      ],
+      "react-native-compressor"
     ]
   }
 }

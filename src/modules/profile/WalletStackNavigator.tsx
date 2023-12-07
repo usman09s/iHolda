@@ -17,10 +17,10 @@ const commonOptions: NativeStackNavigationOptions = {
   headerShown: false,
 };
 
-const WalletStackNavigator = () => {
+const WalletStackNavigator = ({route}: any) => {
   return (
     <WalletStack.Navigator>
-      <WalletStack.Screen name="Cashout" component={CashoutProfileScreen} options={commonOptions} />
+      <WalletStack.Screen name="Cashout" component={({...params}) => CashoutProfileScreen({...params, route})} options={commonOptions} />
       <WalletStack.Screen
         name="WithdrawSuccessful"
         component={WithdrawSuccessfulScreen}

@@ -10,6 +10,7 @@ import { height, width } from 'utils/helpers';
 import * as MediaLibrary from 'expo-media-library';
 import { MediaTypeOptions } from 'expo-image-picker';
 import { Audio } from 'expo-av';
+import FontAwesome6 from '@expo/vector-icons/AntDesign';
 
 import MeetupAndJobButtons from '../components/MeetupAndJobButtons';
 import PostCameraTabItem from '../components/PostCameraTabItem';
@@ -201,7 +202,7 @@ const PostCameraScreen = () => {
             onPressRight={postType !== 'Text' ? cameraToggle : handleProceed}
             rightComponent={
               postType !== 'Text' ? (
-                <Icons.SwitchCameraIcon />
+                <FontAwesome6 style={{ paddingTop: 3}} name="sync" size={22} color="#fff" />
               ) : (
                 <Pressable>
                   <Text
@@ -216,7 +217,7 @@ const PostCameraScreen = () => {
             }
           />
           <View>
-            <View className="flex-row self-end">
+            <View className="flex-row self-center" style={{ paddingLeft: 60 }}>
               <PostCameraTabItem
                 onPress={() => (setPostType('Photo'), setMediaType('PHOTO'))}
                 isActive={postType === 'Photo'}>
@@ -227,14 +228,15 @@ const PostCameraScreen = () => {
                 isActive={postType === 'Video'}>
                 Video
               </PostCameraTabItem>
-              <PostCameraTabItem isActive={postType === 'Text'} onPress={() => setPostType('Text')}>
-                Text
-              </PostCameraTabItem>
+              {/* <PostCameraTabItem isActive={postType === 'Text'} >
+                
+              </PostCameraTabItem> */}
             </View>
             <View className="flex-row justify-between items-center mt-9">
-              <TouchableOpacity onPress={startRecording} className="items-center">
-                <Icons.MicrophoneIcon />
-                <Text className={text({ type: 'm12', class: 'text-white mt-1.5' })}>Record</Text>
+              <TouchableOpacity className="items-center">
+                <Text className={text({ type: 'm12', class: 'text-white mt-1.5' })}>
+                  {'             '}
+                </Text>
               </TouchableOpacity>
               <Pressable
                 className="bg-white w-20 h-20 rounded-[40px] items-center justify-center"
@@ -263,10 +265,13 @@ const PostCameraScreen = () => {
                 }
                 className="items-center">
                 {lastMedia && (
-                  <Image
-                    source={{ uri: lastMedia }}
-                    className="w-10 h-10 border-2 border-white rounded-md"
-                  />
+                  <View style={{ borderWidth:2, borderColor: 'white', borderRadius: 8, overflow: "hidden" }}>
+                    <Image
+                      
+                      source={{ uri: lastMedia }}
+                      className="w-10 h-10 border-2 border-white"
+                    />
+                  </View>
                 )}
                 <Text className={text({ type: 'm12', class: 'text-white mt-1.5' })}>Upload</Text>
               </TouchableOpacity>

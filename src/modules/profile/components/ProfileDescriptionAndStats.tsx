@@ -28,23 +28,22 @@ const ProfileDescriptionAndStats = ({ followers, metPeople, impression, descript
   const navigation = useNavigation();
   return (
     <>
-      <Text className={text({ type: 'r12', class: 'leading-4 px-4 py-4' })}>{description}</Text>
+      {description ? (
+        <Text className={text({ type: 'r12', class: 'leading-4 px-4 py-4' })}>{description}</Text>
+      ) : null}
       <View className="border-[0.5px] border-black-o-10" />
       <View className="flex-row py-4 justify-between px-4">
         <StatsItem
           onPress={() => navigation.navigate('Followers', { index: 0 })}
           title={followers}
-          subTitle="Followers"
+          subTitle={'Follower' + (Number(followers) > 1 ? 's' : '')}
         />
         <StatsItem
           onPress={() => navigation.navigate('Followers', { index: 1 })}
           title={'Met'}
           subTitle={metPeople}
         />
-        <StatsItem
-          title={impression}
-          subTitle="impressions"
-        />
+        <StatsItem title={impression} subTitle="impressions" />
       </View>
     </>
   );

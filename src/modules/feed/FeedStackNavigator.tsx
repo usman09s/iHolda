@@ -16,6 +16,7 @@ const FeedStack = createNativeStackNavigator<FeedStackParamList>();
 
 const commonOptions: NativeStackNavigationOptions = {
   headerShown: false,
+  // statusBarColor: "black"
 };
 
 const commonScreenOptions: NativeStackNavigationOptions = {
