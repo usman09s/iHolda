@@ -29,7 +29,7 @@ const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } })
   const matchedUser = route?.params;
 
   const moments = useQuery('getRestaurents', Api.getRestaurents);
-  const { data } = useQuery('currentUserProfile', Api.getUserProfile);
+  const { data } = useQuery('currentUserProfile', Api.getUserProfile0);
   const { dispatch, reset } = useNavigation<NavigationProp<any>>();
 
   const navigateToRoot = () => {
@@ -60,7 +60,7 @@ const MomentsUploadScreen = ({ route }: { route?: { params: MatchedUserType } })
       </Text>
       <View className="flex-row self-center mb-2 mt-4">
         <View className="overflow-hidden border-white rounded-2xl border-4  -rotate-30 ">
-          <Image source={{ uri: getImageLink(data?.data.user.photo) }} className="w-16 h-16" />
+          <Image source={{ uri: getImageLink(data?.data.user.photo.mediaId) }} className="w-16 h-16" />
         </View>
         <View className="overflow-hidden border-white  rounded-2xl border-4 -left-8 top-2 rotate-30">
           <Image

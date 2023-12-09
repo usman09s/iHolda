@@ -41,7 +41,7 @@ const categories: Categories[] = [
 ];
 
 const FeedMomentsSearchScreen = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   // TODO: add types
   const [searchResult, setSearchResult] = useState<any[]>([]);
   const [searchType, setSearchType] = useState<Categories>(categories[0]);
@@ -65,23 +65,19 @@ const FeedMomentsSearchScreen = () => {
 
   const search = async (query: boolean = false, specificPage?: number) => {
     if (specificPage) setPage(specificPage);
-    // const url =
-    //   Api.baseUrl +
-    //   `met/all?type=${searchType.slug}&page=` +
-    //   (specificPage ? specificPage : page) +
-    //   '&limit=10' +
-    //   (searchTxt ? '&search=' + searchTxt : '');
+
     const url =
       Api.baseUrl +
       `met/all?type=${searchType.slug}&page=1&limit=100` +
-      (searchTxt ? '&search=' + searchTxt : '');
+      (searchTxt ? '&search=' + searchTxt.toLowerCase() : '');
     console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:64 ~ search ~ url:', url);
     const res = await getData(url);
     // console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:44 ~ search ~ res:', res);
 
-    if (!query || page === 1) setPage(prevState => prevState + 1);
-    if (specificPage) setSearchResult(res.data);
-    else setSearchResult(prevState => prevState.concat(res.data));
+    // if (!query || page === 1) setPage(prevState => prevState + 1);
+    setSearchResult(res.data);
+    // if (specificPage || query) setSearchResult(res.data);
+    // else setSearchResult(prevState => prevState.concat(res.data));
   };
 
   const followUnfollowUser = async (userId: string, followed: boolean) => {
@@ -190,21 +186,7 @@ const FeedMomentsSearchScreen = () => {
 
       <View style={{ height: 20 }} />
 
-      <ScrollView
-      // onMomentumScrollEnd={({ nativeEvent }) => {
-      //   if (isCloseToBottom(nativeEvent)) {
-      //     search();
-      //   }
-      // }}
-      // scrollEventThrottle={1}
-      // onScroll={event => {
-      //   if (isCloseToBottom(event.nativeEvent)) {
-      //     console.log("Bottom");
-
-      //     search();
-      //   }
-      // }}
-      >
+      <ScrollView>
         {isLoading ? (
           <ActivityIndicator />
         ) : (
@@ -215,73 +197,71 @@ const FeedMomentsSearchScreen = () => {
               const isRestaurant = item?.merchant;
               const isFollowed = isUser ? item?.followers?.includes(user?._id) : false;
 
-              if (index === 0) console.log(item);
+              // if (index === 0) console.log(item);
 
-              return isRestaurant ? (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('RestaurentDetail');
-                  }}
-                  // className="flex-1 mx-2 mb-1 ml-4 bg-black w-full"
-                  className='w-full px-3 mt-2'
-                  
-                  >
-                  <ImageBackground
-                    source={{
-                      uri: getImageLink(item?.coverImage?.mediaId),
+              if (isUser && !item.userName && !isRestaurant) return null;
+              else
+                return isRestaurant ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('RestaurentDetail');
                     }}
-                    resizeMode="cover"
-                    className="rounded-3xl overflow-hidden w-[100%] h-[240px] items-end justify-end">
-                    <View
-                      style={{
-                        marginRight: 30,
-                        marginBottom: 20,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: 5,
-                      }}>
-                      <Antdesign name="hearto" color={'#fff'} size={20} />
-                      <Text className={text({ type: 'r12', class: 'text-white' })}>112</Text>
-                    </View>
-                  </ImageBackground>
-                  <View className="flex-row justify-between mt-1 pr-2">
-                    <Text className={text({ type: 'r13', class: 'font-bold' })}>
-                      {item.name}
-                    </Text>
-                    <View className="flex-row items-center gap-3">
-                      <Antdesign name="star" color={'#ffc859'} size={15} />
-
-                      <Text className={text({ type: 'r13', class: 'font-bold' })}>5.0</Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              ) : isUser ? (
-                <View className="p-2 flex-row items-center px-4 w-full">
-                  {item?.photo ? (
-                    <Image
+                    // className="flex-1 mx-2 mb-1 ml-4 bg-black w-full"
+                    className="w-full mt-2 px-3 pl-5">
+                    <ImageBackground
                       source={{
-                        uri: getImageLink(item?.photo?.mediaId),
+                        uri: getImageLink(item?.coverImage?.mediaId),
                       }}
                       resizeMode="cover"
+                      className="rounded-3xl overflow-hidden w-[100%] h-[240px] items-end justify-end">
+                      <View
+                        style={{
+                          marginRight: 30,
+                          marginBottom: 20,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 5,
+                        }}>
+                        <Antdesign name="hearto" color={'#fff'} size={20} />
+                        <Text className={text({ type: 'r12', class: 'text-white' })}>112</Text>
+                      </View>
+                    </ImageBackground>
+                    <View className="flex-row justify-between mt-1 px-1">
+                      <Text className={text({ type: 'r13', class: 'font-bold' })}>{item.name}</Text>
+                      <View className="flex-row items-center gap-3">
+                        <Antdesign name="star" color={'#ffc859'} size={15} />
+
+                        <Text className={text({ type: 'r13', class: 'font-bold' })}>5.0</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ) : isUser ? (
+                  <View className="p-2 flex-row items-center px-4 w-full">
+                    <Image
+                      source={{
+                        uri: item?.photo?.mediaId
+                          ? getImageLink(item?.photo?.mediaId)
+                          : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg23bqTJ8NSFQ6vjY81zv-2Av8fZY6Zls9gg&usqp=CAU',
+                      }}
+                      resizeMode={item?.photo?.mediaId ? 'cover' : 'contain'}
                       style={{ width: 40, height: 40, borderRadius: 50, marginHorizontal: 10 }}
                     />
-                  ) : null}
-                  <View style={{ flex: 1 }}>
-                    <Text className="font-semibold">{item.userName}</Text>
-                    <Text className="text-gray-500">Met {item?.metPeopleCount} people</Text>
+                    <View style={{ flex: 1 }}>
+                      <Text className="font-semibold">{item.userName}</Text>
+                      <Text className="text-gray-500">Met {item?.metPeopleCount} people</Text>
+                    </View>
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => followUnfollowUser(item?._id, isFollowed)}
+                        className={isFollowed ? 'bg-[#eeeeee]' : 'bg-[#52c3ff]'}
+                        style={{ paddingVertical: 5, paddingHorizontal: 15, borderRadius: 5 }}>
+                        <Text style={{ fontSize: 13 }}>{isFollowed ? 'Following' : 'Follow'}</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View>
-                    <TouchableOpacity
-                      onPress={() => followUnfollowUser(item?._id, isFollowed)}
-                      className={isFollowed ? 'bg-[#eeeeee]' : 'bg-[#52c3ff]'}
-                      style={{ paddingVertical: 5, paddingHorizontal: 15, borderRadius: 5 }}>
-                      <Text style={{ fontSize: 13 }}>{isFollowed ? 'Following' : 'Follow'}</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              ) : index === 0 && searchType.slug === categories[0].slug ? null : (
-                <View className="w-[44%] mx-2 mb-1 ml-4">
-                  {/* {item.post?.media[0]?.mediaType?.includes('video') ? (
+                ) : index === 0 && searchType.slug === categories[0].slug ? null : (
+                  <View className="w-[44%] mx-2 mb-1 ml-4">
+                    {item.post?.media[0]?.mediaType?.includes('video') ? (
                     <Video
                       source={{
                         uri: getVideoLink(item.post?.media[0]?.mediaId),
@@ -297,16 +277,16 @@ const FeedMomentsSearchScreen = () => {
                       resizeMode="cover"
                       className="rounded-md w-[100%] h-[240px]"
                     />
-                  )} */}
-                  <Text className={text({ type: 'r12' })}>{item.metTitle}</Text>
-                  {/* <View className="flex-row justify-between mt-1">
+                  )}
+                    <Text className={text({ type: 'r12' })}>{item.metTitle}</Text>
+                    <View className="flex-row justify-between mt-1">
                     <Text className={text({ type: 'r12' })} style={{ fontWeight: 'bold' }}>
                       @{item?.users ? item.users[0]?.userName : ''}
                     </Text>
                     <Text className={text({ type: 'r12' })}>{item.post?.likes?.length} likes</Text>
-                  </View> */}
-                </View>
-              );
+                  </View>
+                  </View>
+                );
             })}
           </View>
         )}

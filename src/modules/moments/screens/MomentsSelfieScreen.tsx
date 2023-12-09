@@ -17,6 +17,7 @@ import RecordButton from '../components/RecordButton';
 import { useSelfieActions } from '../hooks/useSelfieActions';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
 import { MatchedUserType } from 'types/MomentsTypes';
+import { useEffect, useRef } from 'react';
 
 const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } }) => {
   const isFocused = useIsFocused();
@@ -25,6 +26,7 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
   const selectedMoment = useSelector(selectedMomentSelector);
   const matchedUser = route?.params;
   const { goBack, navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
+  const videoRef: React.LegacyRef<Video> = useRef(null);
   const {
     sizes,
     ratio,
@@ -40,8 +42,15 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
     onPressRecordButton,
   } = useSelfieActions();
 
+  useEffect(() => {
+    if (!isFocused) videoRef.current?.pauseAsync();
+
+    if (isFocused && selectedMoment && selectedMoment.type === 'VIDEO')
+      videoRef.current?.playAsync();
+  }, [isFocused]);
+
   return (
-    <View className="flex-1 bg-black px-4" style={{ paddingBottom: sizes.bottom }}>
+    <View className="flex-1 bg-black px-4" style={{ paddingBottom: sizes.bottom, paddingTop: 10 }}>
       <View
         style={{ marginTop: sizes.top }}
         className="overflow-hidden rounded-[40px]  mt-4 border-white border-2">
@@ -53,9 +62,17 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
             selectedMoment && onDeleteMoment(selectedMoment);
           }}
         />
-        <View style={{ height: sizes.cameraHeight,zIndex: -1 }}>
+        <View style={{ height: sizes.cameraHeight - 25, zIndex: -1 }}>
           {isFocused && !selectedMoment && showCamera && (
-            <View style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: -1 }}>
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: -1,
+              }}>
               <Camera
                 ratio={ratio}
                 ref={cameraRef}
@@ -70,6 +87,7 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
               <Image source={{ uri: selectedMoment.localUri }} className="w-full h-full" />
             ) : (
               <Video
+                ref={videoRef}
                 isLooping
                 shouldPlay={true}
                 className="w-full h-full"

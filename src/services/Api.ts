@@ -865,6 +865,14 @@ class ApiClass {
       })
       .post(reqBody)
       .json(result => result);
+  likeUnlikePost = async (reqBody: { postId: string }): Promise<any> =>
+    await this.externalApi
+      .url('post/like/' + reqBody.postId)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .put(reqBody)
+      .json(result => result);
 }
 
 const Api = new ApiClass();

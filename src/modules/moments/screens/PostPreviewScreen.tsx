@@ -11,6 +11,7 @@ import Icons from 'components/Icons';
 import Input from 'components/Input';
 import * as FileSystem from 'expo-file-system';
 import mime from 'mime';
+import { Video as VideCompressor } from 'react-native-compressor';
 
 import PostPreviewSideActionBar from '../components/PostPreviewSideActionBar';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
@@ -55,11 +56,11 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
       body: data,
     });
     setIsLoading(false);
-    console.log("🚀 ~ file: PostPreviewScreen.tsx:58 ~ postData ~ response:", response);
+    console.log('🚀 ~ file: PostPreviewScreen.tsx:58 ~ postData ~ response:', response);
     return { ...response.json(), status: response.status };
   }
 
-  const makePost = () => {
+  const makePost = async () => {
     if (isLoading) return;
 
     let formdata = new FormData();
@@ -69,23 +70,33 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
     let imageObject, videoObject;
 
     if (mediaUri) {
-      const imageUri = 'file:///' + mediaUri.split('file:/').join('');
+      if (mediaType === 'VIDEO') {
+        const result = await VideCompressor.compress(
+          mediaUri,
+          { compressionMethod: 'auto' },
+          progress => {
+            console.log('Compression Progress: ', progress);
+          },
+        );
 
-      imageObject = {
-        name: mediaUri.split('/').pop(),
-        type: mime.getType(imageUri),
-        uri: mediaUri,
-      };
+        const newVideoUri = 'file:///' + result.split('file:/').join('');
 
-      const newVideoUri = 'file:///' + mediaUri.split('file:/').join('');
+        videoObject = {
+          name: result.split('/').pop(),
+          height: 1920,
+          width: 1080,
+          type: mime.getType(newVideoUri),
+          uri: result,
+        };
+      } else {
+        const imageUri = 'file:///' + mediaUri.split('file:/').join('');
 
-      videoObject = {
-        name: mediaUri.split('/').pop(),
-        height: 1920,
-        width: 1080,
-        type: mime.getType(newVideoUri),
-        uri: mediaUri,
-      };
+        imageObject = {
+          name: mediaUri.split('/').pop(),
+          type: mime.getType(imageUri),
+          uri: mediaUri,
+        };
+      }
     }
 
     const media: any = mediaType === 'PHOTO' ? imageObject : videoObject;
@@ -97,14 +108,13 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
     if (postCaption) formdata.append('text', postCaption);
 
     postData(Api.baseUrl + 'post', formdata).then(data => {
-      console.log("🚀 ~ file: PostPreviewScreen.tsx:100 ~ postData ~ data:", data)
+      console.log('🚀 ~ file: PostPreviewScreen.tsx:100 ~ postData ~ data:', data);
       if (data.status !== 200) return alert('Something went wrong');
       console.log(data);
       dispatchNavigation(StackActions.popToTop());
       goBack();
     });
   };
-
 
   async function startRecording() {
     try {
@@ -123,7 +133,6 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
       console.error('Failed to start recording', err);
     }
   }
-
 
   async function stopRecording() {
     console.log('Stopping recording..');
@@ -162,7 +171,7 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
                 resizeMode={ResizeMode.COVER}
                 // useNativeControls
                 source={{
-                  uri: moments[0].localUri,
+                  uri: moments[0]?.localUri,
                   // overrideFileExtensionAndroid: "mp4"
                 }}
               />
@@ -170,7 +179,7 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
               <Image
                 resizeMode="cover"
                 className="flex-1 w-full"
-                source={{ uri: moments[0].localUri }}
+                source={{ uri: moments[0]?.localUri }}
               />
             ) : postType === 'Text' ? (
               <>

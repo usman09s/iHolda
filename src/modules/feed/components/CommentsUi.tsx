@@ -293,7 +293,7 @@ const Commentsui = ({
       </TouchableWithoutFeedback>
       <View
         // onPress={onClose}
-        className="flex-1 justify-end items-center px-7 "
+        className="flex-1 justify-end items-center px-7"
         // onPres
 
         style={{ marginBottom: !useTabHeight ? 0 : tabBarHeight - 16 }}>

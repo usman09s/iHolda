@@ -107,7 +107,7 @@ const LeaderBoardTeamUpHeader = ({ winners }: Props) => (
               </View>
             </View>
             <View className="self-center z-20 w-6 h-6 rounded-full bg-black justify-center items-center border-2 border-white bottom-2 ">
-              <Text className={text({ type: 'b12', class: 'text-white' })}>2</Text>
+              <Text className={text({ type: 'b12', class: 'text-white' })}>3</Text>
             </View>
           </View>
           <View className="items-center justify-center">

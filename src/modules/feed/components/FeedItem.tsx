@@ -28,6 +28,8 @@ import { useState } from 'react';
 import MomentCameraHeader from 'modules/moments/components/MomentCameraHeader';
 import { ResizeMode, Video } from 'expo-av';
 import AppVideo from 'components/AppVideo';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'store/auth/userSelectors';
 
 interface Props {
   image: string;
@@ -79,7 +81,10 @@ const FeedItem = ({
 }: Props) => {
   const { top } = useSafeAreaInsets();
   const { mutate } = useMutation(Api.sharePost);
+  const { user } = useSelector(userSelector);
+  const [liked, setLiked] = useState(data?.likes?.includes(user?._id));
   const { mutate: bookmark } = useMutation(Api.bookMarkPost);
+  const { mutate: likePost } = useMutation(Api.likeUnlikePost);
   const [commentModal, setCommentModal] = useState(false);
   const [activeIndex0, setActiveIndex0] = useState(0);
 
@@ -87,13 +92,6 @@ const FeedItem = ({
 
   return (
     <View style={{ flex: 1 }}>
-      <Commentsui
-        likes={likes}
-        useTabHeight={useTabHeight}
-        visible={commentModal}
-        setVisible={() => setCommentModal(prev => !prev)}
-        text=""
-      />
       {canGoBack() && username !== undefined && (
         <MomentCameraHeader goBack={goBack} matchedUserUsername={username} />
       )}
@@ -172,6 +170,14 @@ const FeedItem = ({
         </View>
       )}
 
+      <Commentsui
+        likes={likes}
+        useTabHeight={useTabHeight}
+        visible={commentModal}
+        setVisible={() => setCommentModal(prev => !prev)}
+        text=""
+      />
+
       <FeedItemDetailsBar
         userId1={userId1}
         userId2={userId2}
@@ -191,11 +197,26 @@ const FeedItem = ({
         caption={caption}
       />
       <FeedItemActionBar
+        liked={liked}
         bookmarks={bookmarks}
         shares={shares}
         likes={likes}
         comments={comments}
-        onPressLike={() => null}
+        onPressLike={() => {
+          likePost(
+            { postId: id },
+            {
+              onSuccess(data) {
+                setLiked(true);
+                // ToastAndroid.showWithGravity(
+                //   'Post bookmarked',
+                //   ToastAndroid.SHORT,
+                //   ToastAndroid.CENTER,
+                // );
+              },
+            },
+          );
+        }}
         onPressShare={() => {
           mutate(
             { postId: id },
