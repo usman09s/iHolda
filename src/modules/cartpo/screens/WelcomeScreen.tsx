@@ -5,6 +5,7 @@ import { CustomSettingsInput } from 'modules/settings/components/CustomSettingsI
 import * as Yup from 'yup';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { verticalScale } from 'utils/helpers';
+import { useCartpoActions } from '../hooks/useCartpoActions';
 
 const initialValues = {
   phoneNumber: '',
@@ -17,11 +18,8 @@ const validationSchema = Yup.object().shape({
     .required('Phone number is required'),
 });
 
-export const WelcomeScreen = ({ navigation }: any) => {
-  const handleSubmit = values => {
-    console.log('Form values:', values);
-    navigation.navigate('ConfirmOtp');
-  };
+export const WelcomeScreen = () => {
+  const { handleSubmit } = useCartpoActions();
 
   return (
     <ScrollView

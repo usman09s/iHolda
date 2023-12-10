@@ -3,29 +3,7 @@ import { View, Text, Image, ScrollView } from 'react-native';
 import { CustomRestaurantButton } from '../components/CustomRestaurantButton';
 import { units } from 'utils/helpers';
 
-export const RestaurantEditMenuScreen = () => {
-  // Define an array of food items with images and text
-  const foodItems = [
-    {
-      imageSource: require('../../../../assets/food.jpg'), // Replace with the actual image source
-      text: 'Delicious Pizza',
-    },
-    {
-      imageSource: require('../../../../assets/food.jpg'), // Replace with the actual image source
-      text: 'Tasty Burger',
-    },
-    {
-      imageSource: require('../../../../assets/food.jpg'), // Replace with the actual image source
-      text: 'Spaghetti Carbonara',
-    },
-    {
-      imageSource: require('../../../../assets/food.jpg'), // Replace with the actual image source
-      text: 'Sushi Platter',
-    },
-    // Add more food items as needed
-  ];
-
-  // Function to split the food items into rows of 3
+export const RestaurantEditMenuScreen = ({ navigation }: any) => {
   const splitIntoRows = (items, itemsPerRow) => {
     const rows = [];
     for (let i = 0; i < items.length; i += itemsPerRow) {
@@ -35,7 +13,7 @@ export const RestaurantEditMenuScreen = () => {
     return rows;
   };
 
-  const foodRows = splitIntoRows(foodItems, 3);
+  // const foodRows = splitIntoRows(foodItems, 3);
   return (
     <ScrollView>
       <View className="px-6">
@@ -47,13 +25,14 @@ export const RestaurantEditMenuScreen = () => {
               title="+ Add"
               customButtonClass={'w-16 py-1.5'}
               customTextClass={'text-xs'}
+              onPress={() => navigation.navigate('RestaurantAddMenu')}
             />
           }
         />
         <View>
-          <Text>Click the menu item to edit</Text>
+          <Text>No Items in the Menu Currently</Text>
         </View>
-        {foodRows.map((row, rowIndex) => (
+        {/* {foodRows.map((row, rowIndex) => (
           <View key={rowIndex} className="flex flex-row justify-between space-x-4 mt-4">
             {row.map((item, index) => (
               <View key={index} className="flex-1">
@@ -65,7 +44,7 @@ export const RestaurantEditMenuScreen = () => {
               </View>
             ))}
           </View>
-        ))}
+        ))} */}
       </View>
     </ScrollView>
   );

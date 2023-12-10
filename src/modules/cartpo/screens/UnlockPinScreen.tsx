@@ -5,6 +5,7 @@ import { CustomSettingsInput } from 'modules/settings/components/CustomSettingsI
 import * as Yup from 'yup';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { height, verticalScale } from 'utils/helpers';
+import { useCartpoActions } from '../hooks/useCartpoActions';
 
 const initialValues = {
   pin: '',
@@ -18,14 +19,9 @@ const validationSchema = Yup.object().shape({
     .required('Unlock pin is required'),
 });
 
-export const UnlockPinScreen = ({ navigation }: any) => {
+export const SignInScreen = ({ navigation }: any) => {
+  const { handleLoginSubmit } = useCartpoActions();
   const isSmallScreen = height < 700;
-  const handleSubmit = values => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'CartpoTab' }],
-    });
-  };
 
   return (
     <ScrollView
@@ -37,7 +33,7 @@ export const UnlockPinScreen = ({ navigation }: any) => {
       keyboardShouldPersistTaps="always">
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={handleLoginSubmit}
         validationSchema={validationSchema}>
         {({ handleChange, handleSubmit, values, errors }) => (
           <View className="px-6 my-12">

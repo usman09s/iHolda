@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Linking } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { DeleteLinkIcon } from '../../../../assets/referralGift';
@@ -17,6 +17,7 @@ export const SocialMediaScreen = () => {
   const [activeLink, setActiveLink] = useState(null);
   const dispatch = useDispatch();
   const userData = useSelector(selectUser);
+  console.log(userData);
   const { handleUpdateSetting } = useSettingActions();
 
   const toggleLinkInput = index => {
@@ -47,6 +48,56 @@ export const SocialMediaScreen = () => {
       newErrors[index] = false;
       return newErrors;
     });
+  };
+
+  const openSocialMediaApp = platform => {
+    const socialLink = userData.socialLinks.find(link => link.platform === platform);
+
+    if (!socialLink) {
+      // Social media link not found, handle this case as needed
+      return;
+    }
+
+    if (socialLink.link === '') {
+      // No link is provided for this social media, handle this case as needed
+      return;
+    }
+    let appURL;
+    switch (platform) {
+      case 'facebook':
+        appURL = `fb://profile/${socialLink.link}`;
+        break;
+      case 'instagram':
+        appURL = `instagram://user?username=${socialLink.link}`;
+        break;
+      case 'tiktok':
+        appURL = `tiktok://user?username=${socialLink.link}`;
+        break;
+      case 'youtube':
+        appURL = `vnd.youtube://${socialLink.link}`;
+        break;
+      case 'twitter':
+        appURL = `twitter://user?screen_name=${socialLink.link}`;
+        break;
+      case 'website':
+        appURL = socialLink.link;
+        break;
+      default:
+        appURL = socialLink.link;
+        break;
+    }
+
+    Linking.canOpenURL(appURL)
+      .then(supported => {
+        if (supported) {
+          Linking.openURL(appURL);
+        } else {
+          Linking.openURL(socialLink.link);
+        }
+      })
+      .catch(error => {
+        console.error('An error occurred while opening the social media app:', error);
+      });
   };
 
   const handleLinkAccount = async index => {
@@ -137,7 +188,9 @@ export const SocialMediaScreen = () => {
                   ) : // Check if a link exists for the current platform and show delete icon if available
                   socialLink.link !== '' ? (
                     <View className="flex-row items-center">
-                      <TouchableOpacity className="justify-center">
+                      <TouchableOpacity
+                        className="justify-center"
+                        onPress={() => openSocialMediaApp(socialLink.platform)}>
                         <FontAwesome5
                           size={20}
                           name={socialLink.platform === 'website' ? 'globe' : socialLink.platform}

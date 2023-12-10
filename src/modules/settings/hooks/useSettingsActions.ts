@@ -10,6 +10,7 @@ import wretch from 'wretch';
 import { ActionCreators } from 'redux-undo';
 import { setInvitees } from 'store/settings/inviteeSlice';
 import * as SecureStore from 'expo-secure-store';
+import Toast from 'react-native-toast-message';
 
 export const useSettingActions = () => {
   const userData = useSelector(selectUser);
@@ -17,7 +18,6 @@ export const useSettingActions = () => {
   const [cityCountry, setCityCountry] = useState<any>('');
   const [lat, setLat] = useState<any>(userData?.location?.coordinates[0]);
   const [lng, setLng] = useState<any>(userData?.location?.coordinates[1]);
-  console.log(userData?.location?.coordinates, 'lat');
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const pickImage = async () => {
@@ -30,7 +30,8 @@ export const useSettingActions = () => {
     }).catch(() => null);
 
     if (!result?.canceled) {
-      setProfileImage(result.assets[0].uri);
+      await setProfileImage(result.assets[0].uri);
+      handleUpdateSetting();
     }
   };
 
@@ -45,10 +46,22 @@ export const useSettingActions = () => {
   const handleSubmit = async values => {
     const { oldPassword, newPassword, confirmPassword } = values;
     const result = await Api.changePassword({
-      oldPassword,
-      newPassword,
-      confirmPassword,
+      oldPassword: parseInt(oldPassword),
+      newPassword: parseInt(newPassword),
+      confirmPassword: parseInt(confirmPassword),
     });
+    if (result.message === 'Password updated successfully') {
+      Toast.show({
+        type: 'success',
+        text1: 'Password changed successfully',
+      });
+      navigation.goBack();
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Unexpected error occured',
+      });
+    }
   };
 
   const handleLocationPress = async () => {
@@ -74,7 +87,13 @@ export const useSettingActions = () => {
       longitude: lng,
     });
     console.log(name);
-    setCityCountry(`${name[0].city}, ${name[0].country}`);
+    await setCityCountry(`${name[0].city}, ${name[0].country}`);
+    const updatedUserData = {
+      ...userData,
+      address: cityCountry,
+    };
+    await dispatch(setUser(updatedUserData));
+    handleUpdateSetting();
   };
 
   const handleReferralCopy = async () => {
@@ -99,7 +118,7 @@ export const useSettingActions = () => {
       firstName: trimmedName,
     };
     dispatch(setUser(updatedUserData));
-    await handleUpdateSetting();
+    // handleUpdateSetting();
     navigation.goBack();
   };
 
@@ -110,7 +129,7 @@ export const useSettingActions = () => {
     formData.append('bio', userData.bio);
     formData.append('address', userData.address);
     formData.append('userName', userData.userName);
-    formData.append('location[type]', userData.location.type);
+    formData.append('location[type]', 'Point');
     formData.append('location[coordinates][0]', userData.location.coordinates[0]);
     formData.append('location[coordinates][1]', userData.location.coordinates[1]);
     formData.append('socialLinks[0][platform]', userData.socialLinks[0].platform);
@@ -140,7 +159,11 @@ export const useSettingActions = () => {
         .put(formData)
         .json();
       console.log('API Response:', response.data);
-      navigation.goBack();
+      dispatch(setUser(response.data.user));
+      Toast.show({
+        type: 'success',
+        text1: 'Profile Updated Successfully',
+      });
     } catch (error) {
       console.error('API Error:', error);
     }
@@ -206,11 +229,6 @@ export const useSettingActions = () => {
       const response = await wretch('http://ihold.yameenyousuf.com/api/auth/logout')
         .post(requestBody)
         .json();
-
-      if (!response.ok) {
-        return false;
-      }
-      console.log('Logout successful');
       navigation.reset({
         index: 0,
         routes: [{ name: 'Auth' }],
