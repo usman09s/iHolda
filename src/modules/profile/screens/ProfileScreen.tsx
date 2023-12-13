@@ -21,7 +21,7 @@ const ProfileScreen = ({ route }: any) => {
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
   const { user } = useSelector(userSelector);
-  const invitedBy = user.invitedBy?.userName;
+  const invitedBy = user?.invitedBy?.userName;
   const { username, avatar, joinedMonthAndYear } = useSelector(userCommonInformationSelector);
   const isCurrentUser = route.params?.isCurrentUser ?? true;
   const dispatch = useAppDispatch();
@@ -42,10 +42,10 @@ const ProfileScreen = ({ route }: any) => {
       <Profile
         followers={data?.data.user?.followers ? data?.data.user?.followers?.length.toString() : '0'}
         impression="0"
-        metPeople={user?.metCount ? user?.metCount : 0}
+        metPeople={user?.metCount ? user?.metCount?.toString() : '0'}
         key={0}
       />,
-      <Community cp={user.cp} lastcp={user?.lastCp} key={1} />,
+      <Community cp={user?.cp ?? '0'} lastcp={user?.lastCp} key={1} />,
       <Wallet key={2} />,
       // <Shared key={2} />,
     ]?.[index] || [];
@@ -67,15 +67,16 @@ const ProfileScreen = ({ route }: any) => {
         renderItem={({ item }) => item}
         ListHeaderComponent={
           <ProfileHeader
+            verified={user?.basicVerification ?? false}
             top={top}
             isCurrentUser={isCurrentUser}
-            avatar={avatar.mediaId}
+            avatar={avatar?.mediaId ?? ""}
             activeY={activeY}
             username={username}
             activeIndex={index}
             key={'profileHeader'}
-            invitedBy={invitedBy}
-            hederThumbnail={avatar.mediaId}
+            invitedBy={invitedBy ?? ""}
+            hederThumbnail={avatar?.mediaId ?? ""}
             monthAndYear={joinedMonthAndYear}
             onPressTabItem={onPressTabItem}
           />

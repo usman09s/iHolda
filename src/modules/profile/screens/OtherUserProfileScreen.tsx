@@ -34,7 +34,7 @@ const OtherUserProfileScreen = ({ route }: any) => {
   const username = data?.data?.user.userName;
   const avatar = data?.data?.user.photo?.mediaId;
 
-  const dateString = data?.data?.user?.dateJoined;
+  const dateString: any = data?.data?.user?.dateJoined;
   const date = new Date(dateString);
 
   const formattedDate = date.toLocaleString('default', { month: 'long', year: 'numeric' });

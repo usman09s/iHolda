@@ -226,7 +226,7 @@ const Commentsui = ({
   const comment = (item: Comment, showHorizontalDottedLine = false) => {
     const isReply = item?.nestedComments?.length;
     return (
-      <View className="flex-row mb-4 mr-4">
+      <View key={item._id} className="flex-row mb-4 mr-4">
         <View style={{ marginRight: 10, alignItems: 'center' }}>
           {showHorizontalDottedLine
             ? dottedLine({
@@ -330,7 +330,7 @@ const Commentsui = ({
               <View className="bg-[#efefef] flex-row w-full py-2 px-3 items-center mb-2 rounded">
                 <Image
                   source={{
-                    uri: getImageLink(selectedComment.user.photo ?? ''),
+                    uri: getImageLink(selectedComment?.user?.photo ?? ''),
                   }}
                   resizeMode="cover"
                   style={{ width: 25, height: 25, borderRadius: 50, marginRight: 10 }}

@@ -59,7 +59,7 @@ export const usePlasticConfirmationActions = () => {
     dispatch(setQrCode(data.data.plasticQrCode));
     try {
       navigate('PlasticQRCode', {
-        plasticInformation: data.data.plasticQrCode,
+        plasticInformation: data.data,
         location: params.location,
       });
     } catch (error) {

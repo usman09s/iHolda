@@ -13,15 +13,32 @@ import { width } from 'utils/helpers';
 import DropOffLocationItem from '../components/DropOffLocationItem';
 import { PlasticStackParamList } from '../PlasticStackNavigator';
 import QRCode from 'react-native-qrcode-svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectQrCodeData } from 'store/plastic/userPlasticSlice';
+import socketService from 'services/Socket';
 
 const PlasticQRCodeScreen = () => {
   const { params } = useRoute<RouteProp<PlasticStackParamList, 'PlasticQRCode'>>();
   const userQrCode = useSelector(selectQrCodeData);
-  const { dispatch } = useNavigation<NavigationProp<PlasticStackParamList>>();
+  const { dispatch, navigate }: any = useNavigation<NavigationProp<PlasticStackParamList>>();
   const [id, setId] = useState(userQrCode);
+
+  console.log("ddda",params.plasticInformation);
+
+  const onCompleteePlastic = (data: any) => {
+    console.log("🚀 ~ file: PlasticQRCodeScreen.tsx:30 ~ onCompleteePlastic ~ data:", data)
+    
+    navigate("PlasticDeliveredDetails", {data})
+  }
+
+  useEffect(() => {
+    socketService?.on(`completePlasticSupply/${params.plasticInformation._id}`, onCompleteePlastic);
+
+    return () => {
+      socketService?.removeListener(`completePlasticSupply/${params.plasticInformation._id}`, onCompleteePlastic);
+    }
+  },[])
 
   return (
     <ScrollView className="bg-milkWhite" showsVerticalScrollIndicator={false}>

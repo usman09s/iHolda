@@ -41,9 +41,9 @@ const FeedScreen = () => {
 
   const renderItem = ({ item, index }: any) => {
     const imageUri = getImageLink(item.media[0]?.mediaId);
-    console.log(item._id);
+    // item?.media?.length && console.log(item.media);
 
-    return (
+    return !item?.media?.length ? null : (
       <Pressable
         key={item._id}
         // onPress={() => navigate('FeedDetailView', {item})}
@@ -55,10 +55,12 @@ const FeedScreen = () => {
           }),
         }}>
         <FeedItem
+          index={index}
           shares={item.shareCount}
           bookmarks={item.bookmarkCount}
           gotoDetailOnPress={item?.user ? false : true}
           likes={item.likes?.length}
+          onPressLike={() => refetch()}
           comments={item.comments?.length}
           id={item._id}
           caption={item.text ?? ''}

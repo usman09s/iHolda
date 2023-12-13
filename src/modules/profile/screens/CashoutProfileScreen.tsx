@@ -1,8 +1,9 @@
 import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import { height, horizontalScale, verticalScale } from '../../../utils/helpers';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
@@ -10,27 +11,26 @@ import Api from 'services/Api';
 import SelectDropdown from 'react-native-select-dropdown';
 
 export const CashoutProfileScreen = ({ navigation, route }: any) => {
-  const [withdrawAmmount, setWithdrawAmmount] = useState(0);
-
+  const [withdrawAmmount, setWithdrawAmmount] = useState('');
+  const [account, setAccount] = useState('');
 
   const { mutate, isLoading } = useMutation(Api.withdrawFromWallet, {
     onError: error => {
-      alert("something went wrong")
+      alert('something went wrong');
       console.error(error);
     },
     onSuccess: ({ data }) => {
-      console.log("🚀 ~ file: CashoutProfileScreen.tsx:20 ~ CashoutProfileScreen ~ data:", data)
-      navigation.navigate('WithdrawSuccessful', {withdrawAmmount})
+      console.log('🚀 ~ file: CashoutProfileScreen.tsx:20 ~ CashoutProfileScreen ~ data:', data);
+      navigation.navigate('WithdrawSuccessful', { withdrawAmmount });
     },
   });
 
-
   const isSmallScreen = height < 700;
-  const handleValueChange = (value: string) => {
-    console.log('Selected value:', value);
+  // const handleValueChange = (value: string) => {
+  //   console.log('Selected value:', value);
 
-    setWithdrawAmmount(Number(value));
-  };
+  //   setWithdrawAmmount(Number(value));
+  // };
   const options = ['12344773', '56783773', '91012333'];
   return (
     <View className="flex-1 px-6">
@@ -63,11 +63,83 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
           </View>
         </View>
         <View className={`pt-10 ${isSmallScreen ? 'pb-8' : 'pb-16'}`}>
-          <Text className="text-center text-5xl font-bold py-6">
+          {/* <Text className="text-center text-5xl font-bold py-6">
             {withdrawAmmount}.00<Text className="text-base">cfa</Text>
-          </Text>
+          </Text> */}
+          <View
+            style={{
+              paddingVertical: 24,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <TextInput
+              value={withdrawAmmount}
+              onChangeText={val => setWithdrawAmmount(val)}
+              placeholder="0"
+              placeholderTextColor={'black'}
+              keyboardType="numeric"
+              style={{
+                color: 'black',
+                textAlign: 'center',
+                fontSize: 48,
+                fontWeight: '700',
+                paddingRight: 10,
+                // minWidth: 100
+              }}
+            />
+
+            <Text
+              style={{
+                color: 'black',
+                textAlign: 'center',
+                fontSize: 48,
+                fontWeight: '700',
+                paddingRight: 10,
+                marginLeft: -5
+                // minWidth: 100
+              }}>
+              .0
+            </Text>
+
+            <Text
+              style={{
+                color: 'blacck',
+                textAlign: 'center',
+                fontSize: 16,
+                alignSelf: 'flex-end',
+                marginBottom: 8,
+              }}>
+              {' '}
+              cfa
+            </Text>
+          </View>
           <Text className="text-center font-semibold pb-8">TO</Text>
-          <SelectDropdown
+
+          <View
+            style={{
+              justifyContent: 'center',
+              alignSelf: 'center',
+              backgroundColor: '#b3b2b2',
+              borderRadius: 30,
+              minWidth: 220,
+              height: 60,
+              flexDirection: 'row',
+              alignItems: 'center',
+              overflow: 'hidden',
+              paddingHorizontal: 5,
+            }}>
+            <TextInput
+              value={account}
+              onChangeText={setAccount}
+              keyboardType="numeric"
+              placeholder="Enter"
+              placeholderTextColor={'white'}
+              className="text-white text-center text-18"
+            />
+            <Icon name="keyboard-arrow-down" style={{ fontSize: 28 }} color="white" />
+          </View>
+          {/* <SelectDropdown
             data={options}
             placeholder="Select"
             buttonTextStyle={{ color: 'white', textAlign: 'center' }}
@@ -97,7 +169,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
               );
             }}
             dropdownIconPosition="right"
-          />
+          /> */}
         </View>
         <View className="mx-6">
           <CustomReferenceButton
@@ -106,7 +178,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
             customContainerClass="bg-black py-4"
             customTextClass={'text-white text-base'}
             // onPress={() => navigation.navigate('WithdrawSuccessful')}
-            onPress={() => mutate(withdrawAmmount)}
+            onPress={() => mutate(Number(withdrawAmmount))}
           />
         </View>
       </View>

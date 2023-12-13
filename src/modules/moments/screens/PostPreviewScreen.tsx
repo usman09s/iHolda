@@ -11,7 +11,7 @@ import Icons from 'components/Icons';
 import Input from 'components/Input';
 import * as FileSystem from 'expo-file-system';
 import mime from 'mime';
-import { Video as VideCompressor } from 'react-native-compressor';
+import { Video as VideCompressor, Image as ImageCompresor } from 'react-native-compressor';
 
 import PostPreviewSideActionBar from '../components/PostPreviewSideActionBar';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
@@ -25,7 +25,7 @@ import { useMutation } from 'react-query';
 import Api from 'services/Api';
 import { TEXT_POST_COLOR } from '../constants';
 
-const recording = new Audio.Recording();
+let recording = new Audio.Recording();
 
 const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) => {
   const [caption, setCaption] = useState('');
@@ -89,14 +89,31 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
           uri: result,
         };
       } else {
-        const imageUri = 'file:///' + mediaUri.split('file:/').join('');
+        const imgRes = await ImageCompresor.compress(mediaUri, {
+          progressDivider: 10,
+          downloadProgress: progress => {
+            console.log('downloadProgress: ', progress);
+          },
+        });
+
+        const imageUri = 'file:///' + imgRes.split('file:/').join('');
 
         imageObject = {
-          name: mediaUri.split('/').pop(),
+          name: imgRes.split('/').pop(),
           type: mime.getType(imageUri),
-          uri: mediaUri,
+          uri: imgRes,
         };
       }
+    }
+
+    const audioUri = recording?.getURI();
+    if (audioUri) {
+      const audioObject: any = {
+        name: audioUri.split('/').pop(),
+        type: mime.getType(audioUri),
+        uri: audioUri,
+      };
+      formdata.append('audio', audioObject);
     }
 
     const media: any = mediaType === 'PHOTO' ? imageObject : videoObject;
@@ -143,6 +160,9 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
   }
 
   const handleAudioPress = () => {
+    if (recording?.getURI() && !isRecording) {
+      recording = new Audio.Recording();
+    }
     if (!isRecording) startRecording();
     else stopRecording();
   };
@@ -202,7 +222,7 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
               <View className="px-6">
                 <Header showBackIcon backIconColor="white" />
               </View>
-              <PostPreviewSideActionBar onPressAudio={handleAudioPress} />
+              <PostPreviewSideActionBar isRecording={isRecording} onPressAudio={handleAudioPress} />
             </View>
           </View>
         ) : null}

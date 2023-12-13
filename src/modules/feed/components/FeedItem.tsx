@@ -35,9 +35,9 @@ interface Props {
   image: string;
   username1?: string;
   username2?: string;
-  userpic1?: string;
+  userpic1?: any;
   useTabHeight?: boolean;
-  userpic2?: string;
+  userpic2?: any;
   caption: string;
   subText: string;
   id: string;
@@ -55,6 +55,8 @@ interface Props {
   shares: number;
   userId1: string;
   userId2: string;
+  onPressLike: (index: number) => void;
+  index: number;
 }
 
 const FeedItem = ({
@@ -78,11 +80,13 @@ const FeedItem = ({
   shares,
   userId1,
   userId2,
+  onPressLike,
+  index,
 }: Props) => {
   const { top } = useSafeAreaInsets();
   const { mutate } = useMutation(Api.sharePost);
   const { user } = useSelector(userSelector);
-  const [liked, setLiked] = useState(data?.likes?.includes(user?._id));
+  const [liked, setLiked] = useState<boolean>(data?.likes?.includes(user?._id));
   const { mutate: bookmark } = useMutation(Api.bookMarkPost);
   const { mutate: likePost } = useMutation(Api.likeUnlikePost);
   const [commentModal, setCommentModal] = useState(false);
@@ -186,12 +190,12 @@ const FeedItem = ({
         userFirst={{
           emotion: '😄',
           username: username1 || '@userFirst',
-          avatar: userpic1 || 'https://i.pravatar.cc/150?img=33',
+          avatar: userpic1 || null,
         }}
         userSecond={{
           emotion: '😍',
           username: username2 || '',
-          avatar: userpic2 || '',
+          avatar: userpic2 || null,
         }}
         subText={subText}
         caption={caption}
@@ -207,7 +211,9 @@ const FeedItem = ({
             { postId: id },
             {
               onSuccess(data) {
-                setLiked(true);
+                // likes++;
+                if (onPressLike) onPressLike(index);
+                setLiked(prev => !prev);
                 // ToastAndroid.showWithGravity(
                 //   'Post bookmarked',
                 //   ToastAndroid.SHORT,

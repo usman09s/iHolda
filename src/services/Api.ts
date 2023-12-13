@@ -729,6 +729,14 @@ class ApiClass {
       })
       .get()
       .json(result => result);
+  getTransactions = async (): Promise<any> =>
+    await this.externalApi
+      .url('plastic/transactions')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
   getRestaurents = async (): Promise<any> =>
     await this.externalApi
       .url('restaurant/')

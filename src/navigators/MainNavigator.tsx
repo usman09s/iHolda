@@ -18,6 +18,7 @@ import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
 import { queryIdSelector, tokensSelector } from 'store/auth/userSelectors';
+import socketService from 'services/Socket';
 import colors from 'theme/colors';
 
 import BottomTabsNavigator from './BottomTabsNavigator';
@@ -55,6 +56,7 @@ export default function MainNavigator() {
   const { status } = userAppInit();
 
   React.useEffect(() => {
+    socketService.initializeSocket();
     Api.setQueryIdValue(queryId);
     Api.setTokenValue(tokens.token);
   }, []);

@@ -166,8 +166,10 @@ export type User = {
   address: string;
   fcmTokens: string[];
   online: boolean;
+  basicVerification: boolean;
   isPlasticAgent: boolean;
   followers: string[];
+  invited_by: {user:{username: string}};
   following: string[];
   bookmarks: string[];
   userQrCode: string;

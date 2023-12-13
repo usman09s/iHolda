@@ -43,7 +43,7 @@ const categories: Categories[] = [
 const FeedMomentsSearchScreen = () => {
   const navigation: any = useNavigation();
   // TODO: add types
-  const [searchResult, setSearchResult] = useState<any[]>([]);
+  const [searchResult, setSearchResult] = useState<any>([]);
   const [searchType, setSearchType] = useState<Categories>(categories[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
@@ -75,16 +75,17 @@ const FeedMomentsSearchScreen = () => {
     // console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:44 ~ search ~ res:', res);
 
     // if (!query || page === 1) setPage(prevState => prevState + 1);
-    setSearchResult(res.data);
+    setSearchResult(res.data?.list);
     // if (specificPage || query) setSearchResult(res.data);
     // else setSearchResult(prevState => prevState.concat(res.data));
   };
 
-  const followUnfollowUser = async (userId: string, followed: boolean) => {
+  const followUnfollowUser = async (userId: string, followed: boolean, userIndex: number) => {
+    console.log("🚀 ~ file: FeedMomentsSearchScreen.tsx:84 ~ followUnfollowUser ~ followed:", followed)
     try {
       await Api.followUnFollowUseer(userId, followed);
 
-      const userIndex = searchResult.findIndex((d: any) => d._id == userId);
+      // const userIndex = searchResult.findIndex((d: any) => d._id == userId);
 
       const followers = followed
         ? searchResult[userIndex].followers.filter((f: string) => f !== user?._id)
@@ -191,7 +192,7 @@ const FeedMomentsSearchScreen = () => {
           <ActivityIndicator />
         ) : (
           <View className="flex-row" style={{ flexWrap: 'wrap' }}>
-            {searchResult.map((item, index) => {
+            {searchResult?.map((item: any, index: number) => {
               // const isUser = item?.users && item?.users[0]?.metCount !== undefined;
               const isUser = !item?.post;
               const isRestaurant = item?.merchant;
@@ -252,7 +253,7 @@ const FeedMomentsSearchScreen = () => {
                     </View>
                     <View>
                       <TouchableOpacity
-                        onPress={() => followUnfollowUser(item?._id, isFollowed)}
+                        onPress={() => followUnfollowUser(item?._id, isFollowed, index)}
                         className={isFollowed ? 'bg-[#eeeeee]' : 'bg-[#52c3ff]'}
                         style={{ paddingVertical: 5, paddingHorizontal: 15, borderRadius: 5 }}>
                         <Text style={{ fontSize: 13 }}>{isFollowed ? 'Following' : 'Follow'}</Text>

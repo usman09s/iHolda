@@ -10,9 +10,28 @@ import { useQuery } from 'react-query';
 import Api from 'services/Api';
 
 const Wallet = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const { data } = useQuery('walletBalance', Api.getWalletBalance, { refetchOnWindowFocus: true });
-  console.log('🚀 ~ file: Wallet.tsx:15 ~ Wal ~ data:', data);
+  const { data: transactions } = useQuery('walletTransactions', Api.getTransactions, {
+    refetchOnWindowFocus: true,
+  });
+
+  const formatDate = (inputDateString: string) => {
+    const inputDate = new Date(inputDateString);
+
+    const options: Intl.DateTimeFormatOptions | undefined = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    };
+
+    const formattedDateString = new Intl.DateTimeFormat('en-US', options).format(inputDate);
+
+    return formattedDateString;
+  };
 
   // const wallet = data.data.data?.wallet;
   // console.log('🚀 ~ file: Wallet.tsx:17 ~ Wal ~ wallet:', data?.data?.wallet);
@@ -28,16 +47,25 @@ const Wallet = () => {
           title="Cash Out"
           type="solid"
           customContainer="bg-green-600 mt-6"
-          onPress={() =>
-            navigation.navigate('WalletStack', { wallet: data?.data?.wallet })
-          }
+          onPress={() => navigation.navigate('WalletStack', { wallet: data?.data?.wallet })}
         />
       </View>
       <View className="mt-11">
         <Text className={text({ type: 'm10', class: 'text-black-o-50 mb-6' })}>
           Past transactions
         </Text>
-        <TransactionInOut
+        {transactions?.data?.transactionData?.map((item: any) => (
+          <TransactionInOut
+          key={item.createdAt}
+            type="OUT"
+            title="Cash out"
+            value={`- ${item.amount} CFA`}
+            subTitle="Mobile money"
+            date={formatDate(item.createdAt)}
+            symbol={<Icons.CashOutIcon />}
+          />
+        ))}
+        {/* <TransactionInOut
           type="OUT"
           title="Cash out"
           value="- 1500 CFA"
@@ -68,7 +96,7 @@ const Wallet = () => {
               />
             </View>
           }
-        />
+        /> */}
       </View>
     </View>
   );
