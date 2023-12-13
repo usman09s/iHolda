@@ -1,18 +1,32 @@
 import Header from 'components/Header/Header';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { DeleteLinkIcon } from '../../../../assets/referralGift';
 import { Formik } from 'formik';
 import { CustomReferenceInput } from 'modules/requestReference/components/CustomReferenceInput';
 import { CustomRestaurantButton } from '../components/CustomRestaurantButton';
+import { useCartpoActions } from '../hooks/useCartpoActions';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  deletePaymentAccount,
+  selectCartpoSettings,
+  setCartpoSettings,
+} from 'store/cartpo/calculateSlice';
 
-export const RestaurantAddPaymentScreen = () => {
+export const RestaurantAddPaymentScreen = ({ route }: any) => {
+  const { handleAddPayment, handleDeletePayment } = useCartpoActions();
+  const settingsData = useSelector(selectCartpoSettings);
+  const accountData = route?.params?.accountData;
+  const accountValue = String(accountData?.account || '');
   const initialValues = {
-    accountType: '',
-    account: '',
+    accountType: accountData?.accountType || '',
+    account: accountValue || '',
   };
-
-  const handleSubmit = values => {
-    console.log(values);
+  const dispatch = useDispatch();
+  const deletePaymentAccountHandler = () => {
+    if (settingsData && settingsData.setting && settingsData.setting.paymentMethod) {
+      dispatch(deletePaymentAccount(parseInt(accountValue)));
+      handleDeletePayment();
+    }
   };
 
   return (
@@ -20,9 +34,13 @@ export const RestaurantAddPaymentScreen = () => {
       <Header
         showBackIcon
         centerComponent={<Text className="text-base font-normal">Add Payment</Text>}
-        rightComponent={<DeleteLinkIcon />}
+        rightComponent={
+          <TouchableOpacity onPress={deletePaymentAccountHandler}>
+            <DeleteLinkIcon />
+          </TouchableOpacity>
+        }
       />
-      <Formik initialValues={initialValues} validateOnChange={false} onSubmit={handleSubmit}>
+      <Formik initialValues={initialValues} validateOnChange={false} onSubmit={handleAddPayment}>
         {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
           <View className="my-12 flex-1 justify-between">
             <View>

@@ -6,6 +6,7 @@ import { CustomReferenceButton } from 'modules/requestReference/components/Custo
 import * as Yup from 'yup';
 import { height } from 'utils/helpers';
 import { useSettingActions } from '../hooks/useSettingsActions';
+import CustomHeader from 'components/Header/CustomHeader';
 
 const validationSchema = Yup.object().shape({
   oldPassword: Yup.string()
@@ -30,7 +31,7 @@ export const ChangePinScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
       <View className="px-6">
-        <Header
+        <CustomHeader
           showBackIcon
           centerComponent={
             <Text style={{ fontSize: 16, fontWeight: '500', marginTop: 2, color: 'gray' }}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { Linking, Platform, ScrollView } from 'react-native';
 import Header from 'components/Header/Header';
 import { View, Text, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -40,13 +40,36 @@ export const ReferralScreen = () => {
   const invitedInviteesWithEmptyObjects = [...invitedInvitees];
   const pendingInviteesWithEmptyObjects = [...pendingInvitees];
 
-  while (invitedInviteesWithEmptyObjects.length < 8) {
+  while (invitedInviteesWithEmptyObjects.length < 5) {
     invitedInviteesWithEmptyObjects.push({});
   }
 
-  while (pendingInviteesWithEmptyObjects.length < 8) {
+  while (pendingInviteesWithEmptyObjects.length < 5) {
     pendingInviteesWithEmptyObjects.push({});
   }
+
+  const shareToMessenger = () => {
+    const referralCode = userData.referralCode;
+    const message = `Hey, check out this iHolda! Use my referral code: ${referralCode}`;
+    const encodedMessage = encodeURIComponent(message);
+    let messengerUrl: any;
+    if (Platform.OS === 'ios') {
+      messengerUrl = `fb-messenger://share?text=${encodedMessage}`;
+    } else if (Platform.OS === 'android') {
+      messengerUrl = `fb-messenger://user/`;
+    }
+    Linking.canOpenURL(messengerUrl)
+      .then(supported => {
+        if (supported) {
+          Linking.openURL(messengerUrl);
+        } else {
+          console.log('Facebook Messenger is not installed on this device.');
+        }
+      })
+      .catch(error => {
+        console.error('An error occurred while opening Messenger:', error);
+      });
+  };
 
   useFocusEffect(() => {
     handleGetInvitees();
@@ -101,19 +124,21 @@ export const ReferralScreen = () => {
         <View className={'flex-row justify-between my-6 px-5 items-center w-full'}>
           <TouchableOpacity
             className="flex-row items-center justify-center rounded-lg py-4 h-full bg-[#ECEFE3] w-1/2"
-            style={{ marginRight: '1%' }}>
+            style={{ marginRight: '1%' }}
+            onPress={handleReferralCopy}>
             <Text className="text-center mr-2">Share Referral link</Text>
             <LinkIcon />
           </TouchableOpacity>
           <TouchableOpacity
             className="flex-row items-center justify-center rounded-lg py-4 h-full bg-[#ECEFE3] w-1/2"
-            style={{ marginLeft: '1%' }}>
+            style={{ marginLeft: '1%' }}
+            onPress={shareToMessenger}>
             <FacebookIcon />
             <Text className="text-center ml-2">Share to</Text>
           </TouchableOpacity>
         </View>
         <View className="ml-5">
-          <Text className="mb-2">{`Invited (${invitedInvitees.length}/8)`}</Text>
+          <Text className="mb-2">{`Invited (${invitedInvitees.length}/5)`}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {invitedInviteesWithEmptyObjects.map((invitee, index) => (
               <InvitedUser

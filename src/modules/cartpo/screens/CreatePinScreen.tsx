@@ -5,6 +5,7 @@ import { CustomSettingsInput } from 'modules/settings/components/CustomSettingsI
 import * as Yup from 'yup';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { height, verticalScale } from 'utils/helpers';
+import { useCartpoActions } from '../hooks/useCartpoActions';
 
 const initialValues = {
   pin: '',
@@ -18,12 +19,9 @@ const validationSchema = Yup.object().shape({
     .required('Repeat pin is required'),
 });
 
-export const CreatePinScreen = ({ navigation }: any) => {
+export const CreatePinScreen = () => {
+  const { handlePinSubmit } = useCartpoActions();
   const isSmallScreen = height < 700;
-  const handleSubmit = values => {
-    console.log('Form values:', values);
-    navigation.navigate('UnlockPin');
-  };
 
   return (
     <ScrollView
@@ -35,7 +33,7 @@ export const CreatePinScreen = ({ navigation }: any) => {
       keyboardShouldPersistTaps="always">
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={handlePinSubmit}
         validationSchema={validationSchema}
         validateOnChange={false}>
         {({ handleChange, handleSubmit, values, errors }) => (

@@ -6,15 +6,25 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import { verticalScale, horizontalScale, moderateScale } from '../../../utils/helpers';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedOption, setSelectedOption } from 'store/cartpo/calculateSlice';
+import {
+  selectSelectedOption,
+  selectUserData,
+  setCalculatorAmount,
+  setSelectedOption,
+} from 'store/cartpo/calculateSlice';
 import { Drawer } from 'react-native-drawer-layout';
 import { DrawerContent } from '../components/DrawerContent';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCartpoActions } from '../hooks/useCartpoActions';
 
 const CalculatorScreen = ({ navigation }: any) => {
+  const { handleGetCartpoSettings } = useCartpoActions();
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('0');
   const [open, setOpen] = useState(false);
   const selectedOption = useSelector(selectSelectedOption);
+  const userData = useSelector(selectUserData);
+  console.log(userData, 'lklklklk');
 
   const handleKeypadPress = value => {
     setInputValue(prevInputValue => {
@@ -37,6 +47,10 @@ const CalculatorScreen = ({ navigation }: any) => {
   const handleOptionPress = option => {
     dispatch(setSelectedOption(option));
   };
+
+  useFocusEffect(() => {
+    handleGetCartpoSettings();
+  });
 
   return (
     <Drawer
@@ -121,7 +135,11 @@ const CalculatorScreen = ({ navigation }: any) => {
               }}
               title={'Next'}
               customTextClass={'text-white'}
-              onPress={() => navigation.navigate('CartpoStack', { screen: 'DiscountQrCode' })}
+              onPress={() => {
+                setInputValue('0');
+                dispatch(setCalculatorAmount(inputValue));
+                navigation.navigate('CartpoStack', { screen: 'DiscountQrCode' });
+              }}
             />
           </View>
         </ScrollView>

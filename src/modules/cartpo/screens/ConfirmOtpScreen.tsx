@@ -5,6 +5,7 @@ import { CustomSettingsInput } from 'modules/settings/components/CustomSettingsI
 import * as Yup from 'yup';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { verticalScale } from 'utils/helpers';
+import { useCartpoActions } from '../hooks/useCartpoActions';
 
 const initialValues = {
   otp: '',
@@ -12,17 +13,14 @@ const initialValues = {
 
 const validationSchema = Yup.object().shape({
   otp: Yup.string()
-    .min(4, 'OTP must be exactly 4 characters long')
-    .max(4, 'OTP must be exactly 4 characters long')
+    .min(6, 'OTP must be exactly 6 characters long')
+    .max(6, 'OTP must be exactly 6 characters long')
     .matches(/^\d+$/, 'OTP must contain only digits')
     .required('OTP is required'),
 });
 
 export const ConfirmOtpScreen = ({ navigation }: any) => {
-  const handleSubmit = values => {
-    console.log('Form values:', values);
-    navigation.navigate('CreatePin');
-  };
+  const { verifyOtp } = useCartpoActions();
 
   return (
     <ScrollView
@@ -34,7 +32,7 @@ export const ConfirmOtpScreen = ({ navigation }: any) => {
       keyboardShouldPersistTaps="always">
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={verifyOtp}
         validationSchema={validationSchema}>
         {({ handleChange, handleSubmit, values, errors }) => (
           <View className="px-6 my-12">

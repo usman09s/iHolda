@@ -9,6 +9,7 @@ import CustomErrorModal from 'components/ErrorModal/errorModal';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useSelector } from 'react-redux';
 import { selectSelectedOption } from 'store/cartpo/calculateSlice';
+import Api from 'services/Api';
 
 export const DiscountQrCodeScreen = ({ navigation }: any) => {
   const isFocused = useIsFocused();
@@ -37,10 +38,19 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
     height: isSmallScreen ? width - 100 : width - 56,
   };
 
-  const onBarCodeScanned = async ({ type, data }: any) => {
+  const onBarCodeScanned = async ({ type, data }: BarCodeScanningResult) => {
     if (data) {
       setQrCode(data);
-      navigation.navigate('TotalDiscount');
+      try {
+        const userId = 'your-user-id';
+        const result = await Api.scanQRCode({ qrCode: data, userId });
+        console.log('API Response:', result);
+        navigation.navigate('TotalDiscount');
+      } catch (error) {
+        console.error('Error scanning QR Code:', error);
+        setErrorText('Error scanning QR Code');
+        setModalVisible(true);
+      }
     }
   };
 

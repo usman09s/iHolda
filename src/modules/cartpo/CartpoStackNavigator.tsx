@@ -6,7 +6,7 @@ import {
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { ConfirmOtpScreen } from './screens/ConfirmOtpScreen';
 import { CreatePinScreen } from './screens/CreatePinScreen';
-import { UnlockPinScreen } from './screens/UnlockPinScreen';
+import { SignInScreen, UnlockPinScreen } from './screens/UnlockPinScreen';
 import { TopupScreen } from './screens/TopupScreen';
 import { CashoutScreen } from './screens/CashoutScreen';
 import { WithdrawSuccessfulScreen } from './screens/WithdrawSuccessfulScreen';
@@ -21,13 +21,14 @@ import { RestaurantAddPaymentScreen } from './screens/RestaurantAddPaymentScreen
 import { RestaurantEditDiscountScreen } from './screens/RestaurantEditDiscountScreen';
 import { RestaurantEditMenuScreen } from './screens/RestaurantEditMenuScreen';
 import { RestaurantAddDiscountScreen } from './screens/RestaurantAddDicountScreen';
+import { RestaurantAddMenuScreen } from './screens/RestaurantAddMenu';
 
 export type CartpoStackParamList = {
   Welcome: undefined;
   ConfirmOtp: undefined;
   CreatePin: undefined;
   Calculator: undefined;
-  UnlockPin: undefined;
+  SignIn: undefined;
   Topup: undefined;
   Cashout: undefined;
   WithdrawSuccessful: undefined;
@@ -42,6 +43,7 @@ export type CartpoStackParamList = {
   RestaurantEditDiscount: undefined;
   RestaurantAddDiscount: undefined;
   RestaurantEditMenu: undefined;
+  RestaurantAddMenu: undefined;
 };
 
 const CartpoStack = createNativeStackNavigator<CartpoStackParamList>();
@@ -56,13 +58,11 @@ const commonScreenOptions: NativeStackNavigationOptions = {
 
 export default function CartpoStackNavigator() {
   return (
-    <CartpoStack.Navigator
-      screenOptions={commonScreenOptions}
-      initialRouteName="RestaurantAddDiscount">
+    <CartpoStack.Navigator screenOptions={commonScreenOptions}>
       <CartpoStack.Screen options={commonOptions} name="Welcome" component={WelcomeScreen} />
       <CartpoStack.Screen options={commonOptions} name="ConfirmOtp" component={ConfirmOtpScreen} />
       <CartpoStack.Screen options={commonOptions} name="CreatePin" component={CreatePinScreen} />
-      <CartpoStack.Screen options={commonOptions} name="UnlockPin" component={UnlockPinScreen} />
+      <CartpoStack.Screen options={commonOptions} name="SignIn" component={SignInScreen} />
       <CartpoStack.Screen options={commonOptions} name="Topup" component={TopupScreen} />
       <CartpoStack.Screen options={commonOptions} name="Cashout" component={CashoutScreen} />
       <CartpoStack.Screen options={commonOptions} name="Settings" component={SettingsScreen} />
@@ -90,6 +90,11 @@ export default function CartpoStackNavigator() {
         options={commonOptions}
         name="TotalDiscount"
         component={TotalDiscountScreen}
+      />
+      <CartpoStack.Screen
+        options={commonOptions}
+        name="RestaurantAddMenu"
+        component={RestaurantAddMenuScreen}
       />
       <CartpoStack.Screen
         options={commonOptions}

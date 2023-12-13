@@ -7,7 +7,9 @@ const ProfileAvatar = () => {
   const user = useSelector(profileImageSelector);
   const uri = user?.photo?.mediaId;
 
-  return user ? <Image source={{ uri: getImageLink(uri) }} className="w-7 h-7 rounded-full" /> : null;
+  return user ? (
+    <Image source={{ uri: getImageLink(uri) }} className="w-7 h-7 rounded-full" />
+  ) : null;
 };
 
 export default ProfileAvatar;
