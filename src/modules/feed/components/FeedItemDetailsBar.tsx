@@ -3,16 +3,23 @@ import { LinearGradient } from 'expo-linear-gradient';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
 import { units } from 'utils/helpers';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 type FeedItemDetailsBarProps = {
   paddingBottom?: number;
   userFirst: {
-    avatar: string;
+    avatar: {
+      mediaId: string;
+      mediaType: string;
+    } | null;
     username: string;
     emotion?: string;
   };
   userSecond: {
-    avatar: string;
+    avatar: {
+      mediaId: string;
+      mediaType: string;
+    }| null;
     username: string;
     emotion?: string;
   };
@@ -56,13 +63,13 @@ const FeedItemDetailsBar = ({
           <TouchableOpacity
             onPress={() => navigate('OtherUserProfileMain', { userId: userId1 })}
             className="rounded-full border-[3px] border-saffron bg-gray-400 justify-center items-center">
-            <Image source={{ uri: userFirst.avatar }} className="w-11 h-11 rounded-full" />
+            <Image source={{ uri: getImageLink(userFirst?.avatar?.mediaId) }} className="w-11 h-11 rounded-full" />
           </TouchableOpacity>
           {userSecond.username ? (
             <TouchableOpacity
               onPress={() => navigate('OtherUserProfileMain', { userId: userId2 })}
               className="rounded-full  right-4 border-[3px] border-green-400  bg-gray-400">
-              <Image source={{ uri: userSecond.avatar }} className="w-11 h-11 rounded-full" />
+              <Image source={{ uri: getImageLink(userSecond?.avatar?.mediaId) }} className="w-11 h-11 rounded-full" />
             </TouchableOpacity>
           ) : null}
         </View>

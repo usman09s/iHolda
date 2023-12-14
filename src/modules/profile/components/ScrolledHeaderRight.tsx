@@ -8,12 +8,16 @@ import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
+import Api from 'services/Api';
+import { useState } from 'react';
 
 type Props = { top: number; isCurrentUser: boolean; activeY: SharedValue<number>; user: any };
 
 const ScrolledHeaderRight = ({ top, activeY, isCurrentUser, user: otherUser }: Props) => {
   const navigation = useNavigation();
+  const loggedInUser = useSelector(userSelector);
   const { user } = otherUser ? { user: otherUser } : useSelector(userSelector);
+  const [followed, setFollowed] = useState<boolean>(otherUser?.followers?.includes(loggedInUser.user?._id));
 
   const facebook = user?.socialLinks?.find((s: any) => s?.platform === 'facebook')?.link;
   const tiktok = user?.socialLinks?.find((s: any) => s?.platform === 'tiktok')?.link;
@@ -29,17 +33,29 @@ const ScrolledHeaderRight = ({ top, activeY, isCurrentUser, user: otherUser }: P
     ),
   }));
 
+  const followUnfollowUser = async (userId: string) => {
+    try {
+      await Api.followUnFollowUseer(userId, followed);
+      // console.log("🚀 ~ file: FollowersScreen.tsx:45 ~ followUnfollowUser ~ res:", res)
+      setFollowed(prev => !prev);
+    } catch (error) {
+      // console.log('🚀 ~ followUnfollowUser ~ error:', error);
+    }
+  };
+
   return (
     <Animated.View className="flex-1 items-end pr-6 absolute right-0" style={animatedStyle}>
       <View className="w-full" style={{ marginTop: units.vh * 3 + top }}>
         <Button
-          title={isCurrentUser ? 'Settings' : 'Follow'}
+          title={isCurrentUser ? 'Settings' : followed ? 'Followed' : 'Follow'}
           type="solid"
           customContainer="rounded-md self-center py-1 px-3 bg-white border-b1 border-black-o-20"
           customTextClass={text({ type: 'r12', class: 'text-black h-4' })}
           onPress={() => {
             if (isCurrentUser) {
               navigation.navigate('SettingsStack');
+            }else {
+              followUnfollowUser(otherUser._id, )
             }
           }}
         />

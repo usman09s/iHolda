@@ -5,11 +5,12 @@ import { text } from 'theme/text';
 import { CustomReferenceButton } from '../components/CustomReferenceButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { height } from 'utils/helpers';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRequestReferenceAction } from '../hooks/useRequestReferenceActions';
 import { Userpic } from 'react-native-userpic';
 import CustomProfileAvatar from 'components/CustomProfileAvatar';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
+import { deleteReferenceUser } from 'store/userReference/userReferenceSlice';
 
 export const BasicVerificationThreeScreen = () => {
   const {
@@ -19,6 +20,7 @@ export const BasicVerificationThreeScreen = () => {
     updateReference1,
     updateReference2,
   } = useRequestReferenceAction();
+  const dispatch = useDispatch();
   const isSmallScreen = height < 700;
   const referenceUsers = useSelector((state: any) => state.userReference.referenceUsers);
 
@@ -53,11 +55,17 @@ export const BasicVerificationThreeScreen = () => {
           <View>
             <TouchableOpacity
               className="w-32 h-32 rounded-full bg-blue-500 items-center justify-center mb-2 border-2 border-zinc-400"
-              onPress={() => handleAddReference1()}>
+              onPress={() => {
+                if (referenceUsers.length > 0) {
+                  dispatch(deleteReferenceUser(0));
+                } else {
+                  handleAddReference1();
+                }
+              }}>
               {referenceUsers.length > 0 ? (
                 <CustomProfileAvatar
-                  userName={referenceUsers[0].userName}
-                  photo={getImageLink(referenceUsers[0].photo?.mediaId)}
+                  userName={referenceUsers[0]?.userName}
+                  photo={getImageLink(referenceUsers[0]?.photo?.mediaId)}
                   size={110}
                 />
               ) : (
@@ -65,17 +73,23 @@ export const BasicVerificationThreeScreen = () => {
               )}
             </TouchableOpacity>
             <Text className="text-zinc-500 text-lg text-center">
-              {referenceUsers.length > 0 ? `@${referenceUsers[0].userName}` : '@reference1'}
+              {referenceUsers.length > 0 ? `@${referenceUsers[0]?.userName}` : '@reference1'}
             </Text>
           </View>
           <View>
             <TouchableOpacity
               className="w-32 h-32 rounded-full bg-blue-500 items-center justify-center mb-2 border-2 border-zinc-400"
-              onPress={() => handleAddReference2()}>
+              onPress={() => {
+                if (referenceUsers.length > 1) {
+                  dispatch(deleteReferenceUser(1));
+                } else {
+                  handleAddReference2();
+                }
+              }}>
               {referenceUsers.length > 1 ? (
                 <CustomProfileAvatar
-                  userName={referenceUsers[1].userName}
-                  photo={getImageLink(referenceUsers[1].photo?.mediaId)}
+                  userName={referenceUsers[1]?.userName}
+                  photo={getImageLink(referenceUsers[1]?.photo?.mediaId)}
                   size={110}
                 />
               ) : (
@@ -83,7 +97,7 @@ export const BasicVerificationThreeScreen = () => {
               )}
             </TouchableOpacity>
             <Text className="text-zinc-500 text-lg text-center">
-              {referenceUsers.length > 1 ? `@${referenceUsers[1].userName}` : '@reference2'}
+              {referenceUsers.length > 1 ? `@${referenceUsers[1]?.userName}` : '@reference2'}
             </Text>
           </View>
         </View>

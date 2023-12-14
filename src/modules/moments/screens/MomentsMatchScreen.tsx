@@ -14,12 +14,12 @@ import { getImageLink } from '../helpers/imageHelpers';
 
 const MomentsMatchScreen = ({ route }: { route?: { params: MatchedUserType } }) => {
   // const matchedUser = useSelector(matchedUserSelector);
-  const { data } = useQuery('currentUserProfile', Api.getUserProfile);
+  const { data } = useQuery('currentUserProfile', Api.getUserProfile0);
   const { navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const matchedUser = route?.params;
   console.log("🚀 ~ file: MomentsMatchScreen.tsx:20 ~ MomentsMatchScreen ~ matchedUser:", matchedUser)
 
-  const profilePhoto = data?.data.user.photo;
+  const profilePhoto = data?.data.user.photo.mediaId;
 
   return (
     <View className="flex-1 bg-black px-7">

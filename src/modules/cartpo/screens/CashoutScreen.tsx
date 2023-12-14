@@ -5,16 +5,24 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useSelector } from 'react-redux';
+import { selectCartpoSettings, selectWalletBalance } from 'store/cartpo/calculateSlice';
 import { height } from 'utils/helpers';
+import { useCartpoActions } from '../hooks/useCartpoActions';
 
 export const CashoutScreen = ({ navigation }: any) => {
+  const { handleWithdraw } = useCartpoActions();
   const isSmallScreen = height < 700;
+  const settingsData = useSelector(selectCartpoSettings);
+  const walletBalance = useSelector(selectWalletBalance);
   const [value, setValue] = useState('value');
+  const amount = 300;
   const handleValueChange = (value: string) => {
     console.log('Selected value:', value);
     setValue(value);
   };
-  const options = ['12344773', '56783773', '91012333'];
+
+  const options = settingsData.setting?.paymentMethod.map(option => option.account);
   return (
     <View className="flex-1 px-6">
       <Header showBackIcon centerComponent={<Text>Cash out</Text>} />
@@ -22,7 +30,8 @@ export const CashoutScreen = ({ navigation }: any) => {
         <View className="bg-[#01991d] p-4 rounded-lg">
           <Text className="text-12 font-normal text-white text-center">Wallet Balance</Text>
           <Text className="text-3xl font-bold text-white text-center my-2 pt-4">
-            10,000<Text className="text-xs font-bold">CFA</Text>
+            {walletBalance.wallet.pendingBalance}
+            <Text className="text-xs font-bold">CFA</Text>
           </Text>
         </View>
         <View className={`${isSmallScreen ? 'pb-8 pt-10' : 'pb-16 pt-10'}`}>
@@ -68,7 +77,7 @@ export const CashoutScreen = ({ navigation }: any) => {
             customContainerClass="border-0 bg-black py-4"
             customTextClass={'text-white text-base'}
             onPress={() => {
-              value !== 'value' && navigation.navigate('WithdrawSuccessful');
+              value !== 'value' && handleWithdraw(amount);
             }}
           />
         </View>

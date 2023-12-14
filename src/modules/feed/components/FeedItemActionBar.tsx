@@ -2,6 +2,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import Icons from 'components/Icons';
 import { text } from 'theme/text';
 import { getHitSlop } from 'utils/helpers';
+import Feather from '@expo/vector-icons/Entypo';
 
 type FeedItemActionBarProps = {
   hideComment?: boolean;
@@ -13,6 +14,7 @@ type FeedItemActionBarProps = {
   comments: number;
   bookmarks: number;
   shares: number;
+  liked: boolean;
 };
 
 const FeedItemActionBar = ({
@@ -25,13 +27,14 @@ const FeedItemActionBar = ({
   comments,
   shares,
   bookmarks,
+  liked
 }: FeedItemActionBarProps) => (
   <View
     className={` w-9 absolute right-7 z-30 ${
       !!hideComment ? 'bottom-[132px]' : 'bottom-0'
     } items-center`}>
     <TouchableOpacity className="mb-7" onPress={onPressLike} hitSlop={getHitSlop({})}>
-      <Icons.HeartIcon />
+      {liked ? <Feather name='heart' color={'red'} size={30} />: <Icons.HeartIcon />}
       <Text className={text({ type: 'r10', class: 'text-white text-center' })}>{likes}</Text>
     </TouchableOpacity>
     {!hideComment && (

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
@@ -7,13 +7,27 @@ import Icons from 'components/Icons';
 import { useMutation, useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
 import Api from 'services/Api';
-import { setMatchedUser } from 'store/moments/momentsSlice';
+import { resetState, setMatchedUser } from 'store/moments/momentsSlice';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
 import { width } from 'utils/helpers';
 
 import MeetupAndJobButtons from '../components/MeetupAndJobButtons';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
+
+const throttle = (func: (data: any) => void, delay: number) => {
+  let throttling = false;
+
+  return (...args) => {
+    if (!throttling) {
+      throttling = true;
+      func(...args);
+      setTimeout(() => {
+        throttling = false;
+      }, delay);
+    }
+  };
+};
 
 const MomentsQrScanScreen = () => {
   const dispatch = useDispatch();
@@ -35,7 +49,7 @@ const MomentsQrScanScreen = () => {
           location_name: 'No Location',
           user_profile_image: {
             id: 4545345,
-            image: data.user.photo,
+            image: data.user.photo.mediaId,
             uploaded_at: data.user.updatedAt,
           },
           metBefore: data.metBefore,
@@ -64,7 +78,7 @@ const MomentsQrScanScreen = () => {
         location_name: 'No Location',
         user_profile_image: {
           id: 4545345,
-          image: data.user.photo,
+          image: data.user.photo.mediaId,
           uploaded_at: data.user.updatedAt,
         },
       });
@@ -74,10 +88,23 @@ const MomentsQrScanScreen = () => {
   const sizes = { width: width - 56, height: width - 56 };
 
   const onBarCodeScanned = (result: BarCodeScanningResult) => {
+    
     if (isLoading) return;
+    console.log("gettinig data------------");
     const matchedUserQueryId = result.data;
     mutate({ queryId: matchedUserQueryId });
   };
+
+  const handeCodeScan = useCallback(
+    throttle((data: any) => {
+      onBarCodeScanned(data);
+    }, 1000),
+    [],
+  );
+
+  useEffect(() => {
+    if(isFocused) dispatch(resetState());
+  }, [isFocused]);
 
   useEffect(() => {
     requestPermission();
@@ -96,15 +123,15 @@ const MomentsQrScanScreen = () => {
           style={sizes}
           className="overflow-hidden rounded-xl self-center mt-4 border-white border-b1">
           {permission?.granted && isFocused && (
-            <Camera ratio="4:3" onBarCodeScanned={onBarCodeScanned} style={sizes} />
+            <Camera ratio="4:3" onBarCodeScanned={handeCodeScan} style={sizes} />
           )}
-          {isLoading && (
+          {/* {isLoading && (
             <ActivityIndicator
               color={colors.coolGreen}
               className="absolute self-center"
               style={{ top: sizes.height / 2 }}
             />
-          )}
+          )} */}
         </View>
       </View>
 

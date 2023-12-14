@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import MainNavigator from 'navigators/MainNavigator';

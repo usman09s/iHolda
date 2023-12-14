@@ -9,7 +9,6 @@ import { selectUser } from 'store/userDataSlice';
 
 export const SettingsHeader = () => {
   const userData = useSelector(selectUser);
-  console.log(userData, 'lklklklklklklk');
   const navigation = useNavigation();
   return (
     <View className="bg-blue items-center pt-10 pb-6">
@@ -17,7 +16,7 @@ export const SettingsHeader = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={30} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CartpoStack')}>
+        <TouchableOpacity>
           <Ionicons name="qr-code-sharp" size={30} color="white" />
         </TouchableOpacity>
       </View>
@@ -28,9 +27,11 @@ export const SettingsHeader = () => {
         extraStyles={{ borderWidth: 5, borderColor: 'white' }}
       />
       <Text className="text-center color-white text-2xl font-semibold my-2">
-        {userData.firstName ? userData.firstName : `@${userData.userName}`}
+        {userData.firstName ? userData.firstName : userData.userName || 'User 123'}
       </Text>
-      <Text className="text-center color-white text-base font-normal">@{userData.userName}</Text>
+      <Text className="text-center color-white text-base font-normal">
+        @{userData.userName || 'User 123'}
+      </Text>
       <CustomReferenceButton
         title={'Verify account'}
         onPress={() => navigation.navigate('RequestReferenceStack')}

@@ -33,7 +33,7 @@ export const WithdrawSuccessfulScreen = ({ navigation }: any) => {
           title={'Close'}
           customContainerClass={'bg-black border-0 px-12 ml-4 py-3'}
           customTextClass={'text-white text-sm py-0 my-0 font-normal'}
-          onPress={() => navigation.navigate('BottomTabs', { screen: 'ActivityStack' })}
+          onPress={() => navigation.navigate('CartpoTab')}
         />
       </View>
     </View>

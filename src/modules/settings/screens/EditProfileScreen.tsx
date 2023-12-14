@@ -23,10 +23,6 @@ export const EditProfileScreen = ({ navigation }: any) => {
     getCityCountry,
   } = useSettingActions();
 
-  useFocusEffect(() => {
-    getCityCountry();
-  });
-
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <View className="flex-1 px-6">
@@ -56,7 +52,7 @@ export const EditProfileScreen = ({ navigation }: any) => {
             <View>
               <CustomEditProfileOption
                 option="User name"
-                rightComponentTitle={`@${userData.userName}`}
+                rightComponentTitle={`@${userData.userName ? userData.userName : 'N/A'}`}
                 onPress={() => navigation.navigate('Username')}
               />
               <CustomEditProfileOption
@@ -66,7 +62,7 @@ export const EditProfileScreen = ({ navigation }: any) => {
               />
               <CustomEditProfileOption
                 option="Location"
-                rightComponentTitle={`${cityCountry !== '' ? cityCountry : 'none'}`}
+                rightComponentTitle={`${userData.address ? userData.address : 'none'}`}
                 onPress={handleLocationPress}
               />
               <CustomEditProfileOption

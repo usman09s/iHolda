@@ -209,6 +209,128 @@ class ApiClass {
     }
   };
 
+  registerMerchant = async ({ phone, password }: any) => {
+    try {
+      return await this.externalApi
+        .url('auth/register')
+        .post({
+          role: 'merchant',
+          phone,
+          password,
+          countryCode: 'PK',
+          fcmToken: '1234567',
+        })
+        .json(result => {
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  loginMerchant = async ({ phone, password }: any) => {
+    try {
+      return await this.externalApi
+        .url('auth/login')
+        .post({
+          role: 'merchant',
+          phone,
+          password,
+          countryCode: 'PK',
+          fcmToken: '1234567',
+        })
+        .json(result => {
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  scanQRCode = async ({ qrCode, userId }: any) => {
+    try {
+      return await this.externalApi
+        .url('cartpo/qr')
+        .post({
+          qrCode,
+          userId,
+        })
+        .json(result => {
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getTransactions = async (page: any) => {
+    try {
+      return await this.externalApi
+        .url(`plastic/transactions?page=${page}`)
+        .get()
+        .json(result => {
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getCartpoSettings = async () => {
+    try {
+      return await this.externalApi
+        .url(`cartpo`)
+        .get()
+        .json(result => {
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  updateCartpoSettings = async data => {
+    try {
+      return await this.externalApi
+        .url(`cartpo`)
+        .post(data)
+        .json(result => {
+          console.log(result);
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getWalletBalance = async () => {
+    try {
+      return await this.externalApi
+        .url(`cartpo/balance`)
+        .get()
+        .json(result => {
+          console.log(result);
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  withdrawBalance = async ({ amount }: any) => {
+    try {
+      return await this.externalApi
+        .url(`cartpo/withdraw`)
+        .post({ amount: amount })
+        .json(result => {
+          console.log(result);
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
   setReferralCode = async ({ referralCode }: { referralCode: string }) =>
     await this.externalApi
       .url('user/referral-code')
@@ -729,6 +851,14 @@ class ApiClass {
       })
       .get()
       .json(result => result);
+  getTransactions = async (): Promise<any> =>
+    await this.externalApi
+      .url('plastic/transactions')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
   getRestaurents = async (): Promise<any> =>
     await this.externalApi
       .url('restaurant/')
@@ -764,9 +894,41 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  getMetLeaderboard = async (): Promise<any> =>
+  getMetLeaderboard = async (): Promise<
+    {
+      _id: string;
+      user: {
+        _id: string;
+        userName: string;
+        firstName: null | string;
+        lastName: null | string;
+        photo: null | { mediaType: string; mediaId: string };
+      };
+      metCount: 1;
+    }[]
+  > =>
     await this.externalApi
       .url('met/user/leaderboard?page=1')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result.data.data);
+  getMetPairLeaderboard = async (): Promise<
+    {
+      _id: string;
+      users: {
+        _id: string;
+        userName: string;
+        firstName: null | string;
+        lastName: null | string;
+        photo: null | { mediaType: string; mediaId: string };
+      }[];
+      metCount: 1;
+    }[]
+  > =>
+    await this.externalApi
+      .url('met/pair/leaderboard?page=1')
       .headers({
         ...this._getAuthorization(this.token),
       })
@@ -832,6 +994,14 @@ class ApiClass {
         ...this._getAuthorization(this.token),
       })
       .post(reqBody)
+      .json(result => result);
+  likeUnlikePost = async (reqBody: { postId: string }): Promise<any> =>
+    await this.externalApi
+      .url('post/like/' + reqBody.postId)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .put(reqBody)
       .json(result => result);
 }
 

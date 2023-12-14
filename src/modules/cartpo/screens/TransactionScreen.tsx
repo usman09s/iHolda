@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/Entypo';
 import { HamburgerIcon } from '../../../../assets/referralGift';
 import TransactionInOut from 'modules/profile/components/TransactionInOut';
 import Icons from 'components/Icons';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCartpoActions } from '../hooks/useCartpoActions';
 
 const Header = () => {
   return (
@@ -22,6 +24,11 @@ const Header = () => {
 };
 
 const TransactionList = () => {
+  const { handleGetTransactions } = useCartpoActions();
+  useFocusEffect(() => {
+    handleGetTransactions();
+  });
+
   return (
     <View>
       <CustomTransaction
@@ -97,11 +104,11 @@ export const TransactionScreen = () => {
       <View className="px-6">
         <View>
           <Text className="text-lg text-black font-semibold mt-4 mb-3">Today</Text>
-          <TransactionList />
+          <Text>No Transactions Currently</Text>
         </View>
         <View>
           <Text className="text-lg text-black font-semibold mt-4 mb-3">Yesterday</Text>
-          <TransactionList />
+          <Text>No Transactions Currently</Text>
         </View>
       </View>
     </ScrollView>

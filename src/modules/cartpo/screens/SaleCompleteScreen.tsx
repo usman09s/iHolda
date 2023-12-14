@@ -26,7 +26,7 @@ export const SaleCompleteScreen = ({ navigation }: any) => {
       <View>
         <TouchableOpacity
           className="bg-gray-300 px-12 rounded-full"
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.navigate('CartpoTab')}>
           <Text className="text-center text-2xl my-1">Home</Text>
         </TouchableOpacity>
       </View>

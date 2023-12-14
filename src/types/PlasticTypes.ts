@@ -10,15 +10,20 @@ export type PlasticItemType = {
 
 export type DropOffLocationItemType = {
   agents: object[];
-  closing_hour: string;
+  closingHour: string;
   contacts: Contacts;
   created_at: string;
   id: number;
-  location: Location;
+  dropoffLocation: {
+    address: string | null;
+    coordinates: number[];
+    type: string;
+  };
+  name: string;
   location_name: string;
   days: [];
   isAvailable: boolean;
-  opening_hour: string;
+  openingHour: string;
   state: string; // 'Close' | 'Open now'
   total_delivered_plastics: number;
   total_plastics: number;
@@ -45,6 +50,7 @@ export interface AddPlasticResponseType {
   get_total_community_points: number;
   get_total_virtual_money: null;
   id: number;
+  _id: number;
   is_delivered: boolean;
   iv: string;
   qr_code: string;

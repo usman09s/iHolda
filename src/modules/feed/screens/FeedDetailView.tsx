@@ -51,7 +51,8 @@ const FeedDetailView = ({ route }: any) => {
   async function getTwoUserMet() {
     try {
       const response = await fetch(
-        Api.baseUrl + `met?userId=${item0?.users[0]?.user?._id}&userId2=${item0?.users[1]?.user?._id}`,
+        Api.baseUrl +
+          `met?userId=${item0?.users[0]?.user?._id}&userId2=${item0?.users[1]?.user?._id}`,
         {
           method: 'GET',
         },
@@ -151,10 +152,12 @@ const FeedDetailView = ({ route }: any) => {
             // scollToIndex(Math.floor(ev.nativeEvent.contentOffset.x / width));
             setActiveIndex(Math.round(ev.nativeEvent.contentOffset.x / width));
           }}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <View style={{ width, paddingHorizontal: 10 }}>
               <View className="flex-1 border-2 border-white rounded-3xl overflow-hidden mt-10">
                 <FeedItem
+                  index={index}
+                  onPressLike={() => getTwoUserMet()}
                   shares={item.post.shareCount}
                   bookmarks={item.post.bookmarkCount}
                   username={item0?.users[1]?.user?.userName}

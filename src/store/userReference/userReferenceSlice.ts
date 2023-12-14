@@ -30,9 +30,21 @@ const userReferenceSlice = createSlice({
     setSearchUsers: (state, action) => {
       state.searchUsers = action.payload;
     },
+    deleteReferenceUser: (state, action) => {
+      const indexToRemove = action.payload;
+      if (indexToRemove >= 0 && indexToRemove < state.referenceUsers.length) {
+        state.referenceUsers.splice(indexToRemove, 1);
+      }
+    },
   },
 });
 
-export const { setGender, setVerificationData, setReferences, setSearchUsers } =
-  userReferenceSlice.actions;
+export const {
+  setGender,
+  setVerificationData,
+  setReferences,
+  setSearchUsers,
+  deleteReferenceUser, // Add the deleteReferenceUser action
+} = userReferenceSlice.actions;
+
 export default userReferenceSlice.reducer;

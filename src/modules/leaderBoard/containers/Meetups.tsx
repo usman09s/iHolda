@@ -49,7 +49,7 @@ const Meetup = () => {
         stickyHeaderIndices={[currenUserIndex - 3]}
         keyExtractor={(item, i) => i?.toString()}
         contentContainerStyle={{ backgroundColor: 'white' }}
-        renderItem={({ item }) => <LeaderBoardUserItem {...item} />}
+        renderItem={({ item, index }) => <LeaderBoardUserItem {...item} index={index} />}
         ListHeaderComponent={<LeaderBoardUsersHeader winners={winners} />}
       />
       {isVisible && (

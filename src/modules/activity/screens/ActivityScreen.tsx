@@ -72,7 +72,7 @@ const ActivityScreen = () => {
                 user2: item.met?.users[1]?.photo,
               }}
               momentThumbnail={
-                item.post?.mediaType === 'image' ? getImageLink(item.post?.media[0]) : ''
+                item.post?.mediaType === 'image' ? getImageLink(item.post?.media[0]?.mediaId) : ''
               }
               title={item.title}
               subTitle={item.body}
@@ -110,7 +110,7 @@ const ActivityScreen = () => {
               title={item.title}
               subTitle={item.body}
               postThumbnail={
-                item.post.mediaType.includes('image') ? getImageLink(item.post.media[0]) : ''
+                item.post.mediaType.includes('image') ? getImageLink(item.post.media[0]?.mediaId) : ''
               }
               avatars={{
                 user1: item?.userPhoto,
@@ -128,7 +128,7 @@ const ActivityScreen = () => {
               lastUserUsername=""
               subTitle={item.body}
               momentThumbnail={
-                item.post.mediaType.includes('image') ? getImageLink(item.post?.media[0]) : ''
+                item.post.mediaType.includes('image') ? getImageLink(item.post?.media[0]?.mediaId) : ''
               }
             />
           ) : item.type === 'Followed' ? (

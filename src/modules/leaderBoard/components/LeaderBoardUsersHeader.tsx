@@ -3,6 +3,7 @@ import Button from 'components/Button';
 import { text } from 'theme/text';
 import { RankItemType } from 'types/LeaderBoardTypes';
 import { units } from 'utils/helpers';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 type Props = {
   winners: { first: RankItemType; second: RankItemType; third: RankItemType };
@@ -23,7 +24,10 @@ const LeaderBoardUsersHeader = ({ winners }: Props) => (
     <View>
       <View className="items-center">
         <View className="border-4 border-white rounded-full self-center">
-          <Image source={{ uri: winners?.first?.avatar }} className="h-16 w-16 rounded-full" />
+          <Image
+            source={{ uri: getImageLink(winners?.first?.avatar) }}
+            className="h-16 w-16 rounded-full"
+          />
           <View className="absolute -bottom-3 self-center z-20 w-6 h-6 rounded-full bg-black justify-center items-center border-2 border-saffron">
             <Text className={text({ type: 'b12', class: 'text-white' })}>1</Text>
           </View>
@@ -42,7 +46,10 @@ const LeaderBoardUsersHeader = ({ winners }: Props) => (
         style={{ marginHorizontal: units.vw * 12 }}>
         <View className="justify-center items-center">
           <View className="border-2 border-white rounded-full">
-            <Image source={{ uri: winners?.second?.avatar }} className="h-10 w-10 rounded-full" />
+            <Image
+              source={{ uri: getImageLink(winners?.second?.avatar) }}
+              className="h-10 w-10 rounded-full"
+            />
             <View className="absolute -bottom-4 self-center z-20 w-6 h-6 rounded-full bg-black justify-center items-center border-2 border-white">
               <Text className={text({ type: 'b12', class: 'text-white' })}>2</Text>
             </View>
@@ -59,7 +66,10 @@ const LeaderBoardUsersHeader = ({ winners }: Props) => (
 
         <View className="justify-center items-center">
           <View className="border-2 border-white rounded-full ">
-            <Image className="h-10 w-10 rounded-full" source={{ uri: winners?.third?.avatar }} />
+            <Image
+              className="h-10 w-10 rounded-full"
+              source={{ uri: getImageLink(winners?.third?.avatar) }}
+            />
             <View className="absolute -bottom-4 self-center z-20 w-6 h-6 rounded-full bg-black justify-center items-center border-2 border-white">
               <Text className={text({ type: 'b12', class: 'text-white' })}>3</Text>
             </View>

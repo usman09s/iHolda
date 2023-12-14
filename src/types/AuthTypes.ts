@@ -156,15 +156,20 @@ export type User = {
   phone: string;
   dob: string;
   gender: string;
-  photo: string;
+  photo: {
+    mediaType: string;
+    mediaId: string;
+  };
   email: string;
   role: string;
   isActive: boolean;
   address: string;
   fcmTokens: string[];
   online: boolean;
+  basicVerification: boolean;
   isPlasticAgent: boolean;
   followers: string[];
+  invited_by: {user:{username: string}};
   following: string[];
   bookmarks: string[];
   userQrCode: string;

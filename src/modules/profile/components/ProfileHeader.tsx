@@ -23,6 +23,7 @@ type Props = {
   activeY: SharedValue<number>;
   onPressTabItem: (value: number) => () => void;
   user?: User;
+  verified: boolean;
 };
 
 const ProfileHeader = ({
@@ -36,7 +37,8 @@ const ProfileHeader = ({
   isCurrentUser,
   hederThumbnail,
   onPressTabItem,
-  user
+  user,
+  verified
 }: Props) => {
   const headerImageHeight = units.vh * 40;
   const tabHeight = units.vh * 8;
@@ -69,7 +71,7 @@ const ProfileHeader = ({
         <View className=" h-full justify-end px-6" style={{ paddingBottom: units.vh * 2 }}>
           <View className="flex-row">
             <Text className={text({ type: 'b20', class: 'text-white mr-1 mb-3' })}>{username}</Text>
-            {/* {isCurrentUser ? (
+            {verified ? (
               <Icons.BorderedVerifiedIcon />
             ) : (
               <View
@@ -86,14 +88,19 @@ const ProfileHeader = ({
                   style={{ transform: [{ rotate: '180deg' }] }}
                 />
               </View>
-            )} */}
+            )}
           </View>
           <Text className={text({ type: 'r13', class: 'text-white' })}>
-            Joined {monthAndYear} invited by{' '}
-            <Text className={text({ type: 'b13' })}>@{invitedBy}</Text>
+            Joined {monthAndYear} {invitedBy ? 'invited by' : null}{' '}
+            <Text className={text({ type: 'b13' })}>{invitedBy && '@' + invitedBy}</Text>
           </Text>
         </View>
-        <ScrolledHeaderRight user={user} activeY={activeY} top={top} isCurrentUser={isCurrentUser} />
+        <ScrolledHeaderRight
+          user={user}
+          activeY={activeY}
+          top={top}
+          isCurrentUser={isCurrentUser}
+        />
       </Animated.View>
       <View className="bg-white">
         <ScrolledHeader

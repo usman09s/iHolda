@@ -2,30 +2,37 @@ import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { height } from 'utils/helpers';
-import colors from 'theme/colors';
+import { useSelector } from 'react-redux';
+import { selectCartpoSettings, selectWalletBalance } from 'store/cartpo/calculateSlice';
+import CustomHeader from 'components/Header/CustomHeader';
+import { useCartpoActions } from '../hooks/useCartpoActions';
 
 export const TopupScreen = ({ navigation }: any) => {
+  const { handleWithdraw } = useCartpoActions();
   const isSmallScreen = height < 700;
+  const settingsData = useSelector(selectCartpoSettings);
+  const walletBalance = useSelector(selectWalletBalance);
   const [value, setValue] = useState('value');
+  const amount = 300;
   const handleValueChange = (value: string) => {
     console.log('Selected value:', value);
     setValue(value);
   };
 
-  const options = ['12344773', '56783773', '91012333'];
+  const options = settingsData.setting?.paymentMethod.map(option => option.account);
 
   return (
     <View className="flex-1 px-6">
-      <Header showBackIcon centerComponent={<Text>Top up</Text>} />
+      <CustomHeader showBackIcon centerComponent={<Text>Top up</Text>} />
       <View className={`py-8 flex-1 justify-between ${isSmallScreen ? 'mb-4' : 'mb-24'}`}>
         <View className="bg-blue p-4 rounded-lg">
           <Text className="text-12 font-normal text-white text-center">Discount credit</Text>
           <Text className="text-3xl font-bold text-white text-center my-2 pt-4">
-            10,000<Text className="text-xs font-bold">CFA</Text>
+            {walletBalance.wallet.availableBalance}
+            <Text className="text-xs font-bold">CFA</Text>
           </Text>
         </View>
         <View className={`pt-10 ${isSmallScreen ? 'pb-8' : 'pb-16'}`}>
@@ -71,7 +78,7 @@ export const TopupScreen = ({ navigation }: any) => {
             customContainerClass="border-0 bg-black py-4"
             customTextClass={'text-white text-base'}
             onPress={() => {
-              value !== 'value' && navigation.navigate('WithdrawSuccessful');
+              value !== 'value' && handleWithdraw(amount);
             }}
           />
         </View>

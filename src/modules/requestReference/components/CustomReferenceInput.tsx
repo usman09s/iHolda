@@ -12,6 +12,8 @@ interface CustomReferenceProps {
   error: string | undefined;
   field: string;
   containerClass?: any;
+  textAlignVertical?: string;
+  multiline?: boolean;
 }
 
 export const CustomReferenceInput = ({
@@ -36,6 +38,8 @@ export const CustomReferenceInput = ({
           hasError ? 'border-red-600 border-2' : ''
         }`}
         placeholderTextColor={'gray'}
+        textAlignVertical={props.textAlignVertical}
+        multiline={props.multiline}
       />
       <View className="h-5">
         {props.error && <Text style={{ color: 'red' }}>{props.error}</Text>}
