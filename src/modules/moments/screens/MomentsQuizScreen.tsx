@@ -55,7 +55,7 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
   const { bottom } = useSafeAreaInsets();
   const ratio = Platform.select({
     ios: '4:3',
-    android: '4:3',
+    android: '1:1',
   });
   const { cameraRef, setMediaType, onPressRecordButton, isRecording } = useSelfieActions(
     ratio,

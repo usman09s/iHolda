@@ -11,6 +11,7 @@ import Icons from 'components/Icons';
 import Input from 'components/Input';
 import * as FileSystem from 'expo-file-system';
 import mime from 'mime';
+import { Video as VideCompressor, Image as ImageCompresor } from 'react-native-compressor';
 
 import PostPreviewSideActionBar from '../components/PostPreviewSideActionBar';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
@@ -24,7 +25,7 @@ import { useMutation } from 'react-query';
 import Api from 'services/Api';
 import { TEXT_POST_COLOR } from '../constants';
 
-const recording = new Audio.Recording();
+let recording = new Audio.Recording();
 
 const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) => {
   const [caption, setCaption] = useState('');
@@ -55,11 +56,11 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
       body: data,
     });
     setIsLoading(false);
-    console.log("🚀 ~ file: PostPreviewScreen.tsx:58 ~ postData ~ response:", response);
+    console.log('🚀 ~ file: PostPreviewScreen.tsx:58 ~ postData ~ response:', response);
     return { ...response.json(), status: response.status };
   }
 
-  const makePost = () => {
+  const makePost = async () => {
     if (isLoading) return;
 
     let formdata = new FormData();
@@ -69,23 +70,50 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
     let imageObject, videoObject;
 
     if (mediaUri) {
-      const imageUri = 'file:///' + mediaUri.split('file:/').join('');
+      if (mediaType === 'VIDEO') {
+        const result = await VideCompressor.compress(
+          mediaUri,
+          { compressionMethod: 'auto' },
+          progress => {
+            console.log('Compression Progress: ', progress);
+          },
+        );
 
-      imageObject = {
-        name: mediaUri.split('/').pop(),
-        type: mime.getType(imageUri),
-        uri: mediaUri,
+        const newVideoUri = 'file:///' + result.split('file:/').join('');
+
+        videoObject = {
+          name: result.split('/').pop(),
+          height: 1920,
+          width: 1080,
+          type: mime.getType(newVideoUri),
+          uri: result,
+        };
+      } else {
+        const imgRes = await ImageCompresor.compress(mediaUri, {
+          progressDivider: 10,
+          downloadProgress: progress => {
+            console.log('downloadProgress: ', progress);
+          },
+        });
+
+        const imageUri = 'file:///' + imgRes.split('file:/').join('');
+
+        imageObject = {
+          name: imgRes.split('/').pop(),
+          type: mime.getType(imageUri),
+          uri: imgRes,
+        };
+      }
+    }
+
+    const audioUri = recording?.getURI();
+    if (audioUri) {
+      const audioObject: any = {
+        name: audioUri.split('/').pop(),
+        type: mime.getType(audioUri),
+        uri: audioUri,
       };
-
-      const newVideoUri = 'file:///' + mediaUri.split('file:/').join('');
-
-      videoObject = {
-        name: mediaUri.split('/').pop(),
-        height: 1920,
-        width: 1080,
-        type: mime.getType(newVideoUri),
-        uri: mediaUri,
-      };
+      formdata.append('audio', audioObject);
     }
 
     const media: any = mediaType === 'PHOTO' ? imageObject : videoObject;
@@ -97,14 +125,13 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
     if (postCaption) formdata.append('text', postCaption);
 
     postData(Api.baseUrl + 'post', formdata).then(data => {
-      console.log("🚀 ~ file: PostPreviewScreen.tsx:100 ~ postData ~ data:", data)
+      console.log('🚀 ~ file: PostPreviewScreen.tsx:100 ~ postData ~ data:', data);
       if (data.status !== 200) return alert('Something went wrong');
       console.log(data);
       dispatchNavigation(StackActions.popToTop());
       goBack();
     });
   };
-
 
   async function startRecording() {
     try {
@@ -124,7 +151,6 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
     }
   }
 
-
   async function stopRecording() {
     console.log('Stopping recording..');
     setIsRecording(false);
@@ -134,6 +160,9 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
   }
 
   const handleAudioPress = () => {
+    if (recording?.getURI() && !isRecording) {
+      recording = new Audio.Recording();
+    }
     if (!isRecording) startRecording();
     else stopRecording();
   };
@@ -162,7 +191,7 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
                 resizeMode={ResizeMode.COVER}
                 // useNativeControls
                 source={{
-                  uri: moments[0].localUri,
+                  uri: moments[0]?.localUri,
                   // overrideFileExtensionAndroid: "mp4"
                 }}
               />
@@ -170,7 +199,7 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
               <Image
                 resizeMode="cover"
                 className="flex-1 w-full"
-                source={{ uri: moments[0].localUri }}
+                source={{ uri: moments[0]?.localUri }}
               />
             ) : postType === 'Text' ? (
               <>
@@ -193,7 +222,7 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
               <View className="px-6">
                 <Header showBackIcon backIconColor="white" />
               </View>
-              <PostPreviewSideActionBar onPressAudio={handleAudioPress} />
+              <PostPreviewSideActionBar isRecording={isRecording} onPressAudio={handleAudioPress} />
             </View>
           </View>
         ) : null}

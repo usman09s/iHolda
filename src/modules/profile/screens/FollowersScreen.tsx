@@ -34,7 +34,7 @@ const FollowersScreen = ({ route }: any) => {
 
     if (q.length < 1) return setData(dumyData);
 
-    const filteredData = data.filter((d: any) => d.userName.includes(q));
+    const filteredData = data.filter((d: any) => d.userName?.includes(q.toLowerCase()));
 
     setData(filteredData);
   };
@@ -52,7 +52,7 @@ const FollowersScreen = ({ route }: any) => {
 
       data[userIndex] = { ...data[userIndex], followers };
 
-      setData([...data])
+      setData([...data]);
     } catch (error) {
       // console.log('🚀 ~ followUnfollowUser ~ error:', error);
     }
@@ -109,11 +109,15 @@ const FollowersScreen = ({ route }: any) => {
         keyExtractor={key => key._id}
         renderItem={({ item }) => {
           const isFollowed = item?.followers.includes(user?._id);
+
+          if (!item.userName) return null;
           return (
             <View className="p-2 flex-row items-center px-4">
               <Image
                 source={{
-                  uri: getImageLink(item?.photo),
+                  uri: item?.photo?.mediaId
+                    ? getImageLink(item?.photo?.mediaId)
+                    : 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.bsn.eu%2Fuser-icon-image-placeholder%2F&psig=AOvVaw3CU3e9gk1WGti5wlvQgzWM&ust=1702178296302000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPjImMKygYMDFQAAAAAdAAAAABAD',
                 }}
                 resizeMode="cover"
                 style={{ width: 40, height: 40, borderRadius: 50, marginHorizontal: 10 }}

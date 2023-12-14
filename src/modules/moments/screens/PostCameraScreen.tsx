@@ -202,7 +202,7 @@ const PostCameraScreen = () => {
             onPressRight={postType !== 'Text' ? cameraToggle : handleProceed}
             rightComponent={
               postType !== 'Text' ? (
-                <FontAwesome6 style={{ paddingTop: 3}} name="sync" size={22} color="#fff" />
+                <FontAwesome6 style={{ paddingTop: 3 }} name="sync" size={22} color="#fff" />
               ) : (
                 <Pressable>
                   <Text
@@ -253,21 +253,17 @@ const PostCameraScreen = () => {
                 />
               </Pressable>
               <TouchableOpacity
-                onPress={() =>
-                  pickImage(
-                    postType === 'Photo'
-                      ? MediaTypeOptions.Images
-                      : postType === 'Video'
-                      ? MediaTypeOptions.Videos
-                      : MediaTypeOptions.All,
-                    false,
-                  )
-                }
+                onPress={() => pickImage(MediaTypeOptions.All, false)}
                 className="items-center">
                 {lastMedia && (
-                  <View style={{ borderWidth:2, borderColor: 'white', borderRadius: 8, overflow: "hidden" }}>
+                  <View
+                    style={{
+                      borderWidth: 2,
+                      borderColor: 'white',
+                      borderRadius: 8,
+                      overflow: 'hidden',
+                    }}>
                     <Image
-                      
                       source={{ uri: lastMedia }}
                       className="w-10 h-10 border-2 border-white"
                     />

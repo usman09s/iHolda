@@ -24,7 +24,7 @@ export const profileImageSelector = createSelector(userSelector, user => user.us
 export const userCommonInformationSelector = createSelector(userSelector, user => ({
   id: user.user?._id,
   phone: user.user?.phone || '',
-  avatar: user.user?.photo || '',
+  avatar: user.user?.photo || null,
   username: user.user?.userName || '',
   fullName:
     `${user.user?.firstName || ''} ${user.user?.lastName || ''}`.trim() ||

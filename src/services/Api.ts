@@ -851,6 +851,14 @@ class ApiClass {
       })
       .get()
       .json(result => result);
+  getTransactions = async (): Promise<any> =>
+    await this.externalApi
+      .url('plastic/transactions')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
   getRestaurents = async (): Promise<any> =>
     await this.externalApi
       .url('restaurant/')
@@ -886,9 +894,41 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  getMetLeaderboard = async (): Promise<any> =>
+  getMetLeaderboard = async (): Promise<
+    {
+      _id: string;
+      user: {
+        _id: string;
+        userName: string;
+        firstName: null | string;
+        lastName: null | string;
+        photo: null | { mediaType: string; mediaId: string };
+      };
+      metCount: 1;
+    }[]
+  > =>
     await this.externalApi
       .url('met/user/leaderboard?page=1')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result.data.data);
+  getMetPairLeaderboard = async (): Promise<
+    {
+      _id: string;
+      users: {
+        _id: string;
+        userName: string;
+        firstName: null | string;
+        lastName: null | string;
+        photo: null | { mediaType: string; mediaId: string };
+      }[];
+      metCount: 1;
+    }[]
+  > =>
+    await this.externalApi
+      .url('met/pair/leaderboard?page=1')
       .headers({
         ...this._getAuthorization(this.token),
       })
@@ -954,6 +994,14 @@ class ApiClass {
         ...this._getAuthorization(this.token),
       })
       .post(reqBody)
+      .json(result => result);
+  likeUnlikePost = async (reqBody: { postId: string }): Promise<any> =>
+    await this.externalApi
+      .url('post/like/' + reqBody.postId)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .put(reqBody)
       .json(result => result);
 }
 

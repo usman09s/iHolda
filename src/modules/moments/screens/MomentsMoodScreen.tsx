@@ -9,6 +9,7 @@ import Api from 'services/Api';
 import { matchedUserSelector, postMomentsParamsSelector } from 'store/moments/momentsSelectors';
 import { resetState, setMood } from 'store/moments/momentsSlice';
 import { text } from 'theme/text';
+import { Video, Image as ImageCompresor } from 'react-native-compressor';
 import mime from 'mime';
 
 import MoodSlider from '../components/MoodSlider';
@@ -26,7 +27,7 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
 
   // const { mutate, isLoading } = useMutation(Api.postMoments);
   const postMomentsParams = useSelector(postMomentsParamsSelector);
-  const { data } = useQuery('currentUserProfile', Api.getUserProfile);
+  const { data } = useQuery('currentUserProfile', Api.getUserProfile0);
   const { reset } = useNavigation<NavigationProp<MomentsStackParamList>>();
 
   async function postData(url = '', data: FormData) {
@@ -53,27 +54,42 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
     let imageObject: any, videoObject: any;
 
     if (metMedia.length) {
-      [...metMedia].forEach(element => {
+      [...metMedia].forEach(async element => {
         if (element.type === 'PHOTO') {
-          const imageUri = 'file:///' + element.file.split('file:/').join('');
+          const imgRes = await ImageCompresor.compress(element.file, {
+            progressDivider: 10,
+            downloadProgress: progress => {
+              console.log('downloadProgress: ', progress);
+            },
+          });
+
+          const imageUri = 'file:///' + imgRes.split('file:/').join('');
 
           imageObject = {
-            name: element.file.split('/').pop(),
+            name: imgRes.split('/').pop(),
             type: mime.getType(imageUri),
-            uri: element.file,
+            uri: imgRes,
           };
           formdata.append('post[media]', imageObject);
         }
 
         if (element.type === 'VIDEO') {
-          const newVideoUri = 'file:///' + element.file.split('file:/').join('');
+          const result = await Video.compress(
+            element.file,
+            { compressionMethod: 'auto' },
+            progress => {
+              console.log('Compression Progress: ', progress);
+            },
+          );
+
+          const newVideoUri = 'file:///' + result.split('file:/').join('');
 
           videoObject = {
-            name: element.file.split('/').pop(),
+            name: result.split('/').pop(),
             height: 1920,
             width: 1080,
             type: mime.getType(newVideoUri),
-            uri: element.file,
+            uri: result,
           };
           formdata.append('post[media]', videoObject);
         }
@@ -132,7 +148,10 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
           </Text>
           <View className="flex-row self-center mb-20 mt-10">
             <View className="overflow-hidden border-white rounded-3xl border-4  -rotate-30 ">
-              <Image source={{ uri: getImageLink(data?.data.user.photo) }} className="w-20 h-20" />
+              <Image
+                source={{ uri: getImageLink(data?.data.user.photo.mediaId) }}
+                className="w-20 h-20"
+              />
             </View>
             <View className="overflow-hidden border-white  rounded-3xl border-4   -left-8 top-2 rotate-30">
               <Image

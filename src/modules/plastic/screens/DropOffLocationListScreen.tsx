@@ -23,6 +23,7 @@ const DropOffLocationListScreen = () => {
     showClosedDropOffLocationPopup,
     setShowClosedDropOffLocationPopup,
   } = useDropOffLocationListActions();
+    console.log("🚀 ~ file: DropOffLocationListScreen.tsx:26 ~ DropOffLocationListScreen ~ data:", data)
 
   const filteredData = Array.isArray(data)
     ? data.filter(item => item.name.includes(searchKeyword))

@@ -7,12 +7,12 @@ import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 type Props = RankItemType;
 
-const LeaderBoardUserItem = ({ point, pointStatus, avatar, position, username }: Props) => (
+const LeaderBoardUserItem = ({ point, pointStatus, avatar, position, username, index }: Props) => (
   <View
     style={{ height: units.vh * 10 }}
     className="flex-row items-center justify-between pb-2 pt-2 border-b-[0.4px] border-black-o-20 mx-6 bg-white">
     <View className="flex-row items-center">
-      <Text className={text({ type: 'm16', class: 'w-8' })}>{position}</Text>
+      <Text className={text({ type: 'm16', class: 'w-8' })}>{(index ? index : 0) + 4}</Text>
       <View className="border-4 border-saffron rounded-full self-center ml-4 mr-4">
         <Image className="h-10 w-10 rounded-full" source={{ uri: getImageLink(avatar) }} />
       </View>

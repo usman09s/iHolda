@@ -12,10 +12,14 @@ export type CommunityRankItemType = {
 export type RankItemType = {
   point: string;
   avatar: string;
+  avatar2: string;
   position: number;
   username: string;
+  username2: string;
   userId: string | number;
+  userId2: string | number;
   pointStatus: 'UP' | 'DOWN' | 'STABLE';
+  index?: number;
 };
 
 export type User = {

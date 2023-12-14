@@ -183,6 +183,7 @@ const daysMap = {
 };
 
 export const formatDays = days => {
+  if(!days.length) return null;
   const daysInOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   const sortedDays = days.slice().sort((a, b) => daysInOrder.indexOf(a) - daysInOrder.indexOf(b));
 
