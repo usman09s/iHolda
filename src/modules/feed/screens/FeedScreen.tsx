@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -8,9 +8,10 @@ import {
   RefreshControl,
   ScrollView,
   View,
+  ViewToken,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useIsFocused } from '@react-navigation/native';
 import { useAppNavigation } from 'hooks/useAppNavigation';
 import { useQuery } from 'react-query';
 import Api from 'services/Api';
@@ -26,11 +27,15 @@ import { Post } from 'types/PostsTypes';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 const FeedScreen = () => {
+  const [currentIndex, setIndex] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
-  const { navigate } = useAppNavigation<NavigationProp<FeedStackParamList>>();
   const { data, refetch, isLoading } = useQuery('feeds', Api.getFeed);
   const { top } = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
+
+  const isFocused = useIsFocused();
+
+  const ITEM_HEIGHT = height - top - tabBarHeight + 10;
 
   const onRefresh = () => {
     // setRefreshing(true);
@@ -41,7 +46,6 @@ const FeedScreen = () => {
 
   const renderItem = ({ item, index }: any) => {
     const imageUri = getImageLink(item.media[0]?.mediaId);
-    // item?.media?.length && console.log(item.media);
 
     return !item?.media?.length ? null : (
       <Pressable
@@ -51,10 +55,12 @@ const FeedScreen = () => {
           width: wW,
           height: Platform.select({
             ios: wH - units.vh * 8,
-            android: height - top - tabBarHeight + 10,
+            android: ITEM_HEIGHT,
           }),
         }}>
         <FeedItem
+        isFocused={isFocused}
+          currentIndex={currentIndex}
           index={index}
           shares={item.shareCount}
           bookmarks={item.bookmarkCount}
@@ -79,6 +85,10 @@ const FeedScreen = () => {
     );
   };
 
+  useEffect(() => {
+    if (isFocused) refetch();
+  }, [isFocused]);
+
   return (
     <>
       <FeedHeader />
@@ -91,14 +101,8 @@ const FeedScreen = () => {
       <View className="absolute top-0 left-0 w-full h-full">
         {/* <ScrollView>{data?.result?.posts?.map(renderItem)}</ScrollView> */}
         <FlatList
-          data={
-            data?.result?.posts
-              ? [
-                  ...data?.result.posts,
-                  //  ...data?.result.posts
-                ]
-              : []
-          }
+          // ref={flatlistRef}
+          data={data?.result?.posts ?? []}
           className="bg-black"
           renderItem={renderItem}
           windowSize={Platform.select({
@@ -119,10 +123,22 @@ const FeedScreen = () => {
             waitForInteraction: true,
             itemVisiblePercentThreshold: 50,
           }}
+          onMomentumScrollEnd={({ nativeEvent }) => {
+            const newIndex = nativeEvent.contentOffset.y / ITEM_HEIGHT;
+            if (
+              newIndex !== currentIndex &&
+              newIndex < data?.result?.posts.length &&
+              newIndex >= 0
+            ) {
+              setIndex(Math.round(newIndex));
+            }
+          }}
           pagingEnabled
           decelerationRate="fast"
           snapToAlignment="start"
           refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={false} />}
+          // onViewableItemsChanged={onViewCallBack}
+          // viewabilityConfig={viewConfigRef.current}
         />
       </View>
     </>

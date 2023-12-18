@@ -4,12 +4,14 @@ import { text } from 'theme/text';
 import { width } from 'utils/helpers';
 import { UserMoment } from '../types';
 import { getImageLink, getVideoLink } from '../../moments/helpers/imageHelpers';
-import { ResizeMode, Video } from 'expo-av';
+import { ResizeMode,  } from 'expo-av';
+import VideoPlayer from 'expo-video-player';
 
 type Props = { index: number; item: UserMoment; onPress?: (val: any) => void };
 
 const ProfilePostItem = ({ index, item, onPress }: Props) => {
   const media = item?.post?.userQuiz ? [item?.post?.userQuiz.recording] : item.post?.media;
+
   return (
     <TouchableOpacity
       onPress={() => onPress && onPress(item)}
@@ -22,10 +24,7 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
           overflow: 'hidden',
         },
       ]}>
-        {
-          !media[0] ? 
-          <View className='h-full w-full bg-gray-300' />:null
-        }
+      {!media[0] ? <View className="h-full w-full bg-gray-300" /> : null}
       {media[0]?.mediaType?.includes('image') ? (
         <Image
           className="h-full w-full"
@@ -34,11 +33,14 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
           }}
         />
       ) : (
-        <Video
-          className="h-full w-full"
-          resizeMode={ResizeMode.COVER}
-          source={{
-            uri: getVideoLink(media[0]?.mediaId),
+        <VideoPlayer
+          videoProps={{
+            shouldPlay: false,
+            resizeMode: ResizeMode.COVER,
+            source: {
+              uri: getVideoLink(media[0]?.mediaId),
+            },
+            className: 'h-full w-full',
           }}
         />
       )}

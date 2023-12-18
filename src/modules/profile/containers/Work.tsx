@@ -1,7 +1,12 @@
 import { FlatList, Pressable, Text, View } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {
+  NavigationProp,
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { userCommonInformationSelector } from 'store/auth/userSelectors';
+import { userCommonInformationSelector, userSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 import { height } from 'utils/helpers';
 
@@ -13,12 +18,17 @@ import UserCommunityStatistic from '../components/UserCommunityStatistic';
 import { ProfileStackParamList } from '../ProfileStackNavigator';
 import { useQuery } from 'react-query';
 import Api from 'services/Api';
+import { useEffect, useState } from 'react';
+import socketService from 'services/Socket';
 
 const Work = () => {
-  const { fullName } = useSelector(userCommonInformationSelector);
   const { navigate } = useNavigation<NavigationProp<any>>();
+  const [upcomingDropOff, setUpcomingDropOff] = useState<{ data: any[] } | null>(null);
+  const { user } = useSelector(userSelector);
 
-  const { data: upcomingDropOff, isLoading } = useQuery('upcommingDropOff', Api.getPlasticsFuture);
+  const isFocused = useIsFocused();
+
+  // const { data: upcomingDropOff, isLoading } = useQuery('upcommingDropOff', Api.getPlasticsFuture);
 
   const getPlasticCounts = (plastics: any) => {
     let count = 0;
@@ -29,6 +39,33 @@ const Work = () => {
 
     return count;
   };
+
+  const onUpcomingPlastics = (data: any) => setUpcomingDropOff(data.data);
+
+  const onNewPlastic = (data: any) =>
+    setUpcomingDropOff(prevDropOffs => ({ data: [data.plastic, ...(prevDropOffs?.data ?? [])] }));
+
+  useEffect(() => {
+    if (isFocused)
+      socketService.emit('getUpcomingPlastics', {
+        userId: user?._id,
+      });
+  }, [isFocused]);
+
+  useEffect(() => {
+    socketService.emit('getUpcomingPlastics', {
+      userId: user?._id,
+    });
+
+    socketService.on(`getUpcomingPlastics/${user?._id}`, onUpcomingPlastics);
+    socketService.on(`newPlastic/${user?._id}`, onNewPlastic);
+
+    return () => {
+      socketService.removeListener(`getUpcomingPlastics/${user?._id}`, onUpcomingPlastics);
+      socketService.removeListener(`newPlastic/${user?._id}`, onNewPlastic);
+    };
+  }, []);
+
   return (
     <View className="flex-1 bg-white pt-6 " style={{ minHeight: height + 200 }}>
       <View className="mt-2">
@@ -38,7 +75,7 @@ const Work = () => {
           data={upcomingDropOff?.data ?? []}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingLeft: 24 }}
-          renderItem={({ item, index }) => (
+          renderItem={({ item, index }: any) => (
             <JobItem
               count={getPlasticCounts(item.plastics)}
               image={item.user?.photo?.mediaId}
@@ -50,7 +87,7 @@ const Work = () => {
           )}
         />
       </View>
-      {!upcomingDropOff?.data?.length ? (
+      {upcomingDropOff?.data?.length === 0 ? (
         <Text className={text({ type: 'r12', class: 'mt-1 text-black-o-50 pl-6' })}>
           You have no active jobs.
         </Text>

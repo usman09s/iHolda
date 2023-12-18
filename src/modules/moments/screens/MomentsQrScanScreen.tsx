@@ -15,10 +15,10 @@ import { width } from 'utils/helpers';
 import MeetupAndJobButtons from '../components/MeetupAndJobButtons';
 import { MomentsStackParamList } from '../MomentsStackNavigator';
 
-const throttle = (func: (data: any) => void, delay: number) => {
+const throttle = (func: any, delay: number) => {
   let throttling = false;
 
-  return (...args) => {
+  return (...args: any[]) => {
     if (!throttling) {
       throttling = true;
       func(...args);
@@ -32,7 +32,7 @@ const throttle = (func: (data: any) => void, delay: number) => {
 const MomentsQrScanScreen = () => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  useQuery('currentUserProfile', Api.getUserProfile);
+  useQuery('currentUserProfile', Api.getUserProfile0);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const { navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
 
@@ -88,9 +88,8 @@ const MomentsQrScanScreen = () => {
   const sizes = { width: width - 56, height: width - 56 };
 
   const onBarCodeScanned = (result: BarCodeScanningResult) => {
-    
     if (isLoading) return;
-    console.log("gettinig data------------");
+    console.log('gettinig data------------');
     const matchedUserQueryId = result.data;
     mutate({ queryId: matchedUserQueryId });
   };
@@ -103,7 +102,7 @@ const MomentsQrScanScreen = () => {
   );
 
   useEffect(() => {
-    if(isFocused) dispatch(resetState());
+    if (isFocused) dispatch(resetState());
   }, [isFocused]);
 
   useEffect(() => {

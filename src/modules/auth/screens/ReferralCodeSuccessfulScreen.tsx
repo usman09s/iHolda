@@ -4,11 +4,13 @@ import Button from 'components/Button';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 const ReferralCodeSuccessfulScreen = ({route}: any) => {
-  console.log(route.params);
+  const userData= route.params?.result?.data;
+  console.log("🚀 ~ file: ReferralCodeSuccessfulScreen.tsx:10 ~ ReferralCodeSuccessfulScreen ~ userData:", userData)
   
-  const { navigate } = useNavigation();
+  const { navigate }: any = useNavigation();
   const userImage = useSelector(userSelector);
 
   return (
@@ -24,18 +26,18 @@ const ReferralCodeSuccessfulScreen = ({route}: any) => {
                 <Image source={{ uri: userImage.userImage }} className="w-28 h-28" />
               </View>
               <View className="overflow-hidden border-white  rounded-3xl border-4   -left-8 top-2 rotate-30">
-                <Image source={{ uri: 'https://i.pravatar.cc/150?img=33' }} className="w-28 h-28" />
+                <Image source={{ uri: getImageLink(userData?.referralUser?.photo?.mediaId) }} className="w-28 h-28" />
               </View>
             </View>
           </View>
           <View className="mb-5 bg-slate-300 py-5 px-2 rounded-2xl">
             <Text className={text({ class: 'text-black-o-80 text-center', type: 'r12' })}>
-              @naturesbreath invited you so you both will receive
+              @{userData?.referralUser?.userName} invited you so you both will receive
             </Text>
             <View className="mt-7 flex-row items-center">
               <View className="overflow-hidden rounded-full border-4 border-white">
                 <Image
-                  source={{ uri: 'https://i.pravatar.cc/150?img=33' }}
+                  source={{ uri: getImageLink(userData?.referralUser?.photo?.mediaId)  }}
                   className="w-14 h-14 "
                 />
               </View>

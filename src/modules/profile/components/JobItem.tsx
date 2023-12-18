@@ -4,17 +4,24 @@ import { text } from 'theme/text';
 import { PROFILE_PLACEHOLDER_IMG } from 'utils/constants';
 import { units } from 'utils/helpers';
 
-interface Props { index: number; onPress: () => void, image: string;count: number;name: string ;type: "User" | "Plastic Agent"}
+interface Props {
+  index: number;
+  onPress: () => void;
+  image: string;
+  count: number;
+  name: string;
+  type: 'User' | 'Plastic Agent';
+}
 
-const JobItem = ({ index = 0, onPress , image, count, name, type}: Props) => {
+const JobItem = ({ index = 0, onPress, image, count, name, type }: Props) => {
   const isOdd = index % 2 !== 0;
   const colors = {
-    title: isOdd ? 'grayCool' : 'white',
-    progress: isOdd ? 'primary600' : 'white',
-    avatarBorder: isOdd ? 'primary600' : 'white',
-    container: isOdd ? 'bg-teaGreen' : 'bg-purple',
-    subTitle: isOdd ? 'grayCool400' : 'white-o-60',
-    progressText: isOdd ? 'grayCool600' : 'white-o-70',
+    title: !isOdd ? 'grayCool' : 'white',
+    progress: !isOdd ? 'primary600' : 'white',
+    avatarBorder: !isOdd ? 'primary600' : 'white',
+    container: !isOdd ? 'bg-teaGreen' : 'bg-purple',
+    subTitle: !isOdd ? 'grayCool400' : 'white-o-60',
+    progressText: !isOdd ? 'grayCool600' : 'white-o-70',
   };
 
   const avatarClass = `overflow-hidden rounded-full border-b1 border-${colors.avatarBorder}`;
@@ -26,7 +33,7 @@ const JobItem = ({ index = 0, onPress , image, count, name, type}: Props) => {
       style={{ width: units.vw * 40, minHeight: 150 }}>
       <View className="flex-row justify-between items-center">
         <Image
-          source={{ uri: image ? getImageLink(image): PROFILE_PLACEHOLDER_IMG }}
+          source={{ uri: image ? getImageLink(image) : PROFILE_PLACEHOLDER_IMG }}
           className={`h-8 w-8 rounded-full border-2 border-${colors.avatarBorder}`}
         />
         <View className="h-4 w-4 bg-green-500 rounded-full justify-center items-center mb-1">
