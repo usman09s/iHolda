@@ -16,6 +16,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import CustomHeader from 'components/Header/CustomHeader';
 import { selectInvitedInvitees, selectPendingInvitees } from 'store/settings/inviteeSlice';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
+import Share from 'react-native-share';
 
 const InvitedUser = ({ avatar, name }: any) => {
   return (
@@ -51,23 +52,21 @@ export const ReferralScreen = () => {
   const shareToMessenger = () => {
     const referralCode = userData.referralCode;
     const message = `Hey, check out this iHolda! Use my referral code: ${referralCode}`;
-    const encodedMessage = encodeURIComponent(message);
-    let messengerUrl: any;
-    if (Platform.OS === 'ios') {
-      messengerUrl = `fb-messenger://share?text=${encodedMessage}`;
-    } else if (Platform.OS === 'android') {
-      messengerUrl = `fb-messenger://user/`;
-    }
-    Linking.canOpenURL(messengerUrl)
-      .then(supported => {
-        if (supported) {
-          Linking.openURL(messengerUrl);
-        } else {
-          console.log('Facebook Messenger is not installed on this device.');
-        }
+
+    const shareOptions = {
+      title: 'Share via',
+      message: message,
+      url: 'https://your-website.com',
+      social: Share.Social.MESSENGER,
+      contentType: 'link',
+    };
+
+    Share.open(shareOptions)
+      .then(res => {
+        console.log(res);
       })
-      .catch(error => {
-        console.error('An error occurred while opening Messenger:', error);
+      .catch(err => {
+        console.log(err);
       });
   };
 

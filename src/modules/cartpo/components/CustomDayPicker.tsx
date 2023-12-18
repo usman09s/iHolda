@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
 const CustomDayPicker = ({
   itemsArray,
@@ -31,32 +31,39 @@ const CustomDayPicker = ({
           (_, i) => i + startIndex,
         );
         setSelectedIndices([...newSelectedIndices]);
-        onDaySelect([...newSelectedIndices]); // Use the new value directly
+        onDaySelect([...newSelectedIndices]);
       } else {
         toggleDay(index);
       }
     } else {
-      toggleDay(index);
+      setSelectedIndices([index]);
+      onDaySelect([itemsArray[index]]);
     }
   };
 
+  const renderItem = ({ item, index }) => (
+    <TouchableOpacity
+      key={item}
+      className={`w-9 h-10 rounded-xl items-center justify-center ${
+        selectedIndices.includes(index) ? 'bg-sky-400' : 'bg-[#e3e2e2]'
+      } ${customButtonContainer}`}
+      onPress={() => handlePress(index)}>
+      <Text style={selectedIndices.includes(index) ? 'text-gray-600' : 'text-gray-600'}>
+        {item}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
-    <View className="mb-5">
-      <View className={`flex flex-row justify-between ${customClassContainer}`}>
-        {itemsArray.map((day, index) => (
-          <TouchableOpacity
-            key={day}
-            className={`w-9 h-10 rounded-xl items-center justify-center ${
-              selectedIndices.includes(index) ? 'bg-sky-400' : 'bg-[#e3e2e2]'
-            } ${customButtonContainer}`}
-            onPress={() => handlePress(index)}>
-            <Text
-              className={`${selectedIndices.includes(index) ? 'text-gray-600' : 'text-gray-600'}`}>
-              {day}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+    <View className={`mb-5 ${customClassContainer}`}>
+      <FlatList
+        data={itemsArray}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        horizontal
+        contentContainerStyle={{ gap: 10 }}
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };

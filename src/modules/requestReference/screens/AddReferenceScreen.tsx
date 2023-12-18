@@ -10,11 +10,20 @@ import { useEffect } from 'react';
 export const AddReferenceScreen = () => {
   const { searchText, handleChangeText, handleSearchUsers } = useRequestReferenceAction();
   const searchData = useSelector(state => state.userReference.searchUsers);
+  const referenceUsers = useSelector(state => state.userReference.referenceUsers);
   const isSmallScreen = height < 700;
 
+  const filteredSearchData = searchData.filter(item => {
+    return !referenceUsers.some(userId => userId._id === item._id);
+  });
+
   useEffect(() => {
-    handleSearchUsers();
-  }, []);
+    if (searchText) {
+      console.log(searchText);
+      console.log(searchData, searchText);
+      handleSearchUsers();
+    }
+  }, [searchText]);
 
   return (
     <View className="px-6 flex-1">
@@ -31,11 +40,12 @@ export const AddReferenceScreen = () => {
           value={searchText}
           onChangeText={handleChangeText}
           placeholderTextColor={'gray'}
+          onSubmitEditing={handleSearchUsers}
         />
       </View>
       <FlatList
-        data={searchData}
-        keyExtractor={item => item.id}
+        data={filteredSearchData}
+        keyExtractor={item => item._id}
         renderItem={({ item }) => <CustomReferenceContact data={item} />}
         showsVerticalScrollIndicator={false}
       />
