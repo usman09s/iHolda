@@ -331,6 +331,22 @@ class ApiClass {
     }
   };
 
+  updateCartpoMenu = async (formData: any) => {
+    try {
+      const response = await this.externalApi
+        .url(`cartpo/shop/menu`)
+        .post(formData)
+        .json(result => {
+          console.log(result);
+          return result;
+        });
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   setReferralCode = async ({ referralCode }: { referralCode: string }) =>
     await this.externalApi
       .url('user/referral-code')

@@ -34,7 +34,7 @@ export const CustomReferenceInput = ({
         keyboardType={keyboardType}
         onChangeText={handleChangeText}
         value={props.value}
-        className={`bg-neutral-200 rounded-3xl h-12 px-4 w-full ${props.customTextInputClass} ${
+        className={`bg-neutral-200 rounded-3xl h-12 px-4 ${props.customTextInputClass} ${
           hasError ? 'border-red-600 border-2' : ''
         }`}
         placeholderTextColor={'gray'}

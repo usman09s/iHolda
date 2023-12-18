@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
@@ -48,9 +48,9 @@ const CalculatorScreen = ({ navigation }: any) => {
     dispatch(setSelectedOption(option));
   };
 
-  useFocusEffect(() => {
+  useEffect(() => {
     handleGetCartpoSettings();
-  });
+  }, []);
 
   return (
     <Drawer

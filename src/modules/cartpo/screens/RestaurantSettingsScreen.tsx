@@ -46,7 +46,9 @@ export const RestaurantSettingsScreen = () => {
     if (!result.canceled) {
       setFieldValue(
         fieldName,
-        fieldName === 'coverImage' ? result.uri : [...values.featuredImages, result.uri],
+        fieldName === 'coverImage'
+          ? result.assets[0].uri
+          : [...values.featuredImages, result.assets[0].uri],
       );
     }
   };
@@ -88,7 +90,7 @@ export const RestaurantSettingsScreen = () => {
         validateOnChange={false}
         onSubmit={handleSettingsSubmit}>
         {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
-          <View className="my-12 flex-1">
+          <View className="my-12">
             <CustomReferenceInput
               label="Business name"
               placeholder="e.g abc business"
@@ -128,6 +130,7 @@ export const RestaurantSettingsScreen = () => {
               />
             </View>
             <TouchableOpacity>
+              <Text>Open hours</Text>
               <CustomDayPicker
                 itemsArray={['M', 'T', 'W', 'T', 'F', 'S', 'S']}
                 multiSelect={true}
@@ -148,26 +151,26 @@ export const RestaurantSettingsScreen = () => {
               </TouchableOpacity>
             </View>
             <View className="my-4">
-              <Text className="text-[13px] font-normal mb-2">Cover Image</Text>
               <TouchableOpacity
                 className="border-dashed border-2 border-gray-300 rounded-xl h-44 justify-center items-center"
                 onPress={() => pickImage(setFieldValue, 'coverImage', values)}>
                 {values.coverImage ? (
-                  <Image source={{ uri: values.coverImage }} className="w-full h-44" />
+                  <Image source={{ uri: values.coverImage }} className="w-full h-44 rounded-xl" />
                 ) : (
                   <View className="items-center">
                     <Icon name="plus" />
-                    <Text>Add Cover Image</Text>
+                    <Text>Add Cover image</Text>
                   </View>
                 )}
               </TouchableOpacity>
               <Text className="text-[13px] font-normal mt-4 mb-2">
-                Add featured images (Optional)
+                Add featured images{' '}
+                <Text className="italic text-[9px] text-red-500">(Optional)</Text>
               </Text>
               <View className="flex-row justify-between my-4">
                 {values.featuredImages.map((image, index) => (
                   <View className="border-dashed border border-gray-300 rounded-xl h-16 items-center justify-center flex-1 mx-1">
-                    <Image key={index} source={{ uri: image }} className="w-full h-16" />
+                    <Image key={index} source={{ uri: image }} className="w-full h-16 rounded-xl" />
                   </View>
                 ))}
                 {values.featuredImages.length < 4 &&
@@ -181,7 +184,7 @@ export const RestaurantSettingsScreen = () => {
                   ))}
               </View>
             </View>
-            <View className="items-center mt-20">
+            <View className="items-center mt-8">
               <CustomRestaurantButton title={'Save'} onPress={handleSubmit} />
             </View>
             {isPickerShow && (

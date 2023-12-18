@@ -94,7 +94,23 @@ export const useCartpoActions = () => {
         console.log('Result:', result);
       }
     } catch (error) {
-      console.error('Error:', error.message);
+      const errorText = JSON.parse(error.message);
+      if (errorText.message === 'User role mismatched') {
+        Toast.show({
+          type: 'error',
+          text1: 'Please login with a Merchant Account',
+        });
+      } else if (errorText.message === 'Invalid password') {
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid password',
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Unexpected error occurred',
+        });
+      }
     }
   };
 
@@ -224,6 +240,7 @@ export const useCartpoActions = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+
       console.log('Success:', data);
     } catch (error) {
       console.error('Error:', error);

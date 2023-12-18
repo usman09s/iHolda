@@ -13,15 +13,8 @@ import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 export const EditProfileScreen = ({ navigation }: any) => {
   const userData = useSelector(selectUser);
-  const {
-    pickImage,
-    handleBioChange,
-    handleLocationPress,
-    cityCountry,
-    profileImage,
-    handleUpdateSetting,
-    getCityCountry,
-  } = useSettingActions();
+  const { pickImage, handleBioChange, handleLocationPress, handleUpdateSetting } =
+    useSettingActions();
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
@@ -30,7 +23,7 @@ export const EditProfileScreen = ({ navigation }: any) => {
         <View className="flex-1 justify-between mb-20">
           <TouchableOpacity className="mt-8 mb-2" onPress={pickImage}>
             <CustomProfileAvatar
-              photo={userData.photo ? getImageLink(userData.photo.mediaId) : profileImage}
+              photo={getImageLink(userData.photo.mediaId)}
               userName={userData.userName}
               size={85}
               extraStyles={{ borderWidth: 3, borderColor: 'gray' }}
