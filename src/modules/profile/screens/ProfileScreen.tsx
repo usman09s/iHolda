@@ -15,6 +15,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { setUserInfo } from 'store/auth/userSlice';
 import Api from 'services/Api';
 import { useQuery } from 'react-query';
+import Work from '../containers/Work';
 
 const ProfileScreen = ({ route }: any) => {
   const activeY = useSharedValue(0);
@@ -46,8 +47,8 @@ const ProfileScreen = ({ route }: any) => {
         key={0}
       />,
       <Community cp={user?.cp ?? '0'} lastcp={user?.lastCp} key={1} />,
-      <Wallet key={2} />,
-      // <Shared key={2} />,
+      <Work key={2} />,
+      <Wallet key={3} />,
     ]?.[index] || [];
 
   // useEffect(() => {
@@ -63,6 +64,7 @@ const ProfileScreen = ({ route }: any) => {
         stickyHeaderIndices={[0]}
         ListFooterComponent={<View className="h-10" />}
         nestedScrollEnabled={false}
+        // horizontal
         className={'flex-1'}
         renderItem={({ item }) => item}
         ListHeaderComponent={
@@ -75,6 +77,7 @@ const ProfileScreen = ({ route }: any) => {
             username={username}
             activeIndex={index}
             key={'profileHeader'}
+            isAgent={user?.isPlasticAgent}
             invitedBy={invitedBy ?? ""}
             hederThumbnail={avatar?.mediaId ?? ""}
             monthAndYear={joinedMonthAndYear}

@@ -22,10 +22,17 @@ type Props = {
   metPeople: string;
   impression: string;
   description: string;
+  userId?: string;
 };
 
-const ProfileDescriptionAndStats = ({ followers, metPeople, impression, description }: Props) => {
-  const navigation = useNavigation();
+const ProfileDescriptionAndStats = ({
+  followers,
+  metPeople,
+  impression,
+  description,
+  userId,
+}: Props) => {
+  const navigation: any = useNavigation();
   return (
     <>
       {description ? (
@@ -34,16 +41,16 @@ const ProfileDescriptionAndStats = ({ followers, metPeople, impression, descript
       <View className="border-[0.5px] border-black-o-10" />
       <View className="flex-row py-4 justify-between px-4">
         <StatsItem
-          onPress={() => navigation.navigate('Followers', { index: 0 })}
+          onPress={() => navigation.navigate('Followers', { userId, index: 0 })}
           title={followers}
           subTitle={'Follower' + (Number(followers) > 1 ? 's' : '')}
         />
         <StatsItem
-          onPress={() => navigation.navigate('Followers', { index: 1 })}
+          onPress={() => navigation.navigate('Followers', { userId, index: 1 })}
           title={'Met'}
           subTitle={metPeople}
         />
-        <StatsItem title={impression} subTitle="impressions" />
+        <StatsItem onPress={() => null} title={impression} subTitle="impressions" />
       </View>
     </>
   );

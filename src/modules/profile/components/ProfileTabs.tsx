@@ -7,6 +7,7 @@ type Props = {
   activeIndex: number;
   isCurrentUser: boolean;
   onPressTabItem: (value: number) => () => void;
+  isAgent?: boolean;
 };
 
 type ProfileTabITemProps = {
@@ -18,9 +19,10 @@ type ProfileTabITemProps = {
 const ProfileTabItem = ({ title, isActive, onPressTabItem }: ProfileTabITemProps) => (
   <Pressable
     style={{
-      width: width / 3,
+      // width: width / 3,
       borderBottomWidth: isActive ? 1 : 0,
       borderBottomColor: colors.saffron,
+      flex: 1
     }}
     onPress={onPressTabItem}
     className="justify-center items-center">
@@ -30,7 +32,7 @@ const ProfileTabItem = ({ title, isActive, onPressTabItem }: ProfileTabITemProps
   </Pressable>
 );
 
-const ProfileTabs = ({ activeIndex, onPressTabItem, isCurrentUser }: Props) => (
+const ProfileTabs = ({ activeIndex, onPressTabItem, isCurrentUser, isAgent }: Props) => (
   <View
     className="flex-row  border-b-b1 bg-white border-black-o-10  w-full"
     style={{ height: units.vh * 8 }}>
@@ -44,17 +46,24 @@ const ProfileTabs = ({ activeIndex, onPressTabItem, isCurrentUser }: Props) => (
       isActive={activeIndex === 1}
       onPressTabItem={onPressTabItem(1)}
     />
+    {isAgent && (
+      <ProfileTabItem
+        title="Work"
+        isActive={activeIndex === 2}
+        onPressTabItem={onPressTabItem(2)}
+      />
+    )}
     {isCurrentUser ? (
       <ProfileTabItem
         title="Wallet"
-        onPressTabItem={onPressTabItem(2)}
-        isActive={activeIndex === 2}
+        onPressTabItem={onPressTabItem(isAgent ? 3 : 2)}
+        isActive={activeIndex === (isAgent ? 3 : 2)}
       />
     ) : (
       <ProfileTabItem
         title="Shared"
         onPressTabItem={onPressTabItem(3)}
-        isActive={activeIndex === 3}
+        isActive={activeIndex === (isAgent ? 3 : 2)}
       />
     )}
   </View>

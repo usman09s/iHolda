@@ -22,6 +22,10 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
           overflow: 'hidden',
         },
       ]}>
+        {
+          !media[0] ? 
+          <View className='h-full w-full bg-gray-300' />:null
+        }
       {media[0]?.mediaType?.includes('image') ? (
         <Image
           className="h-full w-full"
@@ -47,7 +51,7 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
           <View className={`rounded-full border-2 border-saffron ${item.users[1] ? '' : 'mr-2'}`}>
             <View className="rounded-full border-2 border-white">
               <Image
-                source={{ uri: getImageLink(item.users[0]?.user.photo ?? '') }}
+                source={{ uri: getImageLink(item.users[0]?.user.photo?.mediaId ?? '') }}
                 className="rounded-full h-6 w-6 "
               />
             </View>
@@ -56,7 +60,7 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
             <View className="overflow-hidden rounded-full border-2 border-green-500 right-2">
               <View className="overflow-hidden rounded-full border-2 border-white ">
                 <Image
-                  source={{ uri: getImageLink(item.users[1]?.user.photo ?? '') }}
+                  source={{ uri: getImageLink(item.users[1]?.user?.photo?.mediaId ?? '') }}
                   className=" rounded-full h-6 w-6"
                 />
               </View>

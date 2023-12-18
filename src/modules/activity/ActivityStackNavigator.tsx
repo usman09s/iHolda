@@ -35,23 +35,23 @@ const commonScreenOptions: NativeStackNavigationOptions = {
 function ActivityStackNavigator() {
   // const { data: user } = useQuery('currentUserProfile', () => Api.getUserProfile());
   // console.log("🚀 ~ file: ActivityStackNavigator.tsx:35 ~ ActivityStackNavigator ~ user:", user)
-  const user = useSelector(userSelector)
-  console.log("🚀 ~ file: ActivityStackNavigator.tsx:39 ~ ActivityStackNavigator ~ user:", user)
+  const user = useSelector(userSelector);
+  console.log('🚀 ~ file: ActivityStackNavigator.tsx:39 ~ ActivityStackNavigator ~ user:', user);
 
   return (
     <ActivityStack.Navigator screenOptions={commonScreenOptions}>
       <ActivityStack.Screen
         name="Activity"
         options={commonOptions}
-        component={
-          user
-            ? user?.user?.isPlasticAgent
-              ? PlasticActivityScreen
-              : ActivityScreen
-            : ActivityScreen
-        }
+        // component={
+        //   user
+        //     ? user?.user?.isPlasticAgent
+        //       ? PlasticActivityScreen
+        //       : ActivityScreen
+        //     : ActivityScreen
+        // }
+        component={ActivityScreen}
       />
-      
     </ActivityStack.Navigator>
   );
 }

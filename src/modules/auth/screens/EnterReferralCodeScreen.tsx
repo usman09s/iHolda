@@ -36,7 +36,9 @@ const EnterReferralCodeScreen = () => {
   const userImage = useSelector(userSelector);
   // const { mutate: updateUser } = useMutation(Api.updateuser);
   // const isVisibleKeyboard = useKeyboardVisible();
-  const userInfo = useSelector(userSelector);
+
+  // TODO: add type
+  const userInfo: any = useSelector(userSelector);
 
   async function postData(url = '', data: FormData) {
     const response = await fetch(url, {
@@ -56,7 +58,7 @@ const EnterReferralCodeScreen = () => {
       {
         onSuccess: result => {
           console.log(result);
-          navigate('ReferralCodeSuccessful');
+          navigate('ReferralCodeSuccessful', {result});
         },
         onError: error => {
           setModalVisible(true);

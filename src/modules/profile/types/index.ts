@@ -3,7 +3,10 @@ export type User = {
   userName: string;
   firstName: string | null;
   lastName: string | null;
-  photo: string | null;
+  photo: {
+    mediaId: string;
+    mediaType: string;
+  } | null;
   followers: string[];
   following: string[];
   metCount: number;
@@ -18,6 +21,7 @@ export type Post = {
   media: string[];
   mediaType: string;
   audio: string | null;
+  userQuiz?: any;
   thumbnail: string | null;
   visibility: string;
   hexCode: string | null;

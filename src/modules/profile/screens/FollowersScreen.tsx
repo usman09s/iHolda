@@ -18,11 +18,12 @@ const FollowersScreen = ({ route }: any) => {
   const [data, setData] = useState<any[]>([]);
   const [dumyData, setDummyData] = useState<any[]>([]);
   const { user } = useSelector(userSelector);
+  const otherUserId = route.params?.userId; // if undeffined then it is logged in user
 
   async function getData() {
     let res;
-    if (tabIndex === 0) res = await Api.getFollowers();
-    else if (tabIndex === 1) res = await Api.getMets();
+    if (tabIndex === 0) res = await Api.getFollowers(otherUserId);
+    else if (tabIndex === 1) res = await Api.getMets(otherUserId);
     else res = await Api.getSuggestions();
     // console.log('🚀 ~ file: FollowersScreen.tsx:15 ~ getData ~ res:', res);
     setData(res?.data?.data);

@@ -5,7 +5,9 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 
-const ReferralCodeSuccessfulScreen = () => {
+const ReferralCodeSuccessfulScreen = ({route}: any) => {
+  console.log(route.params);
+  
   const { navigate } = useNavigation();
   const userImage = useSelector(userSelector);
 

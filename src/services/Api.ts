@@ -943,17 +943,17 @@ class ApiClass {
       })
       .get()
       .json(result => result);
-  getFollowers = async (): Promise<{ data: any }> =>
+  getFollowers = async (userId?: string): Promise<{ data: any }> =>
     await this.externalApi
-      .url('user/followers/')
+      .url('user/followers' + userId ? `&userId=${userId}` : '')
       .headers({
         ...this._getAuthorization(this.token),
       })
       .get()
       .json(result => result);
-  getMets = async (): Promise<{ data: any }> =>
+  getMets = async (userId?: string): Promise<{ data: any }> =>
     await this.externalApi
-      .url('met/users')
+      .url('met/users' + userId ? `&userId=${userId}` : '')
       .headers({
         ...this._getAuthorization(this.token),
       })

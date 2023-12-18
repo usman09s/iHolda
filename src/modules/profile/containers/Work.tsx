@@ -11,14 +11,51 @@ import MyServices from '../components/MyServices';
 import PastJobItem from '../components/profession/PastJobItem';
 import UserCommunityStatistic from '../components/UserCommunityStatistic';
 import { ProfileStackParamList } from '../ProfileStackNavigator';
+import { useQuery } from 'react-query';
+import Api from 'services/Api';
 
 const Work = () => {
   const { fullName } = useSelector(userCommonInformationSelector);
-  const { navigate } = useNavigation<NavigationProp<ProfileStackParamList>>();
+  const { navigate } = useNavigation<NavigationProp<any>>();
 
+  const { data: upcomingDropOff, isLoading } = useQuery('upcommingDropOff', Api.getPlasticsFuture);
+
+  const getPlasticCounts = (plastics: any) => {
+    let count = 0;
+
+    for (let i = 0; i < plastics.length; i++) {
+      count += plastics[i].quantity;
+    }
+
+    return count;
+  };
   return (
     <View className="flex-1 bg-white pt-6 " style={{ minHeight: height + 200 }}>
-      <Pressable
+      <View className="mt-2">
+        <Text className={text({ type: 'r16', class: 'mb-3 px-6 ' })}>Active jobs</Text>
+        <FlatList
+          horizontal
+          data={upcomingDropOff?.data ?? []}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingLeft: 24 }}
+          renderItem={({ item, index }) => (
+            <JobItem
+              count={getPlasticCounts(item.plastics)}
+              image={item.user?.photo?.mediaId}
+              name={item.user?.userName}
+              type={item?.isPlasticAgent ? 'Plastic Agent' : 'User'}
+              onPress={() => navigate('PlasticActivityScreen')}
+              index={index}
+            />
+          )}
+        />
+      </View>
+      {!upcomingDropOff?.data?.length ? (
+        <Text className={text({ type: 'r12', class: 'mt-1 text-black-o-50 pl-6' })}>
+          You have no active jobs.
+        </Text>
+      ) : null}
+      {/* <Pressable
         className="bg-minionYellow py-3 p-6 rounded-3xl mx-6"
         onPress={() => navigate('JobDashboardStack', { screen: 'JobDashboard' })}>
         <View>
@@ -70,7 +107,7 @@ const Work = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingLeft: 24 }}
         />
-      </View>
+      </View> */}
     </View>
   );
 };

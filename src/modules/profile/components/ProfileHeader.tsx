@@ -2,7 +2,8 @@ import { Image, Text, View } from 'react-native';
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import Icons from 'components/Icons';
 import { text } from 'theme/text';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+// import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcon from '@expo/vector-icons/MaterialIcons';
 import { units } from 'utils/helpers';
 
 import ProfileTabs from './ProfileTabs';
@@ -24,6 +25,7 @@ type Props = {
   onPressTabItem: (value: number) => () => void;
   user?: User;
   verified: boolean;
+  isAgent?:boolean;
 };
 
 const ProfileHeader = ({
@@ -38,7 +40,8 @@ const ProfileHeader = ({
   hederThumbnail,
   onPressTabItem,
   user,
-  verified
+  verified,
+  isAgent = false
 }: Props) => {
   const headerImageHeight = units.vh * 40;
   const tabHeight = units.vh * 8;
@@ -112,6 +115,7 @@ const ProfileHeader = ({
         />
         <Animated.View style={animatedTabsStyle}>
           <ProfileTabs
+          isAgent={isAgent}
             activeIndex={activeIndex}
             isCurrentUser={isCurrentUser}
             onPressTabItem={onPressTabItem}
