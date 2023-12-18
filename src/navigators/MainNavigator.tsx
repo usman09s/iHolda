@@ -39,6 +39,7 @@ import PostReview from 'modules/restaurants/screens/PostReview';
 import { ReviewSuccess } from 'modules/restaurants/screens/ReviewSuccess';
 import FeedDetailView from 'modules/feed/screens/FeedDetailView';
 import OtherUserProfileScreen from 'modules/profile/screens/OtherUserProfileScreen';
+import PlasticActivityScreen from 'modules/activity/screens/PlasticAgentActivity';
 
 const MainStack = createNativeStackNavigator();
 
@@ -186,6 +187,12 @@ export default function MainNavigator() {
           options={commonOptions}
           name="OtherUserProfileMain"
           component={OtherUserProfileScreen}
+        />
+
+        <MainStack.Screen
+          options={commonOptions}
+          name="PlasticActivityScreen"
+          component={PlasticActivityScreen}
         />
 
         <MainStack.Screen name="CartpoTab" options={commonOptions} component={CartpoTabNavigator} />

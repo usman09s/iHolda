@@ -26,7 +26,7 @@ export type AuthStackParamList = {
   ResetPin: { phone: string };
   EnterOtp: { phone: string };
   EnterReferralCode: undefined;
-  ReferralCodeSuccessful: undefined;
+  ReferralCodeSuccessful: {result: any};
   UserAvatarAndUsernameUpdate: undefined;
 };
 

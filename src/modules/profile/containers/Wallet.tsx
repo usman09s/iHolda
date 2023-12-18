@@ -5,16 +5,19 @@ import { text } from 'theme/text';
 import { height } from 'utils/helpers';
 
 import TransactionInOut from '../components/TransactionInOut';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useQuery } from 'react-query';
 import Api from 'services/Api';
+import { useEffect } from 'react';
 
 const Wallet = () => {
   const navigation: any = useNavigation();
-  const { data } = useQuery('walletBalance', Api.getWalletBalance, { refetchOnWindowFocus: true });
-  const { data: transactions } = useQuery('walletTransactions', Api.getTransactions, {
+  const { data, refetch } = useQuery('walletBalance', Api.getWalletBalance, { refetchOnWindowFocus: true });
+  const { data: transactions, refetch: refetchTransactions } = useQuery('walletTransactions', Api.getTransactions, {
     refetchOnWindowFocus: true,
   });
+
+  const isFocused = useIsFocused();
 
   const formatDate = (inputDateString: string) => {
     const inputDate = new Date(inputDateString);
@@ -32,6 +35,13 @@ const Wallet = () => {
 
     return formattedDateString;
   };
+
+  useEffect(()=> {
+    if(isFocused) {
+      refetch();
+      refetchTransactions();
+    }
+  },[isFocused])
 
   // const wallet = data.data.data?.wallet;
   // console.log('🚀 ~ file: Wallet.tsx:17 ~ Wal ~ wallet:', data?.data?.wallet);

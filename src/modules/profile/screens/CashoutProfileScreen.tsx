@@ -96,7 +96,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
                 fontSize: 48,
                 fontWeight: '700',
                 paddingRight: 10,
-                marginLeft: -5
+                marginLeft: -5,
                 // minWidth: 100
               }}>
               .0
@@ -178,7 +178,12 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
             customContainerClass="bg-black py-4"
             customTextClass={'text-white text-base'}
             // onPress={() => navigation.navigate('WithdrawSuccessful')}
-            onPress={() => mutate(Number(withdrawAmmount))}
+            onPress={() => {
+              if(!withdrawAmmount) return alert("Amount is required")
+              if(withdrawAmmount > route.params?.wallet?.availableBalance) return alert("Amount should be less than available balance.")
+              if(!account) return alert("Account is required")
+              mutate(Number(withdrawAmmount));
+            }}
           />
         </View>
       </View>

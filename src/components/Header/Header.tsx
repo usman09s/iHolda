@@ -52,7 +52,7 @@ const Header = ({
           </Pressable>
         )}
       </View>
-      <View className="justify-center items-center left-0 right-0 top-2 absolute">
+      <View className="justify-center items-center left-0 right-0 top-0 absolute">
         {title && !centerComponent && <Text className={text({ type: 'm20' })}>{title}</Text>}
       </View>
       {!!centerComponent && centerComponent}

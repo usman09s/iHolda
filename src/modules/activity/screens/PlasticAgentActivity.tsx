@@ -13,6 +13,7 @@ import Api from 'services/Api';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 import { PROFILE_PLACEHOLDER_IMG } from 'utils/constants';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 const PlasticActivityScreen = () => {
   const navigation: any = useNavigation();
@@ -36,7 +37,8 @@ const PlasticActivityScreen = () => {
 
   return (
     <View className="flex-1 bg-white px-6">
-      <Header title="Your Collections" />
+      <Header onPressLeft={navigation.goBack} leftComponent={<Icons.CrossIcon />} title="Your Collections" />
+      
       <View style={{ height: 70 }} />
 
       <View style={{ flexDirection: 'row', gap: 10, marginBottom: 50, paddingHorizontal: 10 }}>
@@ -94,7 +96,7 @@ const PlasticActivityScreen = () => {
             <Image
               style={{ height: 45, width: 45, borderRadius: 50 }}
               source={{
-                uri: item.user?.photo ?? PROFILE_PLACEHOLDER_IMG,
+                uri: item.user?.photo?.mediaId ? getImageLink(item.user?.photo?.mediaId) : PROFILE_PLACEHOLDER_IMG,
               }}
             />
 
