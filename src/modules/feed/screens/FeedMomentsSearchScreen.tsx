@@ -24,8 +24,9 @@ import Api from 'services/Api';
 import { getImageLink, getVideoLink } from 'modules/moments/helpers/imageHelpers';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
-import { ResizeMode, Video } from 'expo-av';
+import { ResizeMode } from 'expo-av';
 import Antdesign from '@expo/vector-icons/AntDesign';
+import VideoPlayer from 'expo-video-player';
 
 type Categories =
   | { slug: 'all'; name: 'All' }
@@ -59,7 +60,6 @@ const FeedMomentsSearchScreen = () => {
     const response = await fetch(url, {
       method: 'GET',
     });
-    setIsLoading(false);
     return { ...(await response.json()), status: response.status };
   }
 
@@ -72,16 +72,21 @@ const FeedMomentsSearchScreen = () => {
       (searchTxt ? '&search=' + searchTxt.toLowerCase() : '');
     console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:64 ~ search ~ url:', url);
     const res = await getData(url);
-    // console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:44 ~ search ~ res:', res);
+    console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:44 ~ search ~ res:', res);
 
     // if (!query || page === 1) setPage(prevState => prevState + 1);
-    setSearchResult(res.data?.list);
+    if (searchType.slug === 'video') setSearchResult(res.data?.metUsers);
+    if (searchType.slug === 'user') setSearchResult(res.data?.users);
+    if (searchType.slug === 'restaurant') setSearchResult(res.data?.restaurants);
+    if (searchType.slug === 'all')
+      setSearchResult([...res.data?.users?.slice(0, 3), ...res.data?.metUsers]);
+    setIsLoading(false);
+
     // if (specificPage || query) setSearchResult(res.data);
     // else setSearchResult(prevState => prevState.concat(res.data));
   };
 
   const followUnfollowUser = async (userId: string, followed: boolean, userIndex: number) => {
-    console.log("🚀 ~ file: FeedMomentsSearchScreen.tsx:84 ~ followUnfollowUser ~ followed:", followed)
     try {
       await Api.followUnFollowUseer(userId, followed);
 
@@ -135,7 +140,7 @@ const FeedMomentsSearchScreen = () => {
         <Header
           showBackIcon
           centerComponent={
-            <View className="my-4 flex-1 border border-[#cecece] ml-4 mt-7 rounded-3xl py-1 px-5 flex-row items-center">
+            <View className="my-4 flex-1 border border-[#cecece] ml-4 mt-5 rounded-3xl py-1 px-5 flex-row items-center">
               <TextInput
                 value={searchTxt}
                 onChangeText={setSearchTxt}
@@ -191,7 +196,9 @@ const FeedMomentsSearchScreen = () => {
         {isLoading ? (
           <ActivityIndicator />
         ) : (
-          <View className="flex-row" style={{ flexWrap: 'wrap' }}>
+          <View
+            className={`flex-row ${searchType.slug === 'restaurant' ? 'px-3' : ''} justify-between`}
+            style={{ flexWrap: 'wrap' }}>
             {searchResult?.map((item: any, index: number) => {
               // const isUser = item?.users && item?.users[0]?.metCount !== undefined;
               const isUser = !item?.post;
@@ -205,10 +212,10 @@ const FeedMomentsSearchScreen = () => {
                 return isRestaurant ? (
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate('RestaurentDetail');
+                      navigation.navigate('RestaurentDetail', {item});
                     }}
                     // className="flex-1 mx-2 mb-1 ml-4 bg-black w-full"
-                    className="w-full mt-2 px-3 pl-5">
+                    className={`${index === 0 ? 'w-[100%]' : 'w-[49%]'} mt-2 pl-0`}>
                     <ImageBackground
                       source={{
                         uri: getImageLink(item?.coverImage?.mediaId),
@@ -263,29 +270,34 @@ const FeedMomentsSearchScreen = () => {
                 ) : index === 0 && searchType.slug === categories[0].slug ? null : (
                   <View className="w-[44%] mx-2 mb-1 ml-4">
                     {item.post?.media[0]?.mediaType?.includes('video') ? (
-                    <Video
-                      source={{
-                        uri: getVideoLink(item.post?.media[0]?.mediaId),
-                      }}
-                      resizeMode={ResizeMode.COVER}
-                      className="rounded-md w-[100%] h-[240px]"
-                    />
-                  ) : (
-                    <Image
-                      source={{
-                        uri: getImageLink(item.post?.media[0]?.mediaId),
-                      }}
-                      resizeMode="cover"
-                      className="rounded-md w-[100%] h-[240px]"
-                    />
-                  )}
+                      <VideoPlayer
+                        videoProps={{
+                          shouldPlay: false,
+                          resizeMode: ResizeMode.COVER,
+                          source: {
+                            uri: getVideoLink(item.post?.media[0]?.mediaId),
+                          },
+                          className: 'rounded-md w-[100%] h-[240px]',
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        source={{
+                          uri: getImageLink(item.post?.media[0]?.mediaId),
+                        }}
+                        resizeMode="cover"
+                        className="rounded-md w-[100%] h-[240px]"
+                      />
+                    )}
                     <Text className={text({ type: 'r12' })}>{item.metTitle}</Text>
                     <View className="flex-row justify-between mt-1">
-                    <Text className={text({ type: 'r12' })} style={{ fontWeight: 'bold' }}>
-                      @{item?.users ? item.users[0]?.userName : ''}
-                    </Text>
-                    <Text className={text({ type: 'r12' })}>{item.post?.likes?.length} likes</Text>
-                  </View>
+                      <Text className={text({ type: 'r12' })} style={{ fontWeight: 'bold' }}>
+                        @{item?.users ? item.users[0]?.userName : ''}
+                      </Text>
+                      <Text className={text({ type: 'r12' })}>
+                        {item.post?.likes?.length} likes
+                      </Text>
+                    </View>
                   </View>
                 );
             })}

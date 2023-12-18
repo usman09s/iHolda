@@ -17,7 +17,7 @@ import Api from 'services/Api';
 import { useQuery } from 'react-query';
 import Work from '../containers/Work';
 
-const ProfileScreen = ({ route }: any) => {
+const ProfileScreen = ({ route, navigation }: any) => {
   const activeY = useSharedValue(0);
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
@@ -25,8 +25,9 @@ const ProfileScreen = ({ route }: any) => {
   const invitedBy = user?.invitedBy?.userName;
   const { username, avatar, joinedMonthAndYear } = useSelector(userCommonInformationSelector);
   const isCurrentUser = route.params?.isCurrentUser ?? true;
-  const dispatch = useAppDispatch();
-  const { data, refetch } = useQuery('currentUserProfile', Api.getUserProfile0, {
+  // const dispatch = useAppDispatch();
+
+  const { data } = useQuery('currentUserProfile', Api.getUserProfile0, {
     refetchOnMount: false,
   });
 
@@ -38,9 +39,12 @@ const ProfileScreen = ({ route }: any) => {
     activeY.value = event.contentOffset.y <= 0 ? 0 : event.contentOffset.y;
   });
 
+  data?.data.user
+
   const RenderedComponent =
     [
       <Profile
+        onPressMet={(data: any) => navigation.navigate('FeedDetailView', { item: data })}
         followers={data?.data.user?.followers ? data?.data.user?.followers?.length.toString() : '0'}
         impression="0"
         metPeople={user?.metCount ? user?.metCount?.toString() : '0'}
@@ -72,14 +76,14 @@ const ProfileScreen = ({ route }: any) => {
             verified={user?.basicVerification ?? false}
             top={top}
             isCurrentUser={isCurrentUser}
-            avatar={avatar?.mediaId ?? ""}
+            avatar={avatar?.mediaId ?? ''}
             activeY={activeY}
             username={username}
             activeIndex={index}
             key={'profileHeader'}
             isAgent={user?.isPlasticAgent}
-            invitedBy={invitedBy ?? ""}
-            hederThumbnail={avatar?.mediaId ?? ""}
+            invitedBy={invitedBy ?? ''}
+            hederThumbnail={avatar?.mediaId ?? ''}
             monthAndYear={joinedMonthAndYear}
             onPressTabItem={onPressTabItem}
           />

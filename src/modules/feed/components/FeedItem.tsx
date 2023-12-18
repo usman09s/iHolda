@@ -24,12 +24,13 @@ import { useMutation } from 'react-query';
 import Api from 'services/Api';
 import Commentsui from './CommentsUi';
 import { getImageLink, getVideoLink } from 'modules/moments/helpers/imageHelpers';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import MomentCameraHeader from 'modules/moments/components/MomentCameraHeader';
-import { ResizeMode, Video } from 'expo-av';
+import { ResizeMode,  } from 'expo-av';
 import AppVideo from 'components/AppVideo';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
+import VideoPlayer from 'expo-video-player';
 
 interface Props {
   image: string;
@@ -57,6 +58,8 @@ interface Props {
   userId2: string;
   onPressLike: (index: number) => void;
   index: number;
+  currentIndex: number;
+  isFocused: boolean;
 }
 
 const FeedItem = ({
@@ -82,6 +85,8 @@ const FeedItem = ({
   userId2,
   onPressLike,
   index,
+  currentIndex,
+  isFocused
 }: Props) => {
   const { top } = useSafeAreaInsets();
   const { mutate } = useMutation(Api.sharePost);
@@ -93,6 +98,7 @@ const FeedItem = ({
   const [activeIndex0, setActiveIndex0] = useState(0);
 
   const { navigate, goBack } = useAppNavigation<NavigationProp<any>>();
+  const videoRef = useRef(null);
 
   return (
     <View style={{ flex: 1 }}>
@@ -131,26 +137,20 @@ const FeedItem = ({
               );
             }}
             renderItem={({ item }) => {
+              // const videoLink = getVideoLink(item.mediaId);
               return (
                 <TouchableWithoutFeedback
                   onPress={() =>
                     !gotoDetailOnPress ? null : navigate('FeedDetailView', { item: data })
                   }>
                   {item.mediaType.includes('video') ? (
-                    <AppVideo
-                      // useNativeControls
-                      isLooping
-                      //TODO: uncomment this:
-                      // shouldPlay={true}
-                      resizeMode={ResizeMode.CONTAIN}
-                      // className="h-full w-full"
-                      style={{
-                        width: canGoBack() ? wW - 10 : wW,
-                        height: Dimensions.get('screen').height,
-                        // marginTop: 10
-                      }}
-                      source={{
-                        uri: getVideoLink(item.mediaId),
+                    <VideoPlayer
+                      videoProps={{
+                        shouldPlay: isFocused && index === currentIndex,
+                        resizeMode: ResizeMode.CONTAIN,
+                        source: {
+                          uri: getVideoLink(item.mediaId),
+                        },
                       }}
                     />
                   ) : (

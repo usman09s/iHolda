@@ -11,7 +11,7 @@ import { units } from 'utils/helpers';
 
 const FeedHeader = () => {
   const { top } = useSafeAreaInsets();
-  const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
+  const { navigate } : any= useAppNavigation<NavigationProp<AuthStackParamList>>();
 
   return (
     <View className="flex-row items-center justify-between absolute z-50 pt-5">

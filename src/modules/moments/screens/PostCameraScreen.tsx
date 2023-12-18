@@ -42,7 +42,10 @@ const PostCameraScreen = () => {
   const [__, requestImagePickerPermission] = ImagePicker.useCameraPermissions();
   const { ratio, cameraRef, isRecording, setMediaType, recordTimeCounter, onPressRecordButton } =
     useSelfieActions();
+  const isRecordingRef = useRef(isRecording);
+  isRecordingRef.current = isRecording;
   const dispatch = useDispatch();
+  const renderCount = useRef(0);
 
   const cameraToggle = () => {
     setCameraType(value => (value === CameraType.front ? CameraType.back : CameraType.front));
@@ -110,15 +113,22 @@ const PostCameraScreen = () => {
     console.log('Recording stopped and stored at', uri);
   }
 
+  
   useEffect(() => {
-    console.log(moments.length);
-    if (!moments.length) return;
+    renderCount.current += 1;
+    console.log('Component has rendered:', renderCount.current, 'times');
+  });
+
+  
+  useEffect(() => {
+    console.log('🚀 ~ moments.length:', moments.length);
+    if (!moments.length || renderCount.current === 1) return;
 
     handleProceed();
   }, [moments]);
 
   useEffect(() => {
-    console.log(pickedImage);
+    console.log('🚀 ~ pickedImage:', pickedImage);
     if (!pickedImage) return;
 
     dispatch(
@@ -155,9 +165,11 @@ const PostCameraScreen = () => {
     getLastMediaFromGallery();
 
     return () => {
+      // if (isRecordingRef.current) onPressRecordButton();
       dispatch(resetState());
     };
   }, []);
+  
 
   return (
     <>

@@ -14,16 +14,20 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 import { PROFILE_PLACEHOLDER_IMG } from 'utils/constants';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
+import { useEffect, useState } from 'react';
+import socketService from 'services/Socket';
 
 const PlasticActivityScreen = () => {
   const navigation: any = useNavigation();
   const { user } = useSelector(userSelector);
+  const [upcomingDropOff, setUpcomingDropOff] = useState<{ data: any[] } | null>(null);
+  const [plasticCount, setPlasticCount] = useState({ todaysCount: 0, totalCount: 0 });
 
-  const { data: plasticCount, isLoading: plasticCountLoading } = useQuery('agentcount', () =>
-    user?._id ? Api.checkUserIsAgent(user?._id) : null,
-  );
+  const _ = useQuery('agentcount', () => (user?._id ? Api.checkUserIsAgent(user?._id) : null), {
+    onSuccess: data => setPlasticCount(data),
+  });
 
-  const { data: upcomingDropOff, isLoading } = useQuery('upcommingDropOff', Api.getPlasticsFuture);
+  // const { data: upcomingDropOff, isLoading } = useQuery('upcommingDropOff', Api.getPlasticsFuture);
 
   const getPlasticCounts = (plastics: any) => {
     let count = 0;
@@ -35,10 +39,34 @@ const PlasticActivityScreen = () => {
     return count;
   };
 
+  const onUpcomingPlastics = (data: any) => setUpcomingDropOff(data.data);
+
+  const onNewPlastic = (data: any) => {
+    setUpcomingDropOff(prevDropOffs => ({ data: [data.plastic, ...(prevDropOffs?.data ?? [])] }));
+    setPlasticCount(data?.plasticCount);
+  };
+  useEffect(() => {
+    socketService.emit('getUpcomingPlastics', {
+      userId: user?._id,
+    });
+
+    socketService.on(`getUpcomingPlastics/${user?._id}`, onUpcomingPlastics);
+    socketService.on(`newPlastic/${user?._id}`, onNewPlastic);
+
+    return () => {
+      socketService.removeListener(`getUpcomingPlastics/${user?._id}`, onUpcomingPlastics);
+      socketService.removeListener(`newPlastic/${user?._id}`, onNewPlastic);
+    };
+  }, []);
+
   return (
     <View className="flex-1 bg-white px-6">
-      <Header onPressLeft={navigation.goBack} leftComponent={<Icons.CrossIcon />} title="Your Collections" />
-      
+      <Header
+        onPressLeft={navigation.goBack}
+        leftComponent={<Icons.CrossIcon />}
+        title="Your Collections"
+      />
+
       <View style={{ height: 70 }} />
 
       <View style={{ flexDirection: 'row', gap: 10, marginBottom: 50, paddingHorizontal: 10 }}>
@@ -55,7 +83,7 @@ const PlasticActivityScreen = () => {
           }}>
           <Text style={{ fontSize: 18, color: 'black' }}>Total</Text>
           <Text style={{ fontSize: 21, color: '#595959', fontWeight: '800' }}>
-            {!plasticCountLoading && !plasticCount ? 0 : plasticCount?.totalCount}
+            {plasticCount?.totalCount}
           </Text>
         </View>
         <View
@@ -71,7 +99,7 @@ const PlasticActivityScreen = () => {
           }}>
           <Text style={{ fontSize: 18, color: 'black' }}>Today</Text>
           <Text style={{ fontSize: 21, color: '#595959', fontWeight: '800' }}>
-            {!plasticCountLoading && !plasticCount ? 0 : plasticCount?.todaysCount}
+            {plasticCount?.todaysCount}
           </Text>
         </View>
       </View>
@@ -96,7 +124,9 @@ const PlasticActivityScreen = () => {
             <Image
               style={{ height: 45, width: 45, borderRadius: 50 }}
               source={{
-                uri: item.user?.photo?.mediaId ? getImageLink(item.user?.photo?.mediaId) : PROFILE_PLACEHOLDER_IMG,
+                uri: item.user?.photo?.mediaId
+                  ? getImageLink(item.user?.photo?.mediaId)
+                  : PROFILE_PLACEHOLDER_IMG,
               }}
             />
 

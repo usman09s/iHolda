@@ -15,18 +15,19 @@ import Overview from './Overview';
 import Menu from './Menu';
 import Reviews from './Reviews';
 import Header from 'components/Header/Header';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 const RestaurentDetail = ({ route }: any) => {
   const activeY = useSharedValue(0);
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
   const { user } = useSelector(userSelector);
-  const invitedBy = user.invitedBy?.userName;
-  const avatar =
-    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D';
+  const invitedBy = user?.invitedBy?.userName;
   const { username, joinedMonthAndYear } = useSelector(userCommonInformationSelector);
   const isCurrentUser = route.params?.isCurrentUser ?? true;
   console.log(route.params, 'jofjeofioh');
+  const restaurantData = route.params?.item;
+  const avatar = getImageLink(restaurantData.coverImage.mediaId);
 
   const onPressTabItem = (value: number) => () => {
     setIndex(value);
@@ -37,18 +38,15 @@ const RestaurentDetail = ({ route }: any) => {
   });
 
   const RenderedComponent =
-    [
-      <Overview followers="0" impression="0" metPeople="0" key={0} />,
-      <Menu key={1} />,
-      <Reviews key={2} />,
-    ]?.[index] || [];
+    [<Overview data={restaurantData} key={0} />, <Menu key={1} />, <Reviews key={2} />]?.[index] ||
+    [];
 
   return (
     <View className="flex-1 bg-white">
-        <View style={{ position: "absolute", top:0, left: 30}}>
-          <Header backIconColor='#FFFF' showBackIcon />
-        </View>
-      
+      <View style={{ position: 'absolute', top: 0, left: 30 }}>
+        <Header backIconColor="#FFFF" showBackIcon />
+      </View>
+
       <Animated.FlatList
         numColumns={3}
         data={[RenderedComponent]}
@@ -67,14 +65,13 @@ const RestaurentDetail = ({ route }: any) => {
             username={username}
             activeIndex={index}
             key={'restaurantHeader'}
-            invitedBy={invitedBy}
+            invitedBy={invitedBy ?? ""}
             hederThumbnail={avatar}
             monthAndYear={joinedMonthAndYear}
             onPressTabItem={onPressTabItem}
           />
         }
       />
-      
     </View>
   );
 };
