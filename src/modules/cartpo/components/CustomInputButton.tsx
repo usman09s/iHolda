@@ -8,7 +8,7 @@ const CustomInputButton = ({ text, placeholder, onPress, index }) => {
       {index && <Text className="text-lg font-normal">{index}</Text>}
       <TouchableOpacity
         onPress={onPress}
-        className="bg-neutral-200 py-3 rounded-full flex-row items-center pr-3 pl-5">
+        className="bg-neutral-200 py-3 rounded-full flex-row items-center pr-3 pl-5 ml-2.5">
         <View className={`flex-1 ${text ? 'justify-center' : 'justify-start'}`}>
           {text ? (
             <Text className="text-base text-black text-center">{text}</Text>

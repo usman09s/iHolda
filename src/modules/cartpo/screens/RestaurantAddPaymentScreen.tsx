@@ -9,22 +9,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   deletePaymentAccount,
   selectCartpoSettings,
+  selectSelectedPayment,
   setCartpoSettings,
 } from 'store/cartpo/calculateSlice';
 
 export const RestaurantAddPaymentScreen = ({ route }: any) => {
   const { handleAddPayment, handleDeletePayment } = useCartpoActions();
   const settingsData = useSelector(selectCartpoSettings);
-  const accountData = route?.params?.accountData;
-  const accountValue = String(accountData?.account || '');
+  const selectPayment = useSelector(selectSelectedPayment);
+  console.log(selectPayment);
+  console.log(settingsData.setting.paymentMethod);
   const initialValues = {
-    accountType: accountData?.accountType || '',
-    account: accountValue || '',
+    accountType: selectPayment?.bank || '',
+    account: selectPayment?.account?.toString() || '',
   };
   const dispatch = useDispatch();
   const deletePaymentAccountHandler = () => {
     if (settingsData && settingsData.setting && settingsData.setting.paymentMethod) {
-      dispatch(deletePaymentAccount(parseInt(accountValue)));
+      dispatch(deletePaymentAccount(selectPayment.account));
       handleDeletePayment();
     }
   };

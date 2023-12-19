@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import {
   selectPhoneNumber,
   setCartpoSettings,
+  setDiscount,
   setPaymentAccount,
   setPhoneNumber,
   setUserData,
@@ -16,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { VerifyOTPMessage } from 'types/AuthTypes';
 import { selectCartpoSettings } from '../../../store/cartpo/calculateSlice';
 import Toast from 'react-native-toast-message';
+import wretch from 'wretch';
 
 export const useCartpoActions = () => {
   const navigation = useNavigation();
@@ -51,8 +53,9 @@ export const useCartpoActions = () => {
   };
 
   const verifyOtp = async (values: any) => {
+    console.log(values);
     try {
-      const result = await Api.verifyOtp(values.otp); // Replace with your actual API call
+      const result = await Api.verifyOtp(values.otp);
       if (result.message === VerifyOTPMessage.OTP_VERIFIED_USER_NOT_REGISTERED) {
         navigation.navigate('CreatePin');
       } else {
@@ -94,7 +97,23 @@ export const useCartpoActions = () => {
         console.log('Result:', result);
       }
     } catch (error) {
-      console.error('Error:', error.message);
+      const errorText = JSON.parse(error.message);
+      if (errorText.message === 'User role mismatched') {
+        Toast.show({
+          type: 'error',
+          text1: 'Please login with a Merchant Account',
+        });
+      } else if (errorText.message === 'Invalid password') {
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid password',
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Unexpected error occurred',
+        });
+      }
     }
   };
 
@@ -159,10 +178,49 @@ export const useCartpoActions = () => {
 
     const result = await Api.updateCartpoSettings({
       paymentMethod: [...settingsData.setting.paymentMethod, paymentMethod],
+      discounts: [...settingsData.setting.discounts],
     });
     console.log(result);
     dispatch(setPaymentAccount(result.data.paymentMethod));
+    Toast.show({
+      type: 'success',
+      text1: 'Payment Account Added',
+    });
     navigation.goBack();
+  };
+
+  const handleAddDiscount = async values => {
+    console.log(values);
+    const addDiscount = {
+      percentage: values.discountPercentage,
+      condition: values.discountCondition,
+      people: values.minimumUsers,
+    };
+
+    const result = await Api.updateCartpoSettings({
+      paymentMethod: [...settingsData.setting.paymentMethod],
+      discounts: [...settingsData.setting.discounts, addDiscount],
+    });
+    console.log('API RESPONSE: ', result);
+    dispatch(setDiscount(result.data.discounts));
+    Toast.show({
+      type: 'success',
+      text1: 'Discount Added',
+    });
+    navigation.goBack();
+  };
+
+  const handleDeleteDiscount = async () => {
+    const result = await Api.updateCartpoSettings({
+      paymentMethod: [...settingsData.setting.paymentMethod],
+      discounts: [...settingsData.setting.discounts],
+    });
+    navigation.goBack();
+    console.log(result);
+    Toast.show({
+      type: 'success',
+      text1: 'Discount Deleted',
+    });
   };
 
   const handleDeletePayment = async () => {
@@ -194,37 +252,60 @@ export const useCartpoActions = () => {
   };
 
   const handleSettingsSubmit = async values => {
+    console.log(values);
     const formData = new FormData();
-    formData.append('name', values.name || 'Restaurant Name');
-    formData.append('description', values.about || 'this is description');
-    formData.append('opening[days][0]', values.openingDays0 || 'Mon');
-    formData.append('opening[days][1]', values.openingDays1 || 'Fri');
-    formData.append('opening[from]', values.openHours || '8:00 AM');
-    formData.append('opening[to]', values.closeHours || '8:00 PM');
-    formData.append('address', cityCountry || 'abcd street');
-    formData.append('location[type]', settingsData.location.type);
-    formData.append('location[coordinates][0]', settingsData.location.coordinates[0]);
-    formData.append('location[coordinates][1]', settingsData.location.coordinates[1]);
-    if (values.coverImage) {
-      formData.append('coverImage', values.coverImage);
+    formData.append('name', values.name);
+    formData.append('description', values.about);
+    formData.append('opening[days][0]', values.selectedDays[0]);
+    formData.append('opening[days][1]', values.selectedDays[1]);
+    formData.append('opening[from]', values.openHours);
+    formData.append('opening[to]', values.closeHours);
+    formData.append('address', cityCountry);
+    formData.append('phone', values.phoneNumber);
+    if (settingsData && settingsData.setting && settingsData.setting.shop) {
+      formData.append('location[type]', settingsData.setting.shop.location.type);
+    } else {
+      console.error('Error: settingsData.location.type is undefined');
+      return;
     }
-    if (values.featuredImages) {
-      for (let i = 0; i < values.featuredImages.length; i++) {
-        formData.append(`photos[${i}][mediaId]`, values.featuredImages[i].mediaId);
-        formData.append(`photos[${i}][mediaType]`, 'jpeg');
-      }
+    if (
+      settingsData &&
+      settingsData.setting.shop &&
+      Array.isArray(settingsData.setting.shop.location.coordinates) &&
+      settingsData.setting.shop.location.coordinates.length === 2
+    ) {
+      formData.append(
+        'location[coordinates][0]',
+        settingsData.setting.shop.location.coordinates[0],
+      );
+      formData.append(
+        'location[coordinates][1]',
+        settingsData.setting.shop.location.coordinates[1],
+      );
+    } else {
+      console.error('Error: Invalid or missing settingsData.location.coordinates');
+      return;
     }
-    try {
-      const response = await fetch('http://ihold.yameenyousuf.com/api/cartpo/shop', {
-        method: 'POST',
-        body: formData,
-      });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Success:', data);
+    // if (values.coverImage && values.coverImage.startsWith('file')) {
+    //   formData.append('coverImage', values.coverImage);
+    // }
+    // if (values.featuredImages) {
+    //   for (let i = 0; i < values.featuredImages.length; i++) {
+    //     if (values.featuredImages[i].mediaId) {
+    //       formData.append(`photos[${i}][mediaId]`, values.featuredImages[i].mediaId);
+    //       formData.append(`photos[${i}][mediaType]`, 'jpeg');
+    //     }
+    //   }
+    // }
+    console.log(formData, 'FORM DATA');
+
+    try {
+      const response = await wretch('http://ihold.yameenyousuf.com/api/cartpo/shop')
+        .post(formData)
+        .json();
+
+      console.log('Success:', response);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -244,5 +325,7 @@ export const useCartpoActions = () => {
     handleDeletePayment,
     handleGetWallet,
     handleWithdraw,
+    handleAddDiscount,
+    handleDeleteDiscount,
   };
 };

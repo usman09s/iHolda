@@ -9,8 +9,12 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import CustomDayPicker from '../components/CustomDayPicker';
 import SelectDropdown from 'react-native-select-dropdown';
+import Api from 'services/Api';
+import { useSelector } from 'react-redux';
+import { selectCartpoSettings } from 'store/cartpo/calculateSlice';
 
-export const RestaurantAddMenuScreen = () => {
+export const RestaurantAddMenuScreen = ({ navigation }: any) => {
+  const restaurantData = useSelector(selectCartpoSettings);
   const initialValues = {
     photo: '',
     itemName: '',
@@ -20,8 +24,23 @@ export const RestaurantAddMenuScreen = () => {
     timeAvailable: '',
   };
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
+    console.log(restaurantData.setting.shop._id);
     console.log(values);
+    const formData = new FormData();
+    formData.append('name', values.itemName);
+    formData.append('price', values.price);
+    formData.append('daysAvailable[0]', 'Monday');
+    formData.append('timeAvailable[0]', values.timeAvailable);
+    formData.append('category', values.category);
+    formData.append('photos[0][mediaId]', '49c7fefd-df2f-436e-f480-c84c1c824400');
+    formData.append('photos[0][mediaType]', 'image/jpg');
+    formData.append('photos', values.photo);
+    formData.append('shop', restaurantData.setting.shop._id);
+    console.log('Form Data:', formData);
+    const result = Api.updateCartpoMenu(formData);
+    console.log(result);
+    navigation.goBack();
   };
 
   const pickImage = async (setFieldValue: any, fieldName: any, values: any) => {
@@ -54,8 +73,10 @@ export const RestaurantAddMenuScreen = () => {
                 <Image source={{ uri: values.photo }} className="w-full h-36 rounded-xl" />
               ) : (
                 <View className="items-center">
-                  <Icon name="plus" />
-                  <Text>Add Cover Image</Text>
+                  <View className="bg-neutral-200 rounded-full p-1">
+                    <Icon name="plus" color="black" size={20} />
+                  </View>
+                  <Text className="text-[14px] font-bold">Add photo</Text>
                 </View>
               )}
             </TouchableOpacity>
@@ -81,7 +102,7 @@ export const RestaurantAddMenuScreen = () => {
               keyboardType={'numeric'}
             />
             <View className="w-full">
-              <Text>Category</Text>
+              <Text className="mb-2">Category</Text>
               <SelectDropdown
                 data={['Mains', 'Sides', 'Drinks', 'Extras']}
                 placeholder="Main"
@@ -102,6 +123,7 @@ export const RestaurantAddMenuScreen = () => {
                 rowTextForSelection={(item: string, index: number) => {
                   return item;
                 }}
+                onSelect={item => setFieldValue('category', item)}
                 renderDropdownIcon={() => {
                   return (
                     <View style={{ justifyContent: 'flex-end', paddingRight: 20, paddingLeft: 0 }}>
@@ -112,21 +134,22 @@ export const RestaurantAddMenuScreen = () => {
                 dropdownIconPosition="right"
               />
             </View>
-            <View>
-              <Text>Days Available</Text>
+            <View className="mt-2">
+              <Text className="my-2 text-[15px]">Days Available</Text>
               <CustomDayPicker
                 itemsArray={['M', 'T', 'W', 'T', 'F', 'S', 'S']}
-                multiselect={true}
-                onDaySelect={() => console.log('Something')}
+                multiselect={false}
+                onDaySelect={index => setFieldValue('daysAvailable', index[0])}
               />
             </View>
             <View>
-              <Text>Time Available</Text>
+              <Text className="my-3 text-[15px]">Time Available</Text>
               <CustomDayPicker
-                itemsArray={['All day', 'Morning', 'Afternoon']}
-                onDaySelect={() => console.log('Something')}
+                itemsArray={['All day', 'Morning', 'Afternoon', 'Evening']}
+                onDaySelect={index => setFieldValue('timeAvailable', index[0])}
                 customButtonContainer={'w-20'}
                 customClassContainer={'justify-start gap-3'}
+                multiselect={false}
               />
             </View>
             <View className="items-center mb-12">

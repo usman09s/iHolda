@@ -17,7 +17,6 @@ export const SocialMediaScreen = () => {
   const [activeLink, setActiveLink] = useState(null);
   const dispatch = useDispatch();
   const userData = useSelector(selectUser);
-  console.log(userData);
   const { handleUpdateSetting } = useSettingActions();
 
   const toggleLinkInput = index => {
@@ -50,54 +49,37 @@ export const SocialMediaScreen = () => {
     });
   };
 
-  const openSocialMediaApp = platform => {
-    const socialLink = userData.socialLinks.find(link => link.platform === platform);
+  const openSocialMediaApp = (platform, socialLink) => {
+    let webURL;
+    const isFullURL = socialLink.startsWith('http') || socialLink.startsWith('www');
 
-    if (!socialLink) {
-      // Social media link not found, handle this case as needed
-      return;
-    }
-
-    if (socialLink.link === '') {
-      // No link is provided for this social media, handle this case as needed
-      return;
-    }
-    let appURL;
     switch (platform) {
       case 'facebook':
-        appURL = `fb://profile/${socialLink.link}`;
+        webURL = isFullURL ? socialLink.link : `https://www.facebook.com/${socialLink}`;
         break;
       case 'instagram':
-        appURL = `instagram://user?username=${socialLink.link}`;
-        break;
-      case 'tiktok':
-        appURL = `tiktok://user?username=${socialLink.link}`;
-        break;
-      case 'youtube':
-        appURL = `vnd.youtube://${socialLink.link}`;
+        webURL = isFullURL ? socialLink.link : `https://www.instagram.com/${socialLink}`;
         break;
       case 'twitter':
-        appURL = `twitter://user?screen_name=${socialLink.link}`;
+        webURL = isFullURL ? socialLink.link : `https://twitter.com/${socialLink}`;
+        break;
+      case 'tiktok':
+        webURL = isFullURL ? socialLink.link : `https://www.tiktok.com/@${socialLink}`;
+        break;
+      case 'youtube':
+        webURL = isFullURL ? socialLink.link : `https://www.youtube.com/${socialLink}`;
         break;
       case 'website':
-        appURL = socialLink.link;
+        webURL = isFullURL ? socialLink.link : `http://${socialLink}`;
         break;
       default:
-        appURL = socialLink.link;
-        break;
+        console.error('Unsupported platform:', platform);
+        return;
     }
 
-    Linking.canOpenURL(appURL)
-      .then(supported => {
-        if (supported) {
-          Linking.openURL(appURL);
-        } else {
-          Linking.openURL(socialLink.link);
-        }
-      })
-      .catch(error => {
-        console.error('An error occurred while opening the social media app:', error);
-      });
+    Linking.openURL(webURL).catch(err => {
+      console.error('An error occurred while opening the link:', err);
+    });
   };
 
   const handleLinkAccount = async index => {
@@ -117,14 +99,12 @@ export const SocialMediaScreen = () => {
         link: i === index ? link : socialLink.link,
       })),
     };
-    dispatch(setUser(updatedUserData));
-    console.log(`Link Account pressed for index ${index}, link: ${link}`);
     setIsTextInputVisible(prevVisible => {
       const newVisible = [...prevVisible];
       newVisible[index] = false;
       return newVisible;
     });
-    await handleUpdateSetting();
+    await handleUpdateSetting(updatedUserData);
     Toast.show({
       type: 'success',
       text1: 'Link updated successfully',
@@ -132,20 +112,19 @@ export const SocialMediaScreen = () => {
     setActiveLink(null);
   };
 
-  const handleDeleteLink = async index => {
+  const handleDeleteLink = async platform => {
+    const updatedSocialLinks = userData.socialLinks.map(link =>
+      link.platform === platform ? { ...link, link: '' } : link,
+    );
     const updatedUserData = {
       ...userData,
-      socialLinks: userData.socialLinks.map((socialLink, i) => ({
-        ...socialLink,
-        link: i === index ? '' : socialLink.link,
-      })),
+      socialLinks: updatedSocialLinks,
     };
-    dispatch(setUser(updatedUserData));
-    await handleUpdateSetting();
     Toast.show({
       type: 'success',
       text1: 'Link deleted successfully',
     });
+    handleUpdateSetting(updatedUserData);
   };
 
   return (
@@ -185,19 +164,18 @@ export const SocialMediaScreen = () => {
                         <FontAwesome5 size={20} name="check-circle" />
                       </TouchableOpacity>
                     </View>
-                  ) : // Check if a link exists for the current platform and show delete icon if available
-                  socialLink.link !== '' ? (
+                  ) : socialLink.link !== '' ? (
                     <View className="flex-row items-center">
                       <TouchableOpacity
                         className="justify-center"
-                        onPress={() => openSocialMediaApp(socialLink.platform)}>
+                        onPress={() => openSocialMediaApp(socialLink.platform, socialLink.link)}>
                         <FontAwesome5
                           size={20}
                           name={socialLink.platform === 'website' ? 'globe' : socialLink.platform}
                         />
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={() => handleDeleteLink(index)} // Implement delete link logic
+                        onPress={() => handleDeleteLink(socialLink.platform)}
                         style={{ justifyContent: 'center', width: 'auto', paddingLeft: 7 }}>
                         <DeleteLinkIcon />
                       </TouchableOpacity>

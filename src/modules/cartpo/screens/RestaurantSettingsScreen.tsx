@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomHeader from 'components/Header/CustomHeader';
 import { Formik } from 'formik';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
@@ -13,6 +13,7 @@ import { useCartpoActions } from '../hooks/useCartpoActions';
 import CustomInputButton from '../components/CustomInputButton';
 import { useSelector } from 'react-redux';
 import { selectCartpoSettings } from 'store/cartpo/calculateSlice';
+import { getImageLink } from '../../moments/helpers/imageHelpers';
 
 export const RestaurantSettingsScreen = () => {
   const { handleSettingsSubmit, handleLocationPress, cityCountry } = useCartpoActions();
@@ -21,18 +22,17 @@ export const RestaurantSettingsScreen = () => {
   const [isPickerShow, setIsPickerShow] = useState(false);
   const [pickerMode, setPickerMode] = useState('open');
   const settingsData = useSelector(selectCartpoSettings);
-  console.log(settingsData, 'lplplplpl');
-
+  console.log(settingsData.setting.shop);
   const initialValues = {
-    name: '',
-    about: '',
-    phoneNumber: '',
-    address: '',
-    openHours: '',
-    closeHours: '',
-    coverImage: '',
-    featuredImages: [],
-    selectedDays: [],
+    name: settingsData.setting.shop.name || '',
+    about: settingsData.setting.shop.description || '',
+    phoneNumber: settingsData.setting.shop.phone || '',
+    address: settingsData.setting.shop.address || '',
+    openHours: settingsData.setting.shop.opening.from || '',
+    closeHours: settingsData.setting.shop.opening.to || '',
+    coverImage: settingsData.setting.shop.coverImage.mediaId || '',
+    featuredImages: settingsData.setting.shop.photos || [],
+    selectedDays: settingsData.setting.shop.opening.days || [],
   };
 
   const pickImage = async (setFieldValue: any, fieldName: any, values: any) => {
@@ -46,7 +46,9 @@ export const RestaurantSettingsScreen = () => {
     if (!result.canceled) {
       setFieldValue(
         fieldName,
-        fieldName === 'coverImage' ? result.uri : [...values.featuredImages, result.uri],
+        fieldName === 'coverImage'
+          ? result.assets[0].uri
+          : [...values.featuredImages, result.assets[0].uri],
       );
     }
   };
@@ -72,8 +74,7 @@ export const RestaurantSettingsScreen = () => {
     const hours = time.getHours();
     const minutes = time.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
-
+    const formattedHours = hours % 12 || 12;
     return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
   };
 
@@ -88,7 +89,7 @@ export const RestaurantSettingsScreen = () => {
         validateOnChange={false}
         onSubmit={handleSettingsSubmit}>
         {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
-          <View className="my-12 flex-1">
+          <View className="my-12">
             <CustomReferenceInput
               label="Business name"
               placeholder="e.g abc business"
@@ -128,9 +129,9 @@ export const RestaurantSettingsScreen = () => {
               />
             </View>
             <TouchableOpacity>
+              <Text>Open hours</Text>
               <CustomDayPicker
                 itemsArray={['M', 'T', 'W', 'T', 'F', 'S', 'S']}
-                multiSelect={true}
                 onDaySelect={selectedDays => setFieldValue('selectedDays', selectedDays)}
               />
             </TouchableOpacity>
@@ -148,28 +149,49 @@ export const RestaurantSettingsScreen = () => {
               </TouchableOpacity>
             </View>
             <View className="my-4">
-              <Text className="text-[13px] font-normal mb-2">Cover Image</Text>
               <TouchableOpacity
                 className="border-dashed border-2 border-gray-300 rounded-xl h-44 justify-center items-center"
                 onPress={() => pickImage(setFieldValue, 'coverImage', values)}>
                 {values.coverImage ? (
-                  <Image source={{ uri: values.coverImage }} className="w-full h-44" />
+                  <Image
+                    source={{
+                      uri: values.coverImage.startsWith('file')
+                        ? values.coverImage
+                        : getImageLink(values.coverImage),
+                    }}
+                    className="w-full h-44 rounded-xl"
+                  />
                 ) : (
                   <View className="items-center">
                     <Icon name="plus" />
-                    <Text>Add Cover Image</Text>
+                    <Text>Add Cover image</Text>
                   </View>
                 )}
               </TouchableOpacity>
               <Text className="text-[13px] font-normal mt-4 mb-2">
-                Add featured images (Optional)
+                Add featured images{' '}
+                <Text className="italic text-[9px] text-red-500">(Optional)</Text>
               </Text>
               <View className="flex-row justify-between my-4">
-                {values.featuredImages.map((image, index) => (
-                  <View className="border-dashed border border-gray-300 rounded-xl h-16 items-center justify-center flex-1 mx-1">
-                    <Image key={index} source={{ uri: image }} className="w-full h-16" />
-                  </View>
-                ))}
+                {values.featuredImages.map((image, index) => {
+                  console.log(image, 'lplplp');
+                  return (
+                    <TouchableOpacity
+                      className="border-dashed border border-gray-300 rounded-xl h-16 items-center justify-center flex-1 mx-1"
+                      onPress={() => pickImage(setFieldValue, 'featuredImages', values)}>
+                      <Image
+                        key={index}
+                        source={{
+                          uri:
+                            !image.mediaId && image.startsWith('file')
+                              ? image
+                              : getImageLink(image.mediaId),
+                        }}
+                        className="w-full h-16 rounded-xl"
+                      />
+                    </TouchableOpacity>
+                  );
+                })}
                 {values.featuredImages.length < 4 &&
                   [...Array(4 - values.featuredImages.length)].map((_, index) => (
                     <TouchableOpacity
@@ -181,7 +203,7 @@ export const RestaurantSettingsScreen = () => {
                   ))}
               </View>
             </View>
-            <View className="items-center mt-20">
+            <View className="items-center mt-8">
               <CustomRestaurantButton title={'Save'} onPress={handleSubmit} />
             </View>
             {isPickerShow && (
@@ -199,3 +221,6 @@ export const RestaurantSettingsScreen = () => {
     </ScrollView>
   );
 };
+function wretch(arg0: string) {
+  throw new Error('Function not implemented.');
+}
