@@ -16,7 +16,7 @@ export const ProfileScreen = ({ navigation }: any) => {
     handleGetWallet();
   }, []);
 
-  const handleOptionSelect = option => {
+  const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
   };
 

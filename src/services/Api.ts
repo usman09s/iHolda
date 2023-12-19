@@ -967,7 +967,23 @@ class ApiClass {
       .json(result => result);
   getMets = async (userId?: string): Promise<{ data: any }> =>
     await this.externalApi
-      .url('met/users' + userId ? `&userId=${userId}` : '')
+      .url(`met/users${userId ? `?userId=${userId}` : ''}`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getRestaurantMenu = async (id: string): Promise<{ data: any }> =>
+    await this.externalApi
+      .url(`cartpo/shop/menu/${id}`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
+  getMets0 = async (): Promise<{ data: any }> =>
+    await this.externalApi
+      .url('met/users')
       .headers({
         ...this._getAuthorization(this.token),
       })

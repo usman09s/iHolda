@@ -1,14 +1,66 @@
-import React, { useState } from 'react';
-import { FlatList, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import Antdesign from '@expo/vector-icons/AntDesign';
 
 import { text } from 'theme/text';
+import { useFocusEffect } from '@react-navigation/native';
+import Api from 'services/Api';
+import { Review } from '../types';
+import VideoPlayer from 'expo-video-player';
+import { getImageLink, getVideoLink } from 'modules/moments/helpers/imageHelpers';
+import { ResizeMode } from 'expo-av';
 
-export default function Reviews() {
-  const [reviewType, setReviewType] = useState<string>('All');
+type ReviewType = 'all' | 'service' | 'food' | 'hygiene';
 
-  const reviewsTypes = ['All', 'Service', 'Food', 'Hygiene'];
+export default function Reviews({ id = '' }) {
+  const [reviewType, setReviewType] = useState<ReviewType>('all');
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [recentReviews, setRecentReviews] = useState<Review[]>([]);
+
+  const reviewsTypes: ReviewType[] = ['all', 'service', 'food', 'hygiene'];
+
+  const getRecentReviews = (reviews: Review[]) => {
+    // Get the current date
+    const currentDate = new Date();
+
+    // Calculate the date one week ago
+    const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000); // Subtracting milliseconds for a week
+
+    // Filter reviews that are one week old or newer
+    const recentReviews = reviews.filter(review => {
+      const reviewDate = new Date(review.createdAt);
+      return reviewDate >= oneWeekAgo;
+    });
+
+    return recentReviews;
+  };
+
+  const getRatings = async () => {
+    try {
+      const response = await fetch(
+        Api.baseUrl + `rating/cartpo-shop/${id}?category=${reviewType}`,
+        {
+          method: 'GET',
+        },
+      );
+      if (response.status !== 200) return;
+
+      const { data: res } = await response.json();
+      setReviews(res.data);
+      setRecentReviews(getRecentReviews(res.data));
+    } catch (error) {
+      console.log('🚀 ~ getRatings ~ error:', error);
+    }
+  };
+
+  // useEffect(() => {
+  //   getRatings();
+  // },[]);
+
+  useEffect(() => {
+    getRatings();
+  }, [reviewType]);
 
   return (
     <View className="px-2">
@@ -40,7 +92,7 @@ export default function Reviews() {
               <Text
                 className={text({
                   type: 'm16',
-                  class: `text-center ${reviewType !== c ? 'text-black' : 'text-white'}`,
+                  class: `text-center ${reviewType !== c ? 'text-black' : 'text-white'} capitalize`,
                 })}>
                 {c}
               </Text>
@@ -49,21 +101,37 @@ export default function Reviews() {
         />
       </View>
 
-      <Text className={text({ type: 'r15', class: 'pl-1 pt-5' })}>Recent</Text>
+      {recentReviews.length ? (
+        <Text className={text({ type: 'r15', class: 'pl-1 pt-5' })}>Recent</Text>
+      ) : null}
 
       <FlatList
-        data={[1, 2, 3]}
+        data={recentReviews}
         horizontal
-        keyExtractor={e => e.toString()}
+        keyExtractor={e => e._id}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item: c, index }) => (
-          <ImageBackground
-            source={{
-              uri: 'https://www.influglue.com/files/medialibrary/6c905cabc7a6fd3760b0408bd53fbc19.jpg',
-            }}
-            resizeMode="cover"
-            className="h-[200] w-[150] rounded-md overflow-hidden justify-center items-center mt-2 mr-3">
-            <Entypo name="controller-play" color={'#fff'} size={40} />
+          <View className="h-[200] w-[150] rounded-md overflow-hidden justify-center items-center mt-2 mr-3">
+            {c.post.media[0].mediaType.includes('video') ? (
+              <VideoPlayer
+                videoProps={{
+                  shouldPlay: false,
+                  resizeMode: ResizeMode.COVER,
+                  source: {
+                    uri: getVideoLink(c.post.media[0].mediaId),
+                  },
+                  className: 'h-full w-full absolute',
+                }}
+              />
+            ) : (
+              <Image
+                source={{
+                  uri: getImageLink(c.post.media[0].mediaId),
+                }}
+                resizeMode="cover"
+                className="h-full w-full absolute "
+              />
+            )}
 
             <View className="flex-row absolute bottom-2 justify-center gap-1">
               <Antdesign name="star" color={'#ffc859'} size={15} />
@@ -72,25 +140,41 @@ export default function Reviews() {
               <Antdesign name="star" color={'#ffc859'} size={15} />
               <Antdesign name="star" color={'#ffc859'} size={15} />
             </View>
-          </ImageBackground>
+          </View>
         )}
       />
 
-      <Text className={text({ type: 'r15', class: 'pl-1 pt-5' })}>More</Text>
+      {reviews.length ? (
+        <Text className={text({ type: 'r15', class: 'pl-1 pt-5' })}>More</Text>
+      ) : null}
 
       <FlatList
-        data={[1, 2, 3, 4]}
-        keyExtractor={e => e.toString()}
+        data={reviews}
+        keyExtractor={e => e._id}
         showsHorizontalScrollIndicator={false}
         numColumns={2}
         renderItem={({ item: c, index }) => (
-          <ImageBackground
-            source={{
-              uri: 'https://www.influglue.com/files/medialibrary/6c905cabc7a6fd3760b0408bd53fbc19.jpg',
-            }}
-            resizeMode="cover"
-            className="h-[280] flex-1 rounded overflow-hidden justify-center items-center mt-2 mr-3">
-            <Entypo name="controller-play" color={'#fff'} size={40} />
+          <View className="h-[280] flex-1 rounded overflow-hidden justify-center items-center mt-2 mr-3">
+            {c.post.media[0].mediaType.includes('video') ? (
+              <VideoPlayer
+                videoProps={{
+                  shouldPlay: false,
+                  resizeMode: ResizeMode.COVER,
+                  source: {
+                    uri: getVideoLink(c.post.media[0].mediaId),
+                  },
+                  className: 'h-full w-full absolute',
+                }}
+              />
+            ) : (
+              <Image
+                source={{
+                  uri: getImageLink(c.post.media[0].mediaId),
+                }}
+                resizeMode="cover"
+                className="h-full w-full absolute "
+              />
+            )}
 
             <View className="flex-row absolute bottom-2 justify-center gap-1">
               <Antdesign name="star" color={'#ffc859'} size={15} />
@@ -99,7 +183,7 @@ export default function Reviews() {
               <Antdesign name="star" color={'#ffc859'} size={15} />
               <Antdesign name="star" color={'#ffc859'} size={15} />
             </View>
-          </ImageBackground>
+          </View>
         )}
       />
     </View>

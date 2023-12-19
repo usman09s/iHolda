@@ -9,10 +9,13 @@ import { useState } from 'react';
 import { useMutation } from 'react-query';
 import Api from 'services/Api';
 import SelectDropdown from 'react-native-select-dropdown';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'store/auth/userSelectors';
 
 export const CashoutProfileScreen = ({ navigation, route }: any) => {
   const [withdrawAmmount, setWithdrawAmmount] = useState('');
   const [account, setAccount] = useState('');
+  const { user } = useSelector(userSelector);
 
   const { mutate, isLoading } = useMutation(Api.withdrawFromWallet, {
     onError: error => {
@@ -31,7 +34,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
 
   //   setWithdrawAmmount(Number(value));
   // };
-  const options = ['12344773', '56783773', '91012333'];
+  const options = user?.linkedPaymentAccounts?.map(el => el.number);
   return (
     <View className="flex-1 px-6">
       <Header showBackIcon centerComponent={<Text className="mt-4">Cash out</Text>} />
@@ -116,7 +119,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
           </View>
           <Text className="text-center font-semibold pb-8">TO</Text>
 
-          <View
+          {/* <View
             style={{
               justifyContent: 'center',
               alignSelf: 'center',
@@ -138,9 +141,9 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
               className="text-white text-center text-18"
             />
             <Icon name="keyboard-arrow-down" style={{ fontSize: 28 }} color="white" />
-          </View>
-          {/* <SelectDropdown
-            data={options}
+          </View> */}
+          <SelectDropdown
+            data={options ?? []}
             placeholder="Select"
             buttonTextStyle={{ color: 'white', textAlign: 'center' }}
             placeholderColor={'white'}
@@ -153,7 +156,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
               height: 60,
             }}
             onSelect={(selectedItem: string, index: number) => {
-              handleValueChange(selectedItem);
+              setAccount(selectedItem);
             }}
             buttonTextAfterSelection={(selectedItem: string, index: number) => {
               return selectedItem;
@@ -169,7 +172,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
               );
             }}
             dropdownIconPosition="right"
-          /> */}
+          />
         </View>
         <View className="mx-6">
           <CustomReferenceButton
@@ -179,9 +182,11 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
             customTextClass={'text-white text-base'}
             // onPress={() => navigation.navigate('WithdrawSuccessful')}
             onPress={() => {
-              if(!withdrawAmmount) return alert("Amount is required")
-              if(withdrawAmmount > route.params?.wallet?.availableBalance) return alert("Amount should be less than available balance.")
-              if(!account) return alert("Account is required")
+              if(options?.length) return alert("Link an payment account first")
+              if (!withdrawAmmount) return alert('Amount is required');
+              if (withdrawAmmount > route.params?.wallet?.availableBalance)
+                return alert('Amount should be less than available balance.');
+              if (!account) return alert('Account is required');
               mutate(Number(withdrawAmmount));
             }}
           />

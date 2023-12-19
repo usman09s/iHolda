@@ -15,10 +15,10 @@ import { width } from 'utils/helpers';
 import { MomentsStackParamList } from '../../moments/MomentsStackNavigator';
 import { userSelector } from 'store/auth/userSelectors';
 
-const throttle = (func: (data: string) => void, delay: number) => {
+const throttle = (func: any, delay: number) => {
   let throttling = false;
 
-  return (...args) => {
+  return (...args: any) => {
     if (!throttling) {
       throttling = true;
       func(...args);
@@ -33,7 +33,7 @@ const PlasticCollectionScreen = () => {
   const dispatch = useDispatch();
   const [sccannedQrCode, setScannedQrCode] = useState('');
   const isFocused = useIsFocused();
-  const { data } = useQuery('currentUserProfile', Api.getUserProfile);
+  const { data } = useQuery('currentUserProfile', Api.getUserProfile0);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const { navigate } = useNavigation<NavigationProp<any>>();
   const { user } = useSelector(userSelector);
