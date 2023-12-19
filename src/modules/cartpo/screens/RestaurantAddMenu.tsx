@@ -13,7 +13,7 @@ import Api from 'services/Api';
 import { useSelector } from 'react-redux';
 import { selectCartpoSettings } from 'store/cartpo/calculateSlice';
 
-export const RestaurantAddMenuScreen = () => {
+export const RestaurantAddMenuScreen = ({ navigation }: any) => {
   const restaurantData = useSelector(selectCartpoSettings);
   const initialValues = {
     photo: '',
@@ -25,22 +25,22 @@ export const RestaurantAddMenuScreen = () => {
   };
 
   const handleSubmit = async values => {
-    try {
-      const formData = new FormData();
-      formData.append('_id', restaurantData.setting.shop._id);
-      formData.append('shop', restaurantData.setting.merchant);
-      formData.append('name', values.itemName);
-      formData.append('price', values.price);
-      formData.append('daysAvailable[0]', values.daysAvailable);
-      formData.append('timeAvailable[0]', values.timeAvailable);
-      formData.append('category', values.category);
-      values.photo && formData.append('photos', values.photo);
-      console.log('Form Data:', formData);
-      const result = Api.updateCartpoMenu(formData);
-      console.log('Cartpo menu updated:', result);
-    } catch (error) {
-      console.error('Error updating Cartpo menu:', error);
-    }
+    console.log(restaurantData.setting.shop._id);
+    console.log(values);
+    const formData = new FormData();
+    formData.append('name', values.itemName);
+    formData.append('price', values.price);
+    formData.append('daysAvailable[0]', 'Monday');
+    formData.append('timeAvailable[0]', values.timeAvailable);
+    formData.append('category', values.category);
+    formData.append('photos[0][mediaId]', '49c7fefd-df2f-436e-f480-c84c1c824400');
+    formData.append('photos[0][mediaType]', 'image/jpg');
+    formData.append('photos', values.photo);
+    formData.append('shop', restaurantData.setting.shop._id);
+    console.log('Form Data:', formData);
+    const result = Api.updateCartpoMenu(formData);
+    console.log(result);
+    navigation.goBack();
   };
 
   const pickImage = async (setFieldValue: any, fieldName: any, values: any) => {

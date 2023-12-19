@@ -333,15 +333,13 @@ class ApiClass {
 
   updateCartpoMenu = async (formData: any) => {
     try {
-      const response = await this.externalApi
+      return await this.externalApi
         .url(`cartpo/shop/menu`)
         .post(formData)
         .json(result => {
-          console.log(result);
+          console.log(result, 'lklklklk');
           return result;
         });
-
-      return response;
     } catch (error) {
       throw error;
     }
