@@ -6,13 +6,14 @@ const cartpoSlice = createSlice({
     selectedOption: 'direct',
     calculatorAmount: '',
     phoneNumber: '',
-    password: '1000',
+    password: '',
     userData: [],
     userTransactions: [],
     cartpoSettings: [],
     walletBalance: [],
     selectedDiscount: [],
     selectedPayment: [],
+    selectedMenuItem: [],
   },
   reducers: {
     setSelectedOption: (state, action) => {
@@ -41,6 +42,10 @@ const cartpoSlice = createSlice({
     },
     setSelectedPayment: (state, action) => {
       state.selectedPayment = action.payload;
+    },
+    setSelectedMenuItem: (state, action) => {
+      console.log(action.payload, 'redux');
+      state.selectedMenuItem = action.payload;
     },
     deletePaymentAccount: (state, action) => {
       const discountIdToDelete = action.payload;
@@ -72,13 +77,35 @@ const cartpoSlice = createSlice({
     },
     updateDiscount: (state, action) => {
       const { updatedDetails } = action.payload;
-      const selectedDiscount = state.cartpoSettings.discounts.find(
+      const selectedDiscount = state.cartpoSettings.setting.discounts.find(
         discount => discount._id === state.selectedDiscount,
       );
 
       if (selectedDiscount) {
         Object.assign(selectedDiscount, updatedDetails);
       }
+    },
+    setShopData: (state, action) => {
+      state.cartpoSettings.shop = action.payload;
+    },
+    setMenuData: (state, action) => {
+      console.log(state.cartpoSettings);
+      if (
+        state.cartpoSettings &&
+        state.cartpoSettings.setting.shop &&
+        state.cartpoSettings.setting.shop.menu
+      ) {
+        state.cartpoSettings.setting.shop.menu = [
+          ...state.cartpoSettings.setting.shop.menu,
+          action.payload,
+        ];
+      }
+    },
+    deleteMenuItem: (state, action) => {
+      const itemIdToDelete = action.payload;
+      state.cartpoSettings.setting.shop.menu = state.cartpoSettings.setting.shop.menu.filter(
+        item => item._id !== itemIdToDelete,
+      );
     },
   },
 });
@@ -98,6 +125,10 @@ export const {
   deleteDiscount,
   setSelectedPayment,
   setDiscount,
+  setShopData,
+  setMenuData,
+  setSelectedMenuItem,
+  deleteMenuItem,
 } = cartpoSlice.actions;
 
 export default cartpoSlice.reducer;
@@ -111,3 +142,4 @@ export const selectWalletBalance = state => state.calculator.walletBalance;
 export const selectCalculatorAmount = state => state.calculator.calculatorAmount;
 export const selectSelectedDiscount = state => state.calculator.selectedDiscount;
 export const selectSelectedPayment = state => state.calculator.selectedPayment;
+export const selectSelectedMenuItem = state => state.calculator.selectedMenuItem;

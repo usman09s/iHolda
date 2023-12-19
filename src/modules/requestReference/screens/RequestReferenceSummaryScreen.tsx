@@ -9,17 +9,28 @@ import Toast from 'react-native-toast-message';
 
 export const RequestReferenceSummaryScreen = ({ navigation }: any) => {
   const userData = useSelector(selectUser);
-  const referenceUsers = userData.basicVerification.referenceUsers;
+  const referenceUsers = userData?.basicVerification?.referenceUsers;
   const isSmallScreen = height < 700;
-  const areAllUsersRejected = referenceUsers.every(user => user.status === 'rejected');
+  const areAllUsersRejected =
+    referenceUsers && referenceUsers.every(user => user.status === 'rejected');
+  const areAllUsersAccepted =
+    referenceUsers && referenceUsers.every(user => user.status === 'accepted');
 
   const handleToastShow = () => {
-    Toast.show({
-      type: 'error',
-      text1: 'Please wait for all the users to respond.',
-      text2: 'You already have a basic verification pending.',
-      visibilityTime: 1800,
-    });
+    if (areAllUsersAccepted) {
+      Toast.show({
+        type: 'success',
+        text1: 'You are already a verified user.',
+        visibilityTime: 1800,
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Please wait for all the users to respond.',
+        text2: 'You already have a basic verification pending.',
+        visibilityTime: 1800,
+      });
+    }
   };
 
   return (

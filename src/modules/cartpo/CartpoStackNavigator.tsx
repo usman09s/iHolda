@@ -6,7 +6,7 @@ import {
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { ConfirmOtpScreen } from './screens/ConfirmOtpScreen';
 import { CreatePinScreen } from './screens/CreatePinScreen';
-import { SignInScreen, UnlockPinScreen } from './screens/UnlockPinScreen';
+import { SignInScreen } from './screens/UnlockPinScreen';
 import { TopupScreen } from './screens/TopupScreen';
 import { CashoutScreen } from './screens/CashoutScreen';
 import { WithdrawSuccessfulScreen } from './screens/WithdrawSuccessfulScreen';
@@ -14,7 +14,6 @@ import { DiscountQrCodeScreen } from './screens/DiscountQrCodeScreen';
 import { DirectPaymentScreen } from './screens/DirectPaymentScreen';
 import { SaleCompleteScreen } from './screens/SaleCompleteScreen';
 import { TotalDiscountScreen } from './screens/TotalDiscountScreen';
-import SettingsScreen from './screens/SettingsScreen';
 import { RestaurantSettingsScreen } from './screens/RestaurantSettingsScreen';
 import { RestaurantPaymentMethodScreen } from './screens/RestaurantPaymentMethod';
 import { RestaurantAddPaymentScreen } from './screens/RestaurantAddPaymentScreen';
@@ -65,7 +64,6 @@ export default function CartpoStackNavigator() {
       <CartpoStack.Screen options={commonOptions} name="SignIn" component={SignInScreen} />
       <CartpoStack.Screen options={commonOptions} name="Topup" component={TopupScreen} />
       <CartpoStack.Screen options={commonOptions} name="Cashout" component={CashoutScreen} />
-      <CartpoStack.Screen options={commonOptions} name="Settings" component={SettingsScreen} />
       <CartpoStack.Screen
         options={commonOptions}
         name="WithdrawSuccessful"
