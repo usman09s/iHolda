@@ -52,15 +52,15 @@ export const ProfileScreen = ({ navigation }: any) => {
             ))}
           </View>
           <View className="mt-4 bg-pink-100 rounded-2xl px-6 pt-4">
-            <View className="flex-row justify-between mr-4">
+            <View className="flex-row justify-between mr-1.5">
               <View>
                 <Text className="text-xl font-light">Total sales</Text>
                 <Text className="text-3xl font-semibold pt-2">
-                  {walletBalance.wallet.availableBalance + walletBalance.wallet.pendingBalance}
+                  {walletBalance?.wallet?.availableBalance + walletBalance?.wallet?.pendingBalance}
                   <Text className="text-xl font-light">cfa</Text>
                 </Text>
               </View>
-              <View style={{ transform: [{ rotate: '-7deg' }] }}>
+              <View>
                 <PieIcon />
               </View>
             </View>
@@ -68,14 +68,14 @@ export const ProfileScreen = ({ navigation }: any) => {
               <View className="bg-pink-100 py-6 rounded-lg">
                 <Text className="text-12 text-center font-semibold">Cash</Text>
                 <Text className="text-2xl font-semibold text-center pt-2">
-                  {walletBalance.wallet.availableBalance}
+                  {walletBalance?.wallet?.availableBalance}
                   <Text className="font-light text-base">cfa</Text>
                 </Text>
               </View>
               <View className="bg-pink-100 py-6 rounded-lg">
                 <Text className="text-12 text-center font-semibold">Other method</Text>
                 <Text className="text-2xl font-semibold text-center pt-2">
-                  {walletBalance.wallet.pendingBalance}
+                  {walletBalance?.wallet?.pendingBalance}
                   <Text className="font-light text-base">cfa</Text>
                 </Text>
               </View>
@@ -89,7 +89,7 @@ export const ProfileScreen = ({ navigation }: any) => {
             onPress={() => navigation.navigate('CartpoStack', { screen: 'Topup' })}>
             <Text className="text-12 font-normal text-white">Discount credit</Text>
             <Text className="text-3xl font-normal text-white text-center my-2">
-              {walletBalance.wallet.availableBalance}cfa
+              {walletBalance?.wallet?.availableBalance}cfa
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -97,7 +97,7 @@ export const ProfileScreen = ({ navigation }: any) => {
             onPress={() => navigation.navigate('CartpoStack', { screen: 'Cashout' })}>
             <Text className="text-12 font-normal text-white">Wallet balance</Text>
             <Text className="text-3xl font-normal text-white text-center my-2">
-              {walletBalance.wallet.pendingBalance}cfa
+              {walletBalance?.wallet?.pendingBalance}cfa
             </Text>
           </TouchableOpacity>
         </View>

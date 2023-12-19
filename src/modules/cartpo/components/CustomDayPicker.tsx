@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { IsAny } from '@reduxjs/toolkit/dist/tsHelpers';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
 const CustomDayPicker = ({
@@ -7,6 +8,7 @@ const CustomDayPicker = ({
   onDaySelect,
   customClassContainer,
   customButtonContainer,
+  defaultValue,
 }: any) => {
   const [selectedIndices, setSelectedIndices] = useState([]);
 
@@ -17,6 +19,16 @@ const CustomDayPicker = ({
       setSelectedIndices([...selectedIndices, index]);
     }
   };
+
+  useEffect(() => {
+    if (defaultValue) {
+      const defaultIndex = itemsArray.indexOf(defaultValue);
+      if (defaultIndex !== -1) {
+        setSelectedIndices([defaultIndex as never]);
+        onDaySelect([defaultValue]);
+      }
+    }
+  }, [defaultValue]);
 
   const handlePress = index => {
     if (multiselect) {

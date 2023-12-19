@@ -34,7 +34,8 @@ export const SignInScreen = ({ navigation }: any) => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleLoginSubmit}
-        validationSchema={validationSchema}>
+        validationSchema={validationSchema}
+        validateOnChange={false}>
         {({ handleChange, handleSubmit, values, errors }) => (
           <View className="px-6 my-12">
             <Text
