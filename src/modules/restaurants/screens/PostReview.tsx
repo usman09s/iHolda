@@ -6,6 +6,7 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -20,6 +21,7 @@ import Input from 'components/Input';
 import * as FileSystem from 'expo-file-system';
 import mime from 'mime';
 import Antdesign from '@expo/vector-icons/AntDesign';
+import { Video as VideCompressor, Image as ImageCompresor } from 'react-native-compressor';
 
 import PostPreviewSideActionBar from '../../moments/components/PostPreviewSideActionBar';
 import { MomentsStackParamList } from '../../moments/MomentsStackNavigator';
@@ -37,24 +39,26 @@ import { useKeyboardVisible } from 'hooks/useKeyboardVisible';
 
 const recording = new Audio.Recording();
 
-const PostReview = ({ route }: { route?: { params: PostScreenParams } }) => {
+const PostReview = ({ route }: { route?: { params: any } }) => {
   const [caption, setCaption] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-//   console.log('~ isLoading:', isLoading);
+  //   console.log('~ isLoading:', isLoading);
   // const [recording, setRecording] = useState<Audio.Recording | undefined>();
   const [isRecording, setIsRecording] = useState(false);
   const [selectedRating, setSelectedRating] = useState(4);
+  const [selectedCategory, setSelectedCategory] = useState('service');
+
+  const restaurantId = route?.params?.restaurantId;
 
   const isKeyboardVisible = useKeyboardVisible();
 
-  const { dispatch: dispatchNavigation, goBack, navigate } =
-    useNavigation<NavigationProp<MomentsStackParamList>>();
+  const { dispatch: dispatchNavigation, goBack, reset } = useNavigation<NavigationProp<any>>();
   const { bottom } = useSafeAreaInsets();
 
   const { postType, text } = route ? route.params : { postType: 'PHOTO', text: '' };
 
   const isFocused = useIsFocused();
-//   const dispatch = useDispatch();
+  //   const dispatch = useDispatch();
 
   const { caption: postCaption } = useSelector(postMomentsParamsSelector);
   const moments = useSelector(allMomentsSelector);
@@ -73,7 +77,7 @@ const PostReview = ({ route }: { route?: { params: PostScreenParams } }) => {
     return { ...response.json(), status: response.status };
   }
 
-  const makePost = () => {
+  const handlePostRestaurantReview = async () => {
     if (isLoading) return;
 
     let formdata = new FormData();
@@ -83,37 +87,60 @@ const PostReview = ({ route }: { route?: { params: PostScreenParams } }) => {
     let imageObject, videoObject;
 
     if (mediaUri) {
-      const imageUri = 'file:///' + mediaUri.split('file:/').join('');
+      if (mediaType === 'VIDEO') {
+        const result = await VideCompressor.compress(
+          mediaUri,
+          { compressionMethod: 'auto' },
+          progress => {
+            console.log('Compression Progress: ', progress);
+          },
+        );
 
-      imageObject = {
-        name: mediaUri.split('/').pop(),
-        type: mime.getType(imageUri),
-        uri: mediaUri,
-      };
+        const newVideoUri = 'file:///' + result.split('file:/').join('');
 
-      const newVideoUri = 'file:///' + mediaUri.split('file:/').join('');
+        videoObject = {
+          name: result.split('/').pop(),
+          height: 1920,
+          width: 1080,
+          type: mime.getType(newVideoUri),
+          uri: result,
+        };
+      } else {
+        const imgRes = await ImageCompresor.compress(mediaUri, {
+          progressDivider: 10,
+          downloadProgress: progress => {
+            console.log('downloadProgress: ', progress);
+          },
+        });
 
-      videoObject = {
-        name: mediaUri.split('/').pop(),
-        height: 1920,
-        width: 1080,
-        type: mime.getType(newVideoUri),
-        uri: mediaUri,
-      };
+        const imageUri = 'file:///' + imgRes.split('file:/').join('');
+
+        imageObject = {
+          name: imgRes.split('/').pop(),
+          type: mime.getType(imageUri),
+          uri: imgRes,
+        };
+      }
     }
 
     const media: any = mediaType === 'PHOTO' ? imageObject : videoObject;
 
-    formdata.append('visibility', 'Public');
-    if (media) formdata.append('media', media);
-    if (caption) formdata.append('subText', caption);
-    formdata.append('hexCode', TEXT_POST_COLOR);
-    if (postCaption) formdata.append('text', postCaption);
+    formdata.append('post[text]', caption);
+    if (media) formdata.append('post[media]', media);
+    formdata.append('star', selectedRating.toString());
+    formdata.append('to', restaurantId);
+    formdata.append('categories[0]', selectedCategory);
 
-    postData(Api.baseUrl + 'post', formdata).then(data => {
-      console.log('🚀 ~ file: PostPreviewScreen.tsx:100 ~ postData ~ data:', data);
+    postData(Api.baseUrl + 'rating', formdata).then(data => {
+      console.log('🚀~ postData ~ data:', data);
       if (data.status !== 200) return alert('Something went wrong');
       console.log(data);
+      // navigate('ReviewSuccess', { type: 'accept' });
+      reset({
+        index: 1,
+        routes: [{ name: 'BottomTabs' }, { name: 'ReviewSuccess', params: { type: 'accept' } }],
+      });
+      return;
       dispatchNavigation(StackActions.popToTop());
       goBack();
     });
@@ -149,6 +176,10 @@ const PostReview = ({ route }: { route?: { params: PostScreenParams } }) => {
     if (!isRecording) startRecording();
     else stopRecording();
   };
+
+  // const handlePostRestaurantReview = () => {
+
+  // };
 
   //   useEffect(() => {
   //     return () => {
@@ -205,7 +236,10 @@ const PostReview = ({ route }: { route?: { params: PostScreenParams } }) => {
               <View className="px-6">
                 <Header showBackIcon backIconColor="white" />
               </View>
-              <View className="bottom-2 absolute w-full justify-center items-center px-5">
+              <View
+                className={`bottom-${
+                  isKeyboardVisible ? 0 : 2
+                } absolute w-full justify-center items-center px-${isKeyboardVisible ? 0 : 5}`}>
                 <View className="flex-row justify-center gap-2 bottom-4">
                   {[1, 2, 3, 4, 5].map(e => (
                     <TouchableOpacity onPress={() => setSelectedRating(e)}>
@@ -217,36 +251,85 @@ const PostReview = ({ route }: { route?: { params: PostScreenParams } }) => {
                     </TouchableOpacity>
                   ))}
                 </View>
-                <Input
-                  onFocus={() => console.log('focus received')}
-                  onBlur={() => console.log('focus lost')}
-                  value={caption}
-                  onChangeText={setCaption}
-                  placeholder="Write review here"
-                  customInputClass="w-full"
-                />
+
+                <View
+                  className={
+                    isKeyboardVisible ? 'w-full bg-white rounded-t-2xl px-2 pb-10' : 'w-full'
+                  }>
+                  {isKeyboardVisible && (
+                    <TouchableOpacity onPress={Keyboard.dismiss}>
+                      <Icons.CrossIcon className="ml-1 mt-2 mb-3" />
+                    </TouchableOpacity>
+                  )}
+                  <View
+                    className={
+                      isKeyboardVisible
+                        ? 'border border-[#d9d7d7] rounded-2xl pt-5 px-4 pb-2'
+                        : 'w-full'
+                    }>
+                    <Input
+                      value={caption}
+                      onChangeText={setCaption}
+                      placeholder={
+                        !isKeyboardVisible
+                          ? 'Write review here'
+                          : 'Add your experience and review here. (Optional)'
+                      }
+                      customInputClass={!isKeyboardVisible ? 'w-full' : 'w-full px-0 py-0'}
+                      style={{ color: isKeyboardVisible ? 'black' : 'white' }}
+                      placeholderTextColor={isKeyboardVisible ? '#000' : '#fff'}
+                    />
+
+                    {isKeyboardVisible && (
+                      <View className="flex-row gap-2 mt-24">
+                        {['service', 'food', 'hygiene'].map(c => (
+                          <TouchableOpacity
+                            onPress={() => setSelectedCategory(c)}
+                            className="bg-[#740ef5] py-2 px-3 rounded-md items-center justify-center flex-row flex-1">
+                            <Text
+                              className={themeText({
+                                type: 'm16',
+                                class: `text-white capitalize`,
+                              })}>
+                              {c}
+                            </Text>
+                            <View className="border border-white items-center justify-center rounded-full h-[14] w-[14] overflow-hidden ml-2">
+                              <View
+                                className={`bg-${
+                                  selectedCategory === c ? 'white' : '#740ef5'
+                                } w-[7] h-[7] rounded-full`}
+                              />
+                            </View>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                </View>
               </View>
               {/* <PostPreviewSideActionBar onPressAudio={handleAudioPress} /> */}
             </View>
           </View>
         ) : null}
       </View>
-      {!isKeyboardVisible && <View
-        className="flex-row w-full px-6 bg-black justify-center"
-        style={{ paddingBottom: bottom || 16, paddingTop: bottom || 16 }}>
-        
-        <Pressable
-          onPress={() => navigate("ReviewSuccess", {type: "accept"})}
-          className="bg-white rounded-full px-8 h-12 items-center justify-center">
-          <Text
-            className={themeText({
-              type: 'm16',
-              class: `text-center text-black`,
-            })}>
-            Post Review
-          </Text>
-        </Pressable>
-      </View>}
+      {!isKeyboardVisible && (
+        <View
+          className="flex-row w-full px-6 bg-black justify-center"
+          style={{ paddingBottom: bottom || 16, paddingTop: bottom || 16 }}>
+          <Pressable
+            // onPress={() => navigate('ReviewSuccess', { type: 'accept' })}
+            onPress={handlePostRestaurantReview}
+            className="bg-white rounded-full px-8 h-12 items-center justify-center">
+            <Text
+              className={themeText({
+                type: 'm16',
+                class: `text-center text-black`,
+              })}>
+              Post Review
+            </Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };

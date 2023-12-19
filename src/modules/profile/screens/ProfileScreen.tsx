@@ -39,9 +39,9 @@ const ProfileScreen = ({ route, navigation }: any) => {
     activeY.value = event.contentOffset.y <= 0 ? 0 : event.contentOffset.y;
   });
 
-  data?.data.user
+  data?.data.user;
 
-  const RenderedComponent =
+  const AgentRenderedComponent =
     [
       <Profile
         onPressMet={(data: any) => navigation.navigate('FeedDetailView', { item: data })}
@@ -55,6 +55,20 @@ const ProfileScreen = ({ route, navigation }: any) => {
       <Wallet key={3} />,
     ]?.[index] || [];
 
+  const RenderedComponent =
+    [
+      <Profile
+        onPressMet={(data: any) => navigation.navigate('FeedDetailView', { item: data })}
+        followers={data?.data.user?.followers ? data?.data.user?.followers?.length.toString() : '0'}
+        impression="0"
+        metPeople={user?.metCount ? user?.metCount?.toString() : '0'}
+        metsUserId={user?._id}
+        key={0}
+      />,
+      <Community cp={user?.cp ?? '0'} lastcp={user?.lastCp} key={1} />,
+      <Wallet key={2} />,
+    ]?.[index] || [];
+
   // useEffect(() => {
   //   dispatch(setUserInfo(data.data.user));
   // },[])
@@ -63,7 +77,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
     <View className="flex-1 bg-white">
       <Animated.FlatList
         numColumns={3}
-        data={[RenderedComponent]}
+        data={[user?.isPlasticAgent ? AgentRenderedComponent : RenderedComponent]}
         onScroll={scrollHandler}
         stickyHeaderIndices={[0]}
         ListFooterComponent={<View className="h-10" />}

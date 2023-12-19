@@ -120,6 +120,7 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
     let videoObject: any;
     const element = quizMedia.localUri;
     const quizId = data?.data.quiz._id;
+    setIsLoading(true);
 
     if (quizMedia) {
       const result = await Video.compress(
@@ -129,7 +130,7 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
           console.log('Compression Progress: ', progress);
         }
       );
-      console.log("🚀 ~ file: MomentsQuizScreen.tsx:132 ~ postQuiz ~ result:", result)
+      console.log("🚀 ~ postQuiz ~ result:", result)
       
       const newVideoUri = 'file:///' + result.split('file:/').join('');
 

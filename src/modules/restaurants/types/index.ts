@@ -1,3 +1,5 @@
+import { Post } from "modules/profile/types";
+
 export interface Restaurant {
   _id: string;
   merchant: string;
@@ -27,5 +29,32 @@ export interface Restaurant {
   ratingCount: number;
   createdAt: string;
   updatedAt: string;
-  contact?: string;
+  phone?: string;
 }
+
+type User = {
+  _id: string;
+  userName: string;
+  firstName: string;
+  lastName: string | null;
+  photo: {
+      mediaType: string;
+      mediaId: string;
+  };
+  followers: string[];
+  following: string[];
+};
+
+export type Review = {
+  _id: string;
+  star: number;
+  description: string;
+  by: User;
+  to: string;
+  post: Post;
+  categories: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  id: string;
+};

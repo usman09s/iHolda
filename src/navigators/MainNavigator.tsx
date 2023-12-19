@@ -40,6 +40,8 @@ import { ReviewSuccess } from 'modules/restaurants/screens/ReviewSuccess';
 import FeedDetailView from 'modules/feed/screens/FeedDetailView';
 import OtherUserProfileScreen from 'modules/profile/screens/OtherUserProfileScreen';
 import PlasticActivityScreen from 'modules/activity/screens/PlasticAgentActivity';
+import DiscountUserSelect from 'modules/restaurants/screens/DiscountUserSelect';
+import DiscountQrScreen from 'modules/restaurants/screens/DiscountQrScreen';
 
 const MainStack = createNativeStackNavigator();
 
@@ -72,7 +74,7 @@ export default function MainNavigator() {
 
   return (
     <NavigationContainer>
-      <MainStack.Navigator screenOptions={commonScreenOptions} initialRouteName={'CartpoStack'}>
+      <MainStack.Navigator screenOptions={commonScreenOptions} initialRouteName={status === 'SUCCESS' ? 'BottomTabs' : 'Auth'}>
         <MainStack.Screen options={commonOptions} name="Auth" component={AuthStackNavigator} />
         <MainStack.Screen
           name="BottomTabs"
@@ -175,6 +177,8 @@ export default function MainNavigator() {
         <MainStack.Screen name="AddReview" options={commonOptions} component={AddReview} />
         <MainStack.Screen name="PostReview" options={commonOptions} component={PostReview} />
         <MainStack.Screen name="ReviewSuccess" options={commonOptions} component={ReviewSuccess} />
+        <MainStack.Screen name="DiscountUserSelect" options={commonOptions} component={DiscountUserSelect} />
+        <MainStack.Screen name="DiscountQrScreen" options={commonOptions} component={DiscountQrScreen} />
         <MainStack.Screen
           name="FeedDetailView"
           options={commonOptions}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import Icons from 'components/Icons';
 import { text } from 'theme/text';
@@ -27,6 +27,9 @@ type Props = {
   isCurrentUser: boolean;
   activeY: SharedValue<number>;
   onPressTabItem: (value: number) => () => void;
+  onPressDirection: () => void;
+  onPressContact: () => void;
+  onPressReview: () => void;
 };
 
 const RestaurantHeader = ({
@@ -34,14 +37,15 @@ const RestaurantHeader = ({
   avatar,
   activeY,
   username,
-  invitedBy,
+  onPressContact,
   activeIndex,
-  monthAndYear,
+  onPressDirection,
   isCurrentUser,
   hederThumbnail,
   onPressTabItem,
+  onPressReview
 }: Props) => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const headerImageHeight = units.vh * 40;
   const tabHeight = units.vh * 8;
 
@@ -69,38 +73,42 @@ const RestaurantHeader = ({
         <Image className="w-full h-full absolute bg-black" source={{ uri: hederThumbnail }} />
         <View className=" h-full justify-end px-6" style={{ paddingBottom: units.vh * 2 }}>
           <View style={{ flexDirection: 'row', gap: 20 }}>
-            <View style={{ alignItems: 'center' }}>
-              <View
-                style={{
-                  backgroundColor: '#0684fa',
-                  height: 40,
-                  width: 40,
-                  borderRadius: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <FontAwesome5 name="directions" color={'#FFF'} size={20} />
+            <TouchableWithoutFeedback onPress={onPressDirection}>
+              <View style={{ alignItems: 'center' }}>
+                <View
+                  style={{
+                    backgroundColor: '#0684fa',
+                    height: 40,
+                    width: 40,
+                    borderRadius: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <FontAwesome5 name="directions" color={'#FFF'} size={20} />
+                </View>
+                <Text style={{ color: 'white' }}>Direction</Text>
               </View>
-              <Text style={{ color: 'white' }}>Direction</Text>
-            </View>
+            </TouchableWithoutFeedback>
 
-            <View style={{ alignItems: 'center' }}>
-              <View
-                style={{
-                  backgroundColor: '#3cc03c',
-                  height: 40,
-                  width: 40,
-                  borderRadius: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Ionicons name="call" color={'#FFF'} size={18} />
+            <TouchableWithoutFeedback onPress={onPressContact}>
+              <View style={{ alignItems: 'center' }}>
+                <View
+                  style={{
+                    backgroundColor: '#3cc03c',
+                    height: 40,
+                    width: 40,
+                    borderRadius: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Ionicons name="call" color={'#FFF'} size={18} />
+                </View>
+                <Text style={{ color: 'white' }}>Call</Text>
               </View>
-              <Text style={{ color: 'white' }}>Call</Text>
-            </View>
+            </TouchableWithoutFeedback>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('AddReview')}
+              onPress={onPressReview}
               style={{ alignItems: 'center' }}>
               <View
                 style={{
