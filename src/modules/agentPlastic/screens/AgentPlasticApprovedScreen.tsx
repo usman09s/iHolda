@@ -16,8 +16,7 @@ import { AgentPlasticStackParamList } from '../AgentPlasticNavigator';
 const AgentPlasticApprovedScreen = () => {
   const { params } = useRoute<RouteProp<AgentPlasticStackParamList, 'AgentPlasticApproved'>>();
   console.log(params, 'params');
-  const { dispatch, goBack, navigate } =
-    useNavigation<NavigationProp<AgentPlasticStackParamList>>();
+  const { reset, goBack, navigate } = useNavigation<any>();
 
   return (
     <View className="flex-1 bg-white items-center">
@@ -39,7 +38,10 @@ const AgentPlasticApprovedScreen = () => {
           customContainer="self-center px-10 rounded-lg bg-saffron"
           title="Close"
           onPress={() => {
-            navigate('Activity');
+            reset({
+              index: 0,
+              routes: [{ name: 'BottomTabs' }],
+            });
           }}
         />
       </View>

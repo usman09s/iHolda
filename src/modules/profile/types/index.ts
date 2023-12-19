@@ -18,21 +18,27 @@ export type Post = {
   user: string;
   text: string | null;
   subText: string | null;
-  media: string[];
-  mediaType: string;
+  media: {
+    mediaType: string;
+    mediaId: string;
+  }[];
+  mediaType: string | null;
   audio: string | null;
-  userQuiz?: any;
   thumbnail: string | null;
   visibility: string;
   hexCode: string | null;
-  sharedPost: string | null;
-  sharedBy: string | null;
-  comments: any[]; // You might want to define a type for comments
-  likes: any[]; // You might want to define a type for likes
-  taggedUsers: any[]; // You might want to define a type for tagged users
-  met: string;
-  createdAt: string; // You might want to use a Date type here
-  updatedAt: string; // You might want to use a Date type here
+  sharedPost: any; // You might want to define a type for sharedPost if it has a specific structure
+  sharedBy: any; // You might want to define a type for sharedBy if it has a specific structure
+  shareCount: number;
+  bookmarkCount: number;
+  comments: any[]; // You might want to define a type for comments if they have a specific structure
+  likes: any[]; // You might want to define a type for likes if they have a specific structure
+  taggedUsers: any[]; // You might want to define a type for taggedUsers if they have a specific structure
+  userQuiz: any; // You might want to define a type for userQuiz if it has a specific structure
+  met: any; // You might want to define a type for met if it has a specific structure
+  rating: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type MoodObject = {

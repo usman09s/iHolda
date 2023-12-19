@@ -169,7 +169,7 @@ export type User = {
   basicVerification: boolean;
   isPlasticAgent: boolean;
   followers: string[];
-  invited_by: {user:{username: string}};
+  invited_by: { user: { username: string } };
   following: string[];
   bookmarks: string[];
   userQrCode: string;
@@ -187,6 +187,7 @@ export type User = {
   cp?: number;
   lastCp?: number;
   socialLinks?: { platform: string; link: null | string }[];
+  linkedPaymentAccounts?: { number: string; default: string; confirmNumber: string }[];
 };
 
 export type LocationType = {

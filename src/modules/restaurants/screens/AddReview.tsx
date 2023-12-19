@@ -24,14 +24,14 @@ import { PostTypes } from 'types/MomentsTypes';
 import { TEXT_POST_COLOR } from '../../moments/constants';
 import * as ImagePicker from 'expo-image-picker';
 
-const AddReview = () => {
+const AddReview = ({ route }: any) => {
   const [cameraType, setCameraType] = useState<CameraType>(CameraType.back);
   const [lastMedia, setLastMedia] = useState<string | null>(null);
   const [postTxt, setPostTxt] = useState('');
   const [postType, setPostType] = useState<PostTypes>('Video');
   const [recording, setRecording] = useState<Audio.Recording>();
 
-  const { navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
+  const { navigate } = useNavigation<NavigationProp<any>>();
   const { bottom } = useSafeAreaInsets();
   const isFocused = useIsFocused();
 
@@ -74,7 +74,11 @@ const AddReview = () => {
   const handleProceed = () => {
     if (postType === 'Text' && !postTxt.length) return;
     setTimeout(() => {
-      navigate('PostReview', { postType, text: postTxt });
+      navigate('PostReview', {
+        postType,
+        text: postTxt,
+        restaurantId: route?.params?.restaurantId,
+      });
     }, 100);
   };
 

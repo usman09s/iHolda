@@ -38,13 +38,13 @@ const BiggestBottle = require('../../../../assets/images/biggestBottle.png');
 const ModifyConfirmPlastic = ({ route }: any) => {
   const scannedData = route.params.data;
 
-  const temp = scannedData.plastics.find(e => e.size === '1L');
-  const temp1 = scannedData.plastics.find(e => e.size === '1.5L');
-  const temp2 = scannedData.plastics.find(e => e.size === '5L');
+  const temp = scannedData.plastics.find((e: any) => e.size === '1L');
+  const temp1 = scannedData.plastics.find((e: any) => e.size === '1.5L');
+  const temp2 = scannedData.plastics.find((e: any) => e.size === '5L');
 
-  const [oneLQuantity, setOneLQuantity] = useState(temp ? temp.quantity : 0);
-  const [twoLQuantity, setTwoLQuantity] = useState(temp1 ? temp1.quantity : 0);
-  const [FiveLQuantity, setFiveLQuantity] = useState(temp2 ? temp2.quantity : 0);
+  const [oneLQuantity, setOneLQuantity] = useState(temp ? temp?.quantity : 0);
+  const [twoLQuantity, setTwoLQuantity] = useState(temp1 ? temp1?.quantity : 0);
+  const [FiveLQuantity, setFiveLQuantity] = useState(temp2 ? temp2?.quantity : 0);
 
   const countStates: any = {
     '1L': oneLQuantity,
@@ -62,7 +62,7 @@ const ModifyConfirmPlastic = ({ route }: any) => {
   //   const plasticSizes = useSelector(plasticSizeSelector);
 
   //   const totalPlastic = useSelector(plasticCountTotalSelector);
-  const { navigate, goBack } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
+  const { navigate,  } = useAppNavigation<NavigationProp<any>>();
 
   const { mutateAsync, isLoading } = useMutation(Api.approvedPlasticDelivery);
 
@@ -95,19 +95,19 @@ const ModifyConfirmPlastic = ({ route }: any) => {
 
   const handlePlasticSupply = () => {
     const requirePlasticData: { size: string; quantity: number }[] = scannedData?.plastics.map(
-      e => ({ size: e.size, quantity: e.quantity }),
+      (e: any) => ({ size: e.size, quantity: e?.quantity }),
     );
     let plastics: any[] = JSON.parse(JSON.stringify(requirePlasticData));
 
-    if (oneLQuantity !== temp.quantity) {
+    if (oneLQuantity !== temp?.quantity) {
       const sizeIndex = plastics.findIndex(e => e.size == '1L');
       if (sizeIndex > 0) plastics[sizeIndex].quantity = oneLQuantity;
     }
-    if (twoLQuantity !== temp1.quantity) {
+    if (twoLQuantity !== temp1?.quantity) {
       const sizeIndex = plastics.findIndex(e => e.size == '1.5L');
       if (sizeIndex > 0) plastics[sizeIndex].quantity = twoLQuantity;
     }
-    if (FiveLQuantity !== temp2.quantity) {
+    if (FiveLQuantity !== temp2?.quantity) {
       const sizeIndex = plastics.findIndex(e => e.size == '5L');
       if (sizeIndex > 0) plastics[sizeIndex].quantity = FiveLQuantity;
     }

@@ -15,7 +15,7 @@ type Props = {
 
 const ScrolledHeader = ({ top, avatar, activeY, username, isCurrentUser }: Props) => {
   console.log(isCurrentUser, 'lklklklklkl');
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const headerHeight = units.vh * 8;
   const animatedStyle = useAnimatedStyle(() => ({
     top: interpolate(
