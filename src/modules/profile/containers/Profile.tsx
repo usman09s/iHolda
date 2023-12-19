@@ -6,6 +6,8 @@ import ProfilePostItem from '../components/ProfilePostItem';
 import ProfilePostTabs from '../components/ProfilePostTabs';
 import { useQuery } from 'react-query';
 import Api from 'services/Api';
+import { useEffect, useState } from 'react';
+import { UserMoment } from '../types';
 
 interface Props {
   followers: string;
@@ -22,7 +24,31 @@ const Profile = ({
   metsUserId,
   onPressMet,
 }: Props) => {
-  const { data } = useQuery('usermoments', () => Api.getUserMoments(metsUserId));
+  const [data, setData] = useState<{ data: { data: UserMoment[] } }>();
+
+  const getMets = async () => {
+    try {
+      const response = await fetch(
+        `${Api.baseUrl}met?${metsUserId ? `userId=${metsUserId}` : ''}`,
+        {
+          method: 'GET',
+          headers: Api._getAuthorization(Api.token),
+        },
+      );
+      if (response.status !== 200) return;
+
+      const data = await response.json();
+      console.log("🚀 ~ file: Profile.tsx:41 ~ getMets ~ data:", data)
+
+      setData(data);
+    } catch (error) {
+      console.log('🚀 ~ getRatings ~ error:', error);
+    }
+  };
+
+  useEffect(() => {
+    getMets();
+  }, []);
 
   return (
     <Animated.FlatList
@@ -32,7 +58,7 @@ const Profile = ({
       initialNumToRender={5}
       maxToRenderPerBatch={5}
       className={'flex-1 z-40 bg-white'}
-      data={data?.data.data}
+      data={data?.data?.data}
       ListHeaderComponent={
         <>
           <ProfileDescriptionAndStats

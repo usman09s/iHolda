@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,18 +14,42 @@ import Wallet from '../containers/Wallet';
 import { useQuery } from 'react-query';
 import Api from 'services/Api';
 import { useNavigation } from '@react-navigation/native';
+import { SignInResponseType } from 'types/AuthTypes';
 
 const OtherUserProfileScreen = ({ route }: any) => {
   const activeY = useSharedValue(0);
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
-  const { data, refetch } = useQuery(
-    'otherUserProfile',
-    () => Api.getUserProfile(route.params.userId),
-    {
-      refetchOnMount: false,
-    },
-  );
+  // const { data, refetch } = useQuery(
+  //   'otherUserProfile',
+  //   () => Api.getUserProfile(route.params.userId),
+  //   {
+  //     refetchOnMount: false,
+  //   },
+  // );
+
+  const [data, setData] = useState<SignInResponseType>();
+
+  const getUser = async () => {
+    try {
+      const response = await fetch(Api.baseUrl + `user?userId=${route.params.userId}`, {
+        method: 'GET',
+        headers: Api._getAuthorization(Api.token),
+      });
+      if (response.status !== 200) return;
+
+      const data = await response.json();
+
+      setData(data);
+    } catch (error) {
+      console.log('🚀 ~ getRatings ~ error:', error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   const { user } = useSelector(userSelector);
 
   const { navigate }: any = useNavigation();

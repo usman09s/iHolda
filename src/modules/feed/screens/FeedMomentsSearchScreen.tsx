@@ -72,7 +72,6 @@ const FeedMomentsSearchScreen = () => {
       (searchTxt ? '&search=' + searchTxt.toLowerCase() : '');
     console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:64 ~ search ~ url:', url);
     const res = await getData(url);
-    console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:44 ~ search ~ res:', res);
 
     // if (!query || page === 1) setPage(prevState => prevState + 1);
     if (searchType.slug === 'video') setSearchResult(res.data?.metUsers);
@@ -192,12 +191,12 @@ const FeedMomentsSearchScreen = () => {
 
       <View style={{ height: 20 }} />
 
-      <ScrollView>
+      <ScrollView className='px-5'>
         {isLoading ? (
           <ActivityIndicator />
         ) : (
           <View
-            className={`flex-row ${searchType.slug === 'restaurant' ? 'px-3' : ''} justify-between`}
+            className={`flex-row justify-between`}
             style={{ flexWrap: 'wrap' }}>
             {searchResult?.map((item: any, index: number) => {
               // const isUser = item?.users && item?.users[0]?.metCount !== undefined;
@@ -244,7 +243,7 @@ const FeedMomentsSearchScreen = () => {
                     </View>
                   </TouchableOpacity>
                 ) : isUser ? (
-                  <View className="p-2 flex-row items-center px-4 w-full">
+                  <View className="p-2 flex-row items-center px-0 w-full">
                     <Image
                       source={{
                         uri: item?.photo?.mediaId
@@ -252,7 +251,7 @@ const FeedMomentsSearchScreen = () => {
                           : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg23bqTJ8NSFQ6vjY81zv-2Av8fZY6Zls9gg&usqp=CAU',
                       }}
                       resizeMode={item?.photo?.mediaId ? 'cover' : 'contain'}
-                      style={{ width: 40, height: 40, borderRadius: 50, marginHorizontal: 10 }}
+                      style={{ width: 40, height: 40, borderRadius: 50, marginRight: 10 }}
                     />
                     <View style={{ flex: 1 }}>
                       <Text className="font-semibold">{item.userName}</Text>
@@ -268,7 +267,7 @@ const FeedMomentsSearchScreen = () => {
                     </View>
                   </View>
                 ) : index === 0 && searchType.slug === categories[0].slug ? null : (
-                  <View className="w-[44%] mx-2 mb-1 ml-4">
+                  <View className="w-[48%]  mb-1">
                     {item.post?.media[0]?.mediaType?.includes('video') ? (
                       <VideoPlayer
                         videoProps={{

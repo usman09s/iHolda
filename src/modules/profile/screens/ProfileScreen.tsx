@@ -62,6 +62,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
         followers={data?.data.user?.followers ? data?.data.user?.followers?.length.toString() : '0'}
         impression="0"
         metPeople={user?.metCount ? user?.metCount?.toString() : '0'}
+        metsUserId={user?._id}
         key={0}
       />,
       <Community cp={user?.cp ?? '0'} lastcp={user?.lastCp} key={1} />,
