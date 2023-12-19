@@ -30,6 +30,7 @@ const FeedScreen = () => {
   const [currentIndex, setIndex] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const { data, refetch, isLoading } = useQuery('feeds', Api.getFeed);
+  console.log('🚀 ~ file: FeedScreen.tsx:33 ~ FeedScreen ~ data:', data?.result?.posts?.length);
   const { top } = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
 
@@ -47,7 +48,14 @@ const FeedScreen = () => {
   const renderItem = ({ item, index }: any) => {
     const imageUri = getImageLink(item.media[0]?.mediaId);
 
-    return !item?.media?.length ? null : (
+    const isQuizUserdata =
+      item?.userQuiz !== undefined && typeof item?.userQuiz?.users[0] !== 'string';
+
+    const quizUsers = isQuizUserdata ? item?.userQuiz?.users?.map((el: any) => ({ user: el })) : [];
+
+    const users = isQuizUserdata ? quizUsers : item?.users ? item?.users : [{ user: item.user }];
+
+    return !item?.media?.length && !item?.userQuiz ? null : (
       <Pressable
         key={item._id}
         // onPress={() => navigate('FeedDetailView', {item})}
@@ -59,7 +67,7 @@ const FeedScreen = () => {
           }),
         }}>
         <FeedItem
-        isFocused={isFocused}
+          isFocused={isFocused}
           currentIndex={currentIndex}
           index={index}
           shares={item.shareCount}
@@ -74,12 +82,12 @@ const FeedScreen = () => {
           image={imageUri}
           media={item?.userQuiz ? [item.userQuiz.recording] : item.media}
           data={item}
-          username1={item.users ? '@' + item.users[0].user.userName : '@' + item.user.userName}
-          username2={item.users ? '@' + item.users[1].user.userName : ''}
-          userpic1={item.users ? item.users[0].user.photo : item.user.photo}
-          userpic2={item.users ? item.users[1].user.photo : ''}
-          userId1={item.users ? item.users[0].user._id : item.user._id}
-          userId2={item.users ? item.users[1].user._id : ''}
+          username1={'@' + users[0].user.userName}
+          username2={users[1] ? '@' + users[1]?.user.userName : ''}
+          userpic1={users[0].user.photo}
+          userpic2={users[1] ? users[1]?.user.photo : ''}
+          userId1={users[0].user._id}
+          userId2={users[1] ? item.users[1]?.user._id : ''}
         />
       </Pressable>
     );
