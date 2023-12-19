@@ -8,6 +8,7 @@ import {
   setDiscount,
   setPaymentAccount,
   setPhoneNumber,
+  setShopData,
   setUserData,
   setUserTransactions,
   setWalletBalance,
@@ -253,21 +254,24 @@ export const useCartpoActions = () => {
 
   const handleSettingsSubmit = async values => {
     console.log(values);
+
     const formData = new FormData();
     formData.append('name', values.name);
     formData.append('description', values.about);
-    formData.append('opening[days][0]', values.selectedDays[0]);
-    formData.append('opening[days][1]', values.selectedDays[1]);
+    formData.append('opening[days][0]', 'Monday');
+    formData.append('opening[days][1]', 'Friday');
     formData.append('opening[from]', values.openHours);
     formData.append('opening[to]', values.closeHours);
     formData.append('address', cityCountry);
     formData.append('phone', values.phoneNumber);
+
     if (settingsData && settingsData.setting && settingsData.setting.shop) {
       formData.append('location[type]', settingsData.setting.shop.location.type);
     } else {
       console.error('Error: settingsData.location.type is undefined');
       return;
     }
+
     if (
       settingsData &&
       settingsData.setting.shop &&
@@ -287,27 +291,36 @@ export const useCartpoActions = () => {
       return;
     }
 
-    // if (values.coverImage && values.coverImage.startsWith('file')) {
-    //   formData.append('coverImage', values.coverImage);
-    // }
-    // if (values.featuredImages) {
-    //   for (let i = 0; i < values.featuredImages.length; i++) {
-    //     if (values.featuredImages[i].mediaId) {
-    //       formData.append(`photos[${i}][mediaId]`, values.featuredImages[i].mediaId);
-    //       formData.append(`photos[${i}][mediaType]`, 'jpeg');
-    //     }
-    //   }
-    // }
+    if (values.coverImage && values.coverImage.startsWith('file')) {
+      formData.append('coverImage', values.coverImage);
+    }
+
+    if (values.featuredImages) {
+      for (let i = 0; i < values.featuredImages.length; i++) {
+        if (values.featuredImages[i].mediaId) {
+          formData.append(`photos[${i}][mediaId]`, values.featuredImages[i].mediaId);
+          formData.append(`photos[${i}][mediaType]`, 'jpeg');
+        }
+      }
+    }
+
     console.log(formData, 'FORM DATA');
-
     try {
-      const response = await wretch('http://ihold.yameenyousuf.com/api/cartpo/shop')
-        .post(formData)
-        .json();
+      const response = await fetch('http://ihold.yameenyousuf.com/api/cartpo/shop', {
+        method: 'POST',
+        body: formData,
+      });
 
-      console.log('Success:', response);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API request failed:', response.status, errorData);
+        return;
+      }
+      const result = await response.json();
+      console.log('API Response:', result);
+      dispatch(setShopData(result));
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error sending API request:', error.message);
     }
   };
 

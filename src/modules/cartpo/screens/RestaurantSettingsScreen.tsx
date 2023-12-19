@@ -124,7 +124,7 @@ export const RestaurantSettingsScreen = () => {
             <View>
               <Text>Address</Text>
               <CustomInputButton
-                placeholder={cityCountry ? cityCountry : 'Tap to add address'}
+                placeholder={values.address ? values.address : 'Tap to add address'}
                 onPress={handleLocationPress}
               />
             </View>
@@ -133,6 +133,7 @@ export const RestaurantSettingsScreen = () => {
               <CustomDayPicker
                 itemsArray={['M', 'T', 'W', 'T', 'F', 'S', 'S']}
                 onDaySelect={selectedDays => setFieldValue('selectedDays', selectedDays)}
+                multiselect={true}
               />
             </TouchableOpacity>
             <View className="flex-row gap-2 items-center">

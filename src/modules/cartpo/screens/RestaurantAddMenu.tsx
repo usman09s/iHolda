@@ -9,38 +9,63 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import CustomDayPicker from '../components/CustomDayPicker';
 import SelectDropdown from 'react-native-select-dropdown';
-import Api from 'services/Api';
-import { useSelector } from 'react-redux';
-import { selectCartpoSettings } from 'store/cartpo/calculateSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  deleteMenuItem,
+  selectCartpoSettings,
+  setMenuData,
+  setSelectedMenuItem,
+} from 'store/cartpo/calculateSlice';
+import { selectSelectedMenuItem } from '../../../store/cartpo/calculateSlice';
+import Toast from 'react-native-toast-message';
 
 export const RestaurantAddMenuScreen = ({ navigation }: any) => {
+  const dispatch = useDispatch();
   const restaurantData = useSelector(selectCartpoSettings);
+  const selectedItem = useSelector(selectSelectedMenuItem);
   const initialValues = {
     photo: '',
-    itemName: '',
-    price: '',
-    category: '',
-    daysAvailable: '',
-    timeAvailable: '',
+    itemName: (selectedItem && selectedItem?.name) || '',
+    price: (selectedItem && selectedItem?.price?.toString()) || '',
+    category: (selectedItem && selectedItem?.category) || '',
+    daysAvailable: (selectedItem && selectedItem?.daysAvailable) || '',
+    timeAvailable: (selectedItem && selectedItem?.timeAvailable) || '',
   };
 
   const handleSubmit = async values => {
-    console.log(restaurantData.setting.shop._id);
-    console.log(values);
     const formData = new FormData();
+    formData.append('_id', '656f383b30363e897026b0c2');
+    formData.append('shop', '656f1f52f6a855f521383ad3');
     formData.append('name', values.itemName);
     formData.append('price', values.price);
     formData.append('daysAvailable[0]', 'Monday');
     formData.append('timeAvailable[0]', values.timeAvailable);
     formData.append('category', values.category);
     formData.append('photos[0][mediaId]', '49c7fefd-df2f-436e-f480-c84c1c824400');
-    formData.append('photos[0][mediaType]', 'image/jpg');
+    formData.append('photos[0][mediaType]', 'image/png');
     formData.append('photos', values.photo);
-    formData.append('shop', restaurantData.setting.shop._id);
     console.log('Form Data:', formData);
-    const result = Api.updateCartpoMenu(formData);
-    console.log(result);
-    navigation.goBack();
+    try {
+      const response = await fetch('http://ihold.yameenyousuf.com/api/cartpo/shop/menu', {
+        method: 'POST',
+        headers: {},
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API request failed:', response.status, errorData);
+        return;
+      }
+
+      const result = await response.json();
+      console.log('API Response:', result);
+      dispatch(setMenuData(result.data));
+      dispatch(setSelectedMenuItem([]));
+      navigation.goBack();
+    } catch (error) {
+      console.error('Error sending API request:', error.message);
+    }
   };
 
   const pickImage = async (setFieldValue: any, fieldName: any, values: any) => {
@@ -56,12 +81,28 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
     }
   };
 
+  const handleDeleteMenuItem = () => {
+    if (selectedItem._id) {
+      dispatch(deleteMenuItem(selectedItem._id));
+      navigation.goBack();
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Please add a menu item first',
+      });
+    }
+  };
+
   return (
     <ScrollView className="flex-1 px-6">
       <Header
         showBackIcon
         centerComponent={<Text className="text-base font-normal">Add item</Text>}
-        rightComponent={<DeleteLinkIcon />}
+        rightComponent={
+          <TouchableOpacity onPress={handleDeleteMenuItem}>
+            <DeleteLinkIcon />
+          </TouchableOpacity>
+        }
       />
       <Formik initialValues={initialValues} validateOnChange={false} onSubmit={handleSubmit}>
         {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
@@ -132,14 +173,15 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
                   );
                 }}
                 dropdownIconPosition="right"
+                defaultValue={values.category}
               />
             </View>
             <View className="mt-2">
               <Text className="my-2 text-[15px]">Days Available</Text>
               <CustomDayPicker
                 itemsArray={['M', 'T', 'W', 'T', 'F', 'S', 'S']}
-                multiselect={false}
-                onDaySelect={index => setFieldValue('daysAvailable', index[0])}
+                multiselect={true}
+                onDaySelect={index => setFieldValue('daysAvailable', index)}
               />
             </View>
             <View>
@@ -150,6 +192,7 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
                 customButtonContainer={'w-20'}
                 customClassContainer={'justify-start gap-3'}
                 multiselect={false}
+                defaultValue={values.timeAvailable[0]}
               />
             </View>
             <View className="items-center mb-12">
