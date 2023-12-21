@@ -253,16 +253,30 @@ export const useCartpoActions = () => {
   };
 
   const handleSettingsSubmit = async values => {
-    console.log(values);
-
+    console.log(values, 'values');
+    if (!cityCountry && !values.address) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter your address',
+      });
+      return;
+    }
+    if (!values.openHours || !values.closeHours) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter opening and closing hours',
+      });
+      return;
+    }
     const formData = new FormData();
     formData.append('name', values.name);
     formData.append('description', values.about);
-    formData.append('opening[days][0]', 'Monday');
-    formData.append('opening[days][1]', 'Friday');
+    values.selectedDays.forEach((day, index) => {
+      formData.append(`opening[days][${index}]`, day);
+    });
     formData.append('opening[from]', values.openHours);
     formData.append('opening[to]', values.closeHours);
-    formData.append('address', cityCountry);
+    formData.append('address', cityCountry ? cityCountry : values.address);
     formData.append('phone', values.phoneNumber);
 
     if (settingsData && settingsData.setting && settingsData.setting.shop) {
@@ -318,7 +332,8 @@ export const useCartpoActions = () => {
       }
       const result = await response.json();
       console.log('API Response:', result);
-      dispatch(setShopData(result));
+      dispatch(setShopData(result.data));
+      navigation.goBack();
     } catch (error) {
       console.error('Error sending API request:', error.message);
     }

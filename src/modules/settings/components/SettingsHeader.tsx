@@ -5,10 +5,10 @@ import { CustomReferenceButton } from 'modules/requestReference/components/Custo
 import { View, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
-import { selectUser } from 'store/userDataSlice';
+import { userSelector } from 'store/auth/userSelectors';
 
 export const SettingsHeader = () => {
-  const userData = useSelector(selectUser);
+  const userData: any = useSelector(userSelector)?.user;
   const navigation = useNavigation();
   return (
     <View className="bg-blue items-center pt-10 pb-6">

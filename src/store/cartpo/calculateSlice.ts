@@ -89,16 +89,13 @@ const cartpoSlice = createSlice({
       state.cartpoSettings.shop = action.payload;
     },
     setMenuData: (state, action) => {
-      console.log(state.cartpoSettings);
+      console.log(action.payload, 'actionpayload');
       if (
         state.cartpoSettings &&
         state.cartpoSettings.setting.shop &&
         state.cartpoSettings.setting.shop.menu
       ) {
-        state.cartpoSettings.setting.shop.menu = [
-          ...state.cartpoSettings.setting.shop.menu,
-          action.payload,
-        ];
+        state.cartpoSettings.setting.shop.menu = action.payload;
       }
     },
     deleteMenuItem: (state, action) => {

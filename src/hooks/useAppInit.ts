@@ -48,7 +48,6 @@ export const userAppInit = () => {
     if (result) {
       await refetch()
         .then(response => {
-          dispatch(setUser(response?.data?.data.user));
           setStatus(response.data ? 'SUCCESS' : 'FAILED');
         })
         .catch(() => setStatus('FAILED'));
@@ -59,7 +58,7 @@ export const userAppInit = () => {
 
   useEffect(() => {
     if (data) {
-      console.log("🚀 ~ file: useAppInit.ts:62 ~ useEffect ~ data:", data)
+      console.log('🚀 ~ file: useAppInit.ts:62 ~ useEffect ~ data:', data);
       dispatch(setUserInfo(data.data.user));
     }
   }, [data]);

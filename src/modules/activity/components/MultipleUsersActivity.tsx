@@ -2,6 +2,7 @@ import CustomProfileAvatar from 'components/CustomProfileAvatar';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import { Image, Text, View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
+import { userSelector } from 'store/auth/userSelectors';
 import { selectUser } from 'store/userDataSlice';
 import { text } from 'theme/text';
 
@@ -24,7 +25,7 @@ const MultipleUsersActivity = ({
   time,
   onPress,
 }: Props) => {
-  const userData = useSelector(selectUser);
+  const userData: any = useSelector(userSelector)?.user;
   return (
     <TouchableOpacity className="flex-row items-center mb-7" onPress={onPress}>
       <View className="flex-row">

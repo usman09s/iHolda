@@ -58,7 +58,7 @@ const EnterReferralCodeScreen = () => {
       {
         onSuccess: result => {
           console.log(result);
-          navigate('ReferralCodeSuccessful', {result});
+          navigate('ReferralCodeSuccessful', { result });
         },
         onError: error => {
           setModalVisible(true);
@@ -80,8 +80,8 @@ const EnterReferralCodeScreen = () => {
     }).then(result => {
       const formData1 = new FormData();
       formData1.append('firstName', userInfo.username);
-      formData1.append('bio', "Embracing life's journey");
-      formData1.append('address', 'abcd street');
+      formData1.append('bio', '');
+      formData1.append('address', 'none');
       formData1.append('userName', userInfo.username);
       formData1.append('socialLinks[0][platform]', 'facebook');
       formData1.append('socialLinks[0][link]', 'facebook.com/profile.php');

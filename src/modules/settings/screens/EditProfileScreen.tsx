@@ -6,13 +6,13 @@ import { CustomReferenceButton } from 'modules/requestReference/components/Custo
 import CustomHeader from 'components/Header/CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSettingActions } from '../hooks/useSettingsActions';
-import { selectUser } from 'store/userDataSlice';
 import { useFocusEffect } from '@react-navigation/native';
 import CustomProfileAvatar from 'components/CustomProfileAvatar';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
+import { userSelector } from 'store/auth/userSelectors';
 
 export const EditProfileScreen = ({ navigation }: any) => {
-  const userData = useSelector(selectUser);
+  const userData: any = useSelector(userSelector)?.user;
   const { pickImage, handleBioChange, handleLocationPress, handleUpdateSetting } =
     useSettingActions();
 

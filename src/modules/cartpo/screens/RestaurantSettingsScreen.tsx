@@ -14,6 +14,24 @@ import CustomInputButton from '../components/CustomInputButton';
 import { useSelector } from 'react-redux';
 import { selectCartpoSettings } from 'store/cartpo/calculateSlice';
 import { getImageLink } from '../../moments/helpers/imageHelpers';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string()
+    .required('Name is required')
+    .min(3, 'Name must be at least 3 characters')
+    .max(15, 'Name must be at most 15 characters')
+    .matches(/^[^\s].*[^\s]$/, 'Item name cannot start or end with spaces'),
+  about: Yup.string()
+    .required('Please provide information about your business')
+    .min(5, 'About must be at least 3 characters')
+    .matches(/^[^\s].*$/, 'About should not start with a space'),
+  phoneNumber: Yup.string().required('Please enter a phone number'),
+  openHours: Yup.string().required('Please select open hours'),
+  closeHours: Yup.string().required('Please select close hours'),
+  coverImage: Yup.string().required('Please add a cover image'),
+  featuredImages: Yup.array().min(1, 'Please add at least one featured image'),
+});
 
 export const RestaurantSettingsScreen = () => {
   const { handleSettingsSubmit, handleLocationPress, cityCountry } = useCartpoActions();
@@ -22,7 +40,8 @@ export const RestaurantSettingsScreen = () => {
   const [isPickerShow, setIsPickerShow] = useState(false);
   const [pickerMode, setPickerMode] = useState('open');
   const settingsData = useSelector(selectCartpoSettings);
-  console.log(settingsData.setting.shop);
+  console.log(settingsData.setting.shop.opening.days, 'plplplp');
+
   const initialValues = {
     name: settingsData.setting.shop.name || '',
     about: settingsData.setting.shop.description || '',
@@ -30,7 +49,8 @@ export const RestaurantSettingsScreen = () => {
     address: settingsData.setting.shop.address || '',
     openHours: settingsData.setting.shop.opening.from || '',
     closeHours: settingsData.setting.shop.opening.to || '',
-    coverImage: settingsData.setting.shop.coverImage.mediaId || '',
+    coverImage:
+      settingsData?.setting.shop.coverImage.mediaId || settingsData.setting.shop.coverImage || '',
     featuredImages: settingsData.setting.shop.photos || [],
     selectedDays: settingsData.setting.shop.opening.days || [],
   };
@@ -42,7 +62,6 @@ export const RestaurantSettingsScreen = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(values.featuredImages);
     if (!result.canceled) {
       setFieldValue(
         fieldName,
@@ -87,7 +106,8 @@ export const RestaurantSettingsScreen = () => {
       <Formik
         initialValues={initialValues}
         validateOnChange={false}
-        onSubmit={handleSettingsSubmit}>
+        onSubmit={handleSettingsSubmit}
+        validationSchema={validationSchema}>
         {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
           <View className="my-12">
             <CustomReferenceInput
@@ -124,29 +144,49 @@ export const RestaurantSettingsScreen = () => {
             <View>
               <Text>Address</Text>
               <CustomInputButton
-                placeholder={values.address ? values.address : 'Tap to add address'}
+                placeholder={
+                  cityCountry ? cityCountry : values.address ? values.address : 'Tap to add address'
+                }
                 onPress={handleLocationPress}
+                customContainerClass={errors.address ? 'border-2 border-red-500' : ''}
               />
             </View>
             <TouchableOpacity>
               <Text>Open hours</Text>
               <CustomDayPicker
-                itemsArray={['M', 'T', 'W', 'T', 'F', 'S', 'S']}
+                itemsArray={[
+                  { value: 'Monday', label: 'M' },
+                  { value: 'Tuesday', label: 'T' },
+                  { value: 'Wednesday', label: 'W' },
+                  { value: 'Thursday', label: 'T' },
+                  { value: 'Friday', label: 'F' },
+                  { value: 'Saturday', label: 'S' },
+                  { value: 'Sunday', label: 'S' },
+                ]}
                 onDaySelect={selectedDays => setFieldValue('selectedDays', selectedDays)}
                 multiselect={true}
+                defaultValue={values.selectedDays}
               />
             </TouchableOpacity>
             <View className="flex-row gap-2 items-center">
               <TouchableOpacity
                 className="px-2 py-1 bg-neutral-200 rounded-lg"
                 onPress={() => showTimepicker('open')}>
-                <Text>{formatTime(openTime)}</Text>
+                <Text>
+                  {settingsData.setting.shop.opening.from === values.openHours
+                    ? settingsData.setting.shop.opening.from
+                    : formatTime(openTime)}
+                </Text>
               </TouchableOpacity>
               <Text>To</Text>
               <TouchableOpacity
                 className="px-2 py-1 bg-neutral-200 rounded-lg"
                 onPress={() => showTimepicker('close')}>
-                <Text>{formatTime(closeTime)}</Text>
+                <Text>
+                  {settingsData.setting.shop.opening.to === values.closeHours
+                    ? settingsData.setting.shop.opening.to
+                    : formatTime(closeTime)}
+                </Text>
               </TouchableOpacity>
             </View>
             <View className="my-4">
@@ -175,7 +215,6 @@ export const RestaurantSettingsScreen = () => {
               </Text>
               <View className="flex-row justify-between my-4">
                 {values.featuredImages.map((image, index) => {
-                  console.log(image, 'lplplp');
                   return (
                     <TouchableOpacity
                       className="border-dashed border border-gray-300 rounded-xl h-16 items-center justify-center flex-1 mx-1"
@@ -222,6 +261,3 @@ export const RestaurantSettingsScreen = () => {
     </ScrollView>
   );
 };
-function wretch(arg0: string) {
-  throw new Error('Function not implemented.');
-}

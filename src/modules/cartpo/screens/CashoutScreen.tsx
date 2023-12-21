@@ -1,14 +1,14 @@
-import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+// import RNPickerSelect from 'react-native-picker-select';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 import { selectCartpoSettings, selectWalletBalance } from 'store/cartpo/calculateSlice';
 import { height } from 'utils/helpers';
 import { useCartpoActions } from '../hooks/useCartpoActions';
+import CustomHeader from 'components/Header/CustomHeader';
 
 export const CashoutScreen = ({ navigation }: any) => {
   const { handleWithdraw } = useCartpoActions();
@@ -25,7 +25,7 @@ export const CashoutScreen = ({ navigation }: any) => {
   const options = settingsData.setting?.paymentMethod.map(option => option.account);
   return (
     <View className="flex-1 px-6">
-      <Header showBackIcon centerComponent={<Text>Cash out</Text>} />
+      <CustomHeader showBackIcon centerComponent={<Text>Cash out</Text>} />
       <View className={`py-8 flex-1 justify-between ${isSmallScreen ? 'mb-4' : 'mb-24'}`}>
         <View className="bg-[#01991d] p-4 rounded-lg">
           <Text className="text-12 font-normal text-white text-center">Wallet Balance</Text>

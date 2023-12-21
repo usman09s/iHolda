@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from 'store/userDataSlice';
 import { useSettingActions } from '../hooks/useSettingsActions';
 import CustomHeader from 'components/Header/CustomHeader';
+import { userSelector } from 'store/auth/userSelectors';
 
 const validationSchema = Yup.object().shape({
   number: Yup.string()
@@ -41,7 +42,7 @@ const CustomPaymentAccount = ({ index, number, default: paymentDefault }) => {
 
 export const MobileMoneyScreen = ({ navigation }: any) => {
   const { handleAddPaymentAccount } = useSettingActions();
-  const userData = useSelector(selectUser);
+  const userData: any = useSelector(userSelector)?.user;
   console.log(userData.linkedPaymentAccounts);
   const initialValues = {
     number: '',

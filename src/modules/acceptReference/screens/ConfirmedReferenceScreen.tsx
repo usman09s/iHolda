@@ -30,13 +30,11 @@ export const ConfirmedReferenceScreen = ({ navigation, route }: any) => {
         )}
         {type === 'accept' ? (
           <Text className="text-center mx-4 text-black">
-            {`
-            Thanks for verifying @${selectedNotification.sender.userName} reference`}
+            {`Thanks for verifying @${selectedNotification.sender.userName} reference`}
           </Text>
         ) : (
           <Text className="text-center mx-4 text-black">
-            {`
-            You rejected @${selectedNotification.sender.userName}'s reference`}
+            {`You rejected @${selectedNotification.sender.userName}'s reference`}
           </Text>
         )}
         <CustomReferenceButton

@@ -1,8 +1,9 @@
+import CustomProfileAvatar from 'components/CustomProfileAvatar';
 import CustomHeader from 'components/Header/CustomHeader';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { View, Text } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { Userpic } from 'react-native-userpic';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
 import { text } from 'theme/text';
@@ -44,11 +45,11 @@ export const ConfirmReferenceScreen = ({ navigation }: any) => {
         <View>
           <Text className="text-center text-2xl font-bold mb-10">Do you know</Text>
           <View>
-            <Userpic
-              // source={{ uri: 'https://i.pravatar.cc/100?img=5' }}
-              name={`${selectedNotification.sender.userName}`}
+            <CustomProfileAvatar
+              photo={getImageLink(selectedNotification?.sender?.photo.mediaId)}
               size={140}
-              style={{ borderWidth: 4, borderColor: 'rgb(54 83 20)' }}
+              userName={selectedNotification.sender.userName}
+              extraStyles={{ borderWidth: 4, borderColor: 'rgb(54 83 20)' }}
             />
             <Text className="text-center text-gray-900 my-2 text-lg">{`@${selectedNotification.sender.userName}`}</Text>
           </View>

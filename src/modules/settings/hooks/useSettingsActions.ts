@@ -10,9 +10,11 @@ import wretch from 'wretch';
 import { setInvitees } from 'store/settings/inviteeSlice';
 import * as SecureStore from 'expo-secure-store';
 import Toast from 'react-native-toast-message';
+import { setUserInfo } from 'store/auth/userSlice';
+import { userSelector } from 'store/auth/userSelectors';
 
 export const useSettingActions = () => {
-  const userData = useSelector(selectUser);
+  const userData = useSelector(userSelector)?.user;
   const route = useRoute();
   const [cityCountry, setCityCountry] = useState<any>('');
   // const [lat, setLat] = useState<any>(userData?.location?.coordinates[0]);
@@ -40,7 +42,7 @@ export const useSettingActions = () => {
       ...userData,
       bio: value,
     };
-    dispatch(setUser(updatedUserData));
+    dispatch(setUserInfo(updatedUserData));
   };
 
   const handleSubmit = async values => {
@@ -81,7 +83,7 @@ export const useSettingActions = () => {
       ...userData,
       location: { coordinates: [location.coords.latitude, location.coords.longitude] },
     };
-    dispatch(setUser(updatedUserData));
+    dispatch(setUserInfo(updatedUserData));
     getCityCountry(location.coords.latitude, location.coords.longitude);
   };
 
@@ -96,7 +98,7 @@ export const useSettingActions = () => {
       ...userData,
       address: cityCountry,
     };
-    await dispatch(setUser(updatedUserData));
+    await dispatch(setUserInfo(updatedUserData));
   };
 
   const handleReferralCopy = async () => {
@@ -125,7 +127,7 @@ export const useSettingActions = () => {
       firstName: trimmedName,
     };
     console.log(updatedUserData);
-    await dispatch(setUser(updatedUserData));
+    await dispatch(setUserInfo(updatedUserData));
     if (userData.firstName === trimmedName) {
       handleUpdateSetting();
     }
@@ -222,21 +224,16 @@ export const useSettingActions = () => {
           type: 'image/jpeg',
         });
     }
-    console.log('FORM DATA', formData);
     try {
       const response = await wretch('http://ihold.yameenyousuf.com/api/user')
         .headers({ 'Content-Type': 'multipart/form-data' })
         .put(formData)
         .json();
-      console.log('API Response:', response.data.user);
-      dispatch(setUser(response.data.user));
+      dispatch(setUserInfo(response.data.user));
       Toast.show({
         type: 'success',
         text1: 'Profile Updated Successfully',
       });
-      if (route.name === 'EditProfile') {
-        navigation.goBack();
-      }
     } catch (error) {
       console.error('API Error:', error);
     }
@@ -248,7 +245,7 @@ export const useSettingActions = () => {
       ...userData,
       userName: trimmedUsername,
     };
-    await dispatch(setUser(updatedUserData));
+    await dispatch(setUserInfo(updatedUserData));
     handleUpdateSetting(null, null, trimmedUsername);
     navigation.goBack();
   };
@@ -268,7 +265,7 @@ export const useSettingActions = () => {
       const result = await Api.setPaymentAccount(paymentAccountData);
       if (result.message === 'payment account added') {
         navigation.goBack();
-        dispatch(setUser(updatedUserData));
+        dispatch(setUserInfo(updatedUserData));
       }
     } catch (error) {
       console.error('API Error:', error);

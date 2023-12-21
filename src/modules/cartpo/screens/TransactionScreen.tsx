@@ -6,6 +6,7 @@ import TransactionInOut from 'modules/profile/components/TransactionInOut';
 import Icons from 'components/Icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCartpoActions } from '../hooks/useCartpoActions';
+import { useEffect } from 'react';
 
 const Header = () => {
   return (
@@ -24,11 +25,6 @@ const Header = () => {
 };
 
 const TransactionList = () => {
-  const { handleGetTransactions } = useCartpoActions();
-  useFocusEffect(() => {
-    handleGetTransactions();
-  });
-
   return (
     <View>
       <CustomTransaction
@@ -98,6 +94,10 @@ const TransactionList = () => {
 };
 
 export const TransactionScreen = () => {
+  const { handleGetTransactions } = useCartpoActions();
+  useEffect(() => {
+    handleGetTransactions();
+  }, []);
   return (
     <ScrollView className="mt-6" showsVerticalScrollIndicator={false}>
       <Header />

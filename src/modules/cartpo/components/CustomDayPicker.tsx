@@ -1,4 +1,3 @@
-import { IsAny } from '@reduxjs/toolkit/dist/tsHelpers';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
@@ -12,56 +11,43 @@ const CustomDayPicker = ({
 }: any) => {
   const [selectedIndices, setSelectedIndices] = useState([]);
 
-  const toggleDay = index => {
-    if (selectedIndices.includes(index)) {
-      setSelectedIndices(selectedIndices.filter(selectedIndex => selectedIndex !== index));
-    } else {
-      setSelectedIndices([...selectedIndices, index]);
-    }
-  };
-
   useEffect(() => {
-    if (defaultValue) {
-      const defaultIndex = itemsArray.indexOf(defaultValue);
-      if (defaultIndex !== -1) {
-        setSelectedIndices([defaultIndex as never]);
-        onDaySelect([defaultValue]);
-      }
+    if (defaultValue !== undefined && defaultValue !== null) {
+      const defaultValues = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
+      const defaultIndices = defaultValues.map(day =>
+        itemsArray.findIndex(item => item.value === day),
+      );
+      setSelectedIndices(defaultIndices.filter(index => index !== -1));
+      onDaySelect(defaultValues);
     }
   }, [defaultValue]);
 
-  const handlePress = index => {
+  const handlePress = selectedDay => {
     if (multiselect) {
-      if (selectedIndices.length === 2) {
-        setSelectedIndices([index]);
-        onDaySelect([index]); // Use the new value directly
-      } else if (selectedIndices.length === 1) {
-        const startIndex = selectedIndices[0];
-        const endIndex = index;
-        const newSelectedIndices = Array.from(
-          { length: endIndex - startIndex + 1 },
-          (_, i) => i + startIndex,
-        );
-        setSelectedIndices([...newSelectedIndices]);
-        onDaySelect([...newSelectedIndices]);
-      } else {
-        toggleDay(index);
-      }
+      const isSelected = selectedIndices.includes(selectedDay.index);
+      const newSelectedIndices = isSelected
+        ? selectedIndices.filter(index => index !== selectedDay.index)
+        : [...selectedIndices, selectedDay.index];
+
+      setSelectedIndices(newSelectedIndices);
+      onDaySelect(newSelectedIndices.map(i => itemsArray[i].value));
     } else {
-      setSelectedIndices([index]);
-      onDaySelect([itemsArray[index]]);
+      const shouldDeselect =
+        selectedIndices.includes(selectedDay.index) && selectedIndices.length === 1;
+      setSelectedIndices(shouldDeselect ? [] : [selectedDay.index]);
+      onDaySelect(shouldDeselect ? [] : [selectedDay.value]);
     }
   };
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
-      key={item}
+      key={item.value}
       className={`w-9 h-10 rounded-xl items-center justify-center ${
         selectedIndices.includes(index) ? 'bg-sky-400' : 'bg-[#e3e2e2]'
       } ${customButtonContainer}`}
-      onPress={() => handlePress(index)}>
+      onPress={() => handlePress({ value: item.value, index })}>
       <Text style={selectedIndices.includes(index) ? 'text-gray-600' : 'text-gray-600'}>
-        {item}
+        {item.label}
       </Text>
     </TouchableOpacity>
   );

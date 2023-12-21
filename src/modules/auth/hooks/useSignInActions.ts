@@ -86,9 +86,8 @@ export const useSignInActions = () => {
             }),
           );
           Api.setQueryIdValue(result.query_id);
-          console.log(result, 'result');
-          dispatch(setUserInfo(result));
-          dispatch(setUser(result?.data?.user));
+          console.log(result.data, 'result');
+          dispatch(setUserInfo(result?.data?.user));
           reset({
             index: 0,
             routes: [{ name: 'BottomTabs' }],

@@ -88,8 +88,11 @@ const ActivityScreen = () => {
               lastUserUsername=""
               time={getTimeDifference(item.createdAt)}
               subTitle={item.body}
-              momentThumbnail={''}
-              // onPress={() => navigation.navigate('AcceptReferenceStack')}
+              momentThumbnail={
+                item.post.mediaType.includes('image')
+                  ? getImageLink(item.post.media[0]?.mediaId)
+                  : ''
+              }
               onPress={() => handlePress(item)}
             />
           ) : item.type === 'Invite' ? (
@@ -110,7 +113,9 @@ const ActivityScreen = () => {
               title={item.title}
               subTitle={item.body}
               postThumbnail={
-                item.post.mediaType.includes('image') ? getImageLink(item.post.media[0]?.mediaId) : ''
+                item.post.mediaType.includes('image')
+                  ? getImageLink(item.post.media[0]?.mediaId)
+                  : ''
               }
               avatars={{
                 user1: item?.userPhoto,
@@ -128,7 +133,9 @@ const ActivityScreen = () => {
               lastUserUsername=""
               subTitle={item.body}
               momentThumbnail={
-                item.post.mediaType.includes('image') ? getImageLink(item.post?.media[0]?.mediaId) : ''
+                item.post.mediaType.includes('image')
+                  ? getImageLink(item.post?.media[0]?.mediaId)
+                  : ''
               }
             />
           ) : item.type === 'Followed' ? (
