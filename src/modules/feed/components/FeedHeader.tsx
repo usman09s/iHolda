@@ -8,10 +8,13 @@ import { AuthStackParamList } from 'modules/auth/AuthStackNavigator';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
 import { units } from 'utils/helpers';
+import { useEffect, useState } from 'react';
+
 
 const FeedHeader = () => {
   const { top } = useSafeAreaInsets();
-  const { navigate } : any= useAppNavigation<NavigationProp<AuthStackParamList>>();
+  const { navigate }: any = useAppNavigation<NavigationProp<AuthStackParamList>>();
+  // const [sound, setSound] = useState<Audio.Sound>();
 
   return (
     <View className="flex-row items-center justify-between absolute z-50 pt-5">
@@ -37,6 +40,7 @@ const FeedHeader = () => {
           <View className="flex-1 items-end justify-center">
             <Pressable
               onPress={() => navigate('FeedMomentsSearch')}
+              // onPress={playSound}
               // onPress={() => navigate('RestaurentDetail')}
               className="w-11 h-11 rounded-full bg-black-o-30 justify-center items-center">
               <Icons.SearchIcon />

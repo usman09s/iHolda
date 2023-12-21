@@ -3,3 +3,6 @@ export const getImageLink = (id?: string) =>
 
 export const getVideoLink = (id?: string) =>
   !id ? '' : `https://customer-rjkpc1fdl6d2d3bw.cloudflarestream.com/${id}/manifest/video.mpd`;
+
+  export const getAudioLink = (id?: string) =>
+  !id ? '' : `https://pub-e8b8891469724f80a6b2479c2fff3161.r2.dev/${id}`;

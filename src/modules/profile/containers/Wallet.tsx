@@ -12,10 +12,16 @@ import { useEffect } from 'react';
 
 const Wallet = () => {
   const navigation: any = useNavigation();
-  const { data, refetch } = useQuery('walletBalance', Api.getWalletBalance, { refetchOnWindowFocus: true });
-  const { data: transactions, refetch: refetchTransactions } = useQuery('walletTransactions', Api.getTransactions, {
+  const { data, refetch, isLoading } = useQuery('walletBalance', Api.getWalletBalance, {
     refetchOnWindowFocus: true,
   });
+  const { data: transactions, refetch: refetchTransactions } = useQuery(
+    'walletTransactions',
+    Api.getTransactions,
+    {
+      refetchOnWindowFocus: true,
+    },
+  );
 
   const isFocused = useIsFocused();
 
@@ -36,12 +42,12 @@ const Wallet = () => {
     return formattedDateString;
   };
 
-  useEffect(()=> {
-    if(isFocused) {
+  useEffect(() => {
+    if (isFocused) {
       refetch();
       refetchTransactions();
     }
-  },[isFocused])
+  }, [isFocused]);
 
   // const wallet = data.data.data?.wallet;
   // console.log('🚀 ~ file: Wallet.tsx:17 ~ Wal ~ wallet:', data?.data?.wallet);
@@ -51,13 +57,15 @@ const Wallet = () => {
       <View className="border-b1 rounded-xl p-6">
         <Text className={text({ class: 'text-center', type: 'm12' })}>Available balance</Text>
         <Text className={text({ class: 'text-center mt-7', type: 'b44' })}>
-          {data?.data?.wallet?.availableBalance ?? 0}cfa
+          {data?.data?.wallet?.availableBalance?.toFixed(2) ?? 0}cfa
         </Text>
         <Button
           title="Cash Out"
           type="solid"
           customContainer="bg-green-600 mt-6"
-          onPress={() => navigation.navigate('WalletStack', { wallet: data?.data?.wallet })}
+          onPress={() =>
+            !isLoading && navigation.navigate('WalletStack', { wallet: data?.data?.wallet })
+          }
         />
       </View>
       <View className="mt-11">
@@ -66,7 +74,7 @@ const Wallet = () => {
         </Text>
         {transactions?.data?.transactionData?.map((item: any) => (
           <TransactionInOut
-          key={item.createdAt}
+            key={item.createdAt}
             type="OUT"
             title="Cash out"
             value={`- ${item.amount} CFA`}

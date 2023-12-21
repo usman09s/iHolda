@@ -52,6 +52,19 @@ const CustomDayPicker = ({
     </TouchableOpacity>
   );
 
+  const renderItem = ({ item, index }) => (
+    <TouchableOpacity
+      key={item}
+      className={`w-9 h-10 rounded-xl items-center justify-center ${
+        selectedIndices.includes(index) ? 'bg-sky-400' : 'bg-[#e3e2e2]'
+      } ${customButtonContainer}`}
+      onPress={() => handlePress(index)}>
+      <Text style={selectedIndices.includes(index) ? 'text-gray-600' : 'text-gray-600'}>
+        {item}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View className={`mb-5 ${customClassContainer}`}>
       <FlatList

@@ -261,3 +261,6 @@ export const RestaurantSettingsScreen = () => {
     </ScrollView>
   );
 };
+function wretch(arg0: string) {
+  throw new Error('Function not implemented.');
+}

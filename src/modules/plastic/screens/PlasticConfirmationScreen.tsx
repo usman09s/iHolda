@@ -26,6 +26,7 @@ const PlasticConfirmationScreen = () => {
     modalVisible,
     modalClose,
     modalText,
+    getTotalCp
   } = usePlasticConfirmationActions();
 
   return (
@@ -56,6 +57,7 @@ const PlasticConfirmationScreen = () => {
         </View>
         <ResultBarCashAndPoints
           totalPrice={totalPrice}
+          totalCp={getTotalCp()}
           cash={selectedRatio?.cash}
           point={selectedRatio?.point}
         />

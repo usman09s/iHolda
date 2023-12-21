@@ -9,11 +9,13 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useIsFocused } from '@react-navigation/native';
 import { useAppNavigation } from 'hooks/useAppNavigation';
 import { AuthStackParamList } from 'modules/auth/AuthStackNavigator';
 import { units, wW } from 'utils/helpers';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 
 import BorderedText from '../components/BorderedText';
 import FeedItemIndex from '../components/FeedItemIndex';
@@ -23,10 +25,10 @@ import FeedItemDetailsBar from './FeedItemDetailsBar';
 import { useMutation } from 'react-query';
 import Api from 'services/Api';
 import Commentsui from './CommentsUi';
-import { getImageLink, getVideoLink } from 'modules/moments/helpers/imageHelpers';
+import { getAudioLink, getImageLink, getVideoLink } from 'modules/moments/helpers/imageHelpers';
 import { useRef, useState } from 'react';
 import MomentCameraHeader from 'modules/moments/components/MomentCameraHeader';
-import { ResizeMode,  } from 'expo-av';
+import { ResizeMode } from 'expo-av';
 import AppVideo from 'components/AppVideo';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
@@ -60,6 +62,7 @@ interface Props {
   index: number;
   currentIndex: number;
   isFocused: boolean;
+  audio?:string;
 }
 
 const FeedItem = ({
@@ -86,7 +89,8 @@ const FeedItem = ({
   onPressLike,
   index,
   currentIndex,
-  isFocused
+  isFocused,
+  audio
 }: Props) => {
   const { top } = useSafeAreaInsets();
   const { mutate } = useMutation(Api.sharePost);
@@ -98,7 +102,50 @@ const FeedItem = ({
   const [activeIndex0, setActiveIndex0] = useState(0);
 
   const { navigate, goBack } = useAppNavigation<NavigationProp<any>>();
-  const videoRef = useRef(null);
+  // const sound = new Audio.Sound();
+  const sound = useRef(new Audio.Sound()); // Initialize the sound variable
+
+  function isEven(number: number) {
+    return number % 2 === 0;
+  }
+
+  // Load and play audio when the component mounts or when the index changes
+  async function loadAudio() {
+    try {
+      if(!audio) return;
+      await sound.current.loadAsync({
+        uri: getAudioLink(audio),
+      });
+      await sound.current.playAsync();
+    } catch (error) {
+      console.error('Error loading audio:', error);
+    }
+  }
+
+  // Stop the current audio when the component unmounts or when the currentIndex changes
+  async function unloadAudio() {
+    if (sound.current) {
+      await sound.current.stopAsync();
+      await sound.current.unloadAsync();
+    }
+  }
+  useEffect(() => {
+    // Load and unload audio based on currentIndex and index
+    if (currentIndex === index && isFocused && audio) {
+      loadAudio();
+    } else {
+      unloadAudio();
+    }
+
+    // Unload audio when the component unmounts or when currentIndex changes
+    return () => {
+      unloadAudio();
+    };
+  }, [currentIndex, index, isFocused]);
+
+  useEffect(() => {
+    if (!isFocused) unloadAudio();
+  }, [isFocused]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -147,7 +194,7 @@ const FeedItem = ({
                     <VideoPlayer
                       videoProps={{
                         shouldPlay: isFocused && index === currentIndex,
-                        resizeMode: ResizeMode.CONTAIN,
+                        resizeMode: ResizeMode.COVER,
                         source: {
                           uri: getVideoLink(item.mediaId),
                         },

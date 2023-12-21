@@ -61,6 +61,7 @@ const TeamUp = () => {
             avatar2={currentUser.avatar2}
             username2={currentUser.username2}
             username={currentUser.username}
+            point={currentUser.point}
             customContainerClass="bg-green-100"
           />
         </View>

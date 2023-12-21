@@ -224,6 +224,7 @@ export const useSettingActions = () => {
           type: 'image/jpeg',
         });
     }
+    console.log('FORM DATA', formData);
     try {
       const response = await wretch('http://ihold.yameenyousuf.com/api/user')
         .headers({ 'Content-Type': 'multipart/form-data' })
@@ -234,6 +235,9 @@ export const useSettingActions = () => {
         type: 'success',
         text1: 'Profile Updated Successfully',
       });
+      if (route.name === 'EditProfile') {
+        navigation.goBack();
+      }
     } catch (error) {
       console.error('API Error:', error);
     }

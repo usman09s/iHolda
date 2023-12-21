@@ -134,11 +134,20 @@ export default function Reviews({ id = '' }) {
             )}
 
             <View className="flex-row absolute bottom-2 justify-center gap-1">
+              {[1, 2, 3, 4, 5].map(item => (
+                <Antdesign
+                  key={item}
+                  name={'star'}
+                  color={c.star < item ? '#c4c4c4' : '#ffc859'}
+                  size={15}
+                />
+              ))}
+              {/*  */}
+              {/* <Antdesign name="star" color={'#ffc859'} size={15} />
               <Antdesign name="star" color={'#ffc859'} size={15} />
               <Antdesign name="star" color={'#ffc859'} size={15} />
               <Antdesign name="star" color={'#ffc859'} size={15} />
-              <Antdesign name="star" color={'#ffc859'} size={15} />
-              <Antdesign name="star" color={'#ffc859'} size={15} />
+              <Antdesign name="star" color={'#ffc859'} size={15} /> */}
             </View>
           </View>
         )}
@@ -177,11 +186,19 @@ export default function Reviews({ id = '' }) {
             )}
 
             <View className="flex-row absolute bottom-2 justify-center gap-1">
+              {[1, 2, 3, 4, 5].map(item => (
+                <Antdesign
+                  key={item}
+                  name={'star'}
+                  color={c.star < item ? '#c4c4c4' : '#ffc859'}
+                  size={15}
+                />
+              ))}
+              {/* <Antdesign name="star" color={'#ffc859'} size={15} />
               <Antdesign name="star" color={'#ffc859'} size={15} />
               <Antdesign name="star" color={'#ffc859'} size={15} />
               <Antdesign name="star" color={'#ffc859'} size={15} />
-              <Antdesign name="star" color={'#ffc859'} size={15} />
-              <Antdesign name="star" color={'#ffc859'} size={15} />
+              <Antdesign name="star" color={'#ffc859'} size={15} /> */}
             </View>
           </View>
         )}

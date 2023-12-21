@@ -22,7 +22,8 @@ const LeaderBoardScreen = () => {
         <LeaderBoardTabItem
           title="Community points"
           isSelected={tabIndex === 0}
-          onPressTabItem={() => setTabIndex(0)}
+          // onPressTabItem={() => setTabIndex(0)}
+          onPressTabItem={() => null}
         />
         <LeaderBoardTabItem
           title="Meetups"

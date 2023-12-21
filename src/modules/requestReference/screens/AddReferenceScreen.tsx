@@ -18,8 +18,12 @@ export const AddReferenceScreen = () => {
   });
 
   useEffect(() => {
-    handleSearchUsers();
-  }, []);
+    if (searchText) {
+      console.log(searchText);
+      console.log(searchData, searchText);
+      handleSearchUsers();
+    }
+  }, [searchText]);
 
   return (
     <View className="px-6 flex-1">

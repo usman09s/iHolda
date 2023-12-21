@@ -25,7 +25,10 @@ const PlasticActivityScreen = () => {
 
   const _ = useQuery('agentcount', () => (user?._id ? Api.checkUserIsAgent(user?._id) : null), {
     onSuccess: data => setPlasticCount(data),
+    refetchOnMount: true
   });
+
+  // const isFocused = useIsFocused();
 
   // const { data: upcomingDropOff, isLoading } = useQuery('upcommingDropOff', Api.getPlasticsFuture);
 
@@ -58,6 +61,7 @@ const PlasticActivityScreen = () => {
       socketService.removeListener(`newPlastic/${user?._id}`, onNewPlastic);
     };
   }, []);
+  
 
   return (
     <View className="flex-1 bg-white px-6">

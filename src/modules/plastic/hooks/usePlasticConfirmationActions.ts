@@ -55,7 +55,10 @@ export const usePlasticConfirmationActions = () => {
 
   const onSuccessPlastics = async data => {
     dispatch(setPlasticSupplyData(data.data));
-    console.log("🚀 ~ file: usePlasticConfirmationActions.ts:69 ~ onSuccessPlastics ~ data.data.plasticQrCode:", data.data.plasticQrCode)
+    console.log(
+      '🚀 ~ file: usePlasticConfirmationActions.ts:69 ~ onSuccessPlastics ~ data.data.plasticQrCode:',
+      data.data.plasticQrCode,
+    );
     console.log(data.data, 'llllllllll');
     dispatch(setQrCode(data.data.plasticQrCode));
     try {
@@ -79,6 +82,10 @@ export const usePlasticConfirmationActions = () => {
 
   const modalClose = () => {
     setModalVisible(!modalVisible);
+  };
+
+  const getTotalCp = () => {
+    return addedPlastics.reduce((sum, item) => sum + item.count * item.cp, 0);
   };
 
   const onPressConfirm = () => {
@@ -117,5 +124,6 @@ export const usePlasticConfirmationActions = () => {
     modalVisible,
     modalClose,
     modalText,
+    getTotalCp,
   };
 };

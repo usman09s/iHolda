@@ -11,6 +11,7 @@ import Api from 'services/Api';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
+import { text } from 'theme/text';
 
 export const CashoutProfileScreen = ({ navigation, route }: any) => {
   const [withdrawAmmount, setWithdrawAmmount] = useState('');
@@ -36,14 +37,16 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
   // };
   const options = user?.linkedPaymentAccounts?.map(el => el.number);
   return (
-    <View className="flex-1 px-6">
-      <Header showBackIcon centerComponent={<Text className="mt-4">Cash out</Text>} />
+    <View className="flex-1">
+      <View className="px-6">
+        <Header showBackIcon centerComponent={<Text className="mt-4">Cash out</Text>} />
+      </View>
       <View className={`py-8 flex-1 justify-between ${isSmallScreen ? 'mb-4' : 'mb-24'}`}>
         <View className="flex-row justify-center">
           <View className="border border-black rounded-lg px-2 py-2">
             <Text className="text-center text-[9px] font-semibold">Available Balance</Text>
             <Text className="text-center text-3xl pt-4 text-green-500 font-bold">
-              {route.params?.wallet?.availableBalance ?? 0}
+              {route.params?.wallet?.availableBalance?.toFixed(2) ?? 0}
               <Text className="text-sm">CFA</Text>
             </Text>
           </View>
@@ -142,37 +145,45 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
             />
             <Icon name="keyboard-arrow-down" style={{ fontSize: 28 }} color="white" />
           </View> */}
-          <SelectDropdown
-            data={options ?? []}
-            placeholder="Select"
-            buttonTextStyle={{ color: 'white', textAlign: 'center' }}
-            placeholderColor={'white'}
-            buttonStyle={{
-              justifyContent: 'center',
-              alignSelf: 'center',
-              backgroundColor: '#b3b2b2',
-              borderRadius: 30,
-              width: 220,
-              height: 60,
-            }}
-            onSelect={(selectedItem: string, index: number) => {
-              setAccount(selectedItem);
-            }}
-            buttonTextAfterSelection={(selectedItem: string, index: number) => {
-              return selectedItem;
-            }}
-            rowTextForSelection={(item: string, index: number) => {
-              return item;
-            }}
-            renderDropdownIcon={() => {
-              return (
-                <View style={{ justifyContent: 'flex-end', paddingRight: 30, paddingLeft: 0 }}>
-                  <Icon name="keyboard-arrow-down" style={{ fontSize: 28 }} color="white" />
-                </View>
-              );
-            }}
-            dropdownIconPosition="right"
-          />
+          {!options?.length ? (
+            <View className="w-full py-5 bg-[#b3b2b2]">
+              <Text className={text({ type: 'r18', class: 'text-center text-white' })}>
+                Add a payment account first
+              </Text>{' '}
+            </View>
+          ) : (
+            <SelectDropdown
+              data={options ?? []}
+              placeholder="Select"
+              buttonTextStyle={{ color: 'white', textAlign: 'center' }}
+              placeholderColor={'white'}
+              buttonStyle={{
+                justifyContent: 'center',
+                alignSelf: 'center',
+                backgroundColor: '#b3b2b2',
+                borderRadius: 30,
+                width: 220,
+                height: 60,
+              }}
+              onSelect={(selectedItem: string, index: number) => {
+                setAccount(selectedItem);
+              }}
+              buttonTextAfterSelection={(selectedItem: string, index: number) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item: string, index: number) => {
+                return item;
+              }}
+              renderDropdownIcon={() => {
+                return (
+                  <View style={{ justifyContent: 'flex-end', paddingRight: 30, paddingLeft: 0 }}>
+                    <Icon name="keyboard-arrow-down" style={{ fontSize: 28 }} color="white" />
+                  </View>
+                );
+              }}
+              dropdownIconPosition="right"
+            />
+          )}
         </View>
         <View className="mx-6">
           <CustomReferenceButton
@@ -182,7 +193,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
             customTextClass={'text-white text-base'}
             // onPress={() => navigation.navigate('WithdrawSuccessful')}
             onPress={() => {
-              if(options?.length) return alert("Link an payment account first")
+              if (!options?.length) return alert('Link an payment account first');
               if (!withdrawAmmount) return alert('Amount is required');
               if (withdrawAmmount > route.params?.wallet?.availableBalance)
                 return alert('Amount should be less than available balance.');
