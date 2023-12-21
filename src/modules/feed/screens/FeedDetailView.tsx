@@ -31,7 +31,7 @@ import { getImageLink, getVideoLink } from 'modules/moments/helpers/imageHelpers
 import { text } from 'theme/text';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
-import { ResizeMode,  } from 'expo-av';
+import { ResizeMode } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
 
 const IMG_SIZE = 65;
@@ -42,6 +42,7 @@ const FeedDetailView = ({ route }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState<any[]>([]);
+  console.log('🚀 ~ file: FeedDetailView.tsx:45 ~ FeedDetailView ~ data:', data);
   const {} = useAppNavigation<NavigationProp<FeedStackParamList>>();
 
   const isFocused = useIsFocused();
@@ -130,6 +131,7 @@ const FeedDetailView = ({ route }: any) => {
   }
 
   useEffect(() => {
+    setIsLoading(true);
     getTwoUserMet();
   }, []);
 
@@ -141,6 +143,15 @@ const FeedDetailView = ({ route }: any) => {
           <ActivityIndicator color={colors.saffron} size={'large'} />
         </View>
       )}
+
+      {!isLoading && !data?.length ? (
+        <View className="absolute self-center z-40 flex-1 justify-center items-center h-full bg-black-o-30 w-full">
+          <ActivityIndicator color={colors.saffron} size={'large'} />
+          <Text className={text({ type: 'm14', class: 'text-white text-center' })}>
+            No moments found
+          </Text>
+        </View>
+      ) : null}
       <View className="absolute top-0 left-0 w-full h-full bg-black">
         <FlatList
           ref={topRef}
@@ -209,8 +220,6 @@ const FeedDetailView = ({ route }: any) => {
                   className="w-[65] h-[80] bg-black border-2 rounded-xl ml-4 overflow-hidden justify-center items-center"
                   style={{ borderColor: activeIndex === index ? '#87ff28' : 'white' }}>
                   {item.post?.media[0]?.mediaType.includes('video') ? (
-                   
-
                     <VideoPlayer
                       videoProps={{
                         shouldPlay: false,

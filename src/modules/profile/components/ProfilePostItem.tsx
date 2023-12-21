@@ -4,7 +4,7 @@ import { text } from 'theme/text';
 import { width } from 'utils/helpers';
 import { UserMoment } from '../types';
 import { getImageLink, getVideoLink } from '../../moments/helpers/imageHelpers';
-import { ResizeMode,  } from 'expo-av';
+import { ResizeMode } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
 
 type Props = { index: number; item: UserMoment; onPress?: (val: any) => void };
@@ -45,7 +45,7 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
         />
       )}
       <View className="absolute w-10 z-20 right-4 top-2 items-center justify-center">
-        <BorderedText size={30}>{item.post.media.length}</BorderedText>
+        <BorderedText size={30}>{item?.post?.userQuiz ? 1 : item.post.media.length}</BorderedText>
         <Text className={text({ type: 'b12', class: 'text-white text-center' })}>Slides</Text>
       </View>
       <View className="absolute z-20 bottom-0 left-0 pl-2 py-2 w-full flex-row overflow-hidden items-center bg-black-o-20">

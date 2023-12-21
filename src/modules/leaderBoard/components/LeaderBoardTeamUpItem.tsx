@@ -10,6 +10,7 @@ type Props = {
   avatar2: string;
   username: string;
   username2: string;
+  point: any;
 };
 
 const LeaderBoardTeamUpItem = ({
@@ -18,7 +19,8 @@ const LeaderBoardTeamUpItem = ({
   avatar,
   avatar2,
   username,
-  username2
+  username2,
+  point
 }: Props) => (
   <View
     style={{ height: units.vh * 10 }}
@@ -43,7 +45,7 @@ const LeaderBoardTeamUpItem = ({
         {username2}
       </Text>
     </View>
-    <Text className={text({ type: 'b13', class: 'mb-2' })}>44x</Text>
+    <Text className={text({ type: 'b13', class: 'mb-2' })}>{point}x</Text>
   </View>
 );
 

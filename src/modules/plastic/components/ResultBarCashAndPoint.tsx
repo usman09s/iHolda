@@ -5,9 +5,10 @@ type Props = {
   cash: number;
   point: number;
   totalPrice: number;
+  totalCp: number;
 };
 
-const ResultBarCashAndPoints = ({ totalPrice = 0, cash = 0, point = 0 }: Props) => {
+const ResultBarCashAndPoints = ({ totalPrice = 0, cash = 0, point = 0, totalCp = 0 }: Props) => {
   const formattedResult = (totalPrice - totalPrice * (1 - cash)).toFixed(2);
   return (
     <View>
@@ -28,7 +29,7 @@ const ResultBarCashAndPoints = ({ totalPrice = 0, cash = 0, point = 0 }: Props) 
           </View>
         )}
         <View style={{ flex: getFlexByRatio(point) }} className="bg-green-500 py-4">
-          <Text className="text-white  text-center">+{point * 100} points</Text>
+          <Text className="text-white  text-center">+{(totalCp * point).toFixed(2)} points</Text>
         </View>
       </View>
     </View>

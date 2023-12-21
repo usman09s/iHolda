@@ -17,6 +17,7 @@ import { useQuery } from 'react-query';
 import Api from 'services/Api';
 import colors from 'theme/colors';
 import { height, units, wH, wW } from 'utils/helpers';
+import { Audio } from 'expo-av';
 
 import FeedHeader from '../components/FeedHeader';
 import FeedItem from '../components/FeedItem';
@@ -25,16 +26,32 @@ import { FeedStackParamList } from '../FeedStackNavigator';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { Post } from 'types/PostsTypes';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
+import { userAppInit } from 'hooks/useAppInit';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { setUser } from 'store/userDataSlice';
 
 const FeedScreen = () => {
   const [currentIndex, setIndex] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const { data, refetch, isLoading } = useQuery('feeds', Api.getFeed);
-  console.log('🚀 ~ file: FeedScreen.tsx:33 ~ FeedScreen ~ data:', data?.result?.posts?.length);
+  const [voices, setSound] = useState<(Audio.Sound | undefined)[]>([]);
+
+  const dispatch = useAppDispatch();
   const { top } = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
 
+  const { refetch: refetchUserData } = useQuery('getCurrentUserProfile', Api.getUserProfile0);
+
   const isFocused = useIsFocused();
+  // const { status } = userAppInit();
+
+  const getUpdatedUserData = async () => {
+    await refetchUserData()
+      .then(response => {
+        dispatch(setUser(response?.data?.data.user));
+      })
+      .catch(err => console.log(err));
+  };
 
   const ITEM_HEIGHT = height - top - tabBarHeight + 10;
 
@@ -82,19 +99,24 @@ const FeedScreen = () => {
           image={imageUri}
           media={item?.userQuiz ? [item.userQuiz.recording] : item.media}
           data={item}
-          username1={'@' + users[0].user.userName}
+          username1={'@' + users[0]?.user?.userName}
           username2={users[1] ? '@' + users[1]?.user.userName : ''}
-          userpic1={users[0].user.photo}
-          userpic2={users[1] ? users[1]?.user.photo : ''}
-          userId1={users[0].user._id}
-          userId2={users[1] ? item.users[1]?.user._id : ''}
+          userpic1={users[0]?.user?.photo}
+          userpic2={users[1] ? users[1]?.user?.photo : ''}
+          userId1={users[0]?.user?._id}
+          userId2={users[1] ? users[1]?.user?._id : ''}
+
+          audio={item?.audio?.mediaId}
         />
       </Pressable>
     );
   };
 
   useEffect(() => {
-    if (isFocused) refetch();
+    if (isFocused) {
+      refetch();
+      getUpdatedUserData();
+    }
   }, [isFocused]);
 
   return (
@@ -138,6 +160,7 @@ const FeedScreen = () => {
               newIndex < data?.result?.posts.length &&
               newIndex >= 0
             ) {
+              // pauseSound()
               setIndex(Math.round(newIndex));
             }
           }}
