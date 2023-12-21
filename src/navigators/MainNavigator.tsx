@@ -74,7 +74,9 @@ export default function MainNavigator() {
   // initialRouteName={status === 'SUCCESS' ? 'BottomTabs' : 'Auth'}>
   return (
     <NavigationContainer>
-      <MainStack.Navigator screenOptions={commonScreenOptions} initialRouteName={status === 'SUCCESS' ? 'BottomTabs' : 'Auth'}>
+      <MainStack.Navigator
+        screenOptions={commonScreenOptions}
+        initialRouteName={status === 'SUCCESS' ? 'BottomTabs' : 'Auth'}>
         <MainStack.Screen options={commonOptions} name="Auth" component={AuthStackNavigator} />
         <MainStack.Screen
           name="BottomTabs"
@@ -177,8 +179,6 @@ export default function MainNavigator() {
         <MainStack.Screen name="AddReview" options={commonOptions} component={AddReview} />
         <MainStack.Screen name="PostReview" options={commonOptions} component={PostReview} />
         <MainStack.Screen name="ReviewSuccess" options={commonOptions} component={ReviewSuccess} />
-        <MainStack.Screen name="DiscountUserSelect" options={commonOptions} component={DiscountUserSelect} />
-        <MainStack.Screen name="DiscountQrScreen" options={commonOptions} component={DiscountQrScreen} />
         <MainStack.Screen
           name="DiscountUserSelect"
           options={commonOptions}
