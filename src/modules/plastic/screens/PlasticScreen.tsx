@@ -27,6 +27,7 @@ const BiggestBottle = require('../../../../assets/images/biggestBottle.png');
 const PlasticScreen = () => {
   const dispatch = useAppDispatch();
   const plasticSizes = useSelector(plasticSizeSelector);
+  console.log("🚀 ~ file: PlasticScreen.tsx:30 ~ PlasticScreen ~ plasticSizes:", plasticSizes)
 
   const totalPlastic = useSelector(plasticCountTotalSelector);
   const { navigate, goBack } = useAppNavigation<NavigationProp<PlasticStackParamList>>();

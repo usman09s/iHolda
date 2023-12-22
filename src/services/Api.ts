@@ -431,7 +431,7 @@ class ApiClass {
     await this.externalApi
       .url(
         `plastic/agents?page=1${
-          !coords ? "" : `&latitude=${coords?.latitude}&longitude=${coords?.longitude}`
+          !coords ? '' : `&latitude=${coords?.latitude}&longitude=${coords?.longitude}`
         }`,
       )
       .get()
@@ -458,6 +458,7 @@ class ApiClass {
         virtualMoneyRatio: virtualMoneyRatio,
         communityPointRatio: communityPointRatio,
         plastics: plastics,
+        force: true,
       })
       .json(result => {
         console.log(plastics);
@@ -762,6 +763,22 @@ class ApiClass {
         plasticAgent: plasticId,
         ...(plastics ? { plastics } : null),
       })
+      .json(result => {
+        console.log(result, 'asjdqjpojpwqej api');
+        return result;
+      });
+  bookmarkRestaurant = async (id: string): Promise<unknown> =>
+    await this.externalApi
+      .url(`user/shop/bookmark/${id}`)
+      .post()
+      .json(result => {
+        console.log(result, 'asjdqjpojpwqej api');
+        return result;
+      });
+  likeRestaurant = async (id: string): Promise<unknown> =>
+    await this.externalApi
+      .url(`cartpo/shop/like/${id}`)
+      .put()
       .json(result => {
         console.log(result, 'asjdqjpojpwqej api');
         return result;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,17 +17,24 @@ import Reviews from './Reviews';
 import Header from 'components/Header/Header';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import { Restaurant } from '../types';
+import { useMutation, useQuery } from 'react-query';
+import Api from 'services/Api';
 
 const RestaurentDetail = ({ route, navigation }: any) => {
+  const { data: userData } = useQuery('currentUserProfile', Api.getUserProfile0);
+  const restaurantData: Restaurant = route.params?.item;
+  const { user } = useSelector(userSelector);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isLiked, setIsLiked] = useState(restaurantData.likes.includes(user?._id ?? ''));
   const activeY = useSharedValue(0);
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
-  const { user } = useSelector(userSelector);
   const invitedBy = user?.invitedBy?.userName;
   const { username, joinedMonthAndYear } = useSelector(userCommonInformationSelector);
+  const { mutate, isLoading } = useMutation(Api.bookmarkRestaurant);
+  const { mutate: likeRestaurant } = useMutation(Api.likeRestaurant);
   const isCurrentUser = route.params?.isCurrentUser ?? true;
   console.log(route.params, 'jofjeofioh');
-  const restaurantData: Restaurant = route.params?.item;
   const avatar = getImageLink(restaurantData.coverImage.mediaId);
 
   const lat = restaurantData.location.coordinates[1];
@@ -48,6 +55,33 @@ const RestaurentDetail = ({ route, navigation }: any) => {
   const scrollHandler = useAnimatedScrollHandler(event => {
     activeY.value = event.contentOffset.y <= 0 ? 0 : event.contentOffset.y;
   });
+
+  const onPressBookmark = () => {
+    mutate(restaurantData._id, {
+      onSuccess: () => {
+        setIsBookmarked(prev => !prev);
+      },
+      onError: err => {
+        console.log('🚀 ~ onPressBookmark ~ err:', err);
+      },
+    });
+  };
+
+  const onPressLike = () => {
+    likeRestaurant(restaurantData._id, {
+      onSuccess: () => {
+        setIsLiked(prev => !prev);
+      },
+      onError: err => {
+        console.log('🚀 ~ onPressBookmark ~ err:', err);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (userData?.data.user.bookmarkedCartpoShops.includes(restaurantData._id))
+      setIsBookmarked(true);
+  }, [userData]);
 
   const RenderedComponent =
     [
@@ -73,6 +107,10 @@ const RestaurentDetail = ({ route, navigation }: any) => {
         renderItem={({ item }) => item}
         ListHeaderComponent={
           <RestaurantHeader
+            isLiked={isLiked}
+            isBookmarked={isBookmarked}
+            onPressBookmark={onPressBookmark}
+            onPressLike={onPressLike}
             top={top}
             isCurrentUser={isCurrentUser}
             avatar={avatar}

@@ -163,6 +163,7 @@ export type User = {
   email: string;
   role: string;
   isActive: boolean;
+  bookmarkedCartpoShops: string[];
   address: string;
   fcmTokens: string[];
   online: boolean;

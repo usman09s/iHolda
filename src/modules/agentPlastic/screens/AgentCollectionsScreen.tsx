@@ -33,7 +33,7 @@ const AgentCollectionsScreen = () => {
             <ActivityIndicator color={colors.saffron} />
           ) : (
             <Text className={text({ type: 'b26', class: 'text-center' })}>
-              {agentUser.data.totalCount || 0}
+              {agentUser?.data?.totalCount || 0}
             </Text>
           )}
         </View>
@@ -43,7 +43,7 @@ const AgentCollectionsScreen = () => {
             <ActivityIndicator color={colors.saffron} />
           ) : (
             <Text className={text({ type: 'b26', class: 'text-center' })}>
-              {agentUser.data.todayCount || 0}
+              {agentUser?.data?.todayCount || 0}
             </Text>
           )}
         </View>

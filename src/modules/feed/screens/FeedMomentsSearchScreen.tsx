@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
 import Header from 'components/Header/Header';
 import Icons from 'components/Icons';
 import Input from 'components/Input';
@@ -51,6 +51,8 @@ const FeedMomentsSearchScreen = () => {
   const [page, setPage] = useState(1);
   const {} = useAppNavigation<NavigationProp<FeedStackParamList>>();
   const { user } = useSelector(userSelector);
+
+  const isFocused = useIsFocused();
 
   // const handlePressUser = () => {
   //   navigation.navigate('ProfileStack', { screen: 'Profile', params: { isCurrentUser: false } });
@@ -122,8 +124,12 @@ const FeedMomentsSearchScreen = () => {
   const searchList = (page?: number) => {
     setIsLoading(true);
 
-    search(true, page);
+    search(true);
   };
+
+  useEffect(() => {
+   if(isFocused) searchList()
+  }, [isFocused]);
 
   useEffect(() => {
     searchList();

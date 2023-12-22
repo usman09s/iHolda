@@ -30,6 +30,10 @@ type Props = {
   onPressDirection: () => void;
   onPressContact: () => void;
   onPressReview: () => void;
+  onPressLike: () => void;
+  onPressBookmark: () => void;
+  isLiked: boolean;
+  isBookmarked: boolean;
 };
 
 const RestaurantHeader = ({
@@ -43,7 +47,11 @@ const RestaurantHeader = ({
   isCurrentUser,
   hederThumbnail,
   onPressTabItem,
-  onPressReview
+  onPressReview,
+  onPressBookmark,
+  onPressLike,
+  isLiked,
+  isBookmarked,
 }: Props) => {
   const navigation: any = useNavigation();
   const headerImageHeight = units.vh * 40;
@@ -107,9 +115,7 @@ const RestaurantHeader = ({
               </View>
             </TouchableWithoutFeedback>
 
-            <TouchableOpacity
-              onPress={onPressReview}
-              style={{ alignItems: 'center' }}>
+            <TouchableOpacity onPress={onPressReview} style={{ alignItems: 'center' }}>
               <View
                 style={{
                   backgroundColor: '#676766',
@@ -125,7 +131,15 @@ const RestaurantHeader = ({
             </TouchableOpacity>
           </View>
         </View>
-        <RestaurantScrolledHeaderRight activeY={activeY} top={top} isCurrentUser={isCurrentUser} />
+        <RestaurantScrolledHeaderRight
+          isLiked={isLiked}
+          isBookmarked={isBookmarked}
+          onPressBookmark={onPressBookmark}
+          onPressLike={onPressLike}
+          activeY={activeY}
+          top={top}
+          isCurrentUser={isCurrentUser}
+        />
       </Animated.View>
       <View className="bg-white">
         <ScrolledHeader

@@ -3,6 +3,7 @@ import { Post } from "modules/profile/types";
 export interface Restaurant {
   _id: string;
   merchant: string;
+  likes: string[];
   name: string;
   description: string;
   coverImage: {

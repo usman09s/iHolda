@@ -17,28 +17,14 @@ const OTPInput = ({ onChangeOtp = () => null }: { onChangeOtp: (value: string) =
   }, []);
 
   const onKeyPress = (index: number, pressedKey: 'Backspace' | string | number) => {
-    if (index === 0) {
-      if (pressedKey !== 'Backspace') {
-        refs[1].current?.focus();
-      }
-
-      return;
-    }
-
-    if (index === 5) {
-      if (pressedKey === 'Backspace') {
-        refs[2].current?.focus();
-      }
-
-      return;
-    }
-
-    if (pressedKey !== 'Backspace') {
+    if (pressedKey !== 'Backspace' && index < refs.length - 1) {
       refs[index + 1].current?.focus();
-    } else {
+    } else if (pressedKey === 'Backspace' && index > 0) {
       refs[index - 1].current?.focus();
     }
   };
+  
+  
 
   const onFocus = (index: number) => {
     refs[index].current?.clear();

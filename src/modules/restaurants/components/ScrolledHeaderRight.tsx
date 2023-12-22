@@ -9,9 +9,24 @@ import { TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 
-type Props = { top: number; isCurrentUser: boolean; activeY: SharedValue<number> };
+type Props = {
+  top: number;
+  isCurrentUser: boolean;
+  activeY: SharedValue<number>;
+  onPressLike: () => void;
+  onPressBookmark: () => void;
+  isLiked: boolean;
+  isBookmarked: boolean;
+};
 
-const RestaurantScrolledHeaderRight = ({ top, activeY, isCurrentUser }: Props) => {
+const RestaurantScrolledHeaderRight = ({
+  top,
+  activeY,
+  onPressLike,
+  onPressBookmark,
+  isLiked,
+  isBookmarked,
+}: Props) => {
   const navigation = useNavigation();
   const { user } = useSelector(userSelector);
 
@@ -29,22 +44,24 @@ const RestaurantScrolledHeaderRight = ({ top, activeY, isCurrentUser }: Props) =
       style={animatedStyle}>
       <View className="w-full" style={{ marginTop: units.vh * 3 + top }}>
         <View className="justify-around items-center bottom-0">
-
           <View style={{ height: units.vh * 2 }} />
-          <TouchableOpacity>
-            <Icons.HeartIcon />
+          <TouchableOpacity onPress={onPressLike}>
+            <Icons.HeartIcon
+              color={isLiked ? 'red' : 'white'}
+              fill={isLiked ? 'red' : 'transparent'}
+            />
           </TouchableOpacity>
           <View style={{ height: units.vh * 2 }} />
           <TouchableOpacity>
             <Icons.ShareIcon />
           </TouchableOpacity>
           <View style={{ height: units.vh * 2 }} />
-          <TouchableOpacity>
-            <Icons.BookmarkIcon />
+          <TouchableOpacity onPress={onPressBookmark}>
+            <Icons.BookmarkIcon
+              fill={isBookmarked ? 'white' : 'transparent'}
+            />
           </TouchableOpacity>
         </View>
-
-        
       </View>
     </Animated.View>
   );
