@@ -65,14 +65,23 @@ const FeedScreen = () => {
   const renderItem = ({ item, index }: any) => {
     const imageUri = getImageLink(item.media[0]?.mediaId);
 
+    const isMet = item?.met?._id;
     const isQuizUserdata =
       item?.userQuiz !== undefined && typeof item?.userQuiz?.users[0] !== 'string';
 
     const quizUsers = isQuizUserdata ? item?.userQuiz?.users?.map((el: any) => ({ user: el })) : [];
+    const metUsers = isMet ? item.met?.users.map((el: any) => ({ user: el })): [];
 
-    const users = isQuizUserdata ? quizUsers : item?.users ? item?.users : [{ user: item.user }];
+    const users = isMet
+      ? metUsers
+      : isQuizUserdata
+        ? quizUsers
+        : item?.users
+          ? item?.users
+          : [{ user: item.user }];
+    const itemMedia = isMet ? item?.media ?? [] : item?.media;
 
-    return !item?.media?.length && !item?.userQuiz ? null : (
+    return !itemMedia && !item?.userQuiz ? null : (
       <Pressable
         key={item._id}
         // onPress={() => navigate('FeedDetailView', {item})}
@@ -82,6 +91,7 @@ const FeedScreen = () => {
             ios: wH - units.vh * 8,
             android: ITEM_HEIGHT,
           }),
+          marginTop: top,
         }}>
         <FeedItem
           isFocused={isFocused}
@@ -89,7 +99,7 @@ const FeedScreen = () => {
           index={index}
           shares={item.shareCount}
           bookmarks={item.bookmarkCount}
-          gotoDetailOnPress={item?.user ? false : true}
+          gotoDetailOnPress={users?.length > 1 ? true : false}
           likes={item.likes?.length}
           onPressLike={() => refetch()}
           comments={item.comments?.length}
@@ -97,7 +107,7 @@ const FeedScreen = () => {
           caption={item.text ?? ''}
           subText={item.subText ?? ''}
           image={imageUri}
-          media={item?.userQuiz ? [item.userQuiz.recording] : item.media}
+          media={item?.userQuiz ? [item.userQuiz.recording] : itemMedia}
           data={item}
           username1={'@' + users[0]?.user?.userName}
           username2={users[1] ? '@' + users[1]?.user.userName : ''}
@@ -105,7 +115,6 @@ const FeedScreen = () => {
           userpic2={users[1] ? users[1]?.user?.photo : ''}
           userId1={users[0]?.user?._id}
           userId2={users[1] ? users[1]?.user?._id : ''}
-
           audio={item?.audio?.mediaId}
         />
       </Pressable>

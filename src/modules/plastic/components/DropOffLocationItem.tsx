@@ -51,14 +51,19 @@ const DropOffLocationItem = ({ location, onPressLocation }: Props) => {
           {location?.isAvailable ? 'Open now' : 'Closed'}
         </Text>
       </View>
-      <Text
+      {location?.dropoffLocation?.address ? (
+        <Text className={`text-10 font-[300] capitalize`}>
+          {location?.dropoffLocation?.address || ''}
+        </Text>
+      ) : null}
+      {/* <Text
         className={`${
           isSmallScreen
             ? 'text-10 font-Regular text-black-o-70'
             : 'text-12 font-Regular text-black-o-70'
         }`}>
         {location?.dropoffLocation.address || ''}
-      </Text>
+      </Text> */}
       <View className="flex-row justify-between mt-2">
         <Text
           className={`${
