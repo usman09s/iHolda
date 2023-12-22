@@ -13,6 +13,7 @@ import {
   VerifyPhoneBeforeRegisterResponse,
 } from 'types/AuthTypes';
 import { CommunityRankItemType } from 'types/LeaderBoardTypes';
+import * as Location from 'expo-location';
 import { GetMomentsResponseType, PostMomentsResponse } from 'types/MomentsTypes';
 import {
   AddPlasticResponseType,
@@ -424,9 +425,15 @@ class ApiClass {
   //       return result.data.data;
   //     });
 
-  getDropOffLocations = async (): Promise<DropOffLocationItemType[]> =>
+  getDropOffLocations = async (
+    coords?: Location.LocationObjectCoords,
+  ): Promise<DropOffLocationItemType[]> =>
     await this.externalApi
-      .url('plastic/agents?page=1')
+      .url(
+        `plastic/agents?page=1${
+          !coords ? "" : `&latitude=${coords?.latitude}&longitude=${coords?.longitude}`
+        }`,
+      )
       .get()
       .json(result => {
         console.log(result.data.data);

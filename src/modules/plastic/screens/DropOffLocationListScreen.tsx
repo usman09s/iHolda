@@ -9,12 +9,13 @@ import DropOffLocationItem from '../components/DropOffLocationItem';
 import LocationClosedPopup from '../components/LocationClosedPopup';
 import useDropOffLocationListActions from '../hooks/useDropOffLocationListActions';
 import { height } from 'utils/helpers';
+import { useEffect, useState } from 'react';
 
 const DropOffLocationListScreen = () => {
+  const [data, setData] = useState<DropOffLocationItemType[]>([]);
   const isSmallScreen = height < 700;
   console.log(height);
   const {
-    data,
     isLoading,
     searchKeyword,
     locationResult,
@@ -22,8 +23,13 @@ const DropOffLocationListScreen = () => {
     setSearchKeyword,
     showClosedDropOffLocationPopup,
     setShowClosedDropOffLocationPopup,
-  } = useDropOffLocationListActions();
-    console.log("🚀 ~ file: DropOffLocationListScreen.tsx:26 ~ DropOffLocationListScreen ~ data:", data)
+    getLocation,
+    mutate,
+  } = useDropOffLocationListActions(data);
+  console.log(
+    '🚀 ~ file: DropOffLocationListScreen.tsx:26 ~ DropOffLocationListScreen ~ data:',
+    data,
+  );
 
   const filteredData = Array.isArray(data)
     ? data.filter(item => item.name.includes(searchKeyword))
@@ -46,6 +52,17 @@ const DropOffLocationListScreen = () => {
       </View>
     ) : null;
 
+  useEffect(() => {
+    getLocation().then(coords => {
+      console.log("🚀 ~ file: DropOffLocationListScreen.tsx:57 ~ getLocation ~ coords:", coords)
+      mutate(coords, {
+        onSuccess: data => {
+          setData(data);
+        },
+      });
+    });
+  }, []);
+
   return (
     <View className="bg-milkWhite px-7 flex-1">
       <Header
@@ -67,6 +84,11 @@ const DropOffLocationListScreen = () => {
         />
       </View>
       {isLoading || (!data && <ActivityIndicator className="mb-4 flex-1" color={colors.blue} />)}
+      {!isLoading && !data?.length ? (
+        <View className='flex-1 items-center justify-center'>
+          <Text className="text-center">No agent found</Text>
+        </View>
+      ) : null}
       <FlatList
         renderItem={renderItem}
         keyboardDismissMode="on-drag"

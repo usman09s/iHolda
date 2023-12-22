@@ -123,15 +123,11 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
     setIsLoading(true);
 
     if (quizMedia) {
-      const result = await Video.compress(
-        element,
-        {compressionMethod: "auto"},
-        (progress) => {
-          console.log('Compression Progress: ', progress);
-        }
-      );
-      console.log("🚀 ~ postQuiz ~ result:", result)
-      
+      const result = await Video.compress(element, { compressionMethod: 'auto' }, progress => {
+        console.log('Compression Progress: ', progress);
+      });
+      console.log('🚀 ~ postQuiz ~ result:', result);
+
       const newVideoUri = 'file:///' + result.split('file:/').join('');
 
       videoObject = {
@@ -155,7 +151,9 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
     });
 
     const resData = await postData(Api.baseUrl + 'quiz/attempt', formdata);
+    console.log("🚀 ~ file: MomentsQuizScreen.tsx:154 ~ postQuiz ~ formdata:", formdata)
     const response = await resData.json();
+    console.log('🚀 ~ file: MomentsQuizScreen.tsx:159 ~ postQuiz ~ response:', response);
 
     if (resData.status !== 200) {
       alert('Something went wrong');
@@ -174,6 +172,10 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
 
     const postResData = await postData(Api.baseUrl + 'met', postFormData);
 
+    console.log(
+      '🚀 ~ file: MomentsQuizScreen.tsx:179 ~ postQuiz ~ postResData:',
+      await postResData.json(),
+    );
     if (postResData.status !== 200) {
       alert('Something went wrong');
       goBack();
@@ -227,7 +229,7 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
           entering={SlideInDown}>
           <View>
             <Text className={themeText({ type: 'm20' })} style={{ color: '#000' }}>
-              Do you want to cancle quiz?
+              Do you want to cancel quiz?
             </Text>
             <View style={{ width: '100%', flexDirection: 'row', marginBottom: 20 }}>
               <TouchableOpacity
@@ -394,8 +396,8 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
         {quizCompleted
           ? quizPostSection()
           : showScore
-          ? quizResultSection()
-          : quizQuestionSection()}
+            ? quizResultSection()
+            : quizQuestionSection()}
       </View>
 
       {cancleQuiz()}
