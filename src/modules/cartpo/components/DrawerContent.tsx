@@ -29,7 +29,7 @@ export const DrawerContent = () => {
 
   const restaurantName = restaurantData?.setting?.shop?.name || 'Restaurant name';
 
-  const restaurantPhoto = restaurantData?.setting?.shop?.coverImage.mediaId || null;
+  const restaurantPhoto = restaurantData?.setting?.shop?.coverImage?.mediaId || null;
 
   return (
     <View className="my-12 mx-6">
