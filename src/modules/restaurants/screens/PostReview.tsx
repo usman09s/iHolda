@@ -128,7 +128,10 @@ const PostReview = ({ route }: { route?: { params: any } }) => {
     formdata.append('post[text]', caption);
     if (media) formdata.append('post[media]', media);
     formdata.append('star', selectedRating.toString());
-    console.log("🚀 ~ file: PostReview.tsx:131 ~ handlePostRestaurantReview ~ selectedRating.toString():", selectedRating.toString())
+    console.log(
+      '🚀 ~ file: PostReview.tsx:131 ~ handlePostRestaurantReview ~ selectedRating.toString():',
+      selectedRating.toString(),
+    );
     formdata.append('to', restaurantId);
     formdata.append('categories[0]', selectedCategory);
 

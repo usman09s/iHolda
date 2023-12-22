@@ -1,22 +1,22 @@
-import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+// import RNPickerSelect from 'react-native-picker-select';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 import { selectCartpoSettings, selectWalletBalance } from 'store/cartpo/calculateSlice';
 import { height } from 'utils/helpers';
 import { useCartpoActions } from '../hooks/useCartpoActions';
+import CustomHeader from 'components/Header/CustomHeader';
 
 export const CashoutScreen = ({ navigation }: any) => {
   const { handleWithdraw } = useCartpoActions();
+  const [amount, setAmount] = useState('');
   const isSmallScreen = height < 700;
   const settingsData = useSelector(selectCartpoSettings);
   const walletBalance = useSelector(selectWalletBalance);
   const [value, setValue] = useState('value');
-  const amount = 300;
   const handleValueChange = (value: string) => {
     console.log('Selected value:', value);
     setValue(value);
@@ -25,7 +25,7 @@ export const CashoutScreen = ({ navigation }: any) => {
   const options = settingsData.setting?.paymentMethod.map(option => option.account);
   return (
     <View className="flex-1 px-6">
-      <Header showBackIcon centerComponent={<Text>Cash out</Text>} />
+      <CustomHeader showBackIcon centerComponent={<Text>Cash out</Text>} />
       <View className={`py-8 flex-1 justify-between ${isSmallScreen ? 'mb-4' : 'mb-24'}`}>
         <View className="bg-[#01991d] p-4 rounded-lg">
           <Text className="text-12 font-normal text-white text-center">Wallet Balance</Text>
@@ -35,9 +35,54 @@ export const CashoutScreen = ({ navigation }: any) => {
           </Text>
         </View>
         <View className={`${isSmallScreen ? 'pb-8 pt-10' : 'pb-16 pt-10'}`}>
-          <Text className="text-center text-5xl font-bold py-6">
-            0.0<Text className="text-base">cfa</Text>
-          </Text>
+          <View
+            style={{
+              paddingVertical: 24,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <TextInput
+              value={amount}
+              onChangeText={val => setAmount(val)}
+              placeholder="0"
+              placeholderTextColor={'black'}
+              keyboardType="numeric"
+              style={{
+                color: 'black',
+                textAlign: 'center',
+                fontSize: 48,
+                fontWeight: '700',
+                paddingRight: 10,
+                // minWidth: 100
+              }}
+            />
+
+            <Text
+              style={{
+                color: 'black',
+                textAlign: 'center',
+                fontSize: 48,
+                fontWeight: '700',
+                paddingRight: 10,
+                marginLeft: -5,
+                // minWidth: 100
+              }}>
+              .0
+            </Text>
+
+            <Text
+              style={{
+                color: 'blacck',
+                textAlign: 'center',
+                fontSize: 16,
+                alignSelf: 'flex-end',
+                marginBottom: 8,
+              }}>
+              {' '}
+              cfa
+            </Text>
+          </View>
           <Text className="text-center font-semibold pb-8">TO</Text>
           <SelectDropdown
             data={options}

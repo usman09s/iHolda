@@ -17,6 +17,7 @@ import CustomHeader from 'components/Header/CustomHeader';
 import { selectInvitedInvitees, selectPendingInvitees } from 'store/settings/inviteeSlice';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import Share from 'react-native-share';
+import { userSelector } from 'store/auth/userSelectors';
 
 const InvitedUser = ({ avatar, name }: any) => {
   return (
@@ -74,7 +75,7 @@ export const ReferralScreen = () => {
     handleGetInvitees();
   });
 
-  const userData = useSelector(selectUser);
+  const userData = useSelector(userSelector)?.user;
   const { handleReferralCopy } = useSettingActions();
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>

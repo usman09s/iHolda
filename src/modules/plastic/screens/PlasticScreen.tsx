@@ -24,7 +24,7 @@ const DefaultImage = require('../../../../assets/images/bottle.png');
 const BiggerBottle = require('../../../../assets/images/biggerBottle.png');
 const BiggestBottle = require('../../../../assets/images/biggestBottle.png');
 
-const PlasticScreen = () => {
+const PlasticScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
   const plasticSizes = useSelector(plasticSizeSelector);
   console.log("🚀 ~ file: PlasticScreen.tsx:30 ~ PlasticScreen ~ plasticSizes:", plasticSizes)
@@ -56,7 +56,10 @@ const PlasticScreen = () => {
       className="flex-1 bg-white py-2"
       contentContainerStyle={{ justifyContent: 'space-between', paddingBottom: 16 }}>
       <View className="px-6">
-        <Header onPressLeft={goBack} leftComponent={<Icons.CrossIcon />} />
+        <Header
+          onPressLeft={() => navigation.navigate('BottomTabs')}
+          leftComponent={<Icons.CrossIcon />}
+        />
       </View>
       <View className="px-6" style={{ marginVertical: 20 }}>
         <Text className={text({ class: 'text-center text-black-o-60 mx-6 ' })}>

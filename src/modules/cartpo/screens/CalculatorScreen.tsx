@@ -16,6 +16,7 @@ import { Drawer } from 'react-native-drawer-layout';
 import { DrawerContent } from '../components/DrawerContent';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCartpoActions } from '../hooks/useCartpoActions';
+import Toast from 'react-native-toast-message';
 
 const CalculatorScreen = ({ navigation }: any) => {
   const { handleGetCartpoSettings } = useCartpoActions();
@@ -24,7 +25,6 @@ const CalculatorScreen = ({ navigation }: any) => {
   const [open, setOpen] = useState(false);
   const selectedOption = useSelector(selectSelectedOption);
   const userData = useSelector(selectUserData);
-  console.log(userData, 'lklklklk');
 
   const handleKeypadPress = value => {
     setInputValue(prevInputValue => {
@@ -51,6 +51,19 @@ const CalculatorScreen = ({ navigation }: any) => {
   useEffect(() => {
     handleGetCartpoSettings();
   }, []);
+
+  const handleNavigation = () => {
+    if (userData && userData.user && userData.user?.linkedPaymentAccounts) {
+      setInputValue('0');
+      dispatch(setCalculatorAmount(inputValue));
+      navigation.navigate('CartpoStack', { screen: 'DiscountQrCode' });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Add a Payment Account first',
+      });
+    }
+  };
 
   return (
     <Drawer
@@ -135,11 +148,7 @@ const CalculatorScreen = ({ navigation }: any) => {
               }}
               title={'Next'}
               customTextClass={'text-white'}
-              onPress={() => {
-                setInputValue('0');
-                dispatch(setCalculatorAmount(inputValue));
-                navigation.navigate('CartpoStack', { screen: 'DiscountQrCode' });
-              }}
+              onPress={() => handleNavigation()}
             />
           </View>
         </ScrollView>

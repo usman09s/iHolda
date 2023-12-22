@@ -431,7 +431,7 @@ class ApiClass {
     await this.externalApi
       .url(
         `plastic/agents?page=1${
-          !coords ? '' : `&latitude=${coords?.latitude}&longitude=${coords?.longitude}`
+          !coords ? "" : `&latitude=${coords?.latitude}&longitude=${coords?.longitude}`
         }`,
       )
       .get()
@@ -710,12 +710,17 @@ class ApiClass {
         return result;
       });
   };
-
-  setPaymentAccount = async ({ number, default: paymentDefault, confirmNumber }: any) => {
+  setPaymentAccount = async ({
+    number,
+    default: paymentDefault,
+    confirmNumber,
+    previousAccounts,
+  }: any) => {
     const response = await this.externalApi
       .url('user/payment-accounts')
       .post({
         linkedPaymentAccounts: [
+          ...previousAccounts,
           {
             number: number,
             default: paymentDefault,

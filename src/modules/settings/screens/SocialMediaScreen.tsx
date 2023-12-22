@@ -9,6 +9,7 @@ import { CustomSocialLink } from '../components/CustomSocialLink';
 import CustomHeader from 'components/Header/CustomHeader';
 import Toast from 'react-native-toast-message';
 import { useSettingActions } from '../hooks/useSettingsActions';
+import { userSelector } from 'store/auth/userSelectors';
 
 export const SocialMediaScreen = () => {
   const [isTextInputVisible, setIsTextInputVisible] = useState([false, false, false]);
@@ -16,7 +17,7 @@ export const SocialMediaScreen = () => {
   const [inputError, setInputError] = useState([false, false, false, false, false, false]);
   const [activeLink, setActiveLink] = useState(null);
   const dispatch = useDispatch();
-  const userData = useSelector(selectUser);
+  const userData = useSelector(userSelector)?.user;
   const { handleUpdateSetting } = useSettingActions();
 
   const toggleLinkInput = index => {

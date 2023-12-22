@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import Api from 'services/Api';
+import { userSelector } from 'store/auth/userSelectors';
+import { setUserInfo } from 'store/auth/userSlice';
 import { selectUser, setUser } from 'store/userDataSlice';
 import {
   setGender,
@@ -16,7 +18,7 @@ export const useRequestReferenceAction = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchText, setSearchText] = useState('');
   const dispatch = useDispatch();
-  const userData = useSelector(selectUser);
+  const userData = useSelector(userSelector)?.user;
   const searchUsersMutation = useMutation(Api.searchUsers);
   const userReferenceData = useSelector((state: any) => state.userReference.verificationData);
   const userGender = useSelector((state: any) => state.userReference.gender);
@@ -97,7 +99,7 @@ export const useRequestReferenceAction = () => {
 
         if (verificationResult.message === 'Basic verification updated successfully') {
           navigation.navigate('VerificationComplete');
-          dispatch(setUser(updatedUserData));
+          dispatch(setUserInfo(updatedUserData));
         } else {
           console.error('Basic verification failed.');
         }

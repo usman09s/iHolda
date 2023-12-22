@@ -29,7 +29,7 @@ export const DrawerContent = () => {
 
   const restaurantName = restaurantData?.setting?.shop?.name || 'Restaurant name';
 
-  const restaurantPhoto = restaurantData?.setting?.shop?.photos[0]?.mediaId || null;
+  const restaurantPhoto = restaurantData?.setting?.shop?.coverImage?.mediaId || null;
 
   return (
     <View className="my-12 mx-6">
@@ -37,7 +37,7 @@ export const DrawerContent = () => {
         <CustomProfileAvatar
           name={restaurantName}
           size={50}
-          photo={getImageLink(restaurantPhoto)}
+          photo={restaurantPhoto && getImageLink(restaurantPhoto)}
         />
         <Text className="text-base font-bold ml-3">{restaurantName}</Text>
       </View>

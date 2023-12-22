@@ -10,11 +10,13 @@ import wretch from 'wretch';
 import { setInvitees } from 'store/settings/inviteeSlice';
 import * as SecureStore from 'expo-secure-store';
 import Toast from 'react-native-toast-message';
+import { setUserInfo } from 'store/auth/userSlice';
+import { userSelector } from 'store/auth/userSelectors';
 
 export const useSettingActions = () => {
-  const userData = useSelector(selectUser);
+  const userData: any = useSelector(userSelector)?.user;
   const route = useRoute();
-  const [cityCountry, setCityCountry] = useState<any>('');
+  const [cityCountry, setCityCountry] = useState<any>(userData.address);
   // const [lat, setLat] = useState<any>(userData?.location?.coordinates[0]);
   // const [lng, setLng] = useState<any>(userData?.location?.coordinates[1]);
   const navigation = useNavigation();
@@ -40,10 +42,10 @@ export const useSettingActions = () => {
       ...userData,
       bio: value,
     };
-    dispatch(setUser(updatedUserData));
+    dispatch(setUserInfo(updatedUserData));
   };
 
-  const handleSubmit = async values => {
+  const handleSubmit = async (values: any) => {
     const { oldPassword, newPassword, confirmPassword } = values;
     try {
       const result = await Api.changePassword({
@@ -81,7 +83,7 @@ export const useSettingActions = () => {
       ...userData,
       location: { coordinates: [location.coords.latitude, location.coords.longitude] },
     };
-    dispatch(setUser(updatedUserData));
+    dispatch(setUserInfo(updatedUserData));
     getCityCountry(location.coords.latitude, location.coords.longitude);
   };
 
@@ -96,7 +98,7 @@ export const useSettingActions = () => {
       ...userData,
       address: cityCountry,
     };
-    await dispatch(setUser(updatedUserData));
+    await dispatch(setUserInfo(updatedUserData));
   };
 
   const handleReferralCopy = async () => {
@@ -125,7 +127,7 @@ export const useSettingActions = () => {
       firstName: trimmedName,
     };
     console.log(updatedUserData);
-    await dispatch(setUser(updatedUserData));
+    await dispatch(setUserInfo(updatedUserData));
     if (userData.firstName === trimmedName) {
       handleUpdateSetting();
     }
@@ -137,7 +139,7 @@ export const useSettingActions = () => {
     formData.append('firstName', userData.firstName);
     formData.append('lastName', userData.lastName);
     formData.append('bio', userData.bio);
-    formData.append('address', userData.address);
+    formData.append('address', cityCountry ? cityCountry : userData.address);
     formData.append('userName', username ? username : userData.userName);
     formData.append('location[type]', 'Point');
     formData.append('location[coordinates][0]', userData.location.coordinates[0]);
@@ -228,8 +230,7 @@ export const useSettingActions = () => {
         .headers({ 'Content-Type': 'multipart/form-data' })
         .put(formData)
         .json();
-      console.log('API Response:', response.data.user);
-      dispatch(setUser(response.data.user));
+      dispatch(setUserInfo(response.data.user));
       Toast.show({
         type: 'success',
         text1: 'Profile Updated Successfully',
@@ -248,7 +249,7 @@ export const useSettingActions = () => {
       ...userData,
       userName: trimmedUsername,
     };
-    await dispatch(setUser(updatedUserData));
+    await dispatch(setUserInfo(updatedUserData));
     handleUpdateSetting(null, null, trimmedUsername);
     navigation.goBack();
   };
@@ -259,19 +260,31 @@ export const useSettingActions = () => {
       default: 'mtn',
       confirmNumber: values.confirmNumber,
     };
-    const updatedUserData = {
-      ...userData,
-      linkedPaymentAccounts: [...userData.linkedPaymentAccounts, paymentAccountData],
-    };
+
+    const allPaymentAccounts = [...userData.linkedPaymentAccounts, paymentAccountData];
 
     try {
-      const result = await Api.setPaymentAccount(paymentAccountData);
+      const result = await Api.setPaymentAccount({
+        number: values.number,
+        default: 'mtn',
+        confirmNumber: values.confirmNumber,
+        previousAccounts: userData.linkedPaymentAccounts,
+      });
+
       if (result.message === 'payment account added') {
+        dispatch(setUserInfo({ ...userData, linkedPaymentAccounts: allPaymentAccounts }));
+        Toast.show({
+          type: 'success',
+          text1: 'Payment Account Added',
+        });
         navigation.goBack();
-        dispatch(setUser(updatedUserData));
       }
     } catch (error) {
       console.error('API Error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error Adding Payment Account',
+      });
       navigation.goBack();
     }
   };
