@@ -1,7 +1,7 @@
 import Header from 'components/Header/Header';
 import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { height } from 'utils/helpers';
@@ -12,6 +12,7 @@ import { useCartpoActions } from '../hooks/useCartpoActions';
 
 export const TopupScreen = ({ navigation }: any) => {
   const { handleWithdraw } = useCartpoActions();
+  const [withdrawAmmount, setWithdrawAmmount] = useState('');
   const isSmallScreen = height < 700;
   const settingsData = useSelector(selectCartpoSettings);
   const walletBalance = useSelector(selectWalletBalance);
@@ -36,9 +37,54 @@ export const TopupScreen = ({ navigation }: any) => {
           </Text>
         </View>
         <View className={`pt-10 ${isSmallScreen ? 'pb-8' : 'pb-16'}`}>
-          <Text className="text-center text-5xl font-bold py-6">
-            0.0<Text className="text-base">cfa</Text>
-          </Text>
+          <View
+            style={{
+              paddingVertical: 24,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <TextInput
+              value={withdrawAmmount}
+              onChangeText={val => setWithdrawAmmount(val)}
+              placeholder="0"
+              placeholderTextColor={'black'}
+              keyboardType="numeric"
+              style={{
+                color: 'black',
+                textAlign: 'center',
+                fontSize: 48,
+                fontWeight: '700',
+                paddingRight: 10,
+                // minWidth: 100
+              }}
+            />
+
+            <Text
+              style={{
+                color: 'black',
+                textAlign: 'center',
+                fontSize: 48,
+                fontWeight: '700',
+                paddingRight: 10,
+                marginLeft: -5,
+                // minWidth: 100
+              }}>
+              .0
+            </Text>
+
+            <Text
+              style={{
+                color: 'blacck',
+                textAlign: 'center',
+                fontSize: 16,
+                alignSelf: 'flex-end',
+                marginBottom: 8,
+              }}>
+              {' '}
+              cfa
+            </Text>
+          </View>
           <Text className="text-center font-semibold pb-8">TO</Text>
           <SelectDropdown
             data={options}

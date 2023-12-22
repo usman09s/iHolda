@@ -14,9 +14,9 @@ import { setUserInfo } from 'store/auth/userSlice';
 import { userSelector } from 'store/auth/userSelectors';
 
 export const useSettingActions = () => {
-  const userData = useSelector(userSelector)?.user;
+  const userData: any = useSelector(userSelector)?.user;
   const route = useRoute();
-  const [cityCountry, setCityCountry] = useState<any>('');
+  const [cityCountry, setCityCountry] = useState<any>(userData.address);
   // const [lat, setLat] = useState<any>(userData?.location?.coordinates[0]);
   // const [lng, setLng] = useState<any>(userData?.location?.coordinates[1]);
   const navigation = useNavigation();
@@ -45,7 +45,7 @@ export const useSettingActions = () => {
     dispatch(setUserInfo(updatedUserData));
   };
 
-  const handleSubmit = async values => {
+  const handleSubmit = async (values: any) => {
     const { oldPassword, newPassword, confirmPassword } = values;
     try {
       const result = await Api.changePassword({
@@ -139,7 +139,7 @@ export const useSettingActions = () => {
     formData.append('firstName', userData.firstName);
     formData.append('lastName', userData.lastName);
     formData.append('bio', userData.bio);
-    formData.append('address', userData.address);
+    formData.append('address', cityCountry ? cityCountry : userData.address);
     formData.append('userName', username ? username : userData.userName);
     formData.append('location[type]', 'Point');
     formData.append('location[coordinates][0]', userData.location.coordinates[0]);
@@ -260,19 +260,31 @@ export const useSettingActions = () => {
       default: 'mtn',
       confirmNumber: values.confirmNumber,
     };
-    const updatedUserData = {
-      ...userData,
-      linkedPaymentAccounts: [...userData.linkedPaymentAccounts, paymentAccountData],
-    };
+
+    const allPaymentAccounts = [...userData.linkedPaymentAccounts, paymentAccountData];
 
     try {
-      const result = await Api.setPaymentAccount(paymentAccountData);
+      const result = await Api.setPaymentAccount({
+        number: values.number,
+        default: 'mtn',
+        confirmNumber: values.confirmNumber,
+        previousAccounts: userData.linkedPaymentAccounts,
+      });
+
       if (result.message === 'payment account added') {
+        dispatch(setUserInfo({ ...userData, linkedPaymentAccounts: allPaymentAccounts }));
+        Toast.show({
+          type: 'success',
+          text1: 'Payment Account Added',
+        });
         navigation.goBack();
-        dispatch(setUserInfo(updatedUserData));
       }
     } catch (error) {
       console.error('API Error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error Adding Payment Account',
+      });
       navigation.goBack();
     }
   };

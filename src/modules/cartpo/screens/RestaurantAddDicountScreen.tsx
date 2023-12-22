@@ -27,7 +27,7 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
 
   const initialDiscount = selectedDiscount
     ? {
-        discountPercentage: `${selectedDiscount.percentage}%`,
+        discountPercentage: selectedDiscount.percentage,
         minimumUsers: selectedDiscount.people === 1 ? '1 person' : '2 people',
         discountCondition:
           selectedDiscount.condition === 2
@@ -55,12 +55,11 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
   };
 
   const handleSubmit = values => {
-    const parsedDiscountPercentage = parseInt(values.discountPercentage.replace('%', ''), 10);
     const minimumUsers = minimumUsersMap[values.minimumUsers];
     const discountCondition = discountConditionMap[values.discountCondition];
     const updatedValues = {
       ...values,
-      discountPercentage: parsedDiscountPercentage,
+      discountPercentage: values.discountPercentage,
       minimumUsers,
       discountCondition,
     };
@@ -92,7 +91,14 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
               <View className="mb-4">
                 <Text>Discount (%)</Text>
                 <CustomDayPicker
-                  itemsArray={['10%', '20%', '25%', '30%', '50%', '60%']}
+                  itemsArray={[
+                    { label: '10%', value: 10 },
+                    { label: '20%', value: 20 },
+                    { label: '25%', value: 25 },
+                    { label: '30%', value: 30 },
+                    { label: '50%', value: 50 },
+                    { label: '60%', value: 60 },
+                  ]}
                   onDaySelect={item => setFieldValue('discountPercentage', item[0])}
                   multiselect={false}
                   customClassContainer={'w-full h-10'}

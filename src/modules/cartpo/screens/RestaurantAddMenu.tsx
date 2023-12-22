@@ -19,6 +19,7 @@ import { selectSelectedMenuItem } from '../../../store/cartpo/calculateSlice';
 import Toast from 'react-native-toast-message';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import * as yup from 'yup';
+import mime from 'mime';
 
 const validationSchema = yup.object().shape({
   photo: yup.string().required('Photo is required'),
@@ -36,9 +37,12 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
   const restaurantData = useSelector(selectCartpoSettings);
   const selectedItem = useSelector(selectSelectedMenuItem);
+  console.log(selectedItem, 'selectedMenuItem');
   const initialValues = {
     photo:
-      selectedItem && selectedItem.photos && selectedItem.photos[1] ? selectedItem.photos[1] : '',
+      selectedItem && selectedItem.photos && selectedItem.photos[0]
+        ? selectedItem.photos[0]?.mediaId
+        : '',
     itemName: (selectedItem && selectedItem.name) || '',
     price: (selectedItem && selectedItem.price && selectedItem.price.toString()) || '',
     category: (selectedItem && selectedItem.category) || '',
@@ -75,9 +79,20 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
     });
     formData.append('timeAvailable[0]', values.timeAvailable);
     formData.append('category', values.category);
-    formData.append('photos[0][mediaId]', '');
-    formData.append('photos[0][mediaType]', 'image/jpeg');
-    formData.append('photos', values.photo);
+
+    if (values.photo.mediaId) {
+      formData.append(`photos[0][mediaId]`, values.photo.mediaId);
+      formData.append(`photos[0][mediaType]`, values.photo.mediaType || 'jpeg');
+    } else {
+      const imageUri = values.photo;
+      const imageObject = {
+        name: imageUri.split('/').pop(),
+        type: mime.getType(imageUri),
+        uri: imageUri,
+      };
+      formData.append(`photos`, imageObject);
+    }
+
     console.log('Form Data:', formData);
     try {
       const response = await fetch('http://ihold.yameenyousuf.com/api/cartpo/shop/menu', {
@@ -94,7 +109,6 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
 
       const result = await response.json();
       console.log('API Response:', result);
-      dispatch(setMenuData(result.data));
       dispatch(setSelectedMenuItem([]));
       navigation.goBack();
     } catch (error) {

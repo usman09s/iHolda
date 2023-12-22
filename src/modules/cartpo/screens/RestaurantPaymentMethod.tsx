@@ -11,8 +11,11 @@ export const RestaurantPaymentMethodScreen = ({ navigation }: any) => {
   const handlePressPaymentMethod = index => {
     if (settingsData.setting.paymentMethod[index]) {
       dispatch(setSelectedPayment(settingsData.setting.paymentMethod[index]));
+      navigation.navigate('RestaurantAddPayment');
+    } else {
+      dispatch(setSelectedPayment([]));
+      navigation.navigate('RestaurantAddPayment');
     }
-    navigation.navigate('RestaurantAddPayment');
   };
 
   useFocusEffect(() => {

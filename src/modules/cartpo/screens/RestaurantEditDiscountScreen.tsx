@@ -21,8 +21,11 @@ export const RestaurantEditDiscountScreen = ({ navigation }: any) => {
           onPress={() => {
             if (restaurantData.setting.discounts[0]) {
               dispatch(setSelectedDiscount(restaurantData.setting.discounts[0]));
+              navigation.navigate('RestaurantAddDiscount');
+            } else {
+              dispatch(setSelectedDiscount([]));
+              navigation.navigate('RestaurantAddDiscount');
             }
-            navigation.navigate('RestaurantAddDiscount');
           }}
         />
         <CustomInputButton
@@ -35,8 +38,11 @@ export const RestaurantEditDiscountScreen = ({ navigation }: any) => {
           onPress={() => {
             if (restaurantData.setting.discounts[1]) {
               dispatch(setSelectedDiscount(restaurantData.setting.discounts[1]));
+              navigation.navigate('RestaurantAddDiscount');
+            } else {
+              dispatch(setSelectedDiscount([]));
+              navigation.navigate('RestaurantAddDiscount');
             }
-            navigation.navigate('RestaurantAddDiscount');
           }}
         />
         <CustomInputButton
@@ -49,8 +55,11 @@ export const RestaurantEditDiscountScreen = ({ navigation }: any) => {
           onPress={() => {
             if (restaurantData.setting.discounts[2]) {
               dispatch(setSelectedDiscount(restaurantData.setting.discounts[2]));
+              navigation.navigate('RestaurantAddDiscount');
+            } else {
+              dispatch(setSelectedDiscount([]));
+              navigation.navigate('RestaurantAddDiscount');
             }
-            navigation.navigate('RestaurantAddDiscount');
           }}
         />
         <CustomInputButton
@@ -63,8 +72,11 @@ export const RestaurantEditDiscountScreen = ({ navigation }: any) => {
           onPress={() => {
             if (restaurantData.setting.discounts[3]) {
               dispatch(setSelectedDiscount(restaurantData.setting.discounts[3]));
+              navigation.navigate('RestaurantAddDiscount');
+            } else {
+              dispatch(setSelectedDiscount([]));
+              navigation.navigate('RestaurantAddDiscount');
             }
-            navigation.navigate('RestaurantAddDiscount');
           }}
         />
       </View>

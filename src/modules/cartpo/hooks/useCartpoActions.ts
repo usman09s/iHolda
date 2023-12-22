@@ -4,6 +4,8 @@ import Api from 'services/Api';
 import { useNavigation } from '@react-navigation/native';
 import {
   selectPhoneNumber,
+  selectSelectedDiscount,
+  selectSelectedPayment,
   setCartpoSettings,
   setDiscount,
   setPaymentAccount,
@@ -19,13 +21,15 @@ import { VerifyOTPMessage } from 'types/AuthTypes';
 import { selectCartpoSettings } from '../../../store/cartpo/calculateSlice';
 import Toast from 'react-native-toast-message';
 import wretch from 'wretch';
+import mime from 'mime';
 
 export const useCartpoActions = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const phoneNumberSelect = useSelector(selectPhoneNumber);
   const settingsData = useSelector(selectCartpoSettings);
-  console.log(settingsData?.setting);
+  const selectedDiscount = useSelector(selectSelectedDiscount);
+  const selectedPayment = useSelector(selectSelectedPayment);
   const [cityCountry, setCityCountry] = useState();
   const [lat, setLat] = useState();
   const [lng, setLng] = useState();
@@ -128,7 +132,7 @@ export const useCartpoActions = () => {
     setLng(location.coords.longitude);
     const updatedUserData = {
       ...settingsData,
-      location: { coordinates: [location.coords.latitude, location.coords.longitude] },
+      location: { coordinates: [location.coords.longitude, location.coords.latitude] },
     };
     dispatch(setCartpoSettings(updatedUserData));
     getCityCountry();
@@ -243,17 +247,19 @@ export const useCartpoActions = () => {
   };
 
   const handleWithdraw = async amount => {
-    const result = await Api.withdrawBalance({ amount: amount });
+    const result = await Api.withdrawBalance({ amount: parseInt(amount) });
     console.log(result.message, 'lklklk');
+    if (result.ok) {
+      navigation.navigate('WithdrawSuccessful', { amount });
+    }
     Toast.show({
       type: 'error',
-      text1: 'Wallet Balance is low',
+      text1: 'Unexpected Error Occurred',
     });
-    // navigation.navigate('WithdrawSuccessful');
   };
 
   const handleSettingsSubmit = async values => {
-    console.log(values, 'values');
+    console.log(values.featuredImages, 'values');
     if (!cityCountry && !values.address) {
       Toast.show({
         type: 'error',
@@ -313,7 +319,15 @@ export const useCartpoActions = () => {
       for (let i = 0; i < values.featuredImages.length; i++) {
         if (values.featuredImages[i].mediaId) {
           formData.append(`photos[${i}][mediaId]`, values.featuredImages[i].mediaId);
-          formData.append(`photos[${i}][mediaType]`, 'jpeg');
+          formData.append(`photos[${i}][mediaType]`, values.featuredImages[i].mediaType || 'jpeg');
+        } else {
+          const imageUri = values.featuredImages[i];
+          const imageObject = {
+            name: imageUri.split('/').pop(),
+            type: mime.getType(imageUri),
+            uri: imageUri,
+          };
+          formData.append(`photos`, imageObject);
         }
       }
     }
@@ -332,7 +346,7 @@ export const useCartpoActions = () => {
       }
       const result = await response.json();
       console.log('API Response:', result);
-      dispatch(setShopData(result.data));
+      handleGetCartpoSettings();
       navigation.goBack();
     } catch (error) {
       console.error('Error sending API request:', error.message);

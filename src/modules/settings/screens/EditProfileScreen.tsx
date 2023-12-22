@@ -13,7 +13,7 @@ import { userSelector } from 'store/auth/userSelectors';
 
 export const EditProfileScreen = ({ navigation }: any) => {
   const userData: any = useSelector(userSelector)?.user;
-  const { pickImage, handleBioChange, handleLocationPress, handleUpdateSetting } =
+  const { pickImage, handleBioChange, handleLocationPress, handleUpdateSetting, cityCountry } =
     useSettingActions();
 
   return (
@@ -23,7 +23,9 @@ export const EditProfileScreen = ({ navigation }: any) => {
         <View className="flex-1 justify-between mb-20">
           <TouchableOpacity className="mt-8 mb-2" onPress={pickImage}>
             <CustomProfileAvatar
-              photo={getImageLink(userData.photo.mediaId)}
+              photo={
+                userData?.photo && userData?.photo?.mediaId && getImageLink(userData.photo.mediaId)
+              }
               userName={userData.userName}
               size={85}
               extraStyles={{ borderWidth: 3, borderColor: 'gray' }}
@@ -55,9 +57,10 @@ export const EditProfileScreen = ({ navigation }: any) => {
               />
               <CustomEditProfileOption
                 option="Location"
-                rightComponentTitle={`${userData.address ? userData.address : 'none'}`}
+                rightComponentTitle={cityCountry ? cityCountry : userData.address || 'none'}
                 onPress={handleLocationPress}
               />
+
               <CustomEditProfileOption
                 option="Links"
                 rightComponentTitle="none"

@@ -3,7 +3,8 @@ import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 import { height } from 'utils/helpers';
 
-export const WithdrawSuccessfulScreen = ({ navigation }: any) => {
+export const WithdrawSuccessfulScreen = ({ navigation, route }: any) => {
+  const amount = route.params.amount;
   const isSmallScreen = height < 700;
   return (
     <View
@@ -22,10 +23,10 @@ export const WithdrawSuccessfulScreen = ({ navigation }: any) => {
         <View
           className="w-80 h-20 rounded-full items-center justify-center"
           style={{ backgroundColor: '#004655' }}>
-          <Text className="text-white text-center text-2xl font-bold">2500cfa</Text>
+          <Text className="text-white text-center text-2xl font-bold">{`${amount}cfa`}</Text>
         </View>
         <Text className="mx-4 pt-2 text-center">
-          2500cfa will be credited to the withdrawal account you have provided.
+          {`${amount}cfa will be credited to the withdrawal account you have provided.`}
         </Text>
       </View>
       <View className="mt-12">

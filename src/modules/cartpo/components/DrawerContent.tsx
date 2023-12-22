@@ -29,17 +29,15 @@ export const DrawerContent = () => {
 
   const restaurantName = restaurantData?.setting?.shop?.name || 'Restaurant name';
 
-  const restaurantPhoto = restaurantData?.setting?.shop?.coverImage || null;
-  console.log(restaurantPhoto);
+  const restaurantPhoto = restaurantData?.setting?.shop?.coverImage.mediaId || null;
+
   return (
     <View className="my-12 mx-6">
       <View className="flex-row items-center mb-6">
         <CustomProfileAvatar
           name={restaurantName}
           size={50}
-          photo={
-            restaurantPhoto?.startsWith('file') ? restaurantPhoto : getImageLink(restaurantPhoto)
-          }
+          photo={restaurantPhoto && getImageLink(restaurantPhoto)}
         />
         <Text className="text-base font-bold ml-3">{restaurantName}</Text>
       </View>

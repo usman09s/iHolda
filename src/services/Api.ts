@@ -702,12 +702,17 @@ class ApiClass {
         return result;
       });
   };
-
-  setPaymentAccount = async ({ number, default: paymentDefault, confirmNumber }: any) => {
+  setPaymentAccount = async ({
+    number,
+    default: paymentDefault,
+    confirmNumber,
+    previousAccounts,
+  }: any) => {
     const response = await this.externalApi
       .url('user/payment-accounts')
       .post({
         linkedPaymentAccounts: [
+          ...previousAccounts,
           {
             number: number,
             default: paymentDefault,
