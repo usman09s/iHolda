@@ -24,8 +24,9 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
           overflow: 'hidden',
         },
       ]}>
-      {!media[0] ? <View className="h-full w-full bg-gray-300" /> : null}
-      {media[0]?.mediaType?.includes('image') ? (
+      {!media || !media[0] ? (
+        <View className="h-full w-full bg-gray-300" />
+      ) : media[0]?.mediaType?.includes('image') ? (
         <Image
           className="h-full w-full"
           source={{
@@ -44,8 +45,9 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
           }}
         />
       )}
+      {/* {} */}
       <View className="absolute w-10 z-20 right-4 top-2 items-center justify-center">
-        <BorderedText size={30}>{item?.post?.userQuiz ? 1 : item.post.media.length}</BorderedText>
+        <BorderedText size={30}>{item?.post?.userQuiz ? 1 : (item.post?.media?.length ?? 0)}</BorderedText>
         <Text className={text({ type: 'b12', class: 'text-white text-center' })}>Slides</Text>
       </View>
       <View className="absolute z-20 bottom-0 left-0 pl-2 py-2 w-full flex-row overflow-hidden items-center bg-black-o-20">
