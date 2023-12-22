@@ -1,4 +1,4 @@
-import { Image, KeyboardAvoidingView, Text, View } from 'react-native';
+import { ActivityIndicator, Image, KeyboardAvoidingView, Text, View } from 'react-native';
 import { ResizeMode, Video } from 'expo-av';
 import { Camera, CameraType } from 'expo-camera';
 import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
@@ -24,6 +24,7 @@ import { userSelector } from 'store/auth/userSelectors';
 import mime from 'mime';
 import Api from 'services/Api';
 import { resetState } from 'store/moments/momentsSlice';
+import colors from 'theme/colors';
 
 const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } }) => {
   const isFocused = useIsFocused();
@@ -34,7 +35,7 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
   const postMomentsParams = useSelector(postMomentsParamsSelector);
   const user = useSelector(userSelector);
   const matchedUser = route?.params;
-  const { goBack, navigate, reset, } = useNavigation<NavigationProp<MomentsStackParamList>>();
+  const { goBack, navigate, reset } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const dispatch = useDispatch();
   const videoRef: React.LegacyRef<Video> = useRef(null);
   const {
@@ -72,17 +73,14 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
     return { ...(await response.json()), status: response.status };
   }
 
-  const goToMomentsUpload = async () => {
-    if (!matchedUser || !user?.user?._id) return;
-    if (isLoading) return;
-
-    let formdata = new FormData();
+  const getMedia = async () => {
     const metMedia = postMomentsParams.moments;
-
     let imageObject: any, videoObject: any;
 
+    const compressedMedia: any[] = [];
+
     if (metMedia.length) {
-      [...metMedia].forEach(async element => {
+      metMedia.forEach(async (element, index) => {
         if (element.type === 'PHOTO') {
           const imgRes = await ImageCompresor.compress(element.file, {
             progressDivider: 10,
@@ -98,7 +96,8 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
             type: mime.getType(imageUri),
             uri: imgRes,
           };
-          formdata.append('post[media]', imageObject);
+          compressedMedia.push(imageObject);
+          if (metMedia.length - 1 === index) goToMomentsUpload(compressedMedia);
         }
 
         if (element.type === 'VIDEO') {
@@ -119,32 +118,169 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
             type: mime.getType(newVideoUri),
             uri: result,
           };
-          formdata.append('post[media]', videoObject);
+          compressedMedia.push(videoObject);
+          if (metMedia.length - 1 === index) goToMomentsUpload(compressedMedia);
         }
       });
     }
-    formdata.append('post[mediaType]', 'image');
+    // return compressedMedia;
+  };
 
-    const moodScale = 1;
+  const goToMomentsUpload = async () => {
+    if (!matchedUser || !user?.user?._id) return;
+    if (isLoading) return;
 
-    if (postMomentsParams.caption) formdata.append('post[text]', postMomentsParams.caption);
-    formdata.append('post[visibility]', 'Public');
-    // formdata.append('post[subText]', '');
-    formdata.append('users[0][user]', user.user?._id);
-    formdata.append('users[1][user]', matchedUser?.user._id);
-    formdata.append('metBefore', `${matchedUser.metBefore}`);
-    // formdata.append('users', users);
-    formdata.append('mood', (moodScale < 0 ? 1 : moodScale).toString());
+    let formdata = new FormData();
 
-    const resData = await postData(Api.baseUrl + 'met', formdata);
+    const metMedia = postMomentsParams.moments;
+    let imageObject: any, videoObject: any;
 
-    console.log('🚀 ~ file: MomentsMoodScreen.tsx:100 ~ postData ~ resData:', resData);
-    if (resData.status !== 200) return alert('Something went wrong');
-    reset({
-      index: 0,
-      routes: [{ name: 'MomentsUpload', params: matchedUser }],
-    });
-    dispatch(resetState());
+    if (metMedia.length) {
+      metMedia.forEach(async (element, index) => {
+        if (element.type === 'PHOTO') {
+          const imgRes = await ImageCompresor.compress(element.file, {
+            progressDivider: 10,
+            downloadProgress: progress => {
+              console.log('downloadProgress: ', progress);
+            },
+          });
+
+          const imageUri = 'file:///' + imgRes.split('file:/').join('');
+
+          imageObject = {
+            name: imgRes.split('/').pop(),
+            type: mime.getType(imageUri),
+            uri: imgRes,
+          };
+          // compressedMedia.push(imageObject);
+          formdata.append('post[media]', imageObject);
+
+          if (metMedia.length - 1 === index) {
+            // const media: any  = await getMedia();
+            formdata.append('post[mediaType]', 'image');
+            console.log(
+              '🚀 ~ file: MomentsSelfieScreen.tsx:140 ~ goToMomentsUpload ~ formdata:',
+              formdata,
+            );
+
+            const moodScale = 1;
+
+            if (postMomentsParams.caption) formdata.append('post[text]', postMomentsParams.caption);
+            formdata.append('post[visibility]', 'Public');
+            // formdata.append('post[subText]', '');
+            formdata.append('users[0][user]', user.user?._id);
+            formdata.append('users[1][user]', matchedUser?.user._id);
+            formdata.append('metBefore', `${matchedUser.metBefore}`);
+            // formdata.append('users', users);
+            formdata.append('mood', (moodScale < 0 ? 1 : moodScale).toString());
+
+            const resData = await postData(Api.baseUrl + 'met', formdata);
+
+            console.log(
+              '🚀 ~ file: MomentsSelfieScreen.tsx:159 ~ goToMomentsUpload ~ resData:',
+              resData,
+            );
+            console.log(
+              '🚀 ~ file: MomentsMoodScreen.tsx:100 ~ postData ~ resData:',
+              resData.data.met.post,
+            );
+            if (resData.status !== 200) return alert('Something went wrong');
+            reset({
+              index: 0,
+              routes: [{ name: 'MomentsUpload', params: matchedUser }],
+            });
+            dispatch(resetState());
+          }
+        }
+
+        if (element.type === 'VIDEO') {
+          const result = await VideoCompressor.compress(
+            element.file,
+            { compressionMethod: 'auto' },
+            progress => {
+              console.log('Compression Progress: ', progress);
+            },
+          );
+
+          const newVideoUri = 'file:///' + result.split('file:/').join('');
+
+          videoObject = {
+            name: result.split('/').pop(),
+            height: 1920,
+            width: 1080,
+            type: mime.getType(newVideoUri),
+            uri: result,
+          };
+          // compressedMedia.push(videoObject);
+          formdata.append('post[media]', videoObject);
+          if (metMedia.length - 1 === index) {
+            // const media: any  = await getMedia();
+            formdata.append('post[mediaType]', 'image');
+            console.log(
+              '🚀 ~ file: MomentsSelfieScreen.tsx:140 ~ goToMomentsUpload ~ formdata:',
+              formdata,
+            );
+
+            const moodScale = 1;
+
+            if (postMomentsParams.caption) formdata.append('post[text]', postMomentsParams.caption);
+            formdata.append('post[visibility]', 'Public');
+            // formdata.append('post[subText]', '');
+            formdata.append('users[0][user]', user.user?._id);
+            formdata.append('users[1][user]', matchedUser?.user._id);
+            formdata.append('metBefore', `${matchedUser.metBefore}`);
+            // formdata.append('users', users);
+            formdata.append('mood', (moodScale < 0 ? 1 : moodScale).toString());
+
+            const resData = await postData(Api.baseUrl + 'met', formdata);
+
+            console.log(
+              '🚀 ~ file: MomentsSelfieScreen.tsx:159 ~ goToMomentsUpload ~ resData:',
+              resData,
+            );
+            console.log(
+              '🚀 ~ file: MomentsMoodScreen.tsx:100 ~ postData ~ resData:',
+              resData.data.met.post,
+            );
+            if (resData.status !== 200) return alert('Something went wrong');
+            reset({
+              index: 0,
+              routes: [{ name: 'MomentsUpload', params: matchedUser }],
+            });
+            dispatch(resetState());
+          }
+        }
+      });
+    }
+
+    // // const media: any  = await getMedia();
+    // formdata.append('post[mediaType]', 'image');
+    // console.log('🚀 ~ file: MomentsSelfieScreen.tsx:140 ~ goToMomentsUpload ~ formdata:', formdata);
+
+    // const moodScale = 1;
+
+    // if (postMomentsParams.caption) formdata.append('post[text]', postMomentsParams.caption);
+    // formdata.append('post[visibility]', 'Public');
+    // // formdata.append('post[subText]', '');
+    // formdata.append('users[0][user]', user.user?._id);
+    // formdata.append('users[1][user]', matchedUser?.user._id);
+    // formdata.append('metBefore', `${matchedUser.metBefore}`);
+    // // formdata.append('users', users);
+    // formdata.append('mood', (moodScale < 0 ? 1 : moodScale).toString());
+
+    // const resData = await postData(Api.baseUrl + 'met', formdata);
+
+    // console.log('🚀 ~ file: MomentsSelfieScreen.tsx:159 ~ goToMomentsUpload ~ resData:', resData);
+    // console.log(
+    //   '🚀 ~ file: MomentsMoodScreen.tsx:100 ~ postData ~ resData:',
+    //   resData.data.met.post,
+    // );
+    // if (resData.status !== 200) return alert('Something went wrong');
+    // reset({
+    //   index: 0,
+    //   routes: [{ name: 'MomentsUpload', params: matchedUser }],
+    // });
+    // dispatch(resetState());
 
     return;
 
@@ -172,6 +308,11 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
             selectedMoment && onDeleteMoment(selectedMoment);
           }}
         />
+        {selectedMoment && isLoading?<View
+          style={{ zIndex: 9999 }}
+          className=" absolute h-full w-full justify-center items-center z-[999999]">
+          <ActivityIndicator color={colors.saffron} size={'large'} />
+        </View> : null}
         <View style={{ height: sizes.cameraHeight - 25, zIndex: -1 }}>
           {isFocused && !selectedMoment && showCamera && (
             <View
@@ -192,6 +333,7 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
               />
             </View>
           )}
+
           {selectedMoment &&
             (selectedMoment.type === 'PHOTO' ? (
               <Image source={{ uri: selectedMoment.localUri }} className="w-full h-full" />
@@ -205,6 +347,11 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
                 source={{ uri: selectedMoment.localUri }}
               />
             ))}
+          {/* {selectedMoment && isLoading ? (
+            <View className="justify-center items-center z-[999999]">
+              <ActivityIndicator color={colors.saffron} size={'large'} />
+            </View>
+          ) : null} */}
         </View>
         <AddedMomentList
           moments={moments}
@@ -215,6 +362,7 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
           <RecordButton isRecording={isRecording} onPressRecord={onPressRecordButton} />
         )}
       </View>
+
       <MomentCameraBottom
         caption={caption}
         mediaType={mediaType}

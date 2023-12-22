@@ -116,7 +116,7 @@ const FeedItem = ({
       await sound.current.loadAsync({
         uri: getAudioLink(audio),
       });
-      await sound.current.playAsync();
+      if(isFocused)await sound.current.playAsync();
     } catch (error) {
       console.error('Error loading audio:', error);
     }
@@ -154,7 +154,7 @@ const FeedItem = ({
       )}
       <View
         className="absolute z-40 flex-row space-x-2 self-center items-center"
-        style={{ paddingTop: top + (canGoBack() ? 50 : 30) }}>
+        style={{ paddingTop: top + (canGoBack() ? 50 : 15) }}>
         <FeedItemIndex indexCount={media.length} activeIndex={activeIndex0} />
       </View>
       <View
@@ -187,9 +187,11 @@ const FeedItem = ({
               // const videoLink = getVideoLink(item.mediaId);
               return (
                 <TouchableWithoutFeedback
-                  onPress={() =>
+                  onPress={() =>{
+                    console.log("Pressed");
+                    
                     !gotoDetailOnPress ? null : navigate('FeedDetailView', { item: data })
-                  }>
+                  }}>
                   {item.mediaType.includes('video') ? (
                     <VideoPlayer
                       videoProps={{

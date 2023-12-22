@@ -10,6 +10,7 @@ export type PlasticItemType = {
 
 export type DropOffLocationItemType = {
   agents: object[];
+  _id: string;
   closingHour: string;
   contacts: Contacts;
   created_at: string;
