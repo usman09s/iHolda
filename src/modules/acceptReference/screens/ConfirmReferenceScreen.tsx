@@ -46,7 +46,10 @@ export const ConfirmReferenceScreen = ({ navigation }: any) => {
           <Text className="text-center text-2xl font-bold mb-10">Do you know</Text>
           <View>
             <CustomProfileAvatar
-              photo={getImageLink(selectedNotification?.sender?.photo.mediaId)}
+              photo={
+                selectedNotification?.sender?.photo &&
+                getImageLink(selectedNotification?.sender?.photo.mediaId)
+              }
               size={140}
               userName={selectedNotification.sender.userName}
               extraStyles={{ borderWidth: 4, borderColor: 'rgb(54 83 20)' }}

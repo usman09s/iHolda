@@ -89,7 +89,7 @@ const ActivityScreen = () => {
               time={getTimeDifference(item.createdAt)}
               subTitle={item.body}
               momentThumbnail={
-                item.post.mediaType.includes('image')
+                item?.post && item.post?.mediaType && item.post?.mediaType?.includes('image')
                   ? getImageLink(item.post.media[0]?.mediaId)
                   : ''
               }
