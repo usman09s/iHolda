@@ -22,6 +22,7 @@ import { selectCartpoSettings } from '../../../store/cartpo/calculateSlice';
 import Toast from 'react-native-toast-message';
 import wretch from 'wretch';
 import mime from 'mime';
+import * as SecureStore from 'expo-secure-store';
 
 export const useCartpoActions = () => {
   const navigation = useNavigation();
@@ -54,6 +55,11 @@ export const useCartpoActions = () => {
       }
     } catch (error) {
       console.error(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Try again',
+      });
+      return;
     }
   };
 
@@ -76,6 +82,15 @@ export const useCartpoActions = () => {
       const result = await Api.registerMerchant({ phone: phoneNumberSelect, password: values.pin });
       if (result.message === 'Register successful') {
         dispatch(setUserData(result.data));
+        SecureStore.setItemAsync(
+          'tokensAndQueryId',
+          JSON.stringify({
+            queryId: result.query_id,
+            accessToken: result.access_token,
+            refreshToken: result.refresh_token,
+          }),
+        );
+        Api.setQueryIdValue(result.query_id);
         navigation.reset({
           index: 0,
           routes: [{ name: 'CartpoTab' as never }],
@@ -84,7 +99,23 @@ export const useCartpoActions = () => {
         console.log('Result:', result);
       }
     } catch (error) {
-      console.error('Error:', error);
+      const errorText = JSON.parse(error.message);
+      if (errorText.message === '"password" must be greater than or equal to 1000') {
+        Toast.show({
+          type: 'error',
+          text1: 'Password must be greater than or equal to 1000',
+        });
+      } else if (errorText.message === '"password" must be less than or equal to 9999') {
+        Toast.show({
+          type: 'error',
+          text1: 'Password must be greater less than or equal to 9999',
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: errorText.message,
+        });
+      }
     }
   };
 
@@ -94,6 +125,15 @@ export const useCartpoActions = () => {
       if (result.message === 'Login successful') {
         dispatch(setUserData(result.data));
         dispatch(setCartpoSettings([]));
+        SecureStore.setItemAsync(
+          'tokensAndQueryId',
+          JSON.stringify({
+            queryId: result.query_id,
+            accessToken: result.access_token,
+            refreshToken: result.refresh_token,
+          }),
+        );
+        Api.setQueryIdValue(result.query_id);
         navigation.reset({
           index: 0,
           routes: [{ name: 'CartpoTab' }],
@@ -103,6 +143,7 @@ export const useCartpoActions = () => {
       }
     } catch (error) {
       const errorText = JSON.parse(error.message);
+      console.log(errorText);
       if (errorText.message === 'User role mismatched') {
         Toast.show({
           type: 'error',
@@ -113,10 +154,20 @@ export const useCartpoActions = () => {
           type: 'error',
           text1: 'Invalid password',
         });
+      } else if (errorText.message === '"password" must be greater than or equal to 1000') {
+        Toast.show({
+          type: 'error',
+          text1: 'Password must be greater than or equal to 1000',
+        });
+      } else if (errorText.message === '"password" must be less than or equal to 9999') {
+        Toast.show({
+          type: 'error',
+          text1: 'Password must be greater less than or equal to 9999',
+        });
       } else {
         Toast.show({
           type: 'error',
-          text1: 'Unexpected error occurred',
+          text1: errorText.message,
         });
       }
     }

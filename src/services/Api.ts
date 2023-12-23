@@ -234,7 +234,6 @@ class ApiClass {
       return await this.externalApi
         .url('auth/login')
         .post({
-          role: 'merchant',
           phone,
           password,
           countryCode: 'PK',
@@ -310,7 +309,7 @@ class ApiClass {
         .url(`cartpo/balance`)
         .get()
         .json(result => {
-          console.log(result);
+          console.log(result, 'popopopo');
           return result;
         });
     } catch (error) {
@@ -431,7 +430,7 @@ class ApiClass {
     await this.externalApi
       .url(
         `plastic/agents?page=1${
-          !coords ? "" : `&latitude=${coords?.latitude}&longitude=${coords?.longitude}`
+          !coords ? '' : `&latitude=${coords?.latitude}&longitude=${coords?.longitude}`
         }`,
       )
       .get()

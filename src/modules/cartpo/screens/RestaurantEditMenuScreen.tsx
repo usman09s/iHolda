@@ -50,6 +50,10 @@ export const RestaurantEditMenuScreen = ({ navigation }: any) => {
     const rows = [];
     for (let i = 0; i < items.length; i += itemsPerRow) {
       const rowItems = items.slice(i, i + itemsPerRow);
+      while (rowItems.length < itemsPerRow) {
+        rowItems.push(null);
+      }
+
       rows.push(rowItems);
     }
     return rows;
@@ -91,16 +95,20 @@ export const RestaurantEditMenuScreen = ({ navigation }: any) => {
                     key={index}
                     className="flex-1"
                     onPress={() => handleMenuItemPress(item)}>
-                    <Image
-                      source={{
-                        uri:
-                          item.photos[0].mediaId !== ''
-                            ? getImageLink(item.photos[0].mediaId)
-                            : item.photos[1],
-                      }}
-                      style={{ width: units.vw * 26, height: units.vw * 26, borderRadius: 15 }}
-                    />
-                    <Text className="text-[10px] text-left font-bold mt-1.5">{item.name}</Text>
+                    {item && (
+                      <>
+                        <Image
+                          source={{
+                            uri:
+                              item.photos[0]?.mediaId !== ''
+                                ? getImageLink(item.photos[0]?.mediaId)
+                                : item.photos[1],
+                          }}
+                          style={{ width: units.vw * 26, height: units.vw * 26, borderRadius: 15 }}
+                        />
+                        <Text className="text-[10px] text-left font-bold mt-1.5">{item.name}</Text>
+                      </>
+                    )}
                   </TouchableOpacity>
                 ))}
               </View>

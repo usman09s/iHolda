@@ -17,7 +17,6 @@ import MomentsStackNavigator from 'modules/moments/MomentsStackNavigator';
 import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { queryIdSelector, tokensSelector } from 'store/auth/userSelectors';
 import socketService from 'services/Socket';
 import colors from 'theme/colors';
 
@@ -42,6 +41,7 @@ import OtherUserProfileScreen from 'modules/profile/screens/OtherUserProfileScre
 import PlasticActivityScreen from 'modules/activity/screens/PlasticAgentActivity';
 import DiscountUserSelect from 'modules/restaurants/screens/DiscountUserSelect';
 import DiscountQrScreen from 'modules/restaurants/screens/DiscountQrScreen';
+import { queryIdSelector, tokensSelector } from 'store/cartpo/calculateSlice';
 
 const MainStack = createNativeStackNavigator();
 
@@ -76,7 +76,7 @@ export default function MainNavigator() {
     <NavigationContainer>
       <MainStack.Navigator
         screenOptions={commonScreenOptions}
-        initialRouteName={status === 'SUCCESS' ? 'BottomTabs' : 'Auth'}>
+        initialRouteName={status === 'SUCCESS' ? 'CartpoTab' : 'CartpoStack'}>
         <MainStack.Screen options={commonOptions} name="Auth" component={AuthStackNavigator} />
         <MainStack.Screen
           name="BottomTabs"

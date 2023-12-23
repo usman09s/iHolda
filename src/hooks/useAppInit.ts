@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { useQuery } from 'react-query';
 import Api from 'services/Api';
-import { setTokensAndQueryId, setUserInfo } from 'store/auth/userSlice';
+import { setUserInfo } from 'store/auth/userSlice';
 
 import { useAppDispatch } from './useAppDispatch';
 import { setUser } from 'store/userDataSlice';
+import { setTokensAndQueryId } from 'store/cartpo/calculateSlice';
 
 export const userAppInit = () => {
   const dispatch = useAppDispatch();
@@ -60,6 +61,7 @@ export const userAppInit = () => {
     if (data) {
       console.log('🚀 ~ file: useAppInit.ts:62 ~ useEffect ~ data:', data);
       dispatch(setUserInfo(data.data.user));
+      dispatch(setUser(data.data.user));
     }
   }, [data]);
 

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 const cartpoSlice = createSlice({
   name: 'calculator',
@@ -14,6 +14,9 @@ const cartpoSlice = createSlice({
     selectedDiscount: [],
     selectedPayment: [],
     selectedMenuItem: [],
+    queryId: '',
+    accessToken: '',
+    refreshToken: '',
   },
   reducers: {
     setSelectedOption: (state, action) => {
@@ -49,7 +52,6 @@ const cartpoSlice = createSlice({
     },
     deletePaymentAccount: (state, action) => {
       const discountIdToDelete = action.payload;
-      console.log(discountIdToDelete, 'popopopo');
       state.cartpoSettings.setting.paymentMethod =
         state.cartpoSettings.setting.paymentMethod.filter(
           discount => discount.account !== discountIdToDelete,
@@ -70,7 +72,6 @@ const cartpoSlice = createSlice({
     },
     deleteDiscount: (state, action) => {
       const discountIdToDelete = action.payload;
-      console.log(discountIdToDelete, 'popopopo');
       state.cartpoSettings.setting.discounts = state.cartpoSettings.setting.discounts.filter(
         discount => discount._id !== discountIdToDelete,
       );
@@ -89,7 +90,6 @@ const cartpoSlice = createSlice({
       state.cartpoSettings.shop = action.payload;
     },
     setMenuData: (state, action) => {
-      console.log(action.payload, 'actionpayload');
       if (
         state.cartpoSettings &&
         state.cartpoSettings.setting.shop &&
@@ -103,6 +103,11 @@ const cartpoSlice = createSlice({
       state.cartpoSettings.setting.shop.menu = state.cartpoSettings.setting.shop.menu.filter(
         item => item._id !== itemIdToDelete,
       );
+    },
+    setTokensAndQueryId: (state, action) => {
+      state.queryId = action.payload.queryId;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
     },
   },
 });
@@ -126,6 +131,7 @@ export const {
   setMenuData,
   setSelectedMenuItem,
   deleteMenuItem,
+  setTokensAndQueryId,
 } = cartpoSlice.actions;
 
 export default cartpoSlice.reducer;
@@ -140,3 +146,9 @@ export const selectCalculatorAmount = state => state.calculator.calculatorAmount
 export const selectSelectedDiscount = state => state.calculator.selectedDiscount;
 export const selectSelectedPayment = state => state.calculator.selectedPayment;
 export const selectSelectedMenuItem = state => state.calculator.selectedMenuItem;
+export const queryIdSelector = state => state.calculator.userData.query_id;
+
+export const tokensSelector = createSelector(selectUserData, user => ({
+  token: user.access_token,
+  refreshToken: user.refresh_token,
+}));

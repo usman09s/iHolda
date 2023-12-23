@@ -43,8 +43,9 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
       setQrCode(data);
       try {
         const userId = 'your-user-id';
-        const result = await Api.scanQRCode({ qrCode: data, userId });
+        const result = await Api.scanQRCode({ qrCode: data });
         console.log('API Response:', result);
+        return;
         navigation.navigate('TotalDiscount');
       } catch (error) {
         console.error('Error scanning QR Code:', error);

@@ -38,6 +38,7 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
   const restaurantData = useSelector(selectCartpoSettings);
   const selectedItem = useSelector(selectSelectedMenuItem);
   console.log(selectedItem, 'selectedMenuItem');
+  console.log(typeof selectedItem.price);
   const initialValues = {
     photo:
       selectedItem && selectedItem.photos && selectedItem.photos[0]
@@ -73,16 +74,19 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
       return;
     }
     formData.append('name', values.itemName);
-    formData.append('price', parseInt(values.price));
+    formData.append(
+      'price',
+      typeof values.price !== 'number' ? parseInt(values.price) : values.price,
+    );
     values.daysAvailable.forEach((day, index) => {
       formData.append(`daysAvailable[${index}]`, day);
     });
     formData.append('timeAvailable[0]', values.timeAvailable);
     formData.append('category', values.category);
 
-    if (values.photo.mediaId) {
-      formData.append(`photos[0][mediaId]`, values.photo.mediaId);
-      formData.append(`photos[0][mediaType]`, values.photo.mediaType || 'jpeg');
+    if (!values.photo.startsWith('file')) {
+      formData.append(`photos[0][mediaId]`, selectedItem.photos[0]?.mediaId);
+      formData.append(`photos[0][mediaType]`, selectedItem.photos[0]?.mediaType || 'jpeg');
     } else {
       const imageUri = values.photo;
       const imageObject = {
@@ -112,7 +116,7 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
       dispatch(setSelectedMenuItem([]));
       navigation.goBack();
     } catch (error) {
-      console.error('Error sending API request:', error);
+      console.error('Error sending API request:', error.message);
     }
   };
 

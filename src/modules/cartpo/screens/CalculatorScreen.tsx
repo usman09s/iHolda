@@ -25,6 +25,7 @@ const CalculatorScreen = ({ navigation }: any) => {
   const [open, setOpen] = useState(false);
   const selectedOption = useSelector(selectSelectedOption);
   const userData = useSelector(selectUserData);
+  console.log(userData, 'userdata');
 
   const handleKeypadPress = value => {
     setInputValue(prevInputValue => {
