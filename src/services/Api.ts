@@ -988,7 +988,7 @@ class ApiClass {
       .json(result => result);
   getFollowers = async (userId?: string): Promise<{ data: any }> =>
     await this.externalApi
-      .url('user/followers' + userId ? `&userId=${userId}` : '')
+      .url(`user/followers${userId ? `?userId=${userId}` : ''}`)
       .headers({
         ...this._getAuthorization(this.token),
       })

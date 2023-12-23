@@ -16,7 +16,7 @@ import { selectNotification } from 'store/notification/notificationSlice';
 
 const ActivityScreen = () => {
   const notifications = useQuery('getNotifications', Api.getNotifications);
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
@@ -24,7 +24,7 @@ const ActivityScreen = () => {
     const currentDate = new Date();
     const providedDate = new Date(dateString);
 
-    const timeDifferenceInSeconds = Math.floor((currentDate - providedDate) / 1000);
+    const timeDifferenceInSeconds = Math.floor((currentDate.valueOf() - providedDate.valueOf()) / 1000);
 
     if (timeDifferenceInSeconds < 60) {
       return `${timeDifferenceInSeconds}s`;
@@ -68,8 +68,8 @@ const ActivityScreen = () => {
           return item.type === 'Met' ? (
             <SharedMomentActivity
               avatars={{
-                user1: item.met?.users[0]?.photo,
-                user2: item.met?.users[1]?.photo,
+                user1: getImageLink(item?.met?.users[0]?.user?.photo?.mediaId),
+                user2: getImageLink(item?.met?.users[1]?.user?.photo?.mediaId),
               }}
               momentThumbnail={
                 item.post?.mediaType === 'image' ? getImageLink(item.post?.media[0]?.mediaId) : ''
@@ -80,10 +80,6 @@ const ActivityScreen = () => {
             />
           ) : item.type === 'Reference-Check' ? (
             <MultipleUsersActivity
-              avatars={{
-                user1: item.met?.users[0]?.photo,
-                user2: item.met?.users[1]?.photo,
-              }}
               title={item.title}
               lastUserUsername=""
               time={getTimeDifference(item.createdAt)}
@@ -99,11 +95,10 @@ const ActivityScreen = () => {
             <CommonActivity
               title={item.title}
               time={getTimeDifference(item.createdAt)}
-              showFollowBack
+              // showFollowBack={item?.sender?.followers?.includes(user?._id)}
               subTitle={item.body}
-              postThumbnail={'https://i.pravatar.cc/150?img=36'}
               avatars={{
-                user1: item?.userPhoto,
+                user1: getImageLink(item?.sender?.photo?.mediaId),
                 user2: 'https://i.pravatar.cc/150?img=36',
               }}
             />
@@ -118,17 +113,15 @@ const ActivityScreen = () => {
                   : ''
               }
               avatars={{
-                user1: item?.userPhoto,
+                user1: getImageLink(item?.sender?.photo?.mediaId),
                 user2: 'https://i.pravatar.cc/150?img=36',
               }}
             />
           ) : item.type === 'Like-Met' ? (
             <MultipleUsersActivity
               time={getTimeDifference(item.createdAt)}
-              avatars={{
-                user1: item.met?.users[0]?.photo,
-                user2: item.met?.users[1]?.photo,
-              }}
+              user1Photo={getImageLink(item?.met?.users[0]?.user?.photo?.mediaId)}
+              user2Photo={getImageLink(item?.met?.users[1]?.user?.photo?.mediaId)}
               title={item.title}
               lastUserUsername=""
               subTitle={item.body}
@@ -142,11 +135,11 @@ const ActivityScreen = () => {
             <CommonActivity
               title={item.title}
               time={getTimeDifference(item.createdAt)}
-              showFollowBack
+              // showFollowBack
               subTitle={item.body}
-              postThumbnail={'https://i.pravatar.cc/150?img=36'}
+              // postThumbnail={'https://i.pravatar.cc/150?img=36'}
               avatars={{
-                user1: item?.userPhoto,
+                user1: getImageLink(item?.sender?.photo?.mediaId),
                 user2: 'https://i.pravatar.cc/150?img=36',
               }}
             />
@@ -170,21 +163,21 @@ const ActivityScreen = () => {
   );
 };
 
-const calculateTimeDifference = (createdAt, currentTime) => {
-  const timeDifferenceInSeconds = Math.floor((currentTime - createdAt) / 1000);
+// const calculateTimeDifference = (createdAt: string, currentTime) => {
+//   const timeDifferenceInSeconds = Math.floor((currentTime - createdAt) / 1000);
 
-  if (timeDifferenceInSeconds < 60) {
-    return `${timeDifferenceInSeconds}s`;
-  } else if (timeDifferenceInSeconds < 3600) {
-    const minutes = Math.floor(timeDifferenceInSeconds / 60);
-    return `${minutes}m`;
-  } else if (timeDifferenceInSeconds < 86400) {
-    const hours = Math.floor(timeDifferenceInSeconds / 3600);
-    return `${hours}h`;
-  } else {
-    const days = Math.floor(timeDifferenceInSeconds / 86400);
-    return `${days}d`;
-  }
-};
+//   if (timeDifferenceInSeconds < 60) {
+//     return `${timeDifferenceInSeconds}s`;
+//   } else if (timeDifferenceInSeconds < 3600) {
+//     const minutes = Math.floor(timeDifferenceInSeconds / 60);
+//     return `${minutes}m`;
+//   } else if (timeDifferenceInSeconds < 86400) {
+//     const hours = Math.floor(timeDifferenceInSeconds / 3600);
+//     return `${hours}h`;
+//   } else {
+//     const days = Math.floor(timeDifferenceInSeconds / 86400);
+//     return `${days}d`;
+//   }
+// };
 
 export default ActivityScreen;

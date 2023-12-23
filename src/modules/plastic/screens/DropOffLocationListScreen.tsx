@@ -12,7 +12,8 @@ import { height } from 'utils/helpers';
 import { useEffect, useState } from 'react';
 
 const DropOffLocationListScreen = () => {
-  const [data, setData] = useState<DropOffLocationItemType[]>([]);
+  const [data, setData] = useState<DropOffLocationItemType[] | null>([]);
+  console.log("🚀 ~ file: DropOffLocationListScreen.tsx:16 ~ DropOffLocationListScreen ~ data:", data)
   const isSmallScreen = height < 700;
   console.log(height);
   const {
@@ -25,14 +26,10 @@ const DropOffLocationListScreen = () => {
     setShowClosedDropOffLocationPopup,
     getLocation,
     mutate,
-  } = useDropOffLocationListActions(data);
-  console.log(
-    '🚀 ~ file: DropOffLocationListScreen.tsx:26 ~ DropOffLocationListScreen ~ data:',
-    data,
-  );
+  } = useDropOffLocationListActions(data ?? []);
 
   const filteredData = Array.isArray(data)
-    ? data.filter(item => item.name.includes(searchKeyword))
+    ? data?.filter(item => item.name.includes(searchKeyword))
     : [];
 
   const renderItem: ListRenderItem<DropOffLocationItemType> = ({ item }) => (
@@ -54,7 +51,7 @@ const DropOffLocationListScreen = () => {
 
   useEffect(() => {
     getLocation().then(coords => {
-      console.log("🚀 ~ file: DropOffLocationListScreen.tsx:57 ~ getLocation ~ coords:", coords)
+      if (!coords) return setData(null);
       mutate(coords, {
         onSuccess: data => {
           setData(data);
@@ -83,10 +80,14 @@ const DropOffLocationListScreen = () => {
           style={{ marginHorizontal: 30, borderColor: 'gray', borderWidth: 1 }}
         />
       </View>
-      {isLoading || (!data && <ActivityIndicator className="mb-4 flex-1" color={colors.blue} />)}
+      {isLoading && data !== null ? (
+        <ActivityIndicator className="mb-4 flex-1" color={colors.blue} />
+      ) : null}
       {!isLoading && !data?.length ? (
-        <View className='flex-1 items-center justify-center'>
-          <Text className="text-center">No agent found</Text>
+        <View className="flex-1 items-center justify-center">
+          <Text className="text-center">
+            {data === null ? 'Allow permission to get agents' : 'No agent found'}
+          </Text>
         </View>
       ) : null}
       <FlatList
@@ -94,7 +95,7 @@ const DropOffLocationListScreen = () => {
         keyboardDismissMode="on-drag"
         ListEmptyComponent={emptyListItem}
         showsVerticalScrollIndicator={false}
-        data={!!searchKeyword ? filteredData : data || []}
+        data={!!searchKeyword ? filteredData : data ?? []}
       />
       <LocationClosedPopup
         visible={showClosedDropOffLocationPopup}

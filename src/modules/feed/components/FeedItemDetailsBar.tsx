@@ -6,6 +6,8 @@ import { units } from 'utils/helpers';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
+import { useState } from 'react';
+import Api from 'services/Api';
 
 type FeedItemDetailsBarProps = {
   paddingBottom?: number;
@@ -44,7 +46,39 @@ const FeedItemDetailsBar = ({
   userId2,
 }: FeedItemDetailsBarProps) => {
   const { user } = useSelector(userSelector);
+  const [isFollowed, setIsFollowed] = useState(false);
+  const [isFollowed2, setIsFollowed2] = useState(false);
+
+  const followUnfollowUser = async (userId: string, userNum: number) => {
+    try {
+      await Api.followUnFollowUseer(userId, false);
+
+      if (userNum === 1) setIsFollowed(true);
+      else setIsFollowed2(true);
+    } catch (error) {
+      // console.log('🚀 ~ followUnfollowUser ~ error:', error);
+    }
+  };
+
   const isMe = (id: string) => id === user?._id;
+
+  const renderTextWithBoldHashtags = (captiontext: string) => {
+    if (!captiontext) return '';
+    const words = captiontext.split(' ');
+
+    return words.map((word, index) => {
+      if (word.startsWith('#')) {
+        // Make hashtags bold
+        return (
+          <Text key={index} style={{ fontWeight: '900' }}>
+            {word}{' '}
+          </Text>
+        );
+      } else {
+        return <Text key={index}>{word} </Text>;
+      }
+    });
+  };
   return (
     <View className="absolute bottom-0 w-full">
       <LinearGradient
@@ -57,7 +91,7 @@ const FeedItemDetailsBar = ({
         locations={[0, 0.1, 0.6, 1]}
         className="justify-between  z-20 px-3 pt-2"
         style={{ paddingBottom: paddingBottom }}>
-        <View className="ml-2">
+        <View className="ml-2 mb-5">
           <View className="flex-row items-center pl-6">
             {userSecond.username ? <Text className="rotate-30">{userFirst.emotion}</Text> : null}
             {userSecond.username ? (
@@ -76,6 +110,13 @@ const FeedItemDetailsBar = ({
                 source={{ uri: getImageLink(userFirst?.avatar?.mediaId) }}
                 className="w-11 h-11 rounded-full"
               />
+              {isMe(userId1) || isFollowed ? null : (
+                <TouchableOpacity
+                  onPress={() => followUnfollowUser(userId1, 1)}
+                  className="h-[20] w-[20] bg-[#05a9f4] absolute bottom-[-10] left-3 items-center justify-center rounded-full">
+                  <Text className="text-white text-15">+</Text>
+                </TouchableOpacity>
+              )}
             </TouchableOpacity>
             {userSecond.username ? (
               <TouchableOpacity
@@ -89,6 +130,13 @@ const FeedItemDetailsBar = ({
                   source={{ uri: getImageLink(userSecond?.avatar?.mediaId) }}
                   className="w-11 h-11 rounded-full"
                 />
+                {isMe(userId2) || isFollowed2 ? null : (
+                  <TouchableOpacity
+                    onPress={() => followUnfollowUser(userId2,2)}
+                    className="h-[20] w-[20] bg-[#05a9f4] absolute bottom-[-10] left-3 items-center justify-center rounded-full">
+                    <Text className="text-white text-15">+</Text>
+                  </TouchableOpacity>
+                )}
               </TouchableOpacity>
             ) : null}
           </View>
@@ -122,7 +170,7 @@ const FeedItemDetailsBar = ({
 
           {!!caption && (
             <Text numberOfLines={4} className={text({ type: 'r15', class: 'text-white mt-1' })}>
-              {caption}
+              {renderTextWithBoldHashtags(caption)}
             </Text>
           )}
           {!!subText && (

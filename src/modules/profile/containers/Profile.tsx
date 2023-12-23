@@ -24,6 +24,7 @@ const Profile = ({
   metsUserId,
   onPressMet,
 }: Props) => {
+  console.log("🚀 ~ file: Profile.tsx:27 ~ metsUserId:", metsUserId)
   const [data, setData] = useState<{ data: { data: UserMoment[] } }>();
 
   const getMets = async () => {

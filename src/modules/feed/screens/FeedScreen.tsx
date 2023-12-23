@@ -53,7 +53,7 @@ const FeedScreen = () => {
       .catch(err => console.log(err));
   };
 
-  const ITEM_HEIGHT = height - top - tabBarHeight + 10;
+  const ITEM_HEIGHT = height - top - tabBarHeight;
 
   const onRefresh = () => {
     // setRefreshing(true);
@@ -89,7 +89,7 @@ const FeedScreen = () => {
           width: wW,
           height: Platform.select({
             ios: wH - units.vh * 8,
-            android: ITEM_HEIGHT,
+            android: ITEM_HEIGHT - 10,
           }),
           marginTop: top,
         }}>

@@ -94,45 +94,44 @@ const formatData = (dateString: string) => {
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 };
 
-const SharedItem = ({ item }: any) => (
-  <View className="flex-row justify-between bg-cultured px-4 py-3 mb-4 rounded-xl">
-    <View className="flex-row ">
-      <View className="flex-row">
-        <View className="w-10 h-10 rounded-full border-[3px] border-saffron justify-center items-center">
-          <View className="h-full w-full rounded-full border-[2px] border-white justify-center items-center">
-            <Image
-              source={{ uri: getImageLink(item.users[0]?.user.photo ?? '') }}
-              className="h-full w-full rounded-full"
-            />
+const SharedItem = ({ item }: any) => {
+  return (
+    <View className="flex-row justify-between bg-cultured px-4 py-3 mb-4 rounded-xl">
+      <View className="flex-row ">
+        <View className="flex-row">
+          <View className="w-10 h-10 rounded-full border-[3px] border-saffron justify-center items-center">
+            <View className="h-full w-full rounded-full border-[2px] border-white justify-center items-center">
+              <Image
+                source={{ uri: getImageLink(item.users[0]?.user?.photo?.mediaId ?? '') }}
+                className="h-full w-full rounded-full"
+              />
+            </View>
+          </View>
+          <View className="w-10 h-10 rounded-full border-[3px] border-green-500 right-4  justify-center items-center">
+            <View className="h-full w-full rounded-full border-[2px] border-white  justify-center items-center">
+              <Image
+                source={{ uri: getImageLink(item.users[1]?.user?.photo?.mediaId ?? '') }}
+                className="h-full w-full rounded-full"
+              />
+            </View>
           </View>
         </View>
-        <View className="w-10 h-10 rounded-full border-[3px] border-green-500 right-4  justify-center items-center">
-          <View className="h-full w-full rounded-full border-[2px] border-white  justify-center items-center">
-            <Image
-              source={{ uri: getImageLink(item.users[1]?.user.photo ?? '') }}
-              className="h-full w-full rounded-full"
-            />
-          </View>
+        <View>
+          <Text className={text({ type: 'b16' })}>You and {item.users[1]?.user.userName} met</Text>
+          <Text className={text({ type: 'r12', class: 'mt-2 font-bold text-gray-500' })}>
+            Buea, <Text className="font-normal">Cameroon</Text>
+          </Text>
         </View>
       </View>
       <View>
-        <Text className={text({ type: 'b16' })}>You and {item.users[1]?.user.userName} met</Text>
-        <Text className={text({ type: 'r12', class: 'mt-2 font-bold text-gray-500' })}>
-          Buea, <Text className="font-normal">Cameroon</Text>
-        </Text>
+        <View className="flex-row justify-end mb-2">
+          <Icons.CameraIcon />
+          <Text className={text({ type: 'r10', class: 'text-right' })}>
+            {(item?.userQuiz ? [item.userQuiz.recording] : item?.post?.media)?.length ?? 0}x
+          </Text>
+        </View>
+        <Text className={text({ type: 'r12' })}>{formatData(item.post?.createdAt)}</Text>
       </View>
     </View>
-    <View>
-      <View className="flex-row justify-end mb-2">
-        <Icons.CameraIcon />
-        <Text className={text({ type: 'r10', class: 'text-right' })}>
-          {(item?.userQuiz ? [item.userQuiz.recording] : item.media).length}x
-        </Text>
-      </View>
-      <Text className={text({ type: 'r12' })}>
-        {' '}
-        {formatData(item.post?.userQuiz ? item.post?.userQuiz.createdAt : item.post?.createdAt)}
-      </Text>
-    </View>
-  </View>
-);
+  );
+};
