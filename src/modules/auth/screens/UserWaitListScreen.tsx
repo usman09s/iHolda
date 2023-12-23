@@ -10,11 +10,12 @@ import Api from 'services/Api';
 import { userSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 import { horizontalScale, verticalScale, moderateScale } from '../../../utils/helpers';
+import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 const UserWaitListScreen = () => {
   const { goBack, dispatch } = useNavigation();
   const user = useSelector(userSelector);
-
+  console.log(user.user?.userName);
   const copyToClipboard = async (value: string) => await Clipboard.setStringAsync(value);
 
   return (
@@ -23,7 +24,9 @@ const UserWaitListScreen = () => {
         <View className="flex-1 justify-evenly">
           <View style={{ marginTop: verticalScale(80), marginBottom: verticalScale(30) }}>
             <Image
-              source={{ uri: user.userImage }}
+              source={{
+                uri: user.userImage ? user.userImage : getImageLink(user.user?.photo?.mediaId),
+              }}
               className="w-28 h-28 rounded-full self-center"
               style={{ borderWidth: 4, borderColor: 'white', marginBottom: verticalScale(30) }}
             />
@@ -41,9 +44,17 @@ const UserWaitListScreen = () => {
               <Text className={text({ type: 'r12', class: 'text-white-o-60' })}>Your username</Text>
               <TouchableOpacity
                 className="flex-row"
-                onPress={() => copyToClipboard(`@${user.username}`)}>
+                onPress={() =>
+                  copyToClipboard(
+                    user.username !== '' ? `@${user.username}` : `@${user.user.userName}`,
+                  )
+                }>
                 <Text className={text({ type: 'b13', class: 'text-white mr-1' })}>
-                  {user.username?.startsWith('@') ? `${user.username}` : `@${user.username}`}
+                  {user.username !== '' && user.username.startsWith('@')
+                    ? user.username
+                    : user.username !== ''
+                      ? `@${user.username}`
+                      : user.user.userName}
                 </Text>
                 <Icons.CopyIcon />
               </TouchableOpacity>
