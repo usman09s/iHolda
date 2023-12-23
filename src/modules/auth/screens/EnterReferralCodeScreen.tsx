@@ -26,6 +26,7 @@ import { AuthStackParamList } from '../AuthStackNavigator';
 import CustomErrorModal from 'components/ErrorModal/errorModal';
 import { selectQrCodeData } from 'store/plastic/userPlasticSlice';
 import mime from 'mime';
+import { getImageLink } from '../../moments/helpers/imageHelpers';
 
 const EnterReferralCodeScreen = () => {
   LayoutAnimation.easeInEaseOut();
@@ -79,10 +80,10 @@ const EnterReferralCodeScreen = () => {
       },
     }).then(result => {
       const formData1 = new FormData();
-      formData1.append('firstName', userInfo.username);
+      formData1.append('firstName', userInfo.username ? userInfo.username : userInfo.user.userName);
       formData1.append('bio', '');
       formData1.append('address', 'none');
-      formData1.append('userName', userInfo.username);
+      formData1.append('userName', userInfo.username ? userInfo.username : userInfo.user.userName);
       formData1.append('socialLinks[0][platform]', 'facebook');
       formData1.append('socialLinks[0][link]', 'facebook.com/profile.php');
       formData1.append('socialLinks[2][platform]', 'tiktok');
@@ -124,7 +125,11 @@ const EnterReferralCodeScreen = () => {
         </Text>
         <View className="flex-row self-center">
           <Image
-            source={{ uri: userImage.userImage }}
+            source={{
+              uri: userImage.userImage
+                ? userImage.userImage
+                : getImageLink(userInfo.user?.photo?.mediaId),
+            }}
             className={'w-28 h-28 rounded-3xl border-4 border-white -rotate-30'}
             style={{ borderColor: 'white', borderWidth: 4 }}
           />

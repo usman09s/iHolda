@@ -6,10 +6,13 @@ import { userSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
-const ReferralCodeSuccessfulScreen = ({route}: any) => {
-  const userData= route.params?.result?.data;
-  console.log("🚀 ~ file: ReferralCodeSuccessfulScreen.tsx:10 ~ ReferralCodeSuccessfulScreen ~ userData:", userData)
-  
+const ReferralCodeSuccessfulScreen = ({ route }: any) => {
+  const userData = route.params?.result?.data;
+  console.log(
+    '🚀 ~ file: ReferralCodeSuccessfulScreen.tsx:10 ~ ReferralCodeSuccessfulScreen ~ userData:',
+    userData,
+  );
+
   const { navigate }: any = useNavigation();
   const userImage = useSelector(userSelector);
 
@@ -23,10 +26,20 @@ const ReferralCodeSuccessfulScreen = ({route}: any) => {
             </Text>
             <View className="flex-row self-center mb-20">
               <View className="overflow-hidden border-white rounded-3xl border-4  -rotate-30 ">
-                <Image source={{ uri: userImage.userImage }} className="w-28 h-28" />
+                <Image
+                  source={{
+                    uri: userImage.userImage
+                      ? userImage.userImage
+                      : getImageLink(userImage.user?.photo.mediaId),
+                  }}
+                  className="w-28 h-28"
+                />
               </View>
               <View className="overflow-hidden border-white  rounded-3xl border-4   -left-8 top-2 rotate-30">
-                <Image source={{ uri: getImageLink(userData?.referralUser?.photo?.mediaId) }} className="w-28 h-28" />
+                <Image
+                  source={{ uri: getImageLink(userData?.referralUser?.photo?.mediaId) }}
+                  className="w-28 h-28"
+                />
               </View>
             </View>
           </View>
@@ -37,7 +50,7 @@ const ReferralCodeSuccessfulScreen = ({route}: any) => {
             <View className="mt-7 flex-row items-center">
               <View className="overflow-hidden rounded-full border-4 border-white">
                 <Image
-                  source={{ uri: getImageLink(userData?.referralUser?.photo?.mediaId)  }}
+                  source={{ uri: getImageLink(userData?.referralUser?.photo?.mediaId) }}
                   className="w-14 h-14 "
                 />
               </View>
@@ -50,7 +63,14 @@ const ReferralCodeSuccessfulScreen = ({route}: any) => {
                 <Text className={text({ type: 'b20' })}>500cfa</Text>
               </View>
               <View className="overflow-hidden rounded-full border-4 border-white">
-                <Image source={{ uri: userImage.userImage }} className="w-14 h-14" />
+                <Image
+                  source={{
+                    uri: userImage.userImage
+                      ? userImage.userImage
+                      : getImageLink(userImage.user?.photo.mediaId),
+                  }}
+                  className="w-14 h-14"
+                />
               </View>
             </View>
           </View>

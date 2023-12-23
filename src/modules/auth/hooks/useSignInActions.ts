@@ -88,6 +88,10 @@ export const useSignInActions = () => {
           Api.setQueryIdValue(result.query_id);
           console.log(result.data, 'result');
           dispatch(setUserInfo(result?.data?.user));
+          if (!result.data.isReferred) {
+            navigate('EnterReferralCode');
+            return;
+          }
           reset({
             index: 0,
             routes: [{ name: 'BottomTabs' }],

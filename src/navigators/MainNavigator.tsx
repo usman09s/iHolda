@@ -17,7 +17,7 @@ import MomentsStackNavigator from 'modules/moments/MomentsStackNavigator';
 import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
 import { useSelector } from 'react-redux';
 import Api from 'services/Api';
-import { queryIdSelector, tokensSelector } from 'store/auth/userSelectors';
+import { queryIdSelector, tokensSelector, userSelector } from 'store/auth/userSelectors';
 import socketService from 'services/Socket';
 import colors from 'theme/colors';
 
@@ -56,6 +56,8 @@ const commonScreenOptions: NativeStackNavigationOptions = {
 export default function MainNavigator() {
   const tokens = useSelector(tokensSelector);
   const queryId = useSelector(queryIdSelector);
+  const userData = useSelector(userSelector);
+  console.log(userData);
   const { status } = userAppInit();
 
   React.useEffect(() => {
@@ -76,7 +78,9 @@ export default function MainNavigator() {
     <NavigationContainer>
       <MainStack.Navigator
         screenOptions={commonScreenOptions}
-        initialRouteName={status === 'SUCCESS' ? 'BottomTabs' : 'Auth'}>
+        initialRouteName={
+          status === 'SUCCESS' && userData.user?.isReferred ? 'BottomTabs' : 'Auth'
+        }>
         <MainStack.Screen options={commonOptions} name="Auth" component={AuthStackNavigator} />
         <MainStack.Screen
           name="BottomTabs"
