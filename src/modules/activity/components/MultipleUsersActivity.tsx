@@ -14,6 +14,7 @@ type Props = {
   time?: any;
   onPress?: any;
   user1Photo?: any;
+  user2Photo?: any;
 };
 
 const MultipleUsersActivity = ({
@@ -24,6 +25,7 @@ const MultipleUsersActivity = ({
   user1Photo,
   time,
   onPress,
+  user2Photo
 }: Props) => {
   const userData: any = useSelector(userSelector)?.user;
   return (
@@ -32,14 +34,14 @@ const MultipleUsersActivity = ({
         <View className="rounded-full border-[3px] border-white bg-gray-400 justify-center items-center">
           <CustomProfileAvatar
             userName={lastUserUsername}
-            photo={user1Photo && getImageLink(user1Photo?.mediaId)}
+            photo={user1Photo }
             size={30}
           />
         </View>
         <View className="rounded-full  right-7 border-[3px] border-white bg-gray-400 top-2.5 ">
           <CustomProfileAvatar
             userName={userData.userName}
-            photo={getImageLink(userData.photo?.mediaId)}
+            photo={user2Photo}
             size={30}
           />
         </View>

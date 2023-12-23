@@ -5,7 +5,7 @@ import { text } from 'theme/text';
 type Props = {
   title: string;
   subTitle: string;
-  postThumbnail: string;
+  postThumbnail?: string;
   showFollowBack?: boolean;
   avatars: {
     user1: string;

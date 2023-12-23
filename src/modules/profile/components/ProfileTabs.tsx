@@ -62,8 +62,8 @@ const ProfileTabs = ({ activeIndex, onPressTabItem, isCurrentUser, isAgent }: Pr
     ) : (
       <ProfileTabItem
         title="Shared"
-        onPressTabItem={onPressTabItem(3)}
-        isActive={activeIndex === (isAgent ? 3 : 2)}
+        onPressTabItem={onPressTabItem(2)}
+        isActive={activeIndex === (2)}
       />
     )}
   </View>

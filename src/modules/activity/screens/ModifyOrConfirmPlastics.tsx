@@ -95,8 +95,9 @@ const ModifyConfirmPlastic = ({ route }: any) => {
 
   const handlePlasticSupply = () => {
     const requirePlasticData: { size: string; quantity: number }[] = scannedData?.plastics.map(
-      (e: any) => ({ size: e.size, quantity: e?.quantity }),
+      (e: any) => ({ size: e.size, quantity: e?.quantity, perUnitCp: e?.perUnitPrice }),
     );
+    // 
     let plastics: any[] = JSON.parse(JSON.stringify(requirePlasticData));
 
     if (oneLQuantity !== temp?.quantity) {
@@ -122,6 +123,10 @@ const ModifyConfirmPlastic = ({ route }: any) => {
           const totalPlastic = getPlasticCount();
           navigate('PlasticApproveScreen', { username: scannedData?.user?.userName, totalPlastic });
         },
+        onError: (error) => {
+        console.log("🚀 ~ file: ModifyOrConfirmPlastics.tsx:129 ~ handlePlasticSupply ~ error:", error)
+          
+        }
       },
     );
     //     .then(() => {

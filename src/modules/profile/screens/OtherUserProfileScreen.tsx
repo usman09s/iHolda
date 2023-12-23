@@ -89,12 +89,12 @@ const OtherUserProfileScreen = ({ route }: any) => {
         metsUserId={data?.data?.user._id}
       />,
       <Community cp={data?.data?.user?.cp} lastcp={data?.data?.user?.lastCp} key={1} />,
-      <Wallet key={2} />,
+      // <Wallet key={2} />,
       <Shared
         userId={data?.data?.user._id ?? ''}
         userName={data?.data?.user.userName ?? ''}
         loginUserId={user?._id ?? ''}
-        key={3}
+        key={2}
       />,
     ]?.[index] || [];
 

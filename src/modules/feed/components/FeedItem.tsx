@@ -16,6 +16,7 @@ import { useAppNavigation } from 'hooks/useAppNavigation';
 import { AuthStackParamList } from 'modules/auth/AuthStackNavigator';
 import { units, wW } from 'utils/helpers';
 import { Audio, AVPlaybackStatus } from 'expo-av';
+import DoubleClick from 'react-native-double-tap';
 
 import BorderedText from '../components/BorderedText';
 import FeedItemIndex from '../components/FeedItemIndex';
@@ -62,7 +63,7 @@ interface Props {
   index: number;
   currentIndex: number;
   isFocused: boolean;
-  audio?:string;
+  audio?: string;
 }
 
 const FeedItem = ({
@@ -90,7 +91,7 @@ const FeedItem = ({
   index,
   currentIndex,
   isFocused,
-  audio
+  audio,
 }: Props) => {
   const { top } = useSafeAreaInsets();
   const { mutate } = useMutation(Api.sharePost);
@@ -112,11 +113,11 @@ const FeedItem = ({
   // Load and play audio when the component mounts or when the index changes
   async function loadAudio() {
     try {
-      if(!audio) return;
+      if (!audio) return;
       await sound.current.loadAsync({
         uri: getAudioLink(audio),
       });
-      if(isFocused)await sound.current.playAsync();
+      if (isFocused) await sound.current.playAsync();
     } catch (error) {
       console.error('Error loading audio:', error);
     }
@@ -186,12 +187,34 @@ const FeedItem = ({
             renderItem={({ item }) => {
               // const videoLink = getVideoLink(item.mediaId);
               return (
-                <TouchableWithoutFeedback
-                  onPress={() =>{
-                    console.log("Pressed");
-                    
-                    !gotoDetailOnPress ? null : navigate('FeedDetailView', { item: data })
-                  }}>
+                <DoubleClick
+                  // onPress={() =>{
+                  //   console.log("Pressed");
+
+                  //   !gotoDetailOnPress ? null : navigate('FeedDetailView', { item: data })
+                  // }}
+
+                  singleTap={() => {
+                    // console.log("single tap");
+                    console.log('Pressed');
+
+                    !gotoDetailOnPress ? null : navigate('FeedDetailView', { item: data });
+                  }}
+                  doubleTap={() => {
+                    console.log('double tap');
+
+                    likePost(
+                      { postId: id },
+                      {
+                        onSuccess(data) {
+                          if (onPressLike) onPressLike(index);
+                          setLiked(prev => !prev);
+                      
+                        },
+                      },
+                    );
+                  }}
+                  delay={200}>
                   {item.mediaType.includes('video') ? (
                     <VideoPlayer
                       videoProps={{
@@ -216,7 +239,7 @@ const FeedItem = ({
                       }}
                     />
                   )}
-                </TouchableWithoutFeedback>
+                </DoubleClick>
               );
             }}
           />

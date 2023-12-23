@@ -7421,6 +7421,11 @@ react-native-compressor@^1.8.22:
   resolved "https://registry.yarnpkg.com/react-native-compressor/-/react-native-compressor-1.8.23.tgz#87fef6759d776e05753cee5e723696119c2f6b32"
   integrity sha512-llqV+BRgRL8xdUDFpYfaP/HSo9sUcqewlzXa6obgoXCTJT8ZmT0zUFYgGTtb0Urz2o2T15PqTij5f2Sg8phPjw==
 
+react-native-double-tap@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-double-tap/-/react-native-double-tap-1.0.1.tgz#d4235a77e594ca83665fd96049f0bdf8266e4754"
+  integrity sha512-tDhQv9IJnH4a5tPTQVBzvwcDo9+6a1Xz1JiFbqfORk9fkBnopx+1T2ZdTIUAvgxuUgdbwIRWnSzE3IIkmkeKFw==
+
 react-native-drawer-layout@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/react-native-drawer-layout/-/react-native-drawer-layout-3.2.2.tgz#ceee2f1fe362522b1391435e2c0d095c18d5d1f2"

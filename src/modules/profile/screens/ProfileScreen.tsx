@@ -10,12 +10,13 @@ import Community from '../containers/Community';
 import Profile from '../containers/Profile';
 import Wallet from '../containers/Wallet';
 import Shared from '../containers/Shared';
-import { selectUser } from 'store/userDataSlice';
+import { selectUser, setUser } from 'store/userDataSlice';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { setUserInfo } from 'store/auth/userSlice';
 import Api from 'services/Api';
 import { useQuery } from 'react-query';
 import Work from '../containers/Work';
+import { useIsFocused } from '@react-navigation/native';
 
 const ProfileScreen = ({ route, navigation }: any) => {
   const activeY = useSharedValue(0);
@@ -24,8 +25,11 @@ const ProfileScreen = ({ route, navigation }: any) => {
   const { user } = useSelector(userSelector);
   const invitedBy = user?.invitedBy?.userName;
   const { username, avatar, joinedMonthAndYear } = useSelector(userCommonInformationSelector);
+  const { refetch: refetchUserData } = useQuery('getCurrentUserProfile', Api.getUserProfile0);
   const isCurrentUser = route.params?.isCurrentUser ?? true;
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
+
+  const isFocused = useIsFocused();
 
   const { data } = useQuery('currentUserProfile', Api.getUserProfile0, {
     refetchOnMount: false,
@@ -39,8 +43,6 @@ const ProfileScreen = ({ route, navigation }: any) => {
     activeY.value = event.contentOffset.y <= 0 ? 0 : event.contentOffset.y;
   });
 
-  data?.data.user;
-
   const AgentRenderedComponent =
     [
       <Profile
@@ -49,6 +51,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
         impression="0"
         metPeople={user?.metCount ? user?.metCount?.toString() : '0'}
         key={0}
+        metsUserId={user?._id}
       />,
       <Community cp={user?.cp ?? '0'} lastcp={user?.lastCp} key={1} />,
       <Work key={2} />,
@@ -69,9 +72,18 @@ const ProfileScreen = ({ route, navigation }: any) => {
       <Wallet key={2} />,
     ]?.[index] || [];
 
-  // useEffect(() => {
-  //   dispatch(setUserInfo(data.data.user));
-  // },[])
+    const getUpdatedUserData = async () => {
+      await refetchUserData()
+        .then(response => {
+          dispatch(setUser(response?.data?.data.user));
+        })
+        .catch(err => console.log(err));
+    };
+
+  useEffect(() => {
+    // dispatch(setUserInfo(data.data.user));
+    if (isFocused) getUpdatedUserData();
+  }, [isFocused]);
 
   return (
     <View className="flex-1 bg-white">
