@@ -89,7 +89,7 @@ export const ProfileScreen = ({ navigation }: any) => {
             onPress={() => navigation.navigate('CartpoStack', { screen: 'Topup' })}>
             <Text className="text-12 font-normal text-white">Discount credit</Text>
             <Text className="text-3xl font-normal text-white text-center my-2">
-              {walletBalance?.wallet?.availableBalance}cfa
+              {walletBalance?.wallet?.topupBalance}cfa
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

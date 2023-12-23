@@ -13,7 +13,14 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  pin: Yup.string().min(4, 'Pin must be at least 4 characters long').required('Pin is required'),
+  pin: Yup.string()
+    .min(4, 'Pin must be 4 characters long')
+    .matches(/^\d+$/, 'Pin must contain only digits')
+    .test('is-valid-pin', 'Pin must be between 1001 and 9999', value => {
+      const numericValue = parseInt(value, 10);
+      return numericValue >= 1001 && numericValue <= 9999;
+    })
+    .required('Pin is required'),
   repeatPin: Yup.string()
     .oneOf([Yup.ref('pin'), null], 'Repeat pin must match the pin')
     .required('Repeat pin is required'),

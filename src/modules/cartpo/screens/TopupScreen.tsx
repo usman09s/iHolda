@@ -32,7 +32,7 @@ export const TopupScreen = ({ navigation }: any) => {
         <View className="bg-blue p-4 rounded-lg">
           <Text className="text-12 font-normal text-white text-center">Discount credit</Text>
           <Text className="text-3xl font-bold text-white text-center my-2 pt-4">
-            {walletBalance.wallet.availableBalance}
+            {walletBalance.wallet.topupBalance}
             <Text className="text-xs font-bold">CFA</Text>
           </Text>
         </View>

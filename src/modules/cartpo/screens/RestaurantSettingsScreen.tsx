@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
   name: Yup.string()
     .required('Name is required')
     .min(3, 'Name must be at least 3 characters')
-    .max(15, 'Name must be at most 15 characters')
+    .max(20, 'Name must be at most 20 characters')
     .matches(/^[^\s].*[^\s]$/, 'Item name cannot start or end with spaces'),
   about: Yup.string()
     .required('Please provide information about your business')
@@ -40,19 +40,20 @@ export const RestaurantSettingsScreen = () => {
   const [isPickerShow, setIsPickerShow] = useState(false);
   const [pickerMode, setPickerMode] = useState('open');
   const settingsData = useSelector(selectCartpoSettings);
-  console.log(settingsData.setting.shop.opening.days, 'plplplp');
 
   const initialValues = {
-    name: settingsData.setting.shop.name || '',
-    about: settingsData.setting.shop.description || '',
-    phoneNumber: settingsData.setting.shop.phone || '',
-    address: settingsData.setting.shop.address || '',
-    openHours: settingsData.setting.shop.opening.from || '',
-    closeHours: settingsData.setting.shop.opening.to || '',
+    name: settingsData?.setting?.shop?.name || '',
+    about: settingsData?.setting?.shop?.description || '',
+    phoneNumber: settingsData?.setting?.shop?.phone || '',
+    address: settingsData?.setting?.shop?.address || '',
+    openHours: settingsData?.setting?.shop?.opening?.from || '',
+    closeHours: settingsData?.setting?.shop?.opening?.to || '',
     coverImage:
-      settingsData?.setting.shop.coverImage.mediaId || settingsData.setting.shop.coverImage || '',
-    featuredImages: settingsData.setting.shop.photos || [],
-    selectedDays: settingsData.setting.shop.opening.days || [],
+      settingsData?.setting?.shop?.coverImage?.mediaId ||
+      settingsData?.setting?.shop?.coverImage ||
+      '',
+    featuredImages: settingsData?.setting?.shop?.photos || [],
+    selectedDays: settingsData?.setting?.shop?.opening?.days || [],
   };
 
   const pickImage = async (setFieldValue: any, fieldName: any, values: any) => {
@@ -135,6 +136,7 @@ export const RestaurantSettingsScreen = () => {
               label="Phone number"
               placeholder="+237  679090404"
               field="phoneNumber"
+              keyboardType={'phone-pad'}
               handleChange={handleChange('phoneNumber')}
               value={values.phoneNumber}
               error={errors.phoneNumber}
@@ -173,8 +175,8 @@ export const RestaurantSettingsScreen = () => {
                 className="px-2 py-1 bg-neutral-200 rounded-lg"
                 onPress={() => showTimepicker('open')}>
                 <Text>
-                  {settingsData.setting.shop.opening.from === values.openHours
-                    ? settingsData.setting.shop.opening.from
+                  {settingsData?.setting?.shop?.opening?.from === values.openHours
+                    ? settingsData?.setting?.shop?.opening?.from
                     : formatTime(openTime)}
                 </Text>
               </TouchableOpacity>
@@ -183,8 +185,8 @@ export const RestaurantSettingsScreen = () => {
                 className="px-2 py-1 bg-neutral-200 rounded-lg"
                 onPress={() => showTimepicker('close')}>
                 <Text>
-                  {settingsData.setting.shop.opening.to === values.closeHours
-                    ? settingsData.setting.shop.opening.to
+                  {settingsData?.setting?.shop?.opening?.to === values.closeHours
+                    ? settingsData?.setting?.shop?.opening?.to
                     : formatTime(closeTime)}
                 </Text>
               </TouchableOpacity>

@@ -4,8 +4,6 @@ import Api from 'services/Api';
 import { useNavigation } from '@react-navigation/native';
 import {
   selectPhoneNumber,
-  selectSelectedDiscount,
-  selectSelectedPayment,
   setCartpoSettings,
   setDiscount,
   setPaymentAccount,
@@ -20,7 +18,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { VerifyOTPMessage } from 'types/AuthTypes';
 import { selectCartpoSettings } from '../../../store/cartpo/calculateSlice';
 import Toast from 'react-native-toast-message';
-import wretch from 'wretch';
 import mime from 'mime';
 import * as SecureStore from 'expo-secure-store';
 
@@ -29,11 +26,9 @@ export const useCartpoActions = () => {
   const dispatch = useDispatch();
   const phoneNumberSelect = useSelector(selectPhoneNumber);
   const settingsData = useSelector(selectCartpoSettings);
-  const selectedDiscount = useSelector(selectSelectedDiscount);
-  const selectedPayment = useSelector(selectSelectedPayment);
   const [cityCountry, setCityCountry] = useState();
-  const [lat, setLat] = useState();
-  const [lng, setLng] = useState();
+  const [lat, setLat] = useState(settingsData?.setting?.shop?.location?.coordinates[1]);
+  const [lng, setLng] = useState(settingsData?.setting?.shop?.location?.coordinates[0]);
 
   const handleSubmit = async (values: any) => {
     let { phoneNumber } = values;
@@ -57,16 +52,31 @@ export const useCartpoActions = () => {
       console.error(error);
       Toast.show({
         type: 'error',
-        text1: 'Try again',
+        text1: 'Invalid Phone Number',
       });
       return;
     }
   };
 
   const verifyOtp = async (values: any) => {
-    console.log(values);
+    console.log(values.otp);
     try {
-      const result = await Api.verifyOtp(values.otp);
+      const response = await fetch('http://ihold.yameenyousuf.com/api/otp/verify', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          otp: values.otp,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const result = await response.json();
+
       if (result.message === VerifyOTPMessage.OTP_VERIFIED_USER_NOT_REGISTERED) {
         navigation.navigate('CreatePin');
       } else {
@@ -100,22 +110,10 @@ export const useCartpoActions = () => {
       }
     } catch (error) {
       const errorText = JSON.parse(error.message);
-      if (errorText.message === '"password" must be greater than or equal to 1000') {
-        Toast.show({
-          type: 'error',
-          text1: 'Password must be greater than or equal to 1000',
-        });
-      } else if (errorText.message === '"password" must be less than or equal to 9999') {
-        Toast.show({
-          type: 'error',
-          text1: 'Password must be greater less than or equal to 9999',
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: errorText.message,
-        });
-      }
+      Toast.show({
+        type: 'error',
+        text1: errorText.message,
+      });
     }
   };
 
@@ -153,16 +151,6 @@ export const useCartpoActions = () => {
         Toast.show({
           type: 'error',
           text1: 'Invalid password',
-        });
-      } else if (errorText.message === '"password" must be greater than or equal to 1000') {
-        Toast.show({
-          type: 'error',
-          text1: 'Password must be greater than or equal to 1000',
-        });
-      } else if (errorText.message === '"password" must be less than or equal to 9999') {
-        Toast.show({
-          type: 'error',
-          text1: 'Password must be greater less than or equal to 9999',
         });
       } else {
         Toast.show({
@@ -292,9 +280,20 @@ export const useCartpoActions = () => {
   };
 
   const handleGetWallet = async () => {
-    const result = await Api.getWalletBalance();
-    console.log(result, 'wallet');
-    dispatch(setWalletBalance(result.data));
+    const apiUrl = 'http://ihold.yameenyousuf.com/api/cartpo/balance';
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {},
+      });
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+      const result = await response.json();
+      dispatch(setWalletBalance(result.data));
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const handleWithdraw = async amount => {
@@ -310,7 +309,7 @@ export const useCartpoActions = () => {
   };
 
   const handleSettingsSubmit = async values => {
-    console.log(values.featuredImages, 'values');
+    console.log(1);
     if (!cityCountry && !values.address) {
       Toast.show({
         type: 'error',
@@ -335,35 +334,27 @@ export const useCartpoActions = () => {
     formData.append('opening[to]', values.closeHours);
     formData.append('address', cityCountry ? cityCountry : values.address);
     formData.append('phone', values.phoneNumber);
-
-    if (settingsData && settingsData.setting && settingsData.setting.shop) {
-      formData.append('location[type]', settingsData.setting.shop.location.type);
-    } else {
-      console.error('Error: settingsData.location.type is undefined');
-      return;
-    }
-
-    if (
-      settingsData &&
-      settingsData.setting.shop &&
-      Array.isArray(settingsData.setting.shop.location.coordinates) &&
-      settingsData.setting.shop.location.coordinates.length === 2
-    ) {
-      formData.append(
-        'location[coordinates][0]',
-        settingsData.setting.shop.location.coordinates[0],
-      );
-      formData.append(
-        'location[coordinates][1]',
-        settingsData.setting.shop.location.coordinates[1],
-      );
-    } else {
-      console.error('Error: Invalid or missing settingsData.location.coordinates');
-      return;
-    }
+    formData.append('location[type]', 'Point');
+    formData.append(
+      'location[coordinates][0]',
+      settingsData?.setting?.shop?.location?.coordinates[0]
+        ? settingsData?.setting?.shop?.location?.coordinates[0]
+        : lng,
+    );
+    formData.append(
+      'location[coordinates][1]',
+      settingsData?.setting?.shop?.location?.coordinates[1]
+        ? settingsData?.setting?.shop?.location?.coordinates[1]
+        : lat,
+    );
 
     if (values.coverImage && values.coverImage.startsWith('file')) {
-      formData.append('coverImage', values.coverImage);
+      const imageObject: any = {
+        name: values.coverImage.split('/').pop(),
+        type: mime.getType(values.coverImage),
+        uri: values.coverImage,
+      };
+      formData.append(`coverImage`, imageObject);
     }
 
     if (values.featuredImages) {
