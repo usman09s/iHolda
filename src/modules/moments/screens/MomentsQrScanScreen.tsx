@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Text, View } from 'react-native';
 import { BarCodeScanningResult, Camera } from 'expo-camera';
 import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
 import Header from 'components/Header/Header';
@@ -37,22 +37,40 @@ const MomentsQrScanScreen = () => {
   const { navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
 
   const { mutate, isLoading } = useMutation(Api.postMeetup, {
-    onError: error => {
-      console.error(error);
+    onError: async (error: any) => {
+      console.log('🚀 ~ file: MomentsQrScanScreen.tsx:41 ~ onError: ~ error:', error);
+
+      let errorMessage = 'An unknown error occurred';
+
+      try {
+        // Attempt to parse the error as JSON
+        const errorObject = JSON.parse(error?.message || '');
+        errorMessage = errorObject?.message || errorMessage;
+      } catch (parseError) {
+        // Handle parsing error if necessary
+        console.error('Error parsing JSON:', parseError);
+      }
+
+      errorMessage = errorMessage.toLowerCase().includes('location mismatch')
+        ? "Your location must be close to the other user's location. Please make sure you're nearby and try again."
+        : errorMessage;
+
+      // Display the error message in an alert
+      Alert.alert('Error', errorMessage);
     },
-    onSuccess: ({ data }) => {
+    onSuccess: data => {
       if (!data) return alert('Invalid QR Code');
-      if (!data.metBefore) {
+      if (!data.data.metBefore) {
         navigate('MomentsMatch', {
           id: 12343,
-          user: data.user,
+          user: data.data.user,
           location_name: 'No Location',
           user_profile_image: {
             id: 4545345,
-            image: data.user.photo.mediaId,
-            uploaded_at: data.user.updatedAt,
+            image: data.data.user.photo.mediaId,
+            uploaded_at: data.data.user.updatedAt,
           },
-          metBefore: data.metBefore,
+          metBefore: data.data.metBefore,
         });
         return;
       }
@@ -61,8 +79,8 @@ const MomentsQrScanScreen = () => {
         setMatchedUser({
           meetupId: 123,
           id: 12343,
-          user: data.user,
-          metBefore: data.metBefore,
+          user: data.data.user,
+          metBefore: data.data.metBefore,
           location_name: 'No Location',
           user_profile_image: {
             id: 123,
@@ -73,13 +91,13 @@ const MomentsQrScanScreen = () => {
       );
       navigate('MomentsSelfie', {
         id: 12343,
-        user: data.user,
-        metBefore: data.metBefore,
+        user: data.data.user,
+        metBefore: data.data.metBefore,
         location_name: 'No Location',
         user_profile_image: {
           id: 4545345,
-          image: data.user.photo.mediaId,
-          uploaded_at: data.user.updatedAt,
+          image: data.data.user.photo.mediaId,
+          uploaded_at: data.data.user.updatedAt,
         },
       });
     },

@@ -64,6 +64,7 @@ interface Props {
   currentIndex: number;
   isFocused: boolean;
   audio?: string;
+  users: any;
 }
 
 const FeedItem = ({
@@ -92,11 +93,13 @@ const FeedItem = ({
   currentIndex,
   isFocused,
   audio,
+  users,
 }: Props) => {
   const { top } = useSafeAreaInsets();
   const { mutate } = useMutation(Api.sharePost);
   const { user } = useSelector(userSelector);
   const [liked, setLiked] = useState<boolean>(data?.likes?.includes(user?._id));
+  const [bookmarked, setBookmarked] = useState<boolean>(data?.bookmarked ?? false);
   const { mutate: bookmark } = useMutation(Api.bookMarkPost);
   const { mutate: likePost } = useMutation(Api.likeUnlikePost);
   const [commentModal, setCommentModal] = useState(false);
@@ -130,19 +133,19 @@ const FeedItem = ({
       await sound.current.unloadAsync();
     }
   }
-  useEffect(() => {
-    // Load and unload audio based on currentIndex and index
-    if (currentIndex === index && isFocused && audio) {
-      loadAudio();
-    } else {
-      unloadAudio();
-    }
+  // useEffect(() => {
+  //   // Load and unload audio based on currentIndex and index
+  //   if (currentIndex === index && isFocused && audio) {
+  //     loadAudio();
+  //   } else {
+  //     unloadAudio();
+  //   }
 
-    // Unload audio when the component unmounts or when currentIndex changes
-    return () => {
-      unloadAudio();
-    };
-  }, [currentIndex, index, isFocused]);
+  //   // Unload audio when the component unmounts or when currentIndex changes
+  //   return () => {
+  //     unloadAudio();
+  //   };
+  // }, [currentIndex, index, isFocused]);
 
   useEffect(() => {
     if (!isFocused) unloadAudio();
@@ -188,12 +191,6 @@ const FeedItem = ({
               // const videoLink = getVideoLink(item.mediaId);
               return (
                 <DoubleClick
-                  // onPress={() =>{
-                  //   console.log("Pressed");
-
-                  //   !gotoDetailOnPress ? null : navigate('FeedDetailView', { item: data })
-                  // }}
-
                   singleTap={() => {
                     // console.log("single tap");
                     console.log('Pressed');
@@ -209,36 +206,37 @@ const FeedItem = ({
                         onSuccess(data) {
                           if (onPressLike) onPressLike(index);
                           setLiked(prev => !prev);
-                      
                         },
                       },
                     );
                   }}
                   delay={200}>
-                  {item.mediaType.includes('video') ? (
-                    <VideoPlayer
-                      videoProps={{
-                        shouldPlay: isFocused && index === currentIndex,
-                        resizeMode: ResizeMode.COVER,
-                        source: {
-                          uri: getVideoLink(item.mediaId),
-                        },
-                      }}
-                    />
-                  ) : (
-                    <Image
-                      resizeMode="cover"
-                      // className="h-full w-full"
-                      style={{
-                        width: canGoBack() ? wW - 10 : wW,
-                        height: Dimensions.get('screen').height,
-                        // marginTop: 10
-                      }}
-                      source={{
-                        uri: getImageLink(item.mediaId),
-                      }}
-                    />
-                  )}
+                  <>
+                    {item.mediaType.includes('video') ? (
+                      <VideoPlayer
+                        videoProps={{
+                          shouldPlay: isFocused && index === currentIndex,
+                          resizeMode: ResizeMode.COVER,
+                          source: {
+                            uri: getVideoLink(item.mediaId),
+                          },
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        resizeMode="cover"
+                        // className="h-full w-full"
+                        style={{
+                          width: canGoBack() ? wW - 10 : wW,
+                          height: Dimensions.get('screen').height,
+                          // marginTop: 10
+                        }}
+                        source={{
+                          uri: getImageLink(item.mediaId),
+                        }}
+                      />
+                    )}
+                  </>
                 </DoubleClick>
               );
             }}
@@ -255,6 +253,7 @@ const FeedItem = ({
       />
 
       <FeedItemDetailsBar
+        users={users}
         userId1={userId1}
         userId2={userId2}
         navigate={navigate}
@@ -274,6 +273,7 @@ const FeedItem = ({
       />
       <FeedItemActionBar
         liked={liked}
+        bookmarked={bookmarked}
         bookmarks={bookmarks}
         shares={shares}
         likes={likes}
@@ -315,11 +315,14 @@ const FeedItem = ({
             { postId: id },
             {
               onSuccess(data) {
-                ToastAndroid.showWithGravity(
-                  'Post bookmarked',
-                  ToastAndroid.SHORT,
-                  ToastAndroid.CENTER,
-                );
+                // ToastAndroid.showWithGravity(
+                //   'Post bookmarked',
+                //   ToastAndroid.SHORT,
+                //   ToastAndroid.CENTER,
+                // );
+                if (onPressLike) onPressLike(index);
+
+                setBookmarked(prev => !prev);
               },
             },
           )

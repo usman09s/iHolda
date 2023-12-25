@@ -15,6 +15,7 @@ type FeedItemActionBarProps = {
   bookmarks: number;
   shares: number;
   liked: boolean;
+  bookmarked: boolean;
 };
 
 const FeedItemActionBar = ({
@@ -27,7 +28,8 @@ const FeedItemActionBar = ({
   comments,
   shares,
   bookmarks,
-  liked
+  liked,
+  bookmarked
 }: FeedItemActionBarProps) => (
   <View
     className={` w-9 absolute right-7 z-30 ${
@@ -48,7 +50,7 @@ const FeedItemActionBar = ({
       <Text className={text({ type: 'r10', class: 'text-white text-center' })}>{shares}</Text>
     </TouchableOpacity>
     <TouchableOpacity className="mb-7" onPress={onPressBookmark} hitSlop={getHitSlop({})}>
-      <Icons.BookmarkIcon />
+      <Icons.BookmarkIcon fill={bookmarked?"white": "transparent"} />
       <Text className={text({ type: 'r10', class: 'text-white text-center' })}>{bookmarks}</Text>
     </TouchableOpacity>
   </View>

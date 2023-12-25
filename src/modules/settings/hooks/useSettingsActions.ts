@@ -81,7 +81,7 @@ export const useSettingActions = () => {
     let location = await Location.getCurrentPositionAsync({});
     const updatedUserData = {
       ...userData,
-      location: { coordinates: [location.coords.latitude, location.coords.longitude] },
+      location: { coordinates: [location.coords.longitude, location.coords.latitude] },
     };
     dispatch(setUserInfo(updatedUserData));
     getCityCountry(location.coords.latitude, location.coords.longitude);

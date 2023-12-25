@@ -27,7 +27,9 @@ const BiggestBottle = require('../../../../assets/images/biggestBottle.png');
 const PlasticScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
   const plasticSizes = useSelector(plasticSizeSelector);
-  console.log("🚀 ~ file: PlasticScreen.tsx:30 ~ PlasticScreen ~ plasticSizes:", plasticSizes)
+  const { data, refetch } = useQuery('currentUserProfile', Api.getUserProfile0, {
+    refetchOnMount: false,
+  });
 
   const totalPlastic = useSelector(plasticCountTotalSelector);
   const { navigate, goBack } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
@@ -69,7 +71,7 @@ const PlasticScreen = ({ navigation }: any) => {
         <Text
           className={text({ type: 'b34', class: 'text-center' })}
           style={{ marginTop: units.vh * 2 }}>
-          100,001
+          {data?.data.user?.plasticRescued ?? 0}
         </Text>
         <Text className={text({ type: 'r12', class: 'text-center mt-2' })}>
           Plastics rescued so far

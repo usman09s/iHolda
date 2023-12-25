@@ -7,10 +7,33 @@ import { getImageLink, getVideoLink } from '../../moments/helpers/imageHelpers';
 import { ResizeMode } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
 
-type Props = { index: number; item: UserMoment; onPress?: (val: any) => void };
+type Props = { index: number; item: any; onPress?: (val: any) => void };
 
 const ProfilePostItem = ({ index, item, onPress }: Props) => {
-  const media = item?.post?.userQuiz ? [item?.post?.userQuiz.recording] : item.post?.media;
+  const userQuiz = item?.post?.userQuiz ?? item?.userQuiz;
+  const met = item?.post?.met ?? item?.met;
+
+
+  const isMet = item?.met?._id;
+  const isQuizUserdata = userQuiz !== undefined && typeof userQuiz?.users[0] !== 'string';
+
+  const quizUsers = isQuizUserdata ? userQuiz?.users?.map((el: any) => ({ user: el })) : [];
+  const metUsers = isMet ? met?.users.map((el: any) => ({ user: el })) : [];
+
+  const users = isMet
+    ? metUsers
+    : isQuizUserdata
+      ? quizUsers
+      : item?.users
+        ? item?.users
+        : [{ user: item.user }];
+
+  const itemMediaLinks =  item?.media ?? item?.post?.media;
+
+  const itemMedia = isMet ? itemMediaLinks ?? [] : itemMediaLinks;
+
+  const media = userQuiz ? [userQuiz?.recording ?? userQuiz.recording] : itemMedia;
+
 
   return (
     <TouchableOpacity
@@ -47,24 +70,24 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
       )}
       {/* {} */}
       <View className="absolute w-10 z-20 right-4 top-2 items-center justify-center">
-        <BorderedText size={30}>{item?.post?.userQuiz ? 1 : (item.post?.media?.length ?? 0)}</BorderedText>
+        <BorderedText size={30}>{userQuiz ? 1 : media?.length ?? 0}</BorderedText>
         <Text className={text({ type: 'b12', class: 'text-white text-center' })}>Slides</Text>
       </View>
       <View className="absolute z-20 bottom-0 left-0 pl-2 py-2 w-full flex-row overflow-hidden items-center bg-black-o-20">
         <View className="flex-row items-center">
-          <View className={`rounded-full border-2 border-saffron ${item.users[1] ? '' : 'mr-2'}`}>
+          <View className={`rounded-full border-2 border-saffron ${users[1] ? '' : 'mr-2'}`}>
             <View className="rounded-full border-2 border-white">
               <Image
-                source={{ uri: getImageLink(item.users[0]?.user.photo?.mediaId ?? '') }}
+                source={{ uri: getImageLink(users[0]?.user.photo?.mediaId ?? '') }}
                 className="rounded-full h-6 w-6 "
               />
             </View>
           </View>
-          {item.users[1] ? (
+          {users[1] ? (
             <View className="overflow-hidden rounded-full border-2 border-green-500 right-2">
               <View className="overflow-hidden rounded-full border-2 border-white ">
                 <Image
-                  source={{ uri: getImageLink(item.users[1]?.user?.photo?.mediaId ?? '') }}
+                  source={{ uri: getImageLink(users[1]?.user?.photo?.mediaId ?? '') }}
                   className=" rounded-full h-6 w-6"
                 />
               </View>
@@ -75,7 +98,7 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
           with
           <Text style={{ textTransform: 'capitalize' }}>
             {' '}
-            {item.users[1] ? item.users[1]?.user.userName : 'Yourself'}
+            {users[1] ? users[1]?.user.userName : 'Yourself'}
           </Text>
         </Text>
       </View>

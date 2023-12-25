@@ -23,7 +23,7 @@ const UserCommentItem = ({ bgColor, comment, username, image }: Props) => (
         <Icons.VerifiedBadgeIcon />
       </View>
     </View>
-    <Text className={text({ type: 'r15', class: 'mt-4', isCenter: true })}>{comment}</Text>
+    <Text className={text({ type: 'r15', class: 'mt-4 ml-4',  })}>{comment}</Text>
   </View>
 );
 

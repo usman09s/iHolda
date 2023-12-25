@@ -69,10 +69,7 @@ const EnterReferralCodeScreen = () => {
   };
 
   useEffect(() => {
-    console.log(
-      '🚀 ~ file: EnterReferralCodeScreen.tsx:58 ~ useEffect ~ userInfo:',
-      userInfo.username,
-    );
+   
     ImageCompresor.compress(userInfo.userImage, {
       progressDivider: 10,
       downloadProgress: progress => {
