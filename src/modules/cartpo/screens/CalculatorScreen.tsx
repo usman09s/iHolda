@@ -7,6 +7,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { verticalScale, horizontalScale, moderateScale } from '../../../utils/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectCartpoSettings,
   selectSelectedOption,
   selectUserData,
   setCalculatorAmount,
@@ -25,7 +26,8 @@ const CalculatorScreen = ({ navigation }: any) => {
   const [open, setOpen] = useState(false);
   const selectedOption = useSelector(selectSelectedOption);
   const userData = useSelector(selectUserData);
-  console.log(userData, 'userdata');
+  const cartpoSettings = useSelector(selectCartpoSettings);
+  console.log(cartpoSettings, 'userdata');
 
   const handleKeypadPress = value => {
     setInputValue(prevInputValue => {
@@ -54,7 +56,11 @@ const CalculatorScreen = ({ navigation }: any) => {
   }, []);
 
   const handleNavigation = () => {
-    if (userData && userData.user && userData.user?.linkedPaymentAccounts) {
+    if (
+      cartpoSettings &&
+      cartpoSettings?.setting &&
+      cartpoSettings?.setting?.paymentMethod.length > 0
+    ) {
       setInputValue('0');
       dispatch(setCalculatorAmount(inputValue));
       navigation.navigate('CartpoStack', { screen: 'DiscountQrCode' });

@@ -29,6 +29,7 @@ export const useCartpoActions = () => {
   const [cityCountry, setCityCountry] = useState();
   const [lat, setLat] = useState(settingsData?.setting?.shop?.location?.coordinates[1]);
   const [lng, setLng] = useState(settingsData?.setting?.shop?.location?.coordinates[0]);
+  const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = async (values: any) => {
     let { phoneNumber } = values;
@@ -84,6 +85,10 @@ export const useCartpoActions = () => {
       }
     } catch (error) {
       console.error('Error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid OTP',
+      });
     }
   };
 
@@ -147,15 +152,10 @@ export const useCartpoActions = () => {
           type: 'error',
           text1: 'Please login with a Merchant Account',
         });
-      } else if (errorText.message === 'Invalid password') {
-        Toast.show({
-          type: 'error',
-          text1: 'Invalid password',
-        });
       } else {
         Toast.show({
           type: 'error',
-          text1: errorText.message,
+          text1: 'Invalid Pin',
         });
       }
     }
@@ -309,7 +309,15 @@ export const useCartpoActions = () => {
   };
 
   const handleSettingsSubmit = async values => {
-    console.log(1);
+    setLoading(true);
+    console.log(values, 'values');
+    if (!values.selectedDays) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please fill all of the required fields',
+      });
+      return;
+    }
     if (!cityCountry && !values.address) {
       Toast.show({
         type: 'error',
@@ -325,7 +333,7 @@ export const useCartpoActions = () => {
       return;
     }
     const formData = new FormData();
-    formData.append('name', values.name);
+    formData.append('name', values.name.trim());
     formData.append('description', values.about);
     values.selectedDays.forEach((day, index) => {
       formData.append(`opening[days][${index}]`, day);
@@ -376,6 +384,7 @@ export const useCartpoActions = () => {
 
     console.log(formData, 'FORM DATA');
     try {
+      setLoading(false);
       const response = await fetch('http://ihold.yameenyousuf.com/api/cartpo/shop', {
         method: 'POST',
         body: formData,
@@ -391,6 +400,7 @@ export const useCartpoActions = () => {
       handleGetCartpoSettings();
       navigation.goBack();
     } catch (error) {
+      setLoading(false);
       console.error('Error sending API request:', error.message);
     }
   };
@@ -411,5 +421,6 @@ export const useCartpoActions = () => {
     handleWithdraw,
     handleAddDiscount,
     handleDeleteDiscount,
+    isLoading,
   };
 };

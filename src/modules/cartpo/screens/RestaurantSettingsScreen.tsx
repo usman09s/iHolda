@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import CustomHeader from 'components/Header/CustomHeader';
 import { Formik } from 'formik';
-import { CustomReferenceButton } from 'modules/requestReference/components/CustomReferenceButton';
 import { CustomReferenceInput } from 'modules/requestReference/components/CustomReferenceInput';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, ActivityIndicator } from 'react-native';
 import CustomDayPicker from '../components/CustomDayPicker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -21,20 +20,22 @@ const validationSchema = Yup.object().shape({
     .required('Name is required')
     .min(3, 'Name must be at least 3 characters')
     .max(20, 'Name must be at most 20 characters')
-    .matches(/^[^\s].*[^\s]$/, 'Item name cannot start or end with spaces'),
+    .matches(/^[^\s].*$/, 'Item name cannot start or end with spaces'),
   about: Yup.string()
     .required('Please provide information about your business')
     .min(5, 'About must be at least 3 characters')
     .matches(/^[^\s].*$/, 'About should not start with a space'),
   phoneNumber: Yup.string().required('Please enter a phone number'),
-  openHours: Yup.string().required('Please select open hours'),
-  closeHours: Yup.string().required('Please select close hours'),
+  openHours: Yup.string().notRequired(),
+  address: Yup.string().notRequired(),
+  closeHours: Yup.string().notRequired(),
   coverImage: Yup.string().required('Please add a cover image'),
-  featuredImages: Yup.array().min(1, 'Please add at least one featured image'),
+  featuredImages: Yup.array().notRequired().min(1, 'Please add at least one featured image'),
+  selectedDays: Yup.string().notRequired(),
 });
 
 export const RestaurantSettingsScreen = () => {
-  const { handleSettingsSubmit, handleLocationPress, cityCountry } = useCartpoActions();
+  const { handleSettingsSubmit, handleLocationPress, cityCountry, isLoading } = useCartpoActions();
   const [openTime, setOpenTime] = useState(new Date());
   const [closeTime, setCloseTime] = useState(new Date());
   const [isPickerShow, setIsPickerShow] = useState(false);
@@ -43,11 +44,11 @@ export const RestaurantSettingsScreen = () => {
 
   const initialValues = {
     name: settingsData?.setting?.shop?.name || '',
-    about: settingsData?.setting?.shop?.description || '',
+    about: settingsData?.setting?.shop?.description || cityCountry || '',
     phoneNumber: settingsData?.setting?.shop?.phone || '',
     address: settingsData?.setting?.shop?.address || '',
-    openHours: settingsData?.setting?.shop?.opening?.from || '',
-    closeHours: settingsData?.setting?.shop?.opening?.to || '',
+    openHours: settingsData?.setting?.shop?.opening?.from || openTime || '',
+    closeHours: settingsData?.setting?.shop?.opening?.to || closeTime || '',
     coverImage:
       settingsData?.setting?.shop?.coverImage?.mediaId ||
       settingsData?.setting?.shop?.coverImage ||
@@ -154,7 +155,7 @@ export const RestaurantSettingsScreen = () => {
               />
             </View>
             <TouchableOpacity>
-              <Text>Open hours</Text>
+              <Text className="mb-2">Open hours</Text>
               <CustomDayPicker
                 itemsArray={[
                   { value: 'Monday', label: 'M' },
@@ -193,7 +194,9 @@ export const RestaurantSettingsScreen = () => {
             </View>
             <View className="my-4">
               <TouchableOpacity
-                className="border-dashed border-2 border-gray-300 rounded-xl h-44 justify-center items-center"
+                className={`border-dashed border-2 border-gray-300 rounded-xl h-44 justify-center items-center ${
+                  errors.coverImage && 'border-red-500'
+                }`}
                 onPress={() => pickImage(setFieldValue, 'coverImage', values)}>
                 {values.coverImage ? (
                   <Image
@@ -206,7 +209,9 @@ export const RestaurantSettingsScreen = () => {
                   />
                 ) : (
                   <View className="items-center">
-                    <Icon name="plus" />
+                    <View className="bg-neutral-200 rounded-full p-1">
+                      <Icon name="plus" color="black" size={20} />
+                    </View>
                     <Text>Add Cover image</Text>
                   </View>
                 )}
@@ -246,7 +251,11 @@ export const RestaurantSettingsScreen = () => {
               </View>
             </View>
             <View className="items-center mt-8">
-              <CustomRestaurantButton title={'Save'} onPress={handleSubmit} />
+              {isLoading ? (
+                <ActivityIndicator animating={true} size={30} color="black" />
+              ) : (
+                <CustomRestaurantButton title={'Save'} onPress={handleSubmit} />
+              )}
             </View>
             {isPickerShow && (
               <DateTimePicker

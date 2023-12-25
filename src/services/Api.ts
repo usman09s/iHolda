@@ -238,6 +238,7 @@ class ApiClass {
           password,
           countryCode: 'PK',
           fcmToken: '1234567',
+          role: 'merchant',
         })
         .json(result => {
           return result;
