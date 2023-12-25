@@ -109,7 +109,8 @@ export const useRequestReferenceAction = () => {
       console.error('Error during basic verification:', error);
       Toast.show({
         type: 'error',
-        text1: 'Error during basic verification',
+        text1: 'Not Enough CP',
+        text2: 'You must have a minimum of 40 CP in your wallet',
       });
       return;
     }
