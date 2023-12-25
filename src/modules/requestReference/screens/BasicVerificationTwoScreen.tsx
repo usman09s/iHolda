@@ -51,7 +51,7 @@ const verificationSchema = Yup.object().shape({
         console.error('Invalid country data structure:', countriesData);
         return false;
       }
-      const lowercasedValue = value.toLowerCase();
+      const lowercasedValue = value.toLowerCase().trim();
       const lowercasedCountries = countriesData.map(country => country.name.toLowerCase());
       const countryExists = lowercasedCountries.includes(lowercasedValue);
       return countryExists;
@@ -62,7 +62,7 @@ export const BasicVerificationTwoScreen = () => {
   const { handleNavigation2 } = useRequestReferenceAction();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [touched, setTouched] = useState(false);
-  const [date, setDate] = useState(new Date(2010, 1, 1));
+  const [date, setDate] = useState(new Date(2020, 11, 31));
   const initialValues = {
     fullName: '',
     dob: '',
@@ -140,7 +140,8 @@ export const BasicVerificationTwoScreen = () => {
                   testID="dateTimePicker"
                   value={date}
                   mode="date"
-                  maximumDate={new Date(2010, 1, 1)}
+                  maximumDate={new Date(2020, 11, 31)}
+                  minimumDate={new Date(1970, 0, 1)}
                   display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                   onChange={(event, selectedDate) => {
                     handleDateChange(event, selectedDate);

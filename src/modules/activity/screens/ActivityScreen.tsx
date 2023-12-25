@@ -11,12 +11,15 @@ import { useQuery } from 'react-query';
 import Api from 'services/Api';
 import { useEffect } from 'react';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectNotification } from 'store/notification/notificationSlice';
+import { selectUser } from 'store/userDataSlice';
 
 const ActivityScreen = () => {
   const notifications = useQuery('getNotifications', Api.getNotifications);
   const navigation: any = useNavigation();
+  const userData = useSelector(selectUser);
+  console.log(userData);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
@@ -24,7 +27,9 @@ const ActivityScreen = () => {
     const currentDate = new Date();
     const providedDate = new Date(dateString);
 
-    const timeDifferenceInSeconds = Math.floor((currentDate.valueOf() - providedDate.valueOf()) / 1000);
+    const timeDifferenceInSeconds = Math.floor(
+      (currentDate.valueOf() - providedDate.valueOf()) / 1000,
+    );
 
     if (timeDifferenceInSeconds < 60) {
       return `${timeDifferenceInSeconds}s`;
@@ -84,6 +89,8 @@ const ActivityScreen = () => {
               lastUserUsername=""
               time={getTimeDifference(item.createdAt)}
               subTitle={item.body}
+              user1Photo={getImageLink(item?.sender?.photo?.mediaId)}
+              user2Photo={getImageLink(userData?.photo?.mediaId)}
               momentThumbnail={
                 item?.post && item.post?.mediaType && item.post?.mediaType?.includes('image')
                   ? getImageLink(item.post.media[0]?.mediaId)
