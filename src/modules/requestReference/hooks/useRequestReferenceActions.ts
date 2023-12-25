@@ -103,6 +103,12 @@ export const useRequestReferenceAction = () => {
           dispatch(setUserInfo(updatedUserData));
         } else {
           console.error('Basic verification failed.');
+          Toast.show({
+            type: 'error',
+            text1: 'Not Enough CP',
+            text2: 'You must have a minimum of 40 CP in your wallet',
+          });
+          return;
         }
       }
     } catch (error) {
