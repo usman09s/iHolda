@@ -82,17 +82,17 @@ const EnterReferralCodeScreen = () => {
       formData1.append('address', 'none');
       formData1.append('userName', userInfo.username ? userInfo.username : userInfo.user.userName);
       formData1.append('socialLinks[0][platform]', 'facebook');
-      formData1.append('socialLinks[0][link]', 'facebook.com/profile.php');
+      formData1.append('socialLinks[0][link]', '');
       formData1.append('socialLinks[2][platform]', 'tiktok');
-      formData1.append('socialLinks[2][link]', 'facenpo');
+      formData1.append('socialLinks[2][link]', '');
       formData1.append('socialLinks[3][platform]', 'youtube');
-      formData1.append('socialLinks[3][link]', 'facenpo');
+      formData1.append('socialLinks[3][link]', '');
       formData1.append('socialLinks[4][platform]', 'twitter');
-      formData1.append('socialLinks[4][link]', 'facenpo');
+      formData1.append('socialLinks[4][link]', '');
       formData1.append('socialLinks[5][platform]', 'instagram');
-      formData1.append('socialLinks[5][link]', 'instagram.com');
+      formData1.append('socialLinks[5][link]', '');
       formData1.append('socialLinks[1][platform]', 'website');
-      formData1.append('socialLinks[1][link]', 'webstie.com');
+      formData1.append('socialLinks[1][link]', '');
       const image: any = {
         name: result.split('/').pop(),
         type: mime.getType(result),

@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
+import Toast from 'react-native-toast-message';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import Api from 'services/Api';
@@ -102,12 +103,22 @@ export const useRequestReferenceAction = () => {
           dispatch(setUserInfo(updatedUserData));
         } else {
           console.error('Basic verification failed.');
+          Toast.show({
+            type: 'error',
+            text1: 'Not Enough CP',
+            text2: 'You must have a minimum of 40 CP in your wallet',
+          });
+          return;
         }
-      } else {
-        console.error('Invalid date of birth format:', userReferenceData.dob);
       }
     } catch (error) {
       console.error('Error during basic verification:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Not Enough CP',
+        text2: 'You must have a minimum of 40 CP in your wallet',
+      });
+      return;
     }
   };
 
