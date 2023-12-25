@@ -19,7 +19,7 @@ const FollowersScreen = ({ route }: any) => {
   const [dumyData, setDummyData] = useState<any[]>([]);
   const { user } = useSelector(userSelector);
   const otherUserId = route.params?.userId; // if undeffined then it is logged in user
-  console.log("🚀 ~ file: FollowersScreen.tsx:22 ~ FollowersScreen ~ otherUserId:", route.params?.userId)
+  const otherUsername = route.params?.userName; // if undeffined then it is logged in user
 
   async function getData() {
     let res;
@@ -70,7 +70,9 @@ const FollowersScreen = ({ route }: any) => {
         <Header
           showBackIcon
           centerComponent={
-            <Text className={text({ type: 'm18', class: 'text-black' })}>{user?.userName}</Text>
+            <Text className={text({ type: 'm18', class: 'text-black' })}>
+              {otherUsername ?? user?.userName}
+            </Text>
           }
         />
       </View>
@@ -127,7 +129,7 @@ const FollowersScreen = ({ route }: any) => {
               <View style={{ flex: 1 }}>
                 <Text className="font-semibold">{item.userName}</Text>
                 <Text className="text-gray-500">
-                  {item.firstName} {item.lastName}
+                  {item?.firstName}
                 </Text>
               </View>
               <View>
@@ -136,7 +138,13 @@ const FollowersScreen = ({ route }: any) => {
                   // onPress={() => followUnfollowUser("656571028ac948743d233af7", true)}
                   className={isFollowed ? 'bg-[#eeeeee]' : 'bg-[#52c3ff]'}
                   style={{ paddingVertical: 5, paddingHorizontal: 15, borderRadius: 5 }}>
-                  <Text style={{ fontSize: 13 }}>{isFollowed ? 'Unfollow' : item?.following?.includes(user?._id)?'Follow back':'Follow'}</Text>
+                  <Text style={{ fontSize: 13 }}>
+                    {isFollowed
+                      ? 'Following'
+                      : item?.following?.includes(otherUserId ?? user?._id)
+                        ? 'Follow back'
+                        : 'Follow'}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>

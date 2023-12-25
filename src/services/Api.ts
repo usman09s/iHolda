@@ -431,7 +431,7 @@ class ApiClass {
     await this.externalApi
       .url(
         `plastic/agents?page=1${
-          !coords ? "" : `&latitude=${coords?.latitude}&longitude=${coords?.longitude}`
+          !coords ? '' : `&latitude=${coords?.latitude}&longitude=${coords?.longitude}`
         }`,
       )
       .get()
@@ -831,7 +831,8 @@ class ApiClass {
         ...this._getAuthorization(this.token),
       })
       .get()
-      .json(result => result);
+      .json(result => result)
+      // .catch(err => err);
 
   agentScan = async ({ queryId, agentId }: { queryId: string; agentId: string }): Promise<any> =>
     await this.externalApi

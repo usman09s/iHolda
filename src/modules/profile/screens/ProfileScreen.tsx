@@ -23,6 +23,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
   const { user } = useSelector(userSelector);
+  // console.log("🚀 ~ file: ProfileScreen.tsx:26 ~ ProfileScreen ~ user:", user?.basicVerification)
   const invitedBy = user?.invitedBy?.userName;
   const { username, avatar, joinedMonthAndYear } = useSelector(userCommonInformationSelector);
   const { refetch: refetchUserData } = useQuery('getCurrentUserProfile', Api.getUserProfile0);
@@ -46,6 +47,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
   const AgentRenderedComponent =
     [
       <Profile
+        description={data?.data.user?.bio ?? ''}
         onPressMet={(data: any) => navigation.navigate('FeedDetailView', { item: data })}
         followers={data?.data.user?.followers ? data?.data.user?.followers?.length.toString() : '0'}
         impression="0"
@@ -61,6 +63,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
   const RenderedComponent =
     [
       <Profile
+        description={data?.data.user?.bio ?? ''}
         onPressMet={(data: any) => navigation.navigate('FeedDetailView', { item: data })}
         followers={data?.data.user?.followers ? data?.data.user?.followers?.length.toString() : '0'}
         impression="0"
@@ -72,13 +75,13 @@ const ProfileScreen = ({ route, navigation }: any) => {
       <Wallet key={2} />,
     ]?.[index] || [];
 
-    const getUpdatedUserData = async () => {
-      await refetchUserData()
-        .then(response => {
-          dispatch(setUser(response?.data?.data.user));
-        })
-        .catch(err => console.log(err));
-    };
+  const getUpdatedUserData = async () => {
+    await refetchUserData()
+      .then(response => {
+        dispatch(setUser(response?.data?.data.user));
+      })
+      .catch(err => console.log(err));
+  };
 
   useEffect(() => {
     // dispatch(setUserInfo(data.data.user));
@@ -99,7 +102,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
         renderItem={({ item }) => item}
         ListHeaderComponent={
           <ProfileHeader
-            verified={user?.basicVerification ?? false}
+            verified={user?.basicVerification?.isVerified ?? false}
             top={top}
             isCurrentUser={isCurrentUser}
             avatar={avatar?.mediaId ?? ''}

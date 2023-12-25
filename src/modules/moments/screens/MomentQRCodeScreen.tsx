@@ -15,8 +15,9 @@ const MomentsQRCodeScreen = () => {
   const [viewHeight, setViewHeight] = useState(0);
   const { goBack } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const { data, isLoading } = useQuery('currentUserProfile', Api.getUserProfile0);
+  console.log("🚀 ~ file: MomentQRCodeScreen.tsx:20 ~ MomentsQRCodeScreen ~ data?.data.user:", data?.data.user)
 
-  const profilePhoto = data?.data.user.photo.mediaId;
+  const profilePhoto = data?.data.user?.photo?.mediaId;
   const qrCode = data?.data.user.userQrCode;
   const username = data?.data.user.userName;
 

@@ -13,6 +13,8 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 import { text } from 'theme/text';
 
+const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ''];
+
 export const CashoutProfileScreen = ({ navigation, route }: any) => {
   const [withdrawAmmount, setWithdrawAmmount] = useState('');
   const [account, setAccount] = useState('');
@@ -24,7 +26,6 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
       console.error(error);
     },
     onSuccess: ({ data }) => {
-      console.log('🚀 ~ file: CashoutProfileScreen.tsx:20 ~ CashoutProfileScreen ~ data:', data);
       navigation.navigate('WithdrawSuccessful', { withdrawAmmount });
     },
   });
@@ -81,7 +82,19 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
             }}>
             <TextInput
               value={withdrawAmmount}
-              onChangeText={val => setWithdrawAmmount(val)}
+              onChangeText={val => {
+                console.log(
+                  '🚀 ~ file: CashoutProfileScreen.tsx:86 ~ CashoutProfileScreen ~ val:',
+                  val,
+                );
+                console.log(
+                  '🚀 ~ file: CashoutProfileScreen.tsx:87 ~ CashoutProfileScreen ~ numbers.includes(Number(val)):',
+                  numbers.includes(val[val?.length - 1]),
+                );
+                // if(!val) return;
+                if (numbers.includes(!val?.length ? val : val[val?.length - 1]))
+                  setWithdrawAmmount(val);
+              }}
               placeholder="0"
               placeholderTextColor={'black'}
               keyboardType="numeric"
@@ -195,7 +208,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
             onPress={() => {
               if (!options?.length) return alert('Link an payment account first');
               if (!withdrawAmmount) return alert('Amount is required');
-              if (withdrawAmmount > route.params?.wallet?.availableBalance)
+              if (route.params?.wallet?.availableBalance < withdrawAmmount)
                 return alert('Amount should be less than available balance.');
               if (!account) return alert('Account is required');
               mutate(Number(withdrawAmmount));

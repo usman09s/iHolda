@@ -9,6 +9,7 @@ import {
   ScrollView,
   View,
   ViewToken,
+  useWindowDimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp, useIsFocused } from '@react-navigation/native';
@@ -53,8 +54,12 @@ const FeedScreen = () => {
       .catch(err => console.log(err));
   };
 
-  const ITEM_HEIGHT = height - top - tabBarHeight;
+  const { height: newHeight } = useWindowDimensions();
+  // console.log("🚀 ~ file: FeedScreen.tsx:58 ~ FeedScreen ~ kdj:", kdj)
 
+  const ITEM_HEIGHT = newHeight - top - units.vh * 8;
+  // console.log("🚀 ~ file: FeedScreen.tsx:61 ~ FeedScreen ~ height:", height)
+  // units.vh * 8
   const onRefresh = () => {
     // setRefreshing(true);
     refetch().finally(() => {
@@ -70,7 +75,7 @@ const FeedScreen = () => {
       item?.userQuiz !== undefined && typeof item?.userQuiz?.users[0] !== 'string';
 
     const quizUsers = isQuizUserdata ? item?.userQuiz?.users?.map((el: any) => ({ user: el })) : [];
-    const metUsers = isMet ? item.met?.users.map((el: any) => ({ user: el })): [];
+    const metUsers = isMet ? item.met?.users.map((el: any) => ({ user: el })) : [];
 
     const users = isMet
       ? metUsers
@@ -89,11 +94,12 @@ const FeedScreen = () => {
           width: wW,
           height: Platform.select({
             ios: wH - units.vh * 8,
-            android: ITEM_HEIGHT - 10,
+            android: ITEM_HEIGHT,
           }),
           marginTop: top,
         }}>
         <FeedItem
+          users={users}
           isFocused={isFocused}
           currentIndex={currentIndex}
           index={index}

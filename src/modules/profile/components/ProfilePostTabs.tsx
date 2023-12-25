@@ -5,7 +5,7 @@ import Icons from 'components/Icons';
 type Props = {
   index: number;
   activeIndex: number;
-  onPressTabItem: (val: number) => () => void;
+  onPressTabItem: (val: number) => void;
 };
 
 const ItemContainer = ({
@@ -15,7 +15,7 @@ const ItemContainer = ({
   onPressTabItem,
 }: PropsWithChildren & Props) => (
   <Pressable
-    onPress={onPressTabItem(index)}
+    onPress={() => onPressTabItem(index)}
     className={'flex-1 justify-center items-center  py-2'}
     style={{
       borderBottomWidth: activeIndex === index ? 1 : 0,

@@ -17,6 +17,8 @@ import PhoneInput from '../components/PhoneInput';
 import { setCountryCode } from 'store/auth/userSlice';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { height, verticalScale } from 'utils/helpers';
+import Toast from 'react-native-toast-message';
+import CustomErrorModal from 'components/ErrorModal/errorModal';
 
 const SignUpScreen = () => {
   const { countries } = useLoadCountries();
@@ -25,6 +27,9 @@ const SignUpScreen = () => {
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
   const [showPhoneConfirmationModal, setShowPhoneConfirmationModal] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<CountryCodeType>(INITIAL_SELECTED_COUNTRY);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorText, setErrorText] = useState('');
+
   const dispatch = useAppDispatch();
   const isSmallScreen = height < 700;
 
@@ -41,6 +46,15 @@ const SignUpScreen = () => {
           phone: formattedPhone.substring(1, formattedPhone.length),
         });
 
+        return;
+      }
+    },
+    onError: (error: any) => {
+      // console.log("🚀 ~ file: SignUpScreen.tsx:51 ~ SignUpScreen ~ error:", error?.message)
+      if (error.message === 'Try again!') {
+        setErrorText('Invalid phone number');
+        setModalVisible(true)
+        // Toast.show({type:'error',text1:"Invalid phone number"});
         return;
       }
     },
@@ -113,6 +127,12 @@ const SignUpScreen = () => {
           countryCode={selectedCountry.phone}
           visible={showPhoneConfirmationModal}
           onCloseModal={() => setShowPhoneConfirmationModal(false)}
+        />
+        <CustomErrorModal
+          errorText={errorText}
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          buttonTitle="CLOSE"
         />
       </ScrollView>
     </View>

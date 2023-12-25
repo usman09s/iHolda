@@ -163,11 +163,13 @@ export type User = {
   email: string;
   role: string;
   isActive: boolean;
+  plasticRescued: number;
+  bio: string;
   bookmarkedCartpoShops: string[];
   address: string;
   fcmTokens: string[];
   online: boolean;
-  basicVerification: boolean;
+  basicVerification: {isVerified: boolean; }| null;
   isPlasticAgent: boolean;
   followers: string[];
   invited_by: { user: { username: string } };

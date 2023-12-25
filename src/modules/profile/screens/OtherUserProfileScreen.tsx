@@ -79,6 +79,8 @@ const OtherUserProfileScreen = ({ route }: any) => {
   const RenderedComponent =
     [
       <Profile
+        userName={username}
+        description={data?.data.user?.bio ?? ''}
         onPressMet={(data: any) => navigate('FeedDetailView', { item: data })}
         followers={
           data?.data?.user?.followers ? data?.data?.user?.followers?.length.toString() : '0'
@@ -112,7 +114,7 @@ const OtherUserProfileScreen = ({ route }: any) => {
           renderItem={({ item }) => item}
           ListHeaderComponent={
             <ProfileHeader
-              verified={data?.data?.user?.basicVerification}
+              verified={data?.data?.user?.basicVerification?.isVerified ?? false}
               user={data?.data?.user}
               top={top}
               avatar={avatar ?? ''}

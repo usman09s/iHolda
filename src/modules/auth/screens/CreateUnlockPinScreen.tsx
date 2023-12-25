@@ -27,7 +27,7 @@ const CreateUnlockPinScreen = () => {
   const [pin, setPin] = useState('');
   const [rePin, setRePin] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [errorText, setErrorText] = useState();
+  const [errorText, setErrorText] = useState('');
   const { mutate, isLoading, error } = useMutation(Api.authRegister);
   const disabledButton = !pin || !rePin || pin !== rePin;
   const userInfo = useSelector(userSelector);
@@ -49,8 +49,6 @@ const CreateUnlockPinScreen = () => {
             console.log(result.data.userQrCode, 'dwhceonewoncoi');
             // dispatch(setTokensAndQueryId({ accessToken: result.data.accessToken }));
 
-            
-
             navigate('EnterReferralCode');
           }
         },
@@ -58,7 +56,20 @@ const CreateUnlockPinScreen = () => {
           console.log(data, 'chehiohe');
           const errorMessageObject = JSON.parse(data.message);
           const errorMessage = errorMessageObject.message;
-          setErrorText(errorMessage);
+          console.log("🚀 ~ file: CreateUnlockPinScreen.tsx:59 ~ onConfirm ~ errorMessage:", errorMessage)
+          // console.log("🚀 ~ file: CreateUnlockPinScreen.tsx:59 ~ onConfirm ~ errorMessage:", errorMessage)
+          // setErrorText(
+          //   errorMessage.includes('invalid value')
+          //     ? 'Please choose a stronger password'
+          //     : errorMessage,
+          // );
+          setErrorText(
+            errorMessage.includes('usereName') || 
+            errorMessage.includes('userName_1') ||
+            errorMessage === '"userName" length must be at least 5 characters long' 
+              ? 'Try a different Username.'
+              : 'Please choose a stronger password',
+          );
           setModalVisible(true);
         },
       },

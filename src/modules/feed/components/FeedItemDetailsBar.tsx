@@ -33,6 +33,7 @@ type FeedItemDetailsBarProps = {
   userId1: string;
 
   userId2: string;
+  users: any;
 };
 
 const FeedItemDetailsBar = ({
@@ -44,6 +45,7 @@ const FeedItemDetailsBar = ({
   paddingBottom = 12,
   userId1,
   userId2,
+  users,
 }: FeedItemDetailsBarProps) => {
   const { user } = useSelector(userSelector);
   const [isFollowed, setIsFollowed] = useState(false);
@@ -61,6 +63,8 @@ const FeedItemDetailsBar = ({
   };
 
   const isMe = (id: string) => id === user?._id;
+  const isUser1AlreadyFollowed = users[0]?.user?.followers?.includes(user?._id);
+  const isUser2AlreadyFollowed = users[1]?.user?.followers?.includes(user?._id);
 
   const renderTextWithBoldHashtags = (captiontext: string) => {
     if (!captiontext) return '';
@@ -110,7 +114,7 @@ const FeedItemDetailsBar = ({
                 source={{ uri: getImageLink(userFirst?.avatar?.mediaId) }}
                 className="w-11 h-11 rounded-full"
               />
-              {isMe(userId1) || isFollowed ? null : (
+              {isMe(userId1) || isFollowed ? null : isUser1AlreadyFollowed ? null : (
                 <TouchableOpacity
                   onPress={() => followUnfollowUser(userId1, 1)}
                   className="h-[20] w-[20] bg-[#05a9f4] absolute bottom-[-10] left-3 items-center justify-center rounded-full">
@@ -130,9 +134,9 @@ const FeedItemDetailsBar = ({
                   source={{ uri: getImageLink(userSecond?.avatar?.mediaId) }}
                   className="w-11 h-11 rounded-full"
                 />
-                {isMe(userId2) || isFollowed2 ? null : (
+                {isMe(userId2) || isFollowed2 ? null : isUser2AlreadyFollowed ? null : (
                   <TouchableOpacity
-                    onPress={() => followUnfollowUser(userId2,2)}
+                    onPress={() => followUnfollowUser(userId2, 2)}
                     className="h-[20] w-[20] bg-[#05a9f4] absolute bottom-[-10] left-3 items-center justify-center rounded-full">
                     <Text className="text-white text-15">+</Text>
                   </TouchableOpacity>
@@ -181,7 +185,7 @@ const FeedItemDetailsBar = ({
                 type: 'r15',
                 class: 'text-white mt-2',
               })}>
-              {subText}
+              {renderTextWithBoldHashtags(subText)}
             </Text>
           )}
         </View>

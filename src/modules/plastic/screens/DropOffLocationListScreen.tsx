@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 
 const DropOffLocationListScreen = () => {
   const [data, setData] = useState<DropOffLocationItemType[] | null>([]);
-  console.log("🚀 ~ file: DropOffLocationListScreen.tsx:16 ~ DropOffLocationListScreen ~ data:", data)
+  const [noLocation, setNoLocation] = useState(false);
   const isSmallScreen = height < 700;
   console.log(height);
   const {
@@ -51,7 +51,7 @@ const DropOffLocationListScreen = () => {
 
   useEffect(() => {
     getLocation().then(coords => {
-      if (!coords) return setData(null);
+      if (!coords) return setNoLocation(true);
       mutate(coords, {
         onSuccess: data => {
           setData(data);
@@ -80,23 +80,34 @@ const DropOffLocationListScreen = () => {
           style={{ marginHorizontal: 30, borderColor: 'gray', borderWidth: 1 }}
         />
       </View>
-      {isLoading && data !== null ? (
+      {isLoading && !noLocation ? (
         <ActivityIndicator className="mb-4 flex-1" color={colors.blue} />
       ) : null}
-      {!isLoading && !data?.length ? (
+      {noLocation ? (
         <View className="flex-1 items-center justify-center">
           <Text className="text-center">
-            {data === null ? 'Allow permission to get agents' : 'No agent found'}
+            {noLocation ? 'Allow permission to see agents' : 'No agent found'}
           </Text>
         </View>
-      ) : null}
-      <FlatList
-        renderItem={renderItem}
-        keyboardDismissMode="on-drag"
-        ListEmptyComponent={emptyListItem}
-        showsVerticalScrollIndicator={false}
-        data={!!searchKeyword ? filteredData : data ?? []}
-      />
+      ) : !isLoading && !data?.length ? (
+        <View className="flex-1 items-center justify-center">
+          <Text className="text-center">No agents found</Text>
+        </View>
+      ) : (
+        <FlatList
+          renderItem={renderItem}
+          keyboardDismissMode="on-drag"
+          ListEmptyComponent={emptyListItem}
+          showsVerticalScrollIndicator={false}
+          data={!!searchKeyword ? filteredData : data ?? []}
+        />
+      )}
+      {/* {!isLoading && !data?.length ? (
+        <View className="flex-1 items-center justify-center">
+          <Text className="text-center">No agents found</Text>
+        </View>
+      ) : null} */}
+
       <LocationClosedPopup
         visible={showClosedDropOffLocationPopup}
         onClose={() => setShowClosedDropOffLocationPopup(false)}

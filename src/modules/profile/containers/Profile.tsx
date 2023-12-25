@@ -15,6 +15,8 @@ interface Props {
   metPeople: string;
   onPressMet?: any;
   metsUserId?: string;
+  userName?: string;
+  description: string;
 }
 
 const Profile = ({
@@ -23,14 +25,22 @@ const Profile = ({
   metPeople = '19 people',
   metsUserId,
   onPressMet,
+  userName,
+  description,
 }: Props) => {
-  console.log("🚀 ~ file: Profile.tsx:27 ~ metsUserId:", metsUserId)
   const [data, setData] = useState<{ data: { data: UserMoment[] } }>();
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const getMets = async () => {
+  const getMets = async (getBookmarks: number) => {
+    if (getBookmarks === 1) return;
+    console.log('🚀 ~ file: Profile.tsx:43 ~ getMets ~ getBookmarks:', getBookmarks);
     try {
+      setActiveIndex(getBookmarks);
+      setData({ data: { data: [] } });
       const response = await fetch(
-        `${Api.baseUrl}met?${metsUserId ? `userId=${metsUserId}` : ''}`,
+        `${Api.baseUrl}${getBookmarks ? 'user/bookmarks' : 'met'}?${
+          metsUserId ? `userId=${metsUserId}` : ''
+        }`,
         {
           method: 'GET',
           headers: Api._getAuthorization(Api.token),
@@ -39,16 +49,19 @@ const Profile = ({
       if (response.status !== 200) return;
 
       const data = await response.json();
-      console.log("🚀 ~ file: Profile.tsx:41 ~ getMets ~ data:", data)
+      console.log(
+        '🚀 ~ file: Profile.tsx:41 ~ getMets ~ data:',
+        getBookmarks === 2 ? { data: { data: data?.data?.posts } } : data,
+      );
 
-      setData(data);
+      setData(getBookmarks === 2 ? { data: { data: data?.data?.posts } } : data);
     } catch (error) {
       console.log('🚀 ~ getRatings ~ error:', error);
     }
   };
 
   useEffect(() => {
-    getMets();
+    getMets(0);
   }, []);
 
   return (
@@ -63,14 +76,15 @@ const Profile = ({
       ListHeaderComponent={
         <>
           <ProfileDescriptionAndStats
+            userName={userName}
             userId={metsUserId}
             followers={followers}
             impression={impression}
             metPeople={metPeople}
-            description=""
+            description={description}
           />
           <View className="border-[0.5px] border-black-o-10" />
-          <ProfilePostTabs activeIndex={0} onPressTabItem={() => () => null} />
+          <ProfilePostTabs activeIndex={activeIndex} onPressTabItem={i => getMets(i)} />
         </>
       }
       renderItem={({ item, index }) => (

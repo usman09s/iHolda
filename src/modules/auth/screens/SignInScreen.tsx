@@ -11,6 +11,7 @@ import { text } from 'theme/text';
 import { AuthStackParamList } from '../AuthStackNavigator';
 import OtpPhoneConfirmationModal from '../components/OtpPhoneConfirmationModal';
 import { useSignInActions } from '../hooks/useSignInActions';
+import CustomErrorModal from 'components/ErrorModal/errorModal';
 
 const SignInScreen = () => {
   const { params } = useRoute<RouteProp<AuthStackParamList, 'SignIn'>>();
@@ -27,6 +28,9 @@ const SignInScreen = () => {
     animatedSpaceHeightStyle,
     setShowConfirmationModal,
     onPressConfirmOtpConfirmationModal,
+    errorText,
+    modalVisible,
+    setModalVisible,
   } = useSignInActions();
 
   return (
@@ -72,6 +76,12 @@ const SignInScreen = () => {
         isLoading={sendCodeMutation.isLoading}
         onPressConfirm={onPressConfirmOtpConfirmationModal}
         onCloseModal={() => setShowConfirmationModal(false)}
+      />
+      <CustomErrorModal
+        errorText={errorText}
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        buttonTitle="CLOSE"
       />
     </Animated.View>
   );

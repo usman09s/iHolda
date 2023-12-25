@@ -42,7 +42,7 @@ const FeedDetailView = ({ route }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState<any[]>([]);
-  console.log('🚀 ~ file: FeedDetailView.tsx:45 ~ FeedDetailView ~ data:', data);
+  // console.log('🚀 ~ file: FeedDetailView.tsx:45 ~ FeedDetailView ~ data:', data);
   const {} = useAppNavigation<NavigationProp<FeedStackParamList>>();
 
   const isFocused = useIsFocused();
@@ -59,14 +59,15 @@ const FeedDetailView = ({ route }: any) => {
           method: 'GET',
         },
       );
-      setIsLoading(false);
+      
 
-      if (response?.status !== 200) return;
+      if (response?.status !== 200) return setIsLoading(false);;
 
       const res = await response.json();
-      if (!res?.data?.data) return;
+      if (!res?.data?.data) return setIsLoading(false);;
 
       setData(res.data.data);
+      setIsLoading(false);
       //       console.log('🚀 ~ file: FeedDetailView.tsx:67 ~ getTwoUserMet ~ res:', res.data.data);
     } catch (error) {
       console.log('~ getTwoUserMet ~ error:', error);
@@ -146,7 +147,7 @@ const FeedDetailView = ({ route }: any) => {
 
       {!isLoading && !data?.length ? (
         <View className="absolute self-center z-40 flex-1 justify-center items-center h-full bg-black-o-30 w-full">
-          <ActivityIndicator color={colors.saffron} size={'large'} />
+          {/* <ActivityIndicator color={colors.saffron} size={'large'} /> */}
           <Text className={text({ type: 'm14', class: 'text-white text-center' })}>
             No moments found
           </Text>
@@ -171,40 +172,59 @@ const FeedDetailView = ({ route }: any) => {
               setActiveIndex(Math.round(newIndex));
             }
           }}
-          renderItem={({ item, index }) => (
-            <View style={{ width, paddingHorizontal: 10 }}>
-              <View className="flex-1 border-2 border-white rounded-3xl overflow-hidden mt-10">
-                <FeedItem
-                  isFocused={isFocused}
-                  currentIndex={activeIndex}
-                  index={index}
-                  onPressLike={() => getTwoUserMet()}
-                  shares={item.post.shareCount}
-                  bookmarks={item.post.bookmarkCount}
-                  username={item0?.users[1]?.user?.userName}
-                  canGoBack={() => true}
-                  useTabHeight={false}
-                  likes={item.post.likes?.length}
-                  comments={item.post.comments?.length}
-                  id={item._id}
-                  caption={item.post.text ?? ''}
-                  subText={item.post.subText ?? ''}
-                  username1={
-                    item.users ? '@' + item.users[0].user.userName : '@' + item.user.userName
-                  }
-                  username2={item.users ? '@' + item.users[1].user.userName : ''}
-                  userpic1={item.users ? item.users[0].user.photo : item.user.photo}
-                  userpic2={item.users ? item.users[1].user.photo : ''}
-                  userId1={item.users ? item.users[0].user._id : item.user._id}
-                  userId2={item.users ? item.users[1].user._id : ''}
-                  media={
-                    item?.post?.userQuiz ? [item?.post?.userQuiz.recording] : item?.post?.media
-                  }
-                  image=""
-                />
+          renderItem={({ item, index }) => {
+            const isMet = item?.met?._id;
+            const isQuizUserdata =
+              item?.userQuiz !== undefined && typeof item?.userQuiz?.users[0] !== 'string';
+
+            const quizUsers = isQuizUserdata
+              ? item?.userQuiz?.users?.map((el: any) => ({ user: el }))
+              : [];
+            const metUsers = isMet && item.met?.users ? item.met?.users?.map((el: any) => ({ user: el })) : [];
+
+            const users = isMet
+              ? metUsers
+              : isQuizUserdata
+                ? quizUsers
+                : item?.users
+                  ? item?.users
+                  : [{ user: item.user }];
+            return (
+              <View style={{ width, paddingHorizontal: 10 }}>
+                <View className="flex-1 border-2 border-white rounded-3xl overflow-hidden mt-10">
+                  <FeedItem
+                    users={users}
+                    isFocused={isFocused}
+                    currentIndex={activeIndex}
+                    index={index}
+                    onPressLike={() => getTwoUserMet()}
+                    shares={item.post?.shareCount}
+                    bookmarks={item.post?.bookmarkCount}
+                    username={item0?.users[1]?.user?.userName}
+                    canGoBack={() => true}
+                    useTabHeight={false}
+                    likes={item.post.likes?.length}
+                    comments={item.post.comments?.length}
+                    id={item._id}
+                    caption={item.post.text ?? ''}
+                    subText={item.post.subText ?? ''}
+                    username1={
+                      item.users ? '@' + item.users[0].user.userName : '@' + item.user.userName
+                    }
+                    username2={item.users ? '@' + item.users[1].user.userName : ''}
+                    userpic1={item.users ? item.users[0].user.photo : item.user.photo}
+                    userpic2={item.users ? item.users[1].user.photo : ''}
+                    userId1={item.users ? item.users[0].user._id : item.user._id}
+                    userId2={item.users ? item.users[1].user._id : ''}
+                    media={
+                      item?.post?.userQuiz ? [item?.post?.userQuiz.recording] : item?.post?.media
+                    }
+                    image=""
+                  />
+                </View>
               </View>
-            </View>
-          )}
+            );
+          }}
         />
 
         <View className="flex-row mt-3">
@@ -243,7 +263,7 @@ const FeedDetailView = ({ route }: any) => {
                   <Text className={text({ type: 'r32', class: 'text-white' })}>{index + 1}</Text>
                 </View>
                 <Text className={text({ type: 'r12', class: 'text-white pl-4 mt-1' })}>
-                  {getTimeDifference(item.post.createdAt)}
+                  {item.post?.createdAt? getTimeDifference(item.post?.createdAt): null}
                 </Text>
               </TouchableOpacity>
             )}

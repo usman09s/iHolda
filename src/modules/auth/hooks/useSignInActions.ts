@@ -19,6 +19,8 @@ import { setUser } from 'store/userDataSlice';
 export const useSignInActions = () => {
   const dispatch = useAppDispatch();
   const [pin, setPin] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorText, setErrorText] = useState('');
   const userInfo = useSelector(userSelector);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const { navigate, reset } = useAppNavigation<
@@ -130,6 +132,13 @@ export const useSignInActions = () => {
             } else {
               Alert.alert('Informing', 'Please try again.');
             }
+          } else {
+            setErrorText('Invalid password');
+            setModalVisible(true)
+            // if(err.message.includes('Invalid password')){
+
+            // }
+            
           }
         },
       },
@@ -165,5 +174,8 @@ export const useSignInActions = () => {
     setShowConfirmationModal,
     animatedSpaceHeightStyle,
     onPressConfirmOtpConfirmationModal,
+    modalVisible,
+    setModalVisible,
+    errorText,
   };
 };

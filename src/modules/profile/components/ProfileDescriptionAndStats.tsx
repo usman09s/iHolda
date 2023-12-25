@@ -12,8 +12,8 @@ const StatsItem = ({
   onPress: any;
 }) => (
   <TouchableOpacity onPress={onPress}>
-    <Text className={text({ type: 'm13', class: 'text-center' })}>{title}</Text>
-    <Text className={text({ type: 'r13', class: 'text-center' })}>{subTitle}</Text>
+    <Text className={text({ type: 'b16', class: 'text-center' })}>{title}</Text>
+    <Text className={text({ type: 'r13', class: 'text-center font-bold' })}>{subTitle}</Text>
   </TouchableOpacity>
 );
 
@@ -23,6 +23,7 @@ type Props = {
   impression: string;
   description: string;
   userId?: string;
+  userName?: string;
 };
 
 const ProfileDescriptionAndStats = ({
@@ -31,6 +32,7 @@ const ProfileDescriptionAndStats = ({
   impression,
   description,
   userId,
+  userName,
 }: Props) => {
   const navigation: any = useNavigation();
   return (
@@ -41,14 +43,14 @@ const ProfileDescriptionAndStats = ({
       <View className="border-[0.5px] border-black-o-10" />
       <View className="flex-row py-4 justify-between px-4">
         <StatsItem
-          onPress={() => navigation.navigate('Followers', { userId, index: 0 })}
+          onPress={() => navigation.navigate('Followers', { userId, index: 0, userName })}
           title={followers}
           subTitle={'Follower' + (Number(followers) > 1 ? 's' : '')}
         />
         <StatsItem
-          onPress={() => navigation.navigate('Followers', { userId, index: 1 })}
+          onPress={() => navigation.navigate('Followers', { userId, index: 1, userName })}
           title={'Met'}
-          subTitle={metPeople}
+          subTitle={metPeople.includes("people") ? metPeople: (metPeople + " people")}
         />
         <StatsItem onPress={() => null} title={impression} subTitle="impressions" />
       </View>

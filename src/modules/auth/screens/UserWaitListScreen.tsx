@@ -21,7 +21,7 @@ const UserWaitListScreen = () => {
   return (
     <View className="pt-10 bg-petrol flex-1 px-7">
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="flex-1 justify-evenly">
+        <View className="flex-1 justify-evenly pb-10">
           <View style={{ marginTop: verticalScale(80), marginBottom: verticalScale(30) }}>
             <Image
               source={{
@@ -94,18 +94,19 @@ const UserWaitListScreen = () => {
                 title="Enter code"
                 customContainer="self-center"
                 extraStyles={{
-                  borderWidth: 5,
+                  borderWidth: 3,
                   borderColor: 'white',
                   width: '50%',
+                  backgroundColor: "transparent",
                 }}
-                extraTextStyles={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}
+                extraTextStyles={{ fontSize: 15, fontWeight: '300', color: 'white' }}
               />
               <Button
                 title="Exit"
                 customContainer="self-center"
                 onPress={() => dispatch(StackActions.popToTop())}
-                extraStyles={{ borderWidth: 5, borderColor: 'white', width: '40%' }}
-                extraTextStyles={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}
+                extraStyles={{ borderWidth: 3, borderColor: 'white', width: '40%', backgroundColor: "transparent" }}
+                extraTextStyles={{ fontSize: 15, fontWeight: '300', color: 'white' }}
               />
             </View>
           </View>

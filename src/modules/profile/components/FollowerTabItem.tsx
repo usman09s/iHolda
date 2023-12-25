@@ -17,7 +17,7 @@ const FolloweTabItem = ({ title, isSelected, onPressTabItem }: Props) => (
       borderBottomWidth: 1,
       borderBottomColor: isSelected ? 'black' : 'lightgrey',
     }}>
-    <Text className={text({ type: 'm13', class: isSelected ? 'text-black' : 'text-black-o-60' })}>
+    <Text style={{ fontWeight: "600"}} className={text({ type: 'm13', class: isSelected || title === "Suggesstions" ? 'text-black' : 'text-[#808080]' })}>
       {title}
     </Text>
   </Pressable>
