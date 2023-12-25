@@ -6,11 +6,13 @@ import { height } from 'utils/helpers';
 import { useRequestReferenceAction } from '../hooks/useRequestReferenceActions';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 
 export const AddReferenceScreen = () => {
   const { searchText, handleChangeText, handleSearchUsers } = useRequestReferenceAction();
   const searchData = useSelector(state => state.userReference.searchUsers);
   const referenceUsers = useSelector(state => state.userReference.referenceUsers);
+  const isFocused = useIsFocused();
   const isSmallScreen = height < 700;
 
   const filteredSearchData = searchData.filter(item => {
@@ -18,12 +20,12 @@ export const AddReferenceScreen = () => {
   });
 
   useEffect(() => {
-    if (searchText) {
+    if (searchText || isFocused) {
       console.log(searchText);
       console.log(searchData, searchText);
       handleSearchUsers();
     }
-  }, [searchText]);
+  }, [searchText, isFocused]);
 
   return (
     <View className="px-6 flex-1">

@@ -13,20 +13,11 @@ import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import { deleteReferenceUser } from 'store/userReference/userReferenceSlice';
 
 export const BasicVerificationThreeScreen = () => {
-  const {
-    handleAddReference1,
-    handleAddReference2,
-    handleFinalNavigation,
-    updateReference1,
-    updateReference2,
-  } = useRequestReferenceAction();
+  const { handleAddReference1, handleAddReference2, handleFinalNavigation } =
+    useRequestReferenceAction();
   const dispatch = useDispatch();
   const isSmallScreen = height < 700;
   const referenceUsers = useSelector((state: any) => state.userReference.referenceUsers);
-
-  useEffect(() => {
-    console.log(referenceUsers, 'Refer');
-  });
 
   return (
     <View className="px-6 flex-1">

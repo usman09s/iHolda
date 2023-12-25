@@ -20,6 +20,7 @@ export const useSettingActions = () => {
   // const [lat, setLat] = useState<any>(userData?.location?.coordinates[0]);
   // const [lng, setLng] = useState<any>(userData?.location?.coordinates[1]);
   const navigation = useNavigation();
+  const [isLoading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const pickImage = async () => {
@@ -235,11 +236,31 @@ export const useSettingActions = () => {
         type: 'success',
         text1: 'Profile Updated Successfully',
       });
-      if (route.name === 'EditProfile') {
+      if (route.name === 'EditProfile' || route.name === 'Username') {
         navigation.goBack();
       }
     } catch (error) {
-      console.error('API Error:', error);
+      const errorText = JSON.parse(error.message);
+      if (errorText.message === 'Username already exist') {
+        Toast.show({
+          type: 'error',
+          text1: 'Username Already Exists',
+          text2: 'This username already exists. Please try again',
+        });
+      } else if (
+        errorText.message === '"bio" length must be less than or equal to 30 characters long'
+      ) {
+        Toast.show({
+          type: 'error',
+          text1: 'Bio length not correct',
+          text2: 'Bio length must be less than 30 characters long',
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Unexpected error occurred',
+        });
+      }
     }
   };
 
@@ -251,7 +272,6 @@ export const useSettingActions = () => {
     };
     await dispatch(setUserInfo(updatedUserData));
     handleUpdateSetting(null, null, trimmedUsername);
-    navigation.goBack();
   };
 
   const handleAddPaymentAccount = async values => {
@@ -307,23 +327,25 @@ export const useSettingActions = () => {
   };
 
   const logout = async () => {
+    setLoading(true);
     const requestBody = {
       fcmToken: '12345678',
     };
-
     try {
       const response = await wretch('http://ihold.yameenyousuf.com/api/auth/logout')
         .post(requestBody)
         .json();
+      dispatch(clearUser());
+      dispatch(setInvitees({}));
+      SecureStore.deleteItemAsync('tokensAndQueryId');
+      setLoading(false);
       navigation.reset({
         index: 0,
         routes: [{ name: 'Auth' }],
       });
-      dispatch(clearUser());
-      dispatch(setInvitees({}));
-      SecureStore.deleteItemAsync('tokensAndQueryId');
       return true;
     } catch (error) {
+      setLoading(false);
       console.error('An error occurred during logout:', error);
       return false;
     }
@@ -343,6 +365,7 @@ export const useSettingActions = () => {
     handleUsernamePress,
     handleAddPaymentAccount,
     handleGetInvitees,
+    isLoading,
     logout,
   };
 };

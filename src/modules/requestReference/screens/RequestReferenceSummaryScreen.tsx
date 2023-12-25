@@ -44,7 +44,7 @@ export const RequestReferenceSummaryScreen = ({ navigation }: any) => {
           }
         />
       </View>
-      <View className={`mt-16 ${isSmallScreen ? 'mb-8' : 'mb-16'}`}>
+      <View className={`h-auto ${isSmallScreen ? 'mb-8 mt-8' : 'mb-16 pt-12'}`}>
         <Text className={'text-7xl text-center font-bold tracking-tighter'}>
           {userData?.basicVerification?.isVerified ? '2O%' : '1O%'}
         </Text>

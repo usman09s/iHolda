@@ -14,6 +14,10 @@ const validationSchema = Yup.object().shape({
     .matches(/^\d{4}$/, 'Invalid Current Pin'),
   newPassword: Yup.string()
     .required('New pin is required')
+    .test('not-same', 'New pin cannot be same as the current pin', function (value) {
+      return value !== this.parent.oldPassword;
+    })
+    .notOneOf(['0000', '9999'], 'New pin cannot be 0000 or 9999')
     .matches(/^\d{4}$/, 'Invalid New pin'),
   confirmPassword: Yup.string()
     .required('Confirm pin is required')
@@ -48,7 +52,7 @@ export const ChangePinScreen = () => {
             <View className="my-12 mx-4">
               <CustomSettingsInput
                 label="Enter current pin"
-                placeholder="Enter Text Here"
+                placeholder="Enter Number Here"
                 field="oldPassword"
                 handleChange={handleChange('oldPassword')}
                 keyboardType={'numeric'}
@@ -57,7 +61,7 @@ export const ChangePinScreen = () => {
               />
               <CustomSettingsInput
                 label="New pin"
-                placeholder="Enter Text Here"
+                placeholder="Enter Number Here"
                 field="newPassword"
                 handleChange={handleChange('newPassword')}
                 keyboardType={'numeric'}
@@ -66,7 +70,7 @@ export const ChangePinScreen = () => {
               />
               <CustomSettingsInput
                 label="Confirm pin"
-                placeholder="Enter Text Here"
+                placeholder="Enter Number Here"
                 field="confirmPassword"
                 handleChange={handleChange('confirmPassword')}
                 keyboardType={'numeric'}
