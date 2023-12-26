@@ -200,7 +200,6 @@ const FollowersScreen = ({ route }: any) => {
         )}
       /> */}
 
-      {/* {tabIndex === 0 && <Community />} */}
       {/* {tabIndex === 1 && <Meetups />}
       {tabIndex === 2 && <TeamUp />} */}
     </View>
