@@ -55,7 +55,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
         key={0}
         metsUserId={user?._id}
       />,
-      <Community cp={user?.cp ?? '0'} lastcp={user?.lastCp} key={1} />,
+      <Community cp={data?.data.user?.cp ?? '0'} lastcp={data?.data.user?.lastCp} key={1} />,
       <Work key={2} />,
       <Wallet key={3} />,
     ]?.[index] || [];
@@ -71,7 +71,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
         metsUserId={user?._id}
         key={0}
       />,
-      <Community cp={user?.cp ?? '0'} lastcp={user?.lastCp} key={1} />,
+      <Community cp={data?.data.user?.cp ?? '0'} lastcp={data?.data.user?.lastCp} key={1} />,
       <Wallet key={2} />,
     ]?.[index] || [];
 

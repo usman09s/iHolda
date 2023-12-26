@@ -105,51 +105,71 @@ const FeedItem = ({
   const [commentModal, setCommentModal] = useState(false);
   const [activeIndex0, setActiveIndex0] = useState(0);
 
+  const isFocusedRef = useRef(isFocused);
+  isFocusedRef.current = isFocused;
+
   const { navigate, goBack } = useAppNavigation<NavigationProp<any>>();
   // const sound = new Audio.Sound();
   const sound = useRef(new Audio.Sound()); // Initialize the sound variable
 
-  function isEven(number: number) {
-    return number % 2 === 0;
+  // Stop the current audio when the component unmounts or when the currentIndex changes
+  async function unloadAudio() {
+    try {
+      if (!audio) return;
+
+      if (sound.current && sound.current._loaded) {
+        await sound.current.stopAsync();
+      }
+    } catch (error) {
+      console.log('🚀 ~ unloadAudio ~ error:', error);
+    }
   }
 
   // Load and play audio when the component mounts or when the index changes
   async function loadAudio() {
     try {
       if (!audio) return;
-      await sound.current.loadAsync({
-        uri: getAudioLink(audio),
+
+      if (sound.current._loaded) return await sound.current.playAsync();
+
+      await sound.current.loadAsync(
+        {
+          uri: getAudioLink(audio),
+        },
+        {
+          shouldPlay: isFocused,
+        },
+      );
+
+      sound.current.setOnPlaybackStatusUpdate((status: any) => {
+        if (!isFocusedRef.current && status.isPlaying) unloadAudio();
       });
-      if (isFocused) await sound.current.playAsync();
+
+      if (isFocused) {
+        await sound.current.playAsync();
+
+        await sound.current.setStatusAsync({
+          isLooping: true,
+        });
+
+        // sound.current.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate)
+      }
+      // if (sound.current._onPlaybackStatusUpdate)
     } catch (error) {
       console.error('Error loading audio:', error);
     }
   }
 
-  // Stop the current audio when the component unmounts or when the currentIndex changes
-  async function unloadAudio() {
-    if (sound.current) {
-      await sound.current.stopAsync();
-      await sound.current.unloadAsync();
+  useEffect(() => {
+    // Load and unload audio based on currentIndex and index
+    if (currentIndex === index && isFocused && audio) {
+      loadAudio();
     }
-  }
-  // useEffect(() => {
-  //   // Load and unload audio based on currentIndex and index
-  //   if (currentIndex === index && isFocused && audio) {
-  //     loadAudio();
-  //   } else {
-  //     unloadAudio();
-  //   }
-
-  //   // Unload audio when the component unmounts or when currentIndex changes
-  //   return () => {
-  //     unloadAudio();
-  //   };
-  // }, [currentIndex, index, isFocused]);
+  }, [isFocused, currentIndex]);
 
   useEffect(() => {
-    if (!isFocused) unloadAudio();
-  }, [isFocused]);
+    if (!isFocused || currentIndex !== index) unloadAudio();
+  }, [isFocused, currentIndex]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -188,6 +208,7 @@ const FeedItem = ({
               );
             }}
             renderItem={({ item }) => {
+              // console.log('🚀 ~ file: FeedItem.tsx:191 ~ item:', item);
               // const videoLink = getVideoLink(item.mediaId);
               return (
                 <DoubleClick
