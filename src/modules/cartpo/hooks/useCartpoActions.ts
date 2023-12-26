@@ -4,6 +4,7 @@ import Api from 'services/Api';
 import { useNavigation } from '@react-navigation/native';
 import {
   selectPhoneNumber,
+  selectSelectedDiscount,
   setCartpoSettings,
   setDiscount,
   setPaymentAccount,
@@ -30,6 +31,7 @@ export const useCartpoActions = () => {
   const [lat, setLat] = useState(settingsData?.setting?.shop?.location?.coordinates[1]);
   const [lng, setLng] = useState(settingsData?.setting?.shop?.location?.coordinates[0]);
   const [isLoading, setLoading] = useState(false);
+  const selectedDiscount = useSelector(selectSelectedDiscount);
 
   const handleSubmit = async (values: any) => {
     let { phoneNumber } = values;
@@ -50,7 +52,7 @@ export const useCartpoActions = () => {
         return;
       }
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
       Toast.show({
         type: 'error',
         text1: 'Invalid Phone Number',
@@ -82,9 +84,13 @@ export const useCartpoActions = () => {
         navigation.navigate('CreatePin');
       } else {
         console.log('Result:', result);
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid OTP',
+        });
       }
     } catch (error) {
-      console.error('Error:', error);
+      const errorText = JSON.parse(error.message);
       Toast.show({
         type: 'error',
         text1: 'Invalid OTP',
@@ -245,7 +251,6 @@ export const useCartpoActions = () => {
       paymentMethod: [...settingsData.setting.paymentMethod],
       discounts: [...settingsData.setting.discounts, addDiscount],
     });
-    console.log('API RESPONSE: ', result);
     dispatch(setDiscount(result.data.discounts));
     Toast.show({
       type: 'success',
@@ -297,28 +302,58 @@ export const useCartpoActions = () => {
   };
 
   const handleWithdraw = async amount => {
-    const result = await Api.withdrawBalance({ amount: parseInt(amount) });
-    console.log(result.message, 'lklklk');
-    if (result.ok) {
-      navigation.navigate('WithdrawSuccessful', { amount });
+    try {
+      const result = await Api.withdrawBalance({ amount: parseInt(amount) });
+      if (result.ok) {
+        navigation.navigate('WithdrawSuccessful', { amount });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: result.message || 'Unexpected Error Occurred',
+        });
+      }
+    } catch (error) {
+      const errorText = JSON.parse(error.message);
+      Toast.show({
+        type: 'error',
+        text1: errorText.message || 'Unexpected Error Occurred',
+      });
     }
-    Toast.show({
-      type: 'error',
-      text1: 'Unexpected Error Occurred',
-    });
+  };
+
+  const handleTopup = async amount => {
+    try {
+      const result = await Api.topupBalance({ amount: parseInt(amount) });
+      if (result.ok) {
+        navigation.navigate('WithdrawSuccessful', { amount });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: result.message || 'Unexpected Error Occurred',
+        });
+      }
+    } catch (error) {
+      const errorText = JSON.parse(error.message);
+      Toast.show({
+        type: 'error',
+        text1: errorText.message || 'Unexpected Error Occurred',
+      });
+    }
   };
 
   const handleSettingsSubmit = async values => {
     setLoading(true);
     console.log(values, 'values');
-    if (!values.selectedDays) {
+    if (values.selectedDays.length === 0) {
+      setLoading(false);
       Toast.show({
         type: 'error',
-        text1: 'Please fill all of the required fields',
+        text1: 'Please select the opening days',
       });
       return;
     }
     if (!cityCountry && !values.address) {
+      setLoading(false);
       Toast.show({
         type: 'error',
         text1: 'Please enter your address',
@@ -326,6 +361,7 @@ export const useCartpoActions = () => {
       return;
     }
     if (!values.openHours || !values.closeHours) {
+      setLoading(false);
       Toast.show({
         type: 'error',
         text1: 'Please enter opening and closing hours',
@@ -365,7 +401,7 @@ export const useCartpoActions = () => {
       formData.append(`coverImage`, imageObject);
     }
 
-    if (values.featuredImages) {
+    if (values.featuredImages.length !== 0) {
       for (let i = 0; i < values.featuredImages.length; i++) {
         if (values.featuredImages[i].mediaId) {
           formData.append(`photos[${i}][mediaId]`, values.featuredImages[i].mediaId);
@@ -391,12 +427,14 @@ export const useCartpoActions = () => {
       });
 
       if (!response.ok) {
+        setLoading(false);
         const errorData = await response.json();
         console.error('API request failed:', response.status, errorData);
         return;
       }
       const result = await response.json();
       console.log('API Response:', result);
+      setLoading(false);
       handleGetCartpoSettings();
       navigation.goBack();
     } catch (error) {
@@ -421,6 +459,7 @@ export const useCartpoActions = () => {
     handleWithdraw,
     handleAddDiscount,
     handleDeleteDiscount,
+    handleTopup,
     isLoading,
   };
 };

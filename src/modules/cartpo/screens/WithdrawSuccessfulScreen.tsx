@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Octicons';
 import { height } from 'utils/helpers';
 
 export const WithdrawSuccessfulScreen = ({ navigation, route }: any) => {
-  const amount = route.params.amount;
+  const amount = route?.params?.amount;
   const isSmallScreen = height < 700;
   return (
     <View

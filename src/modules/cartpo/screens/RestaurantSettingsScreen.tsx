@@ -30,8 +30,7 @@ const validationSchema = Yup.object().shape({
   address: Yup.string().notRequired(),
   closeHours: Yup.string().notRequired(),
   coverImage: Yup.string().required('Please add a cover image'),
-  featuredImages: Yup.array().notRequired().min(1, 'Please add at least one featured image'),
-  selectedDays: Yup.string().notRequired(),
+  featuredImages: Yup.mixed().notRequired(),
 });
 
 export const RestaurantSettingsScreen = () => {
@@ -41,21 +40,6 @@ export const RestaurantSettingsScreen = () => {
   const [isPickerShow, setIsPickerShow] = useState(false);
   const [pickerMode, setPickerMode] = useState('open');
   const settingsData = useSelector(selectCartpoSettings);
-
-  const initialValues = {
-    name: settingsData?.setting?.shop?.name || '',
-    about: settingsData?.setting?.shop?.description || cityCountry || '',
-    phoneNumber: settingsData?.setting?.shop?.phone || '',
-    address: settingsData?.setting?.shop?.address || '',
-    openHours: settingsData?.setting?.shop?.opening?.from || openTime || '',
-    closeHours: settingsData?.setting?.shop?.opening?.to || closeTime || '',
-    coverImage:
-      settingsData?.setting?.shop?.coverImage?.mediaId ||
-      settingsData?.setting?.shop?.coverImage ||
-      '',
-    featuredImages: settingsData?.setting?.shop?.photos || [],
-    selectedDays: settingsData?.setting?.shop?.opening?.days || [],
-  };
 
   const pickImage = async (setFieldValue: any, fieldName: any, values: any) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -99,6 +83,20 @@ export const RestaurantSettingsScreen = () => {
     return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
   };
 
+  const initialValues = {
+    name: settingsData?.setting?.shop?.name || '',
+    about: settingsData?.setting?.shop?.description || cityCountry || '',
+    phoneNumber: settingsData?.setting?.shop?.phone || '',
+    address: settingsData?.setting?.shop?.address || '',
+    openHours: settingsData?.setting?.shop?.opening?.from || formatTime(openTime) || '',
+    closeHours: settingsData?.setting?.shop?.opening?.to || formatTime(closeTime) || '',
+    coverImage:
+      settingsData?.setting?.shop?.coverImage?.mediaId ||
+      settingsData?.setting?.shop?.coverImage ||
+      '',
+    featuredImages: settingsData?.setting?.shop?.photos || [],
+    selectedDays: settingsData?.setting?.shop?.opening?.days || [],
+  };
   return (
     <ScrollView
       className="px-6"

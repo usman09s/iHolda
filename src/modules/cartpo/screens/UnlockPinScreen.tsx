@@ -15,7 +15,7 @@ const validationSchema = Yup.object().shape({
   pin: Yup.string()
     .min(4, 'Unlock pin must be 4 characters long')
     .matches(/^\d+$/, 'Unlock pin must contain only digits')
-    .test('is-valid-pin', 'Pin must be between 1001 and 9999', value => {
+    .test('is-valid-pin', 'Invalid Pin', value => {
       const numericValue = parseInt(value, 10);
       return numericValue >= 1001 && numericValue <= 9999;
     })

@@ -332,6 +332,20 @@ class ApiClass {
     }
   };
 
+  topupBalance = async ({ amount }: any) => {
+    try {
+      return await this.externalApi
+        .url(`cartpo/topup`)
+        .post({ amount: amount })
+        .json(result => {
+          console.log(result);
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
   updateCartpoMenu = async (formData: any) => {
     try {
       return await this.externalApi

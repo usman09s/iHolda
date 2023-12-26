@@ -14,6 +14,7 @@ const cartpoSlice = createSlice({
     selectedDiscount: [],
     selectedPayment: [],
     selectedMenuItem: [],
+    paymentValue: '',
     queryId: '',
     accessToken: '',
     refreshToken: '',
@@ -63,6 +64,7 @@ const cartpoSlice = createSlice({
       }
     },
     setDiscount: (state, action) => {
+      console.log(action.payload);
       if (state.cartpoSettings && state.cartpoSettings.setting) {
         state.cartpoSettings.setting.discounts = action.payload;
       }
@@ -77,14 +79,24 @@ const cartpoSlice = createSlice({
       );
     },
     updateDiscount: (state, action) => {
-      const { updatedDetails } = action.payload;
-      const selectedDiscount = state.cartpoSettings.setting.discounts.find(
-        discount => discount._id === state.selectedDiscount,
+      console.log('Before update:', state.cartpoSettings.setting.discounts);
+      const updatedDetails = action.payload;
+      console.log('Selected Discount ID:', state.selectedDiscount._id);
+      const index = state.cartpoSettings.setting.discounts.findIndex(
+        discount => discount._id === state.selectedDiscount._id,
       );
-
-      if (selectedDiscount) {
-        Object.assign(selectedDiscount, updatedDetails);
+      console.log('Index:', index);
+      if (index !== -1) {
+        state.cartpoSettings.setting.discounts[index] = {
+          id: state.selectedDiscount._id,
+          condition: updatedDetails.discountCondition,
+          percentage: updatedDetails.discountPercentage,
+          people: updatedDetails.minimumUsers,
+        };
+      } else {
+        console.log('Selected discount not found!');
       }
+      console.log('After update:', state.cartpoSettings.setting.discounts);
     },
     setShopData: (state, action) => {
       state.cartpoSettings.shop = action.payload;
@@ -97,6 +109,9 @@ const cartpoSlice = createSlice({
       ) {
         state.cartpoSettings.setting.shop.menu = action.payload;
       }
+    },
+    setPaymentValue: (state, action) => {
+      state.paymentValue = action.payload;
     },
     deleteMenuItem: (state, action) => {
       const itemIdToDelete = action.payload;
@@ -132,6 +147,8 @@ export const {
   setSelectedMenuItem,
   deleteMenuItem,
   setTokensAndQueryId,
+  updateDiscount,
+  setPaymentValue,
 } = cartpoSlice.actions;
 
 export default cartpoSlice.reducer;
@@ -147,6 +164,7 @@ export const selectSelectedDiscount = state => state.calculator.selectedDiscount
 export const selectSelectedPayment = state => state.calculator.selectedPayment;
 export const selectSelectedMenuItem = state => state.calculator.selectedMenuItem;
 export const queryIdSelector = state => state.calculator.userData.query_id;
+export const selectPaymentValue = state => state.paymentValue;
 
 export const tokensSelector = createSelector(selectUserData, user => ({
   token: user.access_token,

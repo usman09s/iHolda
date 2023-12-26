@@ -4,9 +4,13 @@ import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { selectCalculatorAmount, selectCartpoSettings } from 'store/cartpo/calculateSlice';
 
-export const DirectPaymentScreen = ({ navigation }: any) => {
-  const calculatorAmount = useSelector(selectCalculatorAmount);
+export const DirectPaymentScreen = ({ navigation, route }: any) => {
   const settingsData = useSelector(selectCartpoSettings);
+  const calculatorAmount = useSelector(selectCalculatorAmount);
+  const discountPercentage = 50;
+  const paymentAmount = parseFloat(calculatorAmount);
+  const discountedAmount = (discountPercentage / 100) * paymentAmount;
+  const totalAmountAfterDiscount = paymentAmount - discountedAmount;
   return (
     <View className="flex-1">
       <View className="px-6">
@@ -17,7 +21,7 @@ export const DirectPaymentScreen = ({ navigation }: any) => {
       </View>
       <View className="justify-around flex-1 py-6">
         <Text className="text-center text-4xl font-semibold">
-          {calculatorAmount}
+          {totalAmountAfterDiscount}
           <Text className="font-light">CFA</Text>
         </Text>
         <View className="jusify-center mb-10">

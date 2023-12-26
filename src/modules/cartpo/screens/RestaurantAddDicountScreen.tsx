@@ -8,9 +8,9 @@ import { CustomRestaurantButton } from '../components/CustomRestaurantButton';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteDiscount,
-  deletePaymentAccount,
   selectCartpoSettings,
   selectSelectedDiscount,
+  updateDiscount,
 } from 'store/cartpo/calculateSlice';
 import { useState } from 'react';
 import Toast from 'react-native-toast-message';
@@ -22,7 +22,7 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
   const settingsData = useSelector(selectCartpoSettings);
   const dispatch = useDispatch();
   const selectedDiscount = useSelector(selectSelectedDiscount);
-  console.log(selectedDiscount);
+  console.log(selectedDiscount, 'popopopopo');
   console.log(settingsData.setting?.discounts);
 
   const initialDiscount = selectedDiscount
@@ -63,7 +63,8 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
       minimumUsers,
       discountCondition,
     };
-    handleAddDiscount(updatedValues);
+    dispatch(updateDiscount(updatedValues));
+    handleAddDiscount(values);
   };
 
   const handleDeletePaymentAccount = accountValue => {

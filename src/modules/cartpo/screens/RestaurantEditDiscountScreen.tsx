@@ -3,10 +3,14 @@ import { Text, View } from 'react-native';
 import CustomInputButton from '../components/CustomInputButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartpoSettings, setSelectedDiscount } from 'store/cartpo/calculateSlice';
+import { useIsFocused } from '@react-navigation/native';
+import { useEffect } from 'react';
 
 export const RestaurantEditDiscountScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
   const restaurantData = useSelector(selectCartpoSettings);
+  const isFocused = useIsFocused();
+
   return (
     <View className="px-6">
       <CustomHeader showBackIcon centerComponent={<Text>Edit Discount</Text>} />

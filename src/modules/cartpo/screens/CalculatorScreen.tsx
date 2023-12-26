@@ -11,11 +11,12 @@ import {
   selectSelectedOption,
   selectUserData,
   setCalculatorAmount,
+  setPaymentValue,
   setSelectedOption,
 } from 'store/cartpo/calculateSlice';
 import { Drawer } from 'react-native-drawer-layout';
 import { DrawerContent } from '../components/DrawerContent';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { useCartpoActions } from '../hooks/useCartpoActions';
 import Toast from 'react-native-toast-message';
 
@@ -25,9 +26,8 @@ const CalculatorScreen = ({ navigation }: any) => {
   const [inputValue, setInputValue] = useState('0');
   const [open, setOpen] = useState(false);
   const selectedOption = useSelector(selectSelectedOption);
-  const userData = useSelector(selectUserData);
+  const isFocused = useIsFocused();
   const cartpoSettings = useSelector(selectCartpoSettings);
-  console.log(cartpoSettings, 'userdata');
 
   const handleKeypadPress = value => {
     setInputValue(prevInputValue => {
@@ -52,8 +52,10 @@ const CalculatorScreen = ({ navigation }: any) => {
   };
 
   useEffect(() => {
-    handleGetCartpoSettings();
-  }, []);
+    if (isFocused) {
+      handleGetCartpoSettings();
+    }
+  }, [isFocused]);
 
   const handleNavigation = () => {
     if (
@@ -61,6 +63,7 @@ const CalculatorScreen = ({ navigation }: any) => {
       cartpoSettings?.setting &&
       cartpoSettings?.setting?.paymentMethod.length > 0
     ) {
+      dispatch(setPaymentValue(inputValue));
       setInputValue('0');
       dispatch(setCalculatorAmount(inputValue));
       navigation.navigate('CartpoStack', { screen: 'DiscountQrCode' });

@@ -11,7 +11,7 @@ import CustomHeader from 'components/Header/CustomHeader';
 import { useCartpoActions } from '../hooks/useCartpoActions';
 
 export const TopupScreen = ({ navigation }: any) => {
-  const { handleWithdraw } = useCartpoActions();
+  const { handleTopup } = useCartpoActions();
   const [withdrawAmmount, setWithdrawAmmount] = useState('');
   const isSmallScreen = height < 700;
   const settingsData = useSelector(selectCartpoSettings);
@@ -124,7 +124,7 @@ export const TopupScreen = ({ navigation }: any) => {
             customContainerClass="border-0 bg-black py-4"
             customTextClass={'text-white text-base'}
             onPress={() => {
-              value !== 'value' && handleWithdraw(amount);
+              value !== 'value' && handleTopup(amount);
             }}
           />
         </View>
