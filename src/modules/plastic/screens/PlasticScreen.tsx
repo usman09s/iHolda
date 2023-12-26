@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, ScrollView, Text, View } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, StackActions } from '@react-navigation/native';
 import Button from 'components/Button';
 import Header from 'components/Header/Header';
 import Icons from 'components/Icons';
@@ -19,6 +19,8 @@ import { units } from 'utils/helpers';
 
 import PlasticItem from '../components/PlasticItem';
 import { PlasticStackParamList } from '../PlasticStackNavigator';
+import { userAppInit } from 'hooks/useAppInit';
+import { userSelector } from 'store/auth/userSelectors';
 const Bottle = require('../../../../assets/images/bottleLabel.png');
 const DefaultImage = require('../../../../assets/images/bottle.png');
 const BiggerBottle = require('../../../../assets/images/biggerBottle.png');
@@ -32,7 +34,11 @@ const PlasticScreen = ({ navigation }: any) => {
   });
 
   const totalPlastic = useSelector(plasticCountTotalSelector);
-  const { navigate, goBack } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
+  const { navigate, goBack,reset } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
+  const userData = useSelector(userSelector);
+  const { status } = userAppInit();
+
+  const loggedIn = status === 'SUCCESS' && userData.user?.isReferred;
 
   const { isLoading } = useQuery('plasticSizes', Api.getPlasticSizes, {
     onSuccess: result => {
@@ -59,7 +65,11 @@ const PlasticScreen = ({ navigation }: any) => {
       contentContainerStyle={{ justifyContent: 'space-between', paddingBottom: 16 }}>
       <View className="px-6">
         <Header
-          onPressLeft={() => navigation.navigate('BottomTabs')}
+          // onPressLeft={() => (loggedIn ? goBack() : navigation.navigate('BottomTabs'))}
+          onPressLeft={() => (loggedIn ? goBack() : reset({
+            index: 0,
+            routes: [{ name: 'BottomTabs' }],
+          }))}
           leftComponent={<Icons.CrossIcon />}
         />
       </View>

@@ -19,7 +19,7 @@ import { AuthStackParamList } from '../AuthStackNavigator';
 
 const ResetPinScreen = () => {
   const { params } = useRoute<RouteProp<AuthStackParamList, 'ResetPin'>>();
-  const { dispatch } = useNavigation<NavigationProp<AuthStackParamList>>();
+  const { dispatch, reset } = useNavigation<NavigationProp<AuthStackParamList>>();
   const [pin, setPin] = useState('');
   const [rePin, setRePin] = useState('');
   const { mutate, isLoading, error } = useMutation(Api.resetPinCodeFromCode);
@@ -31,7 +31,11 @@ const ResetPinScreen = () => {
       { pin: Number(pin), phoneNumber: params.phone },
       {
         onSuccess: () => {
-          dispatch(StackActions.popToTop());
+          reset({
+            index: 1,
+            routes: [{ name: 'Welcome', }, {name: 'SignUp'}],
+          });
+          // dispatch(StackActions.popToTop());
         },
       },
     );

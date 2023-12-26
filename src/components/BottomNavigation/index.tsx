@@ -9,8 +9,15 @@ import { units } from 'utils/helpers';
 import BottomNavigationItem from './BottomNavigationItem';
 
 const BottomNavigation = ({ navigation: { navigate }, state }: BottomTabBarProps) => {
+  // console.log("🚀 ~ file: index.tsx:12 ~ BottomNavigation ~ state:", )
+  // console.log("🚀 ~ file: index.tsx:12 ~ BottomNavigation ~ navigate:", navigate)
+  const routes = state?.routes[0]?.state?.routes;
+  const activeRoute = routes ? routes[routes.length - 1].name : 'Another';
+  console.log('🚀 ~ file: index.tsx:15 ~ BottomNavigation ~ activeRoute:', activeRoute);
   const onPressNavigate = (screen: string) => () => navigate(screen);
   const { bottom } = useSafeAreaInsets();
+
+  if (activeRoute === 'Plastic' || activeRoute === 'PlasticDeliveredDetails') return null;
 
   return (
     <View className="border-t-b1 border-t-gray-200 bg-white" style={{ height: units.vh * 8 }}>
@@ -26,6 +33,8 @@ const BottomNavigation = ({ navigation: { navigate }, state }: BottomTabBarProps
           const isActive = state.index === index;
           const isRouteScreen = state.routes[state.index].state?.index === 0;
           const Icon = isActive ? BottomNavigationFilledIcons[route] : BottomNavigationIcons[route];
+
+          // return null;
 
           return (
             <BottomNavigationItem

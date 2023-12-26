@@ -30,7 +30,7 @@ const FeedHeader = () => {
         ]}>
         <>
           <TouchableOpacity
-            onPress={() => navigate('PlasticStack')}
+            onPress={() => navigate('Plastic')}
             className="flex-1 justify-start items-start self-start ">
             <Icons.PlasticLineIcon />
           </TouchableOpacity>

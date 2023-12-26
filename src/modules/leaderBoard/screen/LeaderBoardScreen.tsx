@@ -36,7 +36,6 @@ const LeaderBoardScreen = () => {
           onPressTabItem={() => setTabIndex(2)}
         />
       </View>
-      {/* {tabIndex === 0 && <Community />} */}
       {tabIndex === 1 && <Meetups />}
       {tabIndex === 2 && <TeamUp />}
     </View>

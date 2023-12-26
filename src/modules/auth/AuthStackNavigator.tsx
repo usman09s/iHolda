@@ -15,6 +15,7 @@ import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import UserAvatarAndUsernameUpdate from './screens/UserAvatarAndUsernameUpdate';
 import UserWaitListScreen from './screens/UserWaitListScreen';
+import PlasticStackNavigator from 'modules/plastic/PlasticStackNavigator';
 
 export type AuthStackParamList = {
   Welcome: undefined;
@@ -28,6 +29,7 @@ export type AuthStackParamList = {
   EnterReferralCode: undefined;
   ReferralCodeSuccessful: {result: any};
   UserAvatarAndUsernameUpdate: undefined;
+  PlasticStack: any;
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -74,6 +76,13 @@ export default function AuthStackNavigator() {
       />
       <AuthStack.Screen options={commonOptions} name="EnterOtp" component={EnterOptScreen} />
       <AuthStack.Screen options={commonOptions} name="ResetPin" component={ResetPinScreen} />
+
+      
+        <AuthStack.Screen
+          name="PlasticStack"
+          options={commonOptions}
+          component={PlasticStackNavigator}
+        />
     </AuthStack.Navigator>
   );
 }

@@ -27,7 +27,7 @@ const MomentsQRCodeScreen = () => {
   };
 
   return (
-    <ScrollView className="bg-black px-7 pb-6 flex-1" contentContainerStyle={{ flex: 1 }}>
+    <ScrollView className="bg-black px-7 pb-6 flex-1" >
       <Header
         showBackIcon
         backIconColor="white"
@@ -55,6 +55,8 @@ const MomentsQRCodeScreen = () => {
           </Text>
         </View>
       </View>
+      <View style={{ height: 20, }} />
+
     </ScrollView>
   );
 };

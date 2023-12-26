@@ -52,7 +52,7 @@ const DropOffLocationItem = ({ location, onPressLocation }: Props) => {
         </Text>
       </View>
       {location?.dropoffLocation?.address ? (
-        <Text className={`text-10 font-[300] capitalize`}>
+        <Text className={`text-10 font-[300] capitalize text-[#404040]`}>
           {location?.dropoffLocation?.address || ''}
         </Text>
       ) : null}

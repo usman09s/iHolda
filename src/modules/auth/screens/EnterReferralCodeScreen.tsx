@@ -55,7 +55,7 @@ const EnterReferralCodeScreen = () => {
 
   const onContinue = () => {
     mutate(
-      { referralCode },
+      { referralCode:referralCode.trim() },
       {
         onSuccess: result => {
           console.log(result);
@@ -78,7 +78,6 @@ const EnterReferralCodeScreen = () => {
     }).then(result => {
       const formData1 = new FormData();
       formData1.append('firstName', userInfo.username ? userInfo.username : userInfo.user.userName);
-      formData1.append('bio', '');
       formData1.append('address', 'none');
       formData1.append('userName', userInfo.username ? userInfo.username : userInfo.user.userName);
       formData1.append('socialLinks[0][platform]', 'facebook');

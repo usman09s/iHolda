@@ -42,6 +42,7 @@ import OtherUserProfileScreen from 'modules/profile/screens/OtherUserProfileScre
 import PlasticActivityScreen from 'modules/activity/screens/PlasticAgentActivity';
 import DiscountUserSelect from 'modules/restaurants/screens/DiscountUserSelect';
 import DiscountQrScreen from 'modules/restaurants/screens/DiscountQrScreen';
+import PlasticScreen from 'modules/plastic/screens/PlasticScreen';
 
 const MainStack = createNativeStackNavigator();
 
@@ -115,11 +116,13 @@ export default function MainNavigator() {
           options={commonOptions}
           component={ActivityStackNavigator}
         /> */}
+        {/* <MainStack.Screen options={commonOptions} name="Plastic" component={PlasticScreen} /> */}
+{/* 
         <MainStack.Screen
           name="PlasticStack"
           options={commonOptions}
           component={PlasticStackNavigator}
-        />
+        /> */}
         <MainStack.Screen
           name="AgentPlasticStack"
           options={commonOptions}
