@@ -12,6 +12,14 @@ import {
   selectSelectedPayment,
   setCartpoSettings,
 } from 'store/cartpo/calculateSlice';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object().shape({
+  accountType: Yup.string()
+    .required('Account provider / Type is required')
+    .matches(/^\S*$/, 'Invalid Account Type'),
+  account: Yup.string().required('Account is required').matches(/^\S*$/, 'Invalid Account Number'), // Disallow spaces
+});
 
 export const RestaurantAddPaymentScreen = ({ route }: any) => {
   const { handleAddPayment, handleDeletePayment } = useCartpoActions();
@@ -42,7 +50,11 @@ export const RestaurantAddPaymentScreen = ({ route }: any) => {
           </TouchableOpacity>
         }
       />
-      <Formik initialValues={initialValues} validateOnChange={false} onSubmit={handleAddPayment}>
+      <Formik
+        initialValues={initialValues}
+        validateOnChange={false}
+        onSubmit={handleAddPayment}
+        validationSchema={validationSchema}>
         {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
           <View className="my-12 flex-1 justify-between">
             <View>

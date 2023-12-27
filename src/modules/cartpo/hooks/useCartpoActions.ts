@@ -225,8 +225,13 @@ export const useCartpoActions = () => {
       accountType: 'cash',
     };
 
+    const updatedPaymentMethod = [
+      ...settingsData.setting.paymentMethod.filter(item => item.account !== null),
+      paymentMethod,
+    ];
+
     const result = await Api.updateCartpoSettings({
-      paymentMethod: [...settingsData.setting.paymentMethod, paymentMethod],
+      paymentMethod: updatedPaymentMethod,
       discounts: [...settingsData.setting.discounts],
     });
     console.log(result);
@@ -247,7 +252,7 @@ export const useCartpoActions = () => {
     };
 
     const result = await Api.updateCartpoSettings({
-      paymentMethod: [...settingsData.setting.paymentMethod],
+      paymentMethod: [...settingsData.setting.paymentMethod.filter(item => item.account !== null)],
       discounts: [...settingsData.setting.discounts, addDiscount],
     });
     dispatch(setDiscount(result.data.discounts));

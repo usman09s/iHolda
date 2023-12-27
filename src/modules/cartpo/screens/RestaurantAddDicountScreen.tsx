@@ -8,32 +8,54 @@ import { CustomRestaurantButton } from '../components/CustomRestaurantButton';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteDiscount,
+  deletePaymentAccount,
   selectCartpoSettings,
   selectSelectedDiscount,
-  updateDiscount,
 } from 'store/cartpo/calculateSlice';
 import { useState } from 'react';
 import Toast from 'react-native-toast-message';
 import { useCartpoActions } from '../hooks/useCartpoActions';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object().shape({
+  discountPercentage: Yup.number().notRequired(),
+  minimumUsers: Yup.string().required('Minimum number of users is required'),
+  discountCondition: Yup.string().required('Discount condition is required'),
+});
 
 export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
   const { handleAddDiscount, handleDeleteDiscount } = useCartpoActions();
   const settingsData = useSelector(selectCartpoSettings);
   const dispatch = useDispatch();
   const selectedDiscount = useSelector(selectSelectedDiscount);
-  console.log(selectedDiscount, 'popopopopo');
+  console.log(selectedDiscount, 'popopo');
   console.log(settingsData.setting?.discounts);
 
   const initialDiscount = selectedDiscount
-    ? {
-        discountPercentage: selectedDiscount.percentage,
-        minimumUsers: selectedDiscount.people === 1 ? '1 person' : '2 people',
-        discountCondition:
-          selectedDiscount.condition === 2
-            ? 'Both users must be new customers'
-            : '1 person must be a new customer',
-      }
+    ? (() => {
+        const discountInfo = {
+          discountPercentage: selectedDiscount.percentage,
+          minimumUsers: '',
+          discountCondition: '',
+        };
+
+        if (selectedDiscount.people === 1) {
+          discountInfo.minimumUsers = '1 person';
+          discountInfo.discountCondition =
+            selectedDiscount.condition === 2
+              ? 'Both users must be new customers'
+              : '1 person must be a new customer';
+        } else if (selectedDiscount.people === 2) {
+          discountInfo.minimumUsers = '2 people';
+          discountInfo.discountCondition =
+            selectedDiscount.condition === 2
+              ? 'Both users must be new customers'
+              : 'Condition for 2 people';
+        }
+
+        return discountInfo;
+      })()
     : {
         discountPercentage: '',
         minimumUsers: '',
@@ -55,6 +77,14 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
   };
 
   const handleSubmit = values => {
+    if (!values.discountPercentage) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please fill all the fields',
+        visibilityTime: 1500,
+      });
+      return;
+    }
     const minimumUsers = minimumUsersMap[values.minimumUsers];
     const discountCondition = discountConditionMap[values.discountCondition];
     const updatedValues = {
@@ -63,8 +93,7 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
       minimumUsers,
       discountCondition,
     };
-    dispatch(updateDiscount(updatedValues));
-    handleAddDiscount(values);
+    handleAddDiscount(updatedValues);
   };
 
   const handleDeletePaymentAccount = accountValue => {
@@ -85,8 +114,12 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
         }
       />
 
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+        validateOnChange={false}>
+        {({ handleChange, handleBlur, handleSubmit, values, setFieldValue, errors }) => (
           <View className="mt-8 mb-24 justify-between flex-1 items-center">
             <View>
               <View className="mb-4">
@@ -113,13 +146,16 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
                   placeholder="Select"
                   buttonTextStyle={{ color: 'black', textAlign: 'left', fontSize: 16 }}
                   placeholderColor={'gray'}
-                  buttonStyle={{
-                    justifyContent: 'flex-start',
-                    alignSelf: 'flex-start',
-                    backgroundColor: 'rgb(229 229 229)',
-                    borderRadius: 30,
-                    width: '100%',
-                  }}
+                  buttonStyle={[
+                    {
+                      justifyContent: 'flex-start',
+                      alignSelf: 'flex-start',
+                      backgroundColor: 'rgb(229 229 229)',
+                      borderRadius: 30,
+                      width: '100%',
+                    },
+                    errors.minimumUsers ? { borderWidth: 2, borderColor: 'red' } : null,
+                  ]}
                   rowTextStyle={{ fontSize: 14, fontWeight: '500' }}
                   dropdownStyle={{ borderRadius: 7, paddingHorizontal: 10 }}
                   buttonTextAfterSelection={(selectedItem: string, index: number) => {
@@ -142,7 +178,7 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
                   }}
                   dropdownIconPosition="right"
                   onSelect={item => setFieldValue('minimumUsers', item)}
-                  defaultValue={values.minimumUsers}
+                  defaultValue={selectedDiscount.people && values.minimumUsers}
                 />
               </View>
               <View className="w-full">
@@ -152,13 +188,16 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
                   placeholder="Select"
                   buttonTextStyle={{ color: 'black', textAlign: 'left', fontSize: 16 }}
                   placeholderColor={'gray'}
-                  buttonStyle={{
-                    justifyContent: 'flex-start',
-                    alignSelf: 'flex-start',
-                    backgroundColor: 'rgb(229 229 229)',
-                    borderRadius: 30,
-                    width: '100%',
-                  }}
+                  buttonStyle={[
+                    {
+                      justifyContent: 'flex-start',
+                      alignSelf: 'flex-start',
+                      backgroundColor: 'rgb(229 229 229)',
+                      borderRadius: 30,
+                      width: '100%',
+                    },
+                    errors.discountCondition ? { borderWidth: 2, borderColor: 'red' } : null,
+                  ]}
                   rowTextStyle={{ fontSize: 14, fontWeight: '500' }}
                   dropdownStyle={{ borderRadius: 7, paddingHorizontal: 10 }}
                   buttonTextAfterSelection={(selectedItem: string, index: number) => {
@@ -181,7 +220,7 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
                     );
                   }}
                   dropdownIconPosition="right"
-                  defaultValue={values.discountCondition}
+                  defaultValue={selectedDiscount.condition && values.discountCondition}
                 />
               </View>
             </View>
