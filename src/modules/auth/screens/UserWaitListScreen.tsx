@@ -14,6 +14,7 @@ import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 const UserWaitListScreen = () => {
   const { goBack, dispatch } = useNavigation();
+  const { data, } = useQuery('userWaitingNumber', Api.getWaitingNumber);
   const user = useSelector(userSelector);
   console.log(user.user?.userName);
   const copyToClipboard = async (value: string) => await Clipboard.setStringAsync(value);
@@ -71,7 +72,7 @@ const UserWaitListScreen = () => {
               <Text
                 className={text({ class: 'text-white text-center' })}
                 style={{ fontSize: moderateScale(48), fontWeight: '500' }}>
-                18
+                {data?.data?.waitingNumber ?? 1}
               </Text>
               {/* ) : (
                 <ActivityIndicator />

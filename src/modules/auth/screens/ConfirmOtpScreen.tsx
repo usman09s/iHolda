@@ -31,7 +31,9 @@ const ConfirmOtpScreen = () => {
     },
   });
 
-  const confirmMutationErrorMessage = (error as { message: string })?.message;
+  const errorMessage = (error as { message: string })?.message;
+  const confirmMutationErrorMessage =
+    errorMessage === 'OTP not found' ? 'Invalid OTP' : errorMessage;
 
   const onPressContinue = () => mutate({ otp });
 

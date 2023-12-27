@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'store/auth/userSelectors';
 import Api from 'services/Api';
 import { useState } from 'react';
+import Toast from 'react-native-toast-message';
 
 type Props = { top: number; isCurrentUser: boolean; activeY: SharedValue<number>; user: any };
 
@@ -17,7 +18,9 @@ const ScrolledHeaderRight = ({ top, activeY, isCurrentUser, user: otherUser }: P
   const navigation = useNavigation();
   const loggedInUser = useSelector(userSelector);
   const { user } = otherUser ? { user: otherUser } : useSelector(userSelector);
-  const [followed, setFollowed] = useState<boolean>(otherUser?.followers?.includes(loggedInUser.user?._id));
+  const [followed, setFollowed] = useState<boolean>(
+    otherUser?.followers?.includes(loggedInUser.user?._id),
+  );
 
   const facebook = user?.socialLinks?.find((s: any) => s?.platform === 'facebook')?.link;
   const tiktok = user?.socialLinks?.find((s: any) => s?.platform === 'tiktok')?.link;
@@ -36,12 +39,34 @@ const ScrolledHeaderRight = ({ top, activeY, isCurrentUser, user: otherUser }: P
   const followUnfollowUser = async (userId: string) => {
     try {
       await Api.followUnFollowUseer(userId, followed);
-      // console.log("🚀 ~ file: FollowersScreen.tsx:45 ~ followUnfollowUser ~ res:", res)
       setFollowed(prev => !prev);
-    } catch (error) {
-      // console.log('🚀 ~ followUnfollowUser ~ error:', error);
-    }
+    } catch (error) {}
   };
+
+  function isValidURL(str: string | undefined): boolean {
+    if (!str) {
+      Toast.show({
+        type: 'error',
+        text1: 'Link not added yet.',
+      });
+      return false;
+    }
+    if (
+      /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
+        str,
+      )
+    ) {
+      console.log('YES');
+      return true;
+    } else {
+      console.log('NO');
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Link',
+      });
+      return false;
+    }
+  }
 
   return (
     <Animated.View className="flex-1 items-end pr-6 absolute right-0" style={animatedStyle}>
@@ -54,8 +79,8 @@ const ScrolledHeaderRight = ({ top, activeY, isCurrentUser, user: otherUser }: P
           onPress={() => {
             if (isCurrentUser) {
               navigation.navigate('SettingsStack');
-            }else {
-              followUnfollowUser(otherUser._id, )
+            } else {
+              followUnfollowUser(otherUser._id);
             }
           }}
         />
@@ -63,19 +88,19 @@ const ScrolledHeaderRight = ({ top, activeY, isCurrentUser, user: otherUser }: P
         <View className="justify-around items-center mt-4">
           {/* Linking.openURL(this.state.url).catch(err => console.error("Couldn't load page", err)); */}
 
-          <TouchableOpacity onPress={() => tiktok && Linking.openURL(tiktok)}>
+          <TouchableOpacity onPress={() => isValidURL(tiktok) && Linking.openURL(tiktok)}>
             <Icons.TiktokIcon />
           </TouchableOpacity>
           <View style={{ height: units.vh * 2 }} />
-          <TouchableOpacity onPress={() => instagram && Linking.openURL(instagram)}>
+          <TouchableOpacity onPress={() => isValidURL(instagram) && Linking.openURL(instagram)}>
             <Icons.InstagramIcon />
           </TouchableOpacity>
           <View style={{ height: units.vh * 2 }} />
-          <TouchableOpacity onPress={() => snapchat && Linking.openURL(snapchat)}>
+          <TouchableOpacity onPress={() => isValidURL(snapchat) && Linking.openURL(snapchat)}>
             <Icons.SnapchatIcon />
           </TouchableOpacity>
           <View style={{ height: units.vh * 2 }} />
-          <TouchableOpacity onPress={() => website && Linking.openURL(website)}>
+          <TouchableOpacity onPress={() => isValidURL(website) && Linking.openURL(website)}>
             <Icons.WebsiteIcon />
           </TouchableOpacity>
         </View>

@@ -37,6 +37,7 @@ const PlasticScreen = ({ navigation }: any) => {
   const { navigate, goBack,reset } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
   const userData = useSelector(userSelector);
   const { status } = userAppInit();
+  // const status = "SUCCESS"
 
   const loggedIn = status === 'SUCCESS' && userData.user?.isReferred;
 

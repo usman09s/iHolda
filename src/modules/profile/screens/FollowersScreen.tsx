@@ -128,24 +128,24 @@ const FollowersScreen = ({ route }: any) => {
               />
               <View style={{ flex: 1 }}>
                 <Text className="font-semibold">{item.userName}</Text>
-                <Text className="text-gray-500">
-                  {item?.firstName}
-                </Text>
+                <Text className="text-gray-500">{item?.firstName}</Text>
               </View>
               <View>
-                <TouchableOpacity
-                  onPress={() => followUnfollowUser(item?._id, isFollowed)}
-                  // onPress={() => followUnfollowUser("656571028ac948743d233af7", true)}
-                  className={isFollowed ? 'bg-[#eeeeee]' : 'bg-[#52c3ff]'}
-                  style={{ paddingVertical: 5, paddingHorizontal: 15, borderRadius: 5 }}>
-                  <Text style={{ fontSize: 13 }}>
-                    {isFollowed
-                      ? 'Following'
-                      : item?.following?.includes(otherUserId ?? user?._id)
-                        ? 'Follow back'
-                        : 'Follow'}
-                  </Text>
-                </TouchableOpacity>
+                {item?._id === user?._id ? null : (
+                  <TouchableOpacity
+                    onPress={() => followUnfollowUser(item?._id, isFollowed)}
+                    // onPress={() => followUnfollowUser("656571028ac948743d233af7", true)}
+                    className={isFollowed ? 'bg-[#eeeeee]' : 'bg-[#52c3ff]'}
+                    style={{ paddingVertical: 5, paddingHorizontal: 15, borderRadius: 5 }}>
+                    <Text style={{ fontSize: 13 }}>
+                      {isFollowed
+                        ? 'Following'
+                        : item?.following?.includes(otherUserId ?? user?._id)
+                          ? 'Follow back'
+                          : 'Follow'}
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           );

@@ -805,6 +805,14 @@ class ApiClass {
       })
       .get()
       .json(result => result);
+  getWaitingNumber = async (): Promise<any> =>
+    await this.externalApi
+      .url('auth/waiting-number')
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
 
   getMetAndFriendRank = async (userId?: string): Promise<any> =>
     await this.externalApi
@@ -1003,6 +1011,15 @@ class ApiClass {
       })
       .get()
       .json(result => result);
+
+  getRecentMets = async (): Promise<{ data: any }> =>
+      await this.externalApi
+        .url(`met/recent-users`)
+        .headers({
+          ...this._getAuthorization(this.token),
+        })
+        .get()
+        .json(result => result);
   getRestaurantMenu = async (id: string): Promise<{ data: any }> =>
     await this.externalApi
       .url(`cartpo/shop/menu/${id}`)

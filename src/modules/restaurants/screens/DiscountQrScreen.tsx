@@ -83,7 +83,7 @@ const DiscountQrScreen = ({ route }: any) => {
 
       <View className="bg-white  rounded-2xl px-3 py-6 mt-16 h-[350] mx-5">
         <View onLayout={handleLayout} className="w rounded-xl mt-4 w-full items-center">
-          <QRCode size={viewHeight - 50} value={route.params?.qrCode} />
+          <QRCode size={viewHeight - 50} value={route.params?.metId+'/'+route.params?.qrCode} />
         </View>
 
         <View className="mt-3">

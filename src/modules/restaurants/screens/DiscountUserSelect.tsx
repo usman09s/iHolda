@@ -12,7 +12,8 @@ import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 
 const DiscountUserSelect = ({ route, navigation }: any) => {
   const { user } = useSelector(userSelector);
-  const { data } = useQuery('userMets', () => Api.getMets(user?._id));
+  const { data } = useQuery('userRecentMets', Api.getRecentMets);
+  console.log("🚀 ~ file: DiscountUserSelect.tsx:16 ~ DiscountUserSelect ~ data:", data?.data.data)
 
   const restaurantId = route.params?.restaurantId;
   const qrCode = route.params?.qrCode;
@@ -32,21 +33,22 @@ const DiscountUserSelect = ({ route, navigation }: any) => {
         <View className="flex-row items-center mb-5">
           <Image
             source={{
-              uri: getImageLink(item?.photo?.mediaId),
+              uri: getImageLink(item?.user?.photo?.mediaId),
             }}
             resizeMode="cover"
             className="h-14 w-14 rounded-full"
           />
 
-          <Text className={text({ type: 'm18', class: 'ml-2 flex-1' })}>{item.userName}</Text>
+          <Text className={text({ type: 'm18', class: 'ml-2 flex-1' })}>{item?.user.userName}</Text>
 
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('DiscountQrScreen', {
                 restaurantId,
                 qrCode,
-                user: item,
+                user: item?.user,
                 restaurantData: route.params?.restaurantData,
+                metId: item?.metId
               });
             }}
             className="bg-white border-2 rounded-full py-2 px-3">
