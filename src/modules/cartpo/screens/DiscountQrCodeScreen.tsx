@@ -50,10 +50,13 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
     if (data) {
       setQrCode(data);
       try {
+        const [metId, qrCode] = data.split('/');
+        console.log('metId:', metId);
+        console.log('qrCode:', qrCode);
         const userId = 'your-user-id';
-        const result = await Api.scanQRCode({ qrCode: data, userId: userId });
+        const result = await Api.scanQRCode({ qrCode, userId });
         console.log('API Response:', result);
-        navigation.navigate('TotalDiscount', { metId: result.data?.metId });
+        navigation.navigate('TotalDiscount', { metId: metId });
       } catch (error) {
         console.error('Error scanning QR Code:', error);
         setErrorText('Error scanning QR Code');
@@ -101,7 +104,7 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
     } else if (selectedOption === 'direct') {
       if (settingsData.setting?.paymentMethod[0].account) {
         try {
-          const responseData = await makeApiRequest('direct');
+          const responseData = await makeApiRequest('other');
           navigation.navigate('DirectPayment');
         } catch (error) {
           Toast.show({

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text } from 'react-native';
 
 export const CustomTransaction = ({
   avatarComponent,
@@ -20,7 +20,7 @@ export const CustomTransaction = ({
       <View className="flex-column gap-1 items-end">
         <Text
           className={`text-sm font-semibold ${
-            type === 'positive' ? 'text-green-500' : 'text-red-600'
+            type === 'positive' ? 'text-green-600' : 'text-red-600'
           }`}>
           {amount} CFA
         </Text>

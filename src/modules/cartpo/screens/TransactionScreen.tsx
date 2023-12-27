@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, FlatList, ScrollView, RefreshControl, Image } from 'react-native';
 import { HamburgerIcon } from '../../../../assets/referralGift';
 import TransactionInOut from 'modules/profile/components/TransactionInOut';
 import Icons from 'components/Icons';
@@ -11,6 +11,8 @@ import {
   selectUserTransactions,
   setUserTransactions,
 } from 'store/cartpo/calculateSlice';
+import { CustomTransaction } from '../components/CustomTransaction';
+import { getImageLink } from '../../moments/helpers/imageHelpers';
 
 const Header = () => {
   return (
@@ -31,7 +33,7 @@ const Header = () => {
 export const TransactionScreen = () => {
   const { handleGetTransactions } = useCartpoActions();
   const userTransactions = useSelector(selectUserTransactions);
-  console.log(userTransactions);
+  console.log(userTransactions[0]);
   const isFocused = useIsFocused();
   const [page, setPage] = useState(1);
   const [refresh, setRefresh] = useState(false);
@@ -55,6 +57,38 @@ export const TransactionScreen = () => {
 
   const renderTransactionItem = ({ item }) => {
     const transactionType = item.type.toLowerCase();
+
+    if (item.title === 'Discount Sale' && item.to) {
+      return (
+        <CustomTransaction
+          key={item.createdAt}
+          avatarComponent={
+            <View className="rounded-full border-[3px] border-green-500 bg-gray-400 justify-center items-center mr-2">
+              <View className="rounded-full border-[2px] border-white justify-center items-center">
+                <Image
+                  source={{
+                    uri:
+                      item.to.photo && item.to.photo.mediaId
+                        ? getImageLink(item.to.photo.mediaId)
+                        : 'https://i.pravatar.cc/150?img=36',
+                  }}
+                  className="w-10 h-10 rounded-full"
+                />
+              </View>
+            </View>
+          }
+          topText={item.title}
+          bottomText={`to ${item.to.userName ? item.to.userName : 'Anonymous'}`}
+          amount={`-${item.amount}`}
+          type="positive"
+          time={new Date(item.createdAt).toLocaleTimeString([], {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+          })}
+        />
+      );
+    }
 
     return (
       <TransactionInOut

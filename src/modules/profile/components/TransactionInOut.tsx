@@ -11,6 +11,17 @@ type Props = {
   customContainerClass?: any;
 };
 
+const capitalizeLastTwoChars = (str: string): string => {
+  if (str.length < 2) {
+    return str.toUpperCase();
+  }
+
+  const firstPart = str.slice(0, -2);
+  const lastTwoChars = str.slice(-2).toUpperCase();
+
+  return `${firstPart}${lastTwoChars}`;
+};
+
 const TransactionInOut = ({
   type,
   date,
@@ -37,7 +48,9 @@ const TransactionInOut = ({
         })}>
         {value}
       </Text>
-      <Text className={text({ type: 'r13', class: 'text-right text-black-o-50' })}>{date}</Text>
+      <Text className={text({ type: 'r13', class: 'text-right text-black-o-50' })}>
+        {capitalizeLastTwoChars(date)}
+      </Text>
     </View>
   </View>
 );

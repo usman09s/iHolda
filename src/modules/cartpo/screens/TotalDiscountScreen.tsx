@@ -32,7 +32,7 @@ export const TotalDiscountScreen = ({ navigation, route }: any) => {
           },
           body: JSON.stringify({
             amount: paymentAmount,
-            type: selectedOption === 'direct' ? 'direct' : 'cash',
+            type: selectedOption === 'direct' ? 'other' : 'cash',
             metId: metId || null,
           }),
         });
