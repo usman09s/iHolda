@@ -33,7 +33,10 @@ const cartpoSlice = createSlice({
       state.userData = action.payload;
     },
     setUserTransactions: (state, action) => {
-      state.userTransactions = action.payload;
+      state.userTransactions = [...state.userTransactions, ...action.payload];
+    },
+    clearUserTransactions: state => {
+      state.userTransactions = [];
     },
     setCartpoSettings: (state, action) => {
       state.cartpoSettings = action.payload;
@@ -119,6 +122,7 @@ const cartpoSlice = createSlice({
         item => item._id !== itemIdToDelete,
       );
     },
+
     setTokensAndQueryId: (state, action) => {
       state.queryId = action.payload.queryId;
       state.accessToken = action.payload.accessToken;
@@ -149,6 +153,7 @@ export const {
   setTokensAndQueryId,
   updateDiscount,
   setPaymentValue,
+  clearUserTransactions,
 } = cartpoSlice.actions;
 
 export default cartpoSlice.reducer;

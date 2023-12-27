@@ -17,7 +17,6 @@ export const TopupScreen = ({ navigation }: any) => {
   const settingsData = useSelector(selectCartpoSettings);
   const walletBalance = useSelector(selectWalletBalance);
   const [value, setValue] = useState('value');
-  const amount = 300;
   const handleValueChange = (value: string) => {
     console.log('Selected value:', value);
     setValue(value);
@@ -46,7 +45,10 @@ export const TopupScreen = ({ navigation }: any) => {
             }}>
             <TextInput
               value={withdrawAmmount}
-              onChangeText={val => setWithdrawAmmount(val)}
+              onChangeText={val => {
+                const sanitizedValue = val.replace('.', '');
+                setWithdrawAmmount(sanitizedValue);
+              }}
               placeholder="0"
               placeholderTextColor={'black'}
               keyboardType="numeric"
@@ -55,39 +57,34 @@ export const TopupScreen = ({ navigation }: any) => {
                 textAlign: 'center',
                 fontSize: 48,
                 fontWeight: '700',
-                paddingRight: 10,
-                // minWidth: 100
+                paddingRight: 8,
               }}
             />
-
             <Text
               style={{
                 color: 'black',
                 textAlign: 'center',
                 fontSize: 48,
                 fontWeight: '700',
-                paddingRight: 10,
                 marginLeft: -5,
-                // minWidth: 100
               }}>
               .0
             </Text>
-
             <Text
               style={{
-                color: 'blacck',
+                color: 'black',
                 textAlign: 'center',
                 fontSize: 16,
+                fontWeight: '700',
                 alignSelf: 'flex-end',
-                marginBottom: 8,
+                marginBottom: 9,
               }}>
-              {' '}
               cfa
             </Text>
           </View>
           <Text className="text-center font-semibold pb-8">TO</Text>
           <SelectDropdown
-            data={options}
+            data={options.filter(option => option !== null)}
             placeholder="Select"
             buttonTextStyle={{ color: 'white', textAlign: 'center' }}
             placeholderColor={'white'}
@@ -124,7 +121,7 @@ export const TopupScreen = ({ navigation }: any) => {
             customContainerClass="border-0 bg-black py-4"
             customTextClass={'text-white text-base'}
             onPress={() => {
-              value !== 'value' && handleTopup(amount);
+              value !== 'value' && handleTopup(withdrawAmmount);
             }}
           />
         </View>

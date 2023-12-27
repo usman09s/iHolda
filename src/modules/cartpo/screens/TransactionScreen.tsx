@@ -1,12 +1,16 @@
-import { View, Text, Image, ScrollView } from 'react-native';
-import { CustomTransaction } from '../components/CustomTransaction';
-import Icon from 'react-native-vector-icons/Entypo';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, ScrollView, RefreshControl } from 'react-native';
 import { HamburgerIcon } from '../../../../assets/referralGift';
 import TransactionInOut from 'modules/profile/components/TransactionInOut';
 import Icons from 'components/Icons';
-import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { useCartpoActions } from '../hooks/useCartpoActions';
-import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  clearUserTransactions,
+  selectUserTransactions,
+  setUserTransactions,
+} from 'store/cartpo/calculateSlice';
 
 const Header = () => {
   return (
@@ -24,93 +28,135 @@ const Header = () => {
   );
 };
 
-const TransactionList = () => {
-  return (
-    <View>
-      <CustomTransaction
-        avatarComponent={
-          <View className="flex-row">
-            <View className="rounded-full border-[3px] border-saffron bg-gray-400 justify-center items-center">
-              <View className="rounded-full border-[2px] border-white justify-center items-center">
-                <Image
-                  source={{ uri: 'https://i.pravatar.cc/150?img=36' }}
-                  className="w-10 h-10 rounded-full"
-                />
-              </View>
-            </View>
-            <View className="rounded-full right-4 border-[3px] border-green-400 bg-gray-400">
-              <View className="rounded-full border-[2px] border-white justify-center items-center">
-                <Image
-                  source={{ uri: 'https://i.pravatar.cc/150?img=35' }}
-                  className="w-10 h-10 rounded-full"
-                />
-              </View>
-            </View>
-          </View>
-        }
-        topText="Discount sale"
-        bottomText="to @bayuga"
-        amount="+800"
-        type="positive"
-        time="08:30 PM"
-      />
-      <CustomTransaction
-        avatarComponent={
-          <View className="rounded-full border-[3px] border-green-500 bg-gray-400 justify-center items-center mr-2">
-            <View className="rounded-full border-[2px] border-white justify-center items-center">
-              <Image
-                source={{ uri: 'https://i.pravatar.cc/150?img=36' }}
-                className="w-10 h-10 rounded-full"
-              />
-            </View>
-          </View>
-        }
-        topText="Cash sale"
-        bottomText="to @bayuga"
-        amount="-500"
-        type="positive"
-        time="09:30 PM"
-      />
-      <TransactionInOut
-        type="IN"
-        title="Sale"
-        value="- 1500 CFA"
-        subTitle="Anonymous"
-        date="08:45 PM"
-        customContainerClass="bg-[#e1e1e1] rounded-xl mb-0 my-1"
-        symbol={<Icons.CashInIcon />}
-      />
-      <TransactionInOut
-        type="OUT"
-        title="Cash out"
-        value="- 1500 CFA"
-        subTitle="via mobile money"
-        date="09:00 PM"
-        customContainerClass="bg-[#e1e1e1] rounded-xl mb-0 my-1"
-        symbol={<Icons.CashOutIcon />}
-      />
-    </View>
-  );
-};
-
 export const TransactionScreen = () => {
   const { handleGetTransactions } = useCartpoActions();
+  const userTransactions = useSelector(selectUserTransactions);
+  console.log(userTransactions);
+  const isFocused = useIsFocused();
+  const [page, setPage] = useState(1);
+  const [refresh, setRefresh] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleRefresh = async () => {
+    setRefresh(true);
+    dispatch(clearUserTransactions());
+    setPage(1);
+    await handleGetTransactions(page);
+    setRefresh(false);
+  };
+
   useEffect(() => {
-    handleGetTransactions();
-  }, []);
+    if (isFocused) {
+      handleGetTransactions(page);
+    }
+  }, [isFocused, page]);
+
+  const keyExtractor = (item, index) => index.toString();
+
+  const renderTransactionItem = ({ item }) => {
+    const transactionType = item.type.toLowerCase();
+
+    return (
+      <TransactionInOut
+        key={item.createdAt}
+        type={transactionType === 'topup' || item.title === 'Discount Sale' ? 'IN' : 'OUT'}
+        title={item.title}
+        value={`${transactionType === 'topup' || item.title === 'Discount Sale' ? '+' : '-'} ${
+          item.amount
+        } CFA`}
+        subTitle={
+          transactionType === 'topup' || transactionType === 'withdraw'
+            ? 'via mobile money'
+            : 'Anonymous'
+        }
+        date={new Date(item.createdAt).toLocaleTimeString([], {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        })}
+        customContainerClass="bg-[#ededed] rounded-xl mb-0 my-1"
+        symbol={
+          transactionType === 'topup' || item.title === 'Discount Sale' ? (
+            <Icons.CashInIcon />
+          ) : (
+            <Icons.CashOutIcon />
+          )
+        }
+      />
+    );
+  };
+
+  const renderTransactionList = () => {
+    const transactionGroups = {};
+
+    userTransactions.forEach(transaction => {
+      const transactionDate = new Date(transaction.createdAt);
+      const today = new Date();
+      let formattedDate;
+      if (
+        transactionDate.getDate() === today.getDate() &&
+        transactionDate.getMonth() === today.getMonth() &&
+        transactionDate.getFullYear() === today.getFullYear()
+      ) {
+        formattedDate = 'Today';
+      } else {
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+
+        if (
+          transactionDate.getDate() === yesterday.getDate() &&
+          transactionDate.getMonth() === yesterday.getMonth() &&
+          transactionDate.getFullYear() === yesterday.getFullYear()
+        ) {
+          formattedDate = 'Yesterday';
+        } else {
+          formattedDate = transactionDate.toLocaleDateString();
+        }
+      }
+
+      if (!transactionGroups[formattedDate]) {
+        transactionGroups[formattedDate] = [];
+      }
+
+      transactionGroups[formattedDate].push(transaction);
+    });
+
+    const onEndReached = () => {
+      setPage(page + 1);
+    };
+
+    return (
+      <>
+        {Object.keys(transactionGroups).map(date => (
+          <View key={date}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 10 }}>{date}</Text>
+            <FlatList
+              data={transactionGroups[date]}
+              keyExtractor={keyExtractor}
+              renderItem={renderTransactionItem}
+              showsVerticalScrollIndicator={false}
+              onEndReached={onEndReached}
+              onEndReachedThreshold={0.1}
+            />
+          </View>
+        ))}
+      </>
+    );
+  };
+
   return (
-    <ScrollView className="mt-6" showsVerticalScrollIndicator={false}>
+    <View className="mt-6">
       <Header />
-      <View className="px-6">
-        <View>
-          <Text className="text-lg text-black font-semibold mt-4 mb-3">Today</Text>
+      <ScrollView
+        className="px-6 pb-8"
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={<RefreshControl refreshing={refresh} onRefresh={handleRefresh} />}>
+        {userTransactions.length > 0 ? (
+          renderTransactionList()
+        ) : (
           <Text>No Transactions Currently</Text>
-        </View>
-        <View>
-          <Text className="text-lg text-black font-semibold mt-4 mb-3">Yesterday</Text>
-          <Text>No Transactions Currently</Text>
-        </View>
-      </View>
-    </ScrollView>
+        )}
+      </ScrollView>
+    </View>
   );
 };

@@ -5,6 +5,7 @@ import { height } from 'utils/helpers';
 
 export const WithdrawSuccessfulScreen = ({ navigation, route }: any) => {
   const amount = route?.params?.amount;
+  console.log(route.params);
   const isSmallScreen = height < 700;
   return (
     <View
@@ -32,7 +33,7 @@ export const WithdrawSuccessfulScreen = ({ navigation, route }: any) => {
       <View className="mt-12">
         <CustomReferenceButton
           title={'Close'}
-          customContainerClass={'bg-black border-0 px-12 ml-4 py-3'}
+          customContainerClass={'bg-black border-0 px-12 py-3'}
           customTextClass={'text-white text-sm py-0 my-0 font-normal'}
           onPress={() => navigation.navigate('CartpoTab')}
         />

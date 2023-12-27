@@ -31,7 +31,6 @@ export const useCartpoActions = () => {
   const [lat, setLat] = useState(settingsData?.setting?.shop?.location?.coordinates[1]);
   const [lng, setLng] = useState(settingsData?.setting?.shop?.location?.coordinates[0]);
   const [isLoading, setLoading] = useState(false);
-  const selectedDiscount = useSelector(selectSelectedDiscount);
 
   const handleSubmit = async (values: any) => {
     let { phoneNumber } = values;
@@ -192,11 +191,11 @@ export const useCartpoActions = () => {
     setCityCountry(`${name[0].district}, ${name[0].city}, ${name[0].country}`);
   };
 
-  const handleGetTransactions = async () => {
+  const handleGetTransactions = async page => {
     try {
-      const result = await Api.getTransactions(1);
-      if (result.message === 'Login successful') {
-        dispatch(setUserTransactions(result.data));
+      const result = await Api.getCartpoTransactions(page);
+      if (result.message === 'wallet transactions') {
+        dispatch(setUserTransactions(result.data.transactionData));
       } else {
         console.log('Result:', result);
       }
@@ -304,7 +303,8 @@ export const useCartpoActions = () => {
   const handleWithdraw = async amount => {
     try {
       const result = await Api.withdrawBalance({ amount: parseInt(amount) });
-      if (result.ok) {
+      console.log(result);
+      if (result.message === 'withdrawal successfull') {
         navigation.navigate('WithdrawSuccessful', { amount });
       } else {
         Toast.show({
@@ -324,7 +324,7 @@ export const useCartpoActions = () => {
   const handleTopup = async amount => {
     try {
       const result = await Api.topupBalance({ amount: parseInt(amount) });
-      if (result.ok) {
+      if (result.message === 'topup successfull') {
         navigation.navigate('WithdrawSuccessful', { amount });
       } else {
         Toast.show({

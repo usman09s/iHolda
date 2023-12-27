@@ -5,16 +5,20 @@ import { height, moderateScale, horizontalScale } from '../../../utils/helpers';
 import { useCartpoActions } from '../hooks/useCartpoActions';
 import { useSelector } from 'react-redux';
 import { selectWalletBalance } from 'store/cartpo/calculateSlice';
+import { useIsFocused } from '@react-navigation/native';
 
 export const ProfileScreen = ({ navigation }: any) => {
   const isSmallScreen = height < 700;
   const [selectedOption, setSelectedOption] = useState('Today');
   const walletBalance = useSelector(selectWalletBalance);
   const { handleGetWallet } = useCartpoActions();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    handleGetWallet();
-  }, []);
+    if (isFocused) {
+      handleGetWallet();
+    }
+  }, [isFocused]);
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
@@ -97,7 +101,7 @@ export const ProfileScreen = ({ navigation }: any) => {
             onPress={() => navigation.navigate('CartpoStack', { screen: 'Cashout' })}>
             <Text className="text-12 font-normal text-white">Wallet balance</Text>
             <Text className="text-3xl font-normal text-white text-center my-2">
-              {walletBalance?.wallet?.pendingBalance}cfa
+              {walletBalance?.wallet?.availableBalance}cfa
             </Text>
           </TouchableOpacity>
         </View>

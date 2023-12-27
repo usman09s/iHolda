@@ -8,8 +8,13 @@ import { height, width } from 'utils/helpers';
 import CustomErrorModal from 'components/ErrorModal/errorModal';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useSelector } from 'react-redux';
-import { selectSelectedOption } from 'store/cartpo/calculateSlice';
+import {
+  selectCalculatorAmount,
+  selectCartpoSettings,
+  selectSelectedOption,
+} from 'store/cartpo/calculateSlice';
 import Api from 'services/Api';
+import Toast from 'react-native-toast-message';
 
 export const DiscountQrCodeScreen = ({ navigation }: any) => {
   const isFocused = useIsFocused();
@@ -17,6 +22,9 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
   const [qrCode, setQrCode] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [errorText, setErrorText] = useState();
+  const calculatorAmount = useSelector(selectCalculatorAmount);
+  const settingsData = useSelector(selectCartpoSettings);
+  const paymentAmount = parseFloat(calculatorAmount);
   const scanResult = useRef<
     { encrypted_data: string; query_id: string; plastic_id: string } | undefined
   >();
@@ -45,7 +53,7 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
         const userId = 'your-user-id';
         const result = await Api.scanQRCode({ qrCode: data, userId: userId });
         console.log('API Response:', result);
-        navigation.navigate('TotalDiscount');
+        navigation.navigate('TotalDiscount', { metId: result.data?.metId });
       } catch (error) {
         console.error('Error scanning QR Code:', error);
         setErrorText('Error scanning QR Code');
@@ -56,11 +64,61 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
 
   const outerViewStyle = isSmallScreen ? {} : { justifyContent: 'space-between' };
 
-  const handleNavigation = () => {
+  const makeApiRequest = async paymentType => {
+    try {
+      const response = await fetch('http://ihold.yameenyousuf.com/api/cartpo/discount', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: paymentAmount,
+          type: paymentType,
+        }),
+      });
+      const responseData = await response.json();
+      console.log('API response:', responseData);
+      return responseData;
+    } catch (error) {
+      console.error('API request failed:', error.message);
+      throw error;
+    }
+  };
+
+  const handleNavigation = async () => {
     if (selectedOption === 'cash') {
-      navigation.navigate('SaleComplete');
-    } else {
-      navigation.navigate('DirectPayment');
+      try {
+        const responseData = await makeApiRequest('cash');
+        navigation.navigate('SaleComplete');
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Unexpected error occurred',
+          visibilityTime: 1500,
+        });
+        return;
+      }
+    } else if (selectedOption === 'direct') {
+      if (settingsData.setting?.paymentMethod[0].account) {
+        try {
+          const responseData = await makeApiRequest('direct');
+          navigation.navigate('DirectPayment');
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Unexpected error occurred',
+            visibilityTime: 1500,
+          });
+          return;
+        }
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'No Payment Account added',
+          text2: 'You need to add a payment account to make a transaction',
+          visibilityTime: 1500,
+        });
+      }
     }
   };
 

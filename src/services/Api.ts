@@ -277,6 +277,19 @@ class ApiClass {
     }
   };
 
+  getCartpoTransactions = async (page: any) => {
+    try {
+      return await this.externalApi
+        .url(`cartpo/transactions?page=${page}`)
+        .get()
+        .json(result => {
+          return result;
+        });
+    } catch (error) {
+      throw error;
+    }
+  };
+
   getCartpoSettings = async () => {
     try {
       return await this.externalApi

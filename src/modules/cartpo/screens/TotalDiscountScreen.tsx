@@ -5,40 +5,63 @@ import { height, units, verticalScale } from '../../../utils/helpers';
 import { useSelector } from 'react-redux';
 import {
   selectCalculatorAmount,
+  selectCartpoSettings,
   selectPaymentValue,
   selectSelectedOption,
 } from 'store/cartpo/calculateSlice';
+import Toast from 'react-native-toast-message';
 
-export const TotalDiscountScreen = ({ navigation }: any) => {
+export const TotalDiscountScreen = ({ navigation, route }: any) => {
   const isSmallScreen = height < 700;
   const selectedOption = useSelector(selectSelectedOption);
   const calculatorAmount = useSelector(selectCalculatorAmount);
+  const settingsData = useSelector(selectCartpoSettings);
   const discountPercentage = 50;
   const paymentAmount = parseFloat(calculatorAmount);
   const discountedAmount = (discountPercentage / 100) * paymentAmount;
   console.log(selectedOption);
   const totalAmountAfterDiscount = paymentAmount - discountedAmount;
   const handleNavigation = async () => {
-    try {
-      const response = await fetch('http://ihold.yameenyousuf.com/api/cartpo/discount', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: totalAmountAfterDiscount,
-          type: 'cash',
-        }),
-      });
-      const responseData = await response.json();
-      console.log('API response:', responseData);
-      if (selectedOption === 'cash') {
-        navigation.navigate('SaleComplete');
-      } else {
-        navigation.navigate('DirectPayment');
+    if (settingsData.setting?.paymentMethod[0].account) {
+      try {
+        const metId = route.params.metId;
+        const response = await fetch('http://ihold.yameenyousuf.com/api/cartpo/discount', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: paymentAmount,
+            type: selectedOption === 'direct' ? 'direct' : 'cash',
+            metId: metId || null,
+          }),
+        });
+        const responseData = await response.json();
+        console.log('API response:', responseData);
+        if (responseData.message !== 'Topup balance is low') {
+          if (selectedOption === 'cash') {
+            navigation.navigate('SaleComplete');
+          } else {
+            navigation.navigate('DirectPayment');
+          }
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Top up balance is low',
+            text2: 'You must have the required amount to make the transaction',
+          });
+        }
+      } catch (error) {
+        console.error('API request failed:', error.message);
       }
-    } catch (error) {
-      console.error('API request failed:', error.message);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'No Payment Account added',
+        text2: 'You need to add payment account to make a transaction',
+        visibilityTime: 1500,
+      });
+      return;
     }
   };
 
