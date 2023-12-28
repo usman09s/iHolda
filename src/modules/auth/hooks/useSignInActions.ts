@@ -89,7 +89,7 @@ export const useSignInActions = () => {
           );
           Api.setQueryIdValue(result.query_id);
           console.log(result.data, 'result');
-          dispatch(setUserInfo(result?.data?.user));
+          dispatch(setUserInfo({ ...result.data.user, plasticAgent: result.data?.plasticAgent }));
           if (!result.data.isReferred) {
             navigate('EnterReferralCode');
             return;

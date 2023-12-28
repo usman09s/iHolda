@@ -20,10 +20,11 @@ import socketService from 'services/Socket';
 const PlasticActivityScreen = () => {
   const navigation: any = useNavigation();
   const { user } = useSelector(userSelector);
+  console.log("🚀 ~ file: PlasticAgentActivity.tsx:23 ~ PlasticActivityScreen ~ user:", user?.plasticAgent)
   const [upcomingDropOff, setUpcomingDropOff] = useState<{ data: any[] } | null>(null);
   const [plasticCount, setPlasticCount] = useState({ todaysCount: 0, totalCount: 0 });
 
-  const _ = useQuery('agentcount', () => (user?._id ? Api.checkUserIsAgent(user?._id) : null), {
+  const _ = useQuery('agentcount', () => (user?.plasticAgent?._id ? Api.checkUserIsAgent(user?.plasticAgent?._id) : null), {
     onSuccess: data => setPlasticCount(data),
     refetchOnMount: true
   });

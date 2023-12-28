@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, ScrollView, Text, View } from 'react-native';
-import { NavigationProp, StackActions } from '@react-navigation/native';
+import { NavigationProp, StackActions, useIsFocused } from '@react-navigation/native';
 import Button from 'components/Button';
 import Header from 'components/Header/Header';
 import Icons from 'components/Icons';
@@ -21,6 +21,7 @@ import PlasticItem from '../components/PlasticItem';
 import { PlasticStackParamList } from '../PlasticStackNavigator';
 import { userAppInit } from 'hooks/useAppInit';
 import { userSelector } from 'store/auth/userSelectors';
+import { useEffect } from 'react';
 const Bottle = require('../../../../assets/images/bottleLabel.png');
 const DefaultImage = require('../../../../assets/images/bottle.png');
 const BiggerBottle = require('../../../../assets/images/biggerBottle.png');
@@ -29,20 +30,23 @@ const BiggestBottle = require('../../../../assets/images/biggestBottle.png');
 const PlasticScreen = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
   const plasticSizes = useSelector(plasticSizeSelector);
-  const { data, refetch } = useQuery('currentUserProfile', Api.getUserProfile0, {
+  const { data } = useQuery('currentUserProfile', Api.getUserProfile0, {
     refetchOnMount: false,
   });
 
   const totalPlastic = useSelector(plasticCountTotalSelector);
-  const { navigate, goBack,reset } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
+  const { navigate, goBack, reset } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
   const userData = useSelector(userSelector);
   const { status } = userAppInit();
+
+  const isFocused = useIsFocused();
   // const status = "SUCCESS"
 
   const loggedIn = status === 'SUCCESS' && userData.user?.isReferred;
 
-  const { isLoading } = useQuery('plasticSizes', Api.getPlasticSizes, {
+  const { isLoading, refetch } = useQuery('plasticSizes', Api.getPlasticSizes, {
     onSuccess: result => {
+      console.log('🚀 ~ PlasticScreen ~ result:', result);
       dispatch(setPlasticsSize(result));
     },
   });
@@ -60,6 +64,10 @@ const PlasticScreen = ({ navigation }: any) => {
     }
   };
 
+  useEffect(() => {
+    if (isFocused) refetch();
+  }, [isFocused]);
+
   return (
     <ScrollView
       className="flex-1 bg-white py-2"
@@ -67,10 +75,14 @@ const PlasticScreen = ({ navigation }: any) => {
       <View className="px-6">
         <Header
           // onPressLeft={() => (loggedIn ? goBack() : navigation.navigate('BottomTabs'))}
-          onPressLeft={() => (loggedIn ? goBack() : reset({
-            index: 0,
-            routes: [{ name: 'BottomTabs' }],
-          }))}
+          onPressLeft={() =>
+            loggedIn
+              ? goBack()
+              : reset({
+                  index: 0,
+                  routes: [{ name: 'BottomTabs' }],
+                })
+          }
           leftComponent={<Icons.CrossIcon />}
         />
       </View>

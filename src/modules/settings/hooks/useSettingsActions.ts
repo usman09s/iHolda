@@ -231,7 +231,7 @@ export const useSettingActions = () => {
         .headers({ 'Content-Type': 'multipart/form-data' })
         .put(formData)
         .json();
-      dispatch(setUserInfo(response.data.user));
+      dispatch(setUserInfo({ ...response?.data.user, plasticAgent: response?.data?.plasticAgent }));
       Toast.show({
         type: 'success',
         text1: 'Profile Updated Successfully',

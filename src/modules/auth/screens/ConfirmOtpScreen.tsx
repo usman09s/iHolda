@@ -15,6 +15,7 @@ import { getHitSlop, verticalScale } from 'utils/helpers';
 
 import { AuthStackParamList } from '../AuthStackNavigator';
 import OTPInput from '../components/OTPInput';
+import Toast from 'react-native-toast-message';
 
 const ConfirmOtpScreen = () => {
   const [otp, setOtp] = useState('');
@@ -22,6 +23,22 @@ const ConfirmOtpScreen = () => {
   const phone = useSelector(userPhoneSelector);
   const { navigate } = useAppNavigation<NavigationProp<AuthStackParamList>>();
   const { remainingTime, resetTimer } = useTimer({ duration: 30, onTimeout: () => null });
+
+
+  const OTPSender = useMutation(Api.verifyPhoneBeforeRegister, {
+    onSuccess: () => {
+      Toast.show({
+        type: 'success',
+        text1: 'Otp sent successfully.',
+      });
+    },
+    onError: () => {
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong try again.',
+      });
+    },
+  });
 
   const { error, isLoading, mutate } = useMutation(Api.verifyOtp, {
     onSuccess: result => {
@@ -61,7 +78,15 @@ const ConfirmOtpScreen = () => {
           </View>
         </View>
         <OTPInput onChangeOtp={setOtp} />
-        <Pressable onPress={resetTimer} disabled={remainingTime !== '00'}>
+        <Pressable
+          onPress={() => {
+            if(remainingTime !== '00') return;
+            resetTimer();
+            OTPSender.mutate({
+              phone: phone,
+            });
+          }}
+          disabled={remainingTime !== '00'}>
           <Text className={text({ type: 'r15', class: 'text-center text-white mb-8' })}>
             Resend {remainingTime === '00' ? '' : `in ${remainingTime}`}
           </Text>

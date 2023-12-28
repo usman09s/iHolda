@@ -62,7 +62,7 @@ const ModifyConfirmPlastic = ({ route }: any) => {
   //   const plasticSizes = useSelector(plasticSizeSelector);
 
   //   const totalPlastic = useSelector(plasticCountTotalSelector);
-  const { navigate,  } = useAppNavigation<NavigationProp<any>>();
+  const { navigate } = useAppNavigation<NavigationProp<any>>();
 
   const { mutateAsync, isLoading } = useMutation(Api.approvedPlasticDelivery);
 
@@ -95,9 +95,9 @@ const ModifyConfirmPlastic = ({ route }: any) => {
 
   const handlePlasticSupply = () => {
     const requirePlasticData: { size: string; quantity: number }[] = scannedData?.plastics.map(
-      (e: any) => ({ size: e.size, quantity: e?.quantity, perUnitCp: e?.perUnitPrice }),
+      (e: any) => ({ size: e.size, quantity: e?.quantity, perUnitCp: e?.perUnitCp }),
     );
-    // 
+    //
     let plastics: any[] = JSON.parse(JSON.stringify(requirePlasticData));
 
     if (oneLQuantity !== temp?.quantity) {
@@ -112,21 +112,21 @@ const ModifyConfirmPlastic = ({ route }: any) => {
       const sizeIndex = plastics.findIndex(e => e.size == '5L');
       if (sizeIndex > 0) plastics[sizeIndex].quantity = FiveLQuantity;
     }
+
     mutateAsync(
       {
         queryId: scannedData._id,
-        plasticId: scannedData?.plasticAgent,
         plastics: plastics,
+        plasticId: scannedData?.plasticAgent,
       },
       {
         onSuccess: () => {
           const totalPlastic = getPlasticCount();
           navigate('PlasticApproveScreen', { username: scannedData?.user?.userName, totalPlastic });
         },
-        onError: (error) => {
-        console.log("🚀 ~ file: ModifyOrConfirmPlastics.tsx:129 ~ handlePlasticSupply ~ error:", error)
-          
-        }
+        onError: error => {
+          console.log('🚀 ~ handlePlasticSupply ~ error:', error);
+        },
       },
     );
     //     .then(() => {

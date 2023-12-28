@@ -27,7 +27,8 @@ const PlasticQRCodeScreen = () => {
   console.log("ddda",params.plasticInformation);
 
   const onCompleteePlastic = (data: any) => {
-    console.log("🚀 ~ file: PlasticQRCodeScreen.tsx:30 ~ onCompleteePlastic ~ data:", data)
+    console.log("🚀  ~ onCompleteePlastic ~ data:", data)
+    console.log("🚀 ~ onCompleteePlastic ~ data ~ plastics:", data?.plastic?.plastics)
     
     navigate("PlasticDeliveredDetails", {data})
   }
