@@ -11,6 +11,21 @@ import Toast from 'react-native-toast-message';
 import { useSettingActions } from '../hooks/useSettingsActions';
 import { userSelector } from 'store/auth/userSelectors';
 
+function isValidURL(str: string): boolean {
+  if (!str) return false;
+  if (
+    /^(http(s):\/\/.)[-a-zA-Z0-9@:%.\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%\+.~#?&//=]*)$/g.test(
+      str,
+    )
+  ) {
+    console.log('YES');
+    return true;
+  } else {
+    console.log('NO');
+    return false;
+  }
+}
+
 export const SocialMediaScreen = () => {
   const [isTextInputVisible, setIsTextInputVisible] = useState([false, false, false]);
   const [linkInput, setLinkInput] = useState(['', '', '', '', '', '']);
@@ -19,6 +34,7 @@ export const SocialMediaScreen = () => {
   const dispatch = useDispatch();
   const userData = useSelector(userSelector)?.user;
   const { handleUpdateSetting } = useSettingActions();
+  console.log(userData?.socialLinks);
 
   const toggleLinkInput = index => {
     if (activeLink !== null && activeLink !== index) {
@@ -52,7 +68,10 @@ export const SocialMediaScreen = () => {
 
   const openSocialMediaApp = (platform, socialLink) => {
     let webURL;
-    const isFullURL = socialLink.startsWith('http') || socialLink.startsWith('www');
+    const isFullURL =
+      socialLink.startsWith('http') ||
+      socialLink.startsWith('https') ||
+      socialLink.startsWith('www');
 
     switch (platform) {
       case 'facebook':
@@ -77,19 +96,25 @@ export const SocialMediaScreen = () => {
         console.error('Unsupported platform:', platform);
         return;
     }
-
-    Linking.openURL(webURL).catch(err => {
-      console.error('An error occurred while opening the link:', err);
-    });
+    console.log(webURL);
+    if (webURL) {
+      Linking.openURL(webURL).catch(err => {
+        console.error('An error occurred while opening the link:', err);
+      });
+    }
   };
 
   const handleLinkAccount = async index => {
     const link = linkInput[index];
-    if (!link.trim()) {
+    if (!isValidURL(link)) {
       setInputError(prevErrors => {
         const newErrors = [...prevErrors];
         newErrors[index] = true;
         return newErrors;
+      });
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid URL. Please enter a valid URL.',
       });
       return;
     }

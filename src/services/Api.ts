@@ -666,9 +666,11 @@ class ApiClass {
       });
   };
 
-  searchUsers = async (searchText: string) => {
+  searchUsers = async ({ searchText, page }: any) => {
     const apiUrl =
-      searchText.trim() === '' ? 'user/suggestions' : `user/suggestions?search=${searchText}`;
+      searchText === ''
+        ? `user/suggestions?page=${page}`
+        : `user/suggestions?search=${searchText}&${page}`;
     const result = await this.externalApi.url(apiUrl).get().json();
     return result.data.data;
   };
@@ -839,8 +841,8 @@ class ApiClass {
         ...this._getAuthorization(this.token),
       })
       .get()
-      .json(result => result)
-      // .catch(err => err);
+      .json(result => result);
+  // .catch(err => err);
 
   agentScan = async ({ queryId, agentId }: { queryId: string; agentId: string }): Promise<any> =>
     await this.externalApi
@@ -1013,13 +1015,13 @@ class ApiClass {
       .json(result => result);
 
   getRecentMets = async (): Promise<{ data: any }> =>
-      await this.externalApi
-        .url(`met/recent-users`)
-        .headers({
-          ...this._getAuthorization(this.token),
-        })
-        .get()
-        .json(result => result);
+    await this.externalApi
+      .url(`met/recent-users`)
+      .headers({
+        ...this._getAuthorization(this.token),
+      })
+      .get()
+      .json(result => result);
   getRestaurantMenu = async (id: string): Promise<{ data: any }> =>
     await this.externalApi
       .url(`cartpo/shop/menu/${id}`)

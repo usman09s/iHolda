@@ -1,5 +1,5 @@
 import Header from 'components/Header/Header';
-import { View, Text, TextInput, FlatList } from 'react-native';
+import { View, Text, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import { text } from 'theme/text';
 import { CustomReferenceContact } from '../components/CustomReferenceContact';
 import { height } from 'utils/helpers';
@@ -9,7 +9,8 @@ import { useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 
 export const AddReferenceScreen = () => {
-  const { searchText, handleChangeText, handleSearchUsers } = useRequestReferenceAction();
+  const { searchText, handleChangeText, handleSearchUsers, handleLoadMore, isLoading } =
+    useRequestReferenceAction();
   const searchData = useSelector(state => state.userReference.searchUsers);
   const referenceUsers = useSelector(state => state.userReference.referenceUsers);
   const isFocused = useIsFocused();
@@ -45,12 +46,18 @@ export const AddReferenceScreen = () => {
           onSubmitEditing={handleSearchUsers}
         />
       </View>
-      <FlatList
-        data={filteredSearchData}
-        keyExtractor={item => item._id}
-        renderItem={({ item }) => <CustomReferenceContact data={item} />}
-        showsVerticalScrollIndicator={false}
-      />
+      {isLoading ? (
+        <ActivityIndicator animating={true} color={'blue'} />
+      ) : (
+        <FlatList
+          data={filteredSearchData}
+          keyExtractor={item => item._id}
+          renderItem={({ item }) => <CustomReferenceContact data={item} />}
+          showsVerticalScrollIndicator={false}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.8}
+        />
+      )}
     </View>
   );
 };
