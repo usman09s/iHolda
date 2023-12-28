@@ -314,11 +314,15 @@ export const useSettingActions = () => {
       const response = await wretch('http://ihold.yameenyousuf.com/api/user/invitees')
         .get()
         .json(result => {
-          console.log(result, 'klililhdsl');
+          console.log(result.data.invitationData, 'klililhdsl');
           return result;
         });
-      const invitedInvitees = response.filter(invitee => invitee.status === 'invited');
-      const pendingInvitees = response.filter(invitee => invitee.status === 'pending');
+      const invitedInvitees = response.data.invitationData.filter(
+        invitee => invitee.status === 'invited',
+      );
+      const pendingInvitees = response.data.invitationData.filter(
+        invitee => invitee.status === 'pending',
+      );
       dispatch(setInvitees({ invitedInvitees, pendingInvitees }));
       console.log('Invitees:', response);
     } catch (error) {

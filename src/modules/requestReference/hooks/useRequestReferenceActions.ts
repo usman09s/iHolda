@@ -1,15 +1,16 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Toast from 'react-native-toast-message';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import Api from 'services/Api';
 import { userSelector } from 'store/auth/userSelectors';
 import { setUserInfo } from 'store/auth/userSlice';
-import { selectUser, setUser } from 'store/userDataSlice';
+import { clearUser, selectUser, setUser } from 'store/userDataSlice';
 import {
   setGender,
   setReferences,
+  setSearchTextUsers,
   setSearchUsers,
   setVerificationData,
 } from 'store/userReference/userReferenceSlice';
@@ -24,21 +25,43 @@ export const useRequestReferenceAction = () => {
   const userReferenceData = useSelector((state: any) => state.userReference.verificationData);
   const userGender = useSelector((state: any) => state.userReference.gender);
   const userReferences = useSelector((state: any) => state.userReference.referenceUsers);
+  const [isLoading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
   const selectOption = (option: any) => {
     setSelectedOption(option);
   };
 
   const handleChangeText = (value: any) => {
+    console.log(value);
+    setPage(1);
+
+    if (value === '') {
+      dispatch(clearUser());
+    }
     setSearchText(value);
     handleSearchUsers();
   };
 
   const handleSearchUsers = async () => {
+    if (page === 1) {
+      setLoading(true);
+    }
     try {
-      const result = await searchUsersMutation.mutateAsync(searchText);
-      dispatch(setSearchUsers(result));
+      const result = await searchUsersMutation.mutateAsync({
+        searchText: searchText,
+        page,
+      });
+
+      if (searchText && searchText !== '') {
+        dispatch(setSearchTextUsers(result));
+      } else {
+        dispatch(setSearchUsers(result));
+      }
+      setLoading(false);
+
       return result;
     } catch (error) {
+      setLoading(false);
       throw error;
     }
   };
@@ -122,6 +145,12 @@ export const useRequestReferenceAction = () => {
     }
   };
 
+  const handleLoadMore = () => {
+    console.log('Loading');
+    setPage(page + 1);
+    handleSearchUsers();
+  };
+
   const updateReference = (data, index) => {
     dispatch(setReferences({ index, data }));
   };
@@ -135,8 +164,10 @@ export const useRequestReferenceAction = () => {
     handleAddReference2,
     searchText,
     handleChangeText,
+    isLoading,
     handleFinalNavigation,
     handleSearchUsers,
+    handleLoadMore,
     updateReference,
   };
 };

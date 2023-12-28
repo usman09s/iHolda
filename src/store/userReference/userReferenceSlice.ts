@@ -28,6 +28,15 @@ const userReferenceSlice = createSlice({
       }
     },
     setSearchUsers: (state, action) => {
+      const newSearchUsers = Array.isArray(action.payload)
+        ? action.payload.filter(newUser => {
+            return !state.searchUsers.some(existingUser => existingUser._id === newUser._id);
+          })
+        : [];
+
+      state.searchUsers = [...state.searchUsers, ...newSearchUsers];
+    },
+    setSearchTextUsers: (state, action) => {
       state.searchUsers = action.payload;
     },
     deleteReferenceUser: (state, action) => {
@@ -44,7 +53,8 @@ export const {
   setVerificationData,
   setReferences,
   setSearchUsers,
-  deleteReferenceUser, // Add the deleteReferenceUser action
+  deleteReferenceUser,
+  setSearchTextUsers,
 } = userReferenceSlice.actions;
 
 export default userReferenceSlice.reducer;
