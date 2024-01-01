@@ -9,7 +9,7 @@ export const CustomTransaction = ({
   type,
 }: any) => {
   return (
-    <View className="flex-row justify-between items-center bg-[#e1e1e1] py-3 px-4 rounded-xl my-1">
+    <View className="flex-row justify-between items-center bg-[#ededed] py-3 px-4 rounded-xl my-1">
       <View className="flex-row">
         {avatarComponent}
         <View className="flex-column gap-1 justify-center">

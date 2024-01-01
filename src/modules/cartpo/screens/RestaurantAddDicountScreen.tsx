@@ -8,7 +8,6 @@ import { CustomRestaurantButton } from '../components/CustomRestaurantButton';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteDiscount,
-  deletePaymentAccount,
   selectCartpoSettings,
   selectSelectedDiscount,
 } from 'store/cartpo/calculateSlice';
@@ -97,8 +96,7 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
   };
 
   const handleDeletePaymentAccount = accountValue => {
-    dispatch(deleteDiscount(accountValue));
-    handleDeleteDiscount();
+    handleDeleteDiscount(accountValue);
   };
 
   return (

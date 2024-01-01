@@ -58,10 +58,18 @@ const CalculatorScreen = ({ navigation }: any) => {
   }, [isFocused]);
 
   const handleNavigation = () => {
+    if (inputValue === '0') {
+      Toast.show({
+        type: 'error',
+        text1: 'Input amount must be greater than 0',
+        text2: 'Please enter a greater amount to proceed',
+      });
+      return;
+    }
+
     if (
-      cartpoSettings &&
-      cartpoSettings?.setting &&
-      cartpoSettings?.setting?.paymentMethod.length > 0
+      selectedOption === 'cash' ||
+      (cartpoSettings && cartpoSettings.setting && cartpoSettings.setting.paymentMethod.length > 0)
     ) {
       dispatch(setPaymentValue(inputValue));
       setInputValue('0');

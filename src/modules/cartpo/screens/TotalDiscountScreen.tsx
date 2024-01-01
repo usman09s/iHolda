@@ -37,7 +37,7 @@ export const TotalDiscountScreen = ({ navigation, route }: any) => {
           }),
         });
         const responseData = await response.json();
-        console.log('API response:', responseData);
+        console.log('API response:', responseData.data.wallet);
         if (responseData.message !== 'Topup balance is low') {
           if (selectedOption === 'cash') {
             navigation.navigate('SaleComplete');
@@ -65,6 +65,16 @@ export const TotalDiscountScreen = ({ navigation, route }: any) => {
     }
   };
 
+  const formatNumberInUnits = (number: number) => {
+    if (number < 1000) {
+      return number.toFixed(1);
+    } else if (number < 1000000) {
+      return (number / 1000).toFixed(1) + 'k';
+    } else {
+      return (number / 1000000).toFixed(1) + 'M';
+    }
+  };
+
   return (
     <View className="flex-1 px-6">
       <Header showBackIcon />
@@ -87,13 +97,13 @@ export const TotalDiscountScreen = ({ navigation, route }: any) => {
               marginVertical: verticalScale(20),
             }}>
             <Text className="text-center text-[42px] font-bold text-green-500">
-              {totalAmountAfterDiscount.toFixed(1)}
+              {formatNumberInUnits(totalAmountAfterDiscount)}
             </Text>
             <Text className="text-center text-3xl font-light text-green-500">CFA</Text>
           </View>
           <Text className="text-center">Discount({discountPercentage}%)</Text>
           <Text className="text-center text-red-600 text-3xl font-semibold mt-3">
-            -{discountedAmount.toFixed(1)}CFA
+            -{formatNumberInUnits(discountedAmount)} CFA
           </Text>
         </View>
         <View className="mx-10 justify-center items-center">

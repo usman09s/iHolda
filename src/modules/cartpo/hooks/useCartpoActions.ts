@@ -89,11 +89,12 @@ export const useCartpoActions = () => {
         });
       }
     } catch (error) {
-      const errorText = JSON.parse(error.message);
       Toast.show({
         type: 'error',
         text1: 'Invalid OTP',
+        text2: 'Please enter a valid OTP sent on your phone number',
       });
+      return;
     }
   };
 
@@ -263,24 +264,33 @@ export const useCartpoActions = () => {
     navigation.goBack();
   };
 
-  const handleDeleteDiscount = async () => {
+  const handleDeleteDiscount = async (discountIdToDelete: any) => {
+    const updatedDiscounts = settingsData.setting.discounts.filter(
+      discount => discount._id !== discountIdToDelete,
+    );
     const result = await Api.updateCartpoSettings({
       paymentMethod: [...settingsData.setting.paymentMethod],
-      discounts: [...settingsData.setting.discounts],
+      discounts: updatedDiscounts,
     });
     navigation.goBack();
-    console.log(result);
+    dispatch(setDiscount(result.data.discounts));
+    console.log(result.data);
     Toast.show({
       type: 'success',
       text1: 'Discount Deleted',
     });
   };
 
-  const handleDeletePayment = async () => {
-    console.log(settingsData.setting.paymentMethod, 'plplplplpl');
+  const handleDeletePayment = async (paymentAccountToDelete: any) => {
+    const updatedPaymentMethods = settingsData.setting.paymentMethod.filter(
+      paymentMethod => paymentMethod.account !== paymentAccountToDelete,
+    );
+    console.log(updatedPaymentMethods, 'updatedPaymentMethods');
     const result = await Api.updateCartpoSettings({
-      paymentMethod: settingsData.setting.paymentMethod,
+      paymentMethod: updatedPaymentMethods,
     });
+    dispatch(setPaymentAccount(result.data.paymentMethod));
+    console.log(result.data.paymentMethod, 'handleDeletePayment');
     navigation.goBack();
     Toast.show({
       type: 'success',

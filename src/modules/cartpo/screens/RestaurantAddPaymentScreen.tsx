@@ -21,12 +21,12 @@ const validationSchema = Yup.object().shape({
   account: Yup.string().required('Account is required').matches(/^\S*$/, 'Invalid Account Number'), // Disallow spaces
 });
 
-export const RestaurantAddPaymentScreen = ({ route }: any) => {
+export const RestaurantAddPaymentScreen = () => {
   const { handleAddPayment, handleDeletePayment } = useCartpoActions();
   const settingsData = useSelector(selectCartpoSettings);
   const selectPayment = useSelector(selectSelectedPayment);
-  console.log(selectPayment);
-  console.log(settingsData.setting.paymentMethod);
+  console.log(selectPayment, 'pipipip');
+  console.log(settingsData.setting.paymentMethod, 'pipipipoioio');
   const initialValues = {
     accountType: selectPayment?.bank || '',
     account: selectPayment?.account?.toString() || '',
@@ -34,8 +34,7 @@ export const RestaurantAddPaymentScreen = ({ route }: any) => {
   const dispatch = useDispatch();
   const deletePaymentAccountHandler = () => {
     if (settingsData && settingsData.setting && settingsData.setting.paymentMethod) {
-      dispatch(deletePaymentAccount(selectPayment.account));
-      handleDeletePayment();
+      handleDeletePayment(selectPayment.account);
     }
   };
 
