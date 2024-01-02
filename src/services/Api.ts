@@ -853,13 +853,13 @@ class ApiClass {
       .get()
       .json(result => result);
 
-  withdrawFromWallet = async (amount: number): Promise<any> =>
+  withdrawFromWallet = async ({ amount, phone }: any): Promise<any> =>
     await this.externalApi
       .url(`plastic/withdraw`)
       .headers({
         ...this._getAuthorization(this.token),
       })
-      .post({ amount })
+      .post({ amount: amount, phone: phone })
       .json(result => result);
 
   postMoments = async (reqBody: FormData): Promise<PostMomentsResponse> =>

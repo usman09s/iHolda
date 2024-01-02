@@ -11,11 +11,15 @@ import { Userpic } from 'react-native-userpic';
 import CustomProfileAvatar from 'components/CustomProfileAvatar';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import { deleteReferenceUser } from 'store/userReference/userReferenceSlice';
+import { userSelector } from 'store/auth/userSelectors';
+import Toast from 'react-native-toast-message';
 
 export const BasicVerificationThreeScreen = () => {
   const { handleAddReference1, handleAddReference2, handleFinalNavigation } =
     useRequestReferenceAction();
   const dispatch = useDispatch();
+  const { user } = useSelector(userSelector);
+  console.log(user?.cp);
   const isSmallScreen = height < 700;
   const referenceUsers = useSelector((state: any) => state.userReference.referenceUsers);
 
@@ -47,10 +51,18 @@ export const BasicVerificationThreeScreen = () => {
             <TouchableOpacity
               className="w-32 h-32 rounded-full bg-blue-500 items-center justify-center mb-2 border-2 border-zinc-400"
               onPress={() => {
-                if (referenceUsers.length > 0) {
-                  dispatch(deleteReferenceUser(0));
+                if (user?.cp >= 40) {
+                  if (referenceUsers.length > 0) {
+                    dispatch(deleteReferenceUser(0));
+                  } else {
+                    handleAddReference1();
+                  }
                 } else {
-                  handleAddReference1();
+                  Toast.show({
+                    type: 'error',
+                    text1: 'You must have atleast 40 CP in your account.',
+                    text2: 'Increase your CP to request reference',
+                  });
                 }
               }}>
               {referenceUsers.length > 0 ? (
@@ -71,10 +83,18 @@ export const BasicVerificationThreeScreen = () => {
             <TouchableOpacity
               className="w-32 h-32 rounded-full bg-blue-500 items-center justify-center mb-2 border-2 border-zinc-400"
               onPress={() => {
-                if (referenceUsers.length > 1) {
-                  dispatch(deleteReferenceUser(1));
+                if (user?.cp >= 40) {
+                  if (referenceUsers.length > 1) {
+                    dispatch(deleteReferenceUser(1));
+                  } else {
+                    handleAddReference2();
+                  }
                 } else {
-                  handleAddReference2();
+                  Toast.show({
+                    type: 'error',
+                    text1: 'You must have atleast 40 CP in your account.',
+                    text2: 'Increase your CP to request reference',
+                  });
                 }
               }}>
               {referenceUsers.length > 1 ? (
