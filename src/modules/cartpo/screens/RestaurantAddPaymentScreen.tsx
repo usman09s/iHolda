@@ -5,13 +5,8 @@ import { Formik } from 'formik';
 import { CustomReferenceInput } from 'modules/requestReference/components/CustomReferenceInput';
 import { CustomRestaurantButton } from '../components/CustomRestaurantButton';
 import { useCartpoActions } from '../hooks/useCartpoActions';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  deletePaymentAccount,
-  selectCartpoSettings,
-  selectSelectedPayment,
-  setCartpoSettings,
-} from 'store/cartpo/calculateSlice';
+import { useSelector } from 'react-redux';
+import { selectCartpoSettings, selectSelectedPayment } from 'store/cartpo/calculateSlice';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
@@ -22,7 +17,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export const RestaurantAddPaymentScreen = () => {
-  const { handleAddPayment, handleDeletePayment } = useCartpoActions();
+  const { handleAddPayment, handleDeletePayment, updatePaymentMethod } = useCartpoActions();
   const settingsData = useSelector(selectCartpoSettings);
   const selectPayment = useSelector(selectSelectedPayment);
   console.log(selectPayment, 'pipipip');
@@ -31,7 +26,7 @@ export const RestaurantAddPaymentScreen = () => {
     accountType: selectPayment?.bank || '',
     account: selectPayment?.account?.toString() || '',
   };
-  const dispatch = useDispatch();
+
   const deletePaymentAccountHandler = () => {
     if (settingsData && settingsData.setting && settingsData.setting.paymentMethod) {
       handleDeletePayment(selectPayment.account);
@@ -52,7 +47,13 @@ export const RestaurantAddPaymentScreen = () => {
       <Formik
         initialValues={initialValues}
         validateOnChange={false}
-        onSubmit={handleAddPayment}
+        onSubmit={values => {
+          if (Array.isArray(selectPayment)) {
+            handleAddPayment(values);
+          } else if (typeof selectPayment === 'object' && selectPayment !== null) {
+            updatePaymentMethod(values);
+          }
+        }}
         validationSchema={validationSchema}>
         {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
           <View className="my-12 flex-1 justify-between">
@@ -71,6 +72,7 @@ export const RestaurantAddPaymentScreen = () => {
                 label="Account"
                 placeholder="6790084984"
                 field="account"
+                keyboardType={'numeric'}
                 handleChange={handleChange('account')}
                 value={values.account}
                 error={errors.account}

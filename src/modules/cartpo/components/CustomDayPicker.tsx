@@ -8,6 +8,7 @@ const CustomDayPicker = ({
   customClassContainer,
   customButtonContainer,
   defaultValue,
+  error,
 }: any) => {
   const [selectedIndices, setSelectedIndices] = useState([]);
 
@@ -44,7 +45,7 @@ const CustomDayPicker = ({
       key={item.value}
       className={`w-9 h-10 rounded-xl items-center justify-center ${
         selectedIndices.includes(index) ? 'bg-sky-400' : 'bg-[#e3e2e2]'
-      } ${customButtonContainer}`}
+      } ${error ? 'border-2 border-red-500' : ''} ${customButtonContainer}`}
       onPress={() => handlePress({ value: item.value, index })}>
       <Text style={selectedIndices.includes(index) ? 'text-gray-600' : 'text-gray-600'}>
         {item.label}

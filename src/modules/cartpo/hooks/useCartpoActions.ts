@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import {
   selectPhoneNumber,
   selectSelectedDiscount,
+  selectSelectedPayment,
   setCartpoSettings,
   setDiscount,
   setPaymentAccount,
@@ -31,6 +32,9 @@ export const useCartpoActions = () => {
   const [lat, setLat] = useState(settingsData?.setting?.shop?.location?.coordinates[1]);
   const [lng, setLng] = useState(settingsData?.setting?.shop?.location?.coordinates[0]);
   const [isLoading, setLoading] = useState(false);
+  const selectPayment = useSelector(selectSelectedPayment);
+  const selectDiscount = useSelector(selectSelectedDiscount);
+  console.log(selectDiscount, '[[[[[');
 
   const handleSubmit = async (values: any) => {
     let { phoneNumber } = values;
@@ -244,6 +248,68 @@ export const useCartpoActions = () => {
     navigation.goBack();
   };
 
+  const updatePaymentMethod = async updatedPayment => {
+    const updatedValues = {
+      account: updatedPayment.account,
+      bank: updatedPayment.accountType,
+    };
+    if (!selectPayment || !selectPayment.account) {
+      return;
+    }
+    const paymentIndex = settingsData.setting.paymentMethod.findIndex(
+      payment => payment.account === selectPayment.account,
+    );
+
+    if (paymentIndex !== -1) {
+      const updatedPaymentMethod = [...settingsData.setting.paymentMethod];
+      updatedPaymentMethod[paymentIndex] = {
+        ...updatedPaymentMethod[paymentIndex],
+        ...updatedValues,
+      };
+
+      console.log(updatedPaymentMethod);
+      const result = await Api.updateCartpoSettings({
+        paymentMethod: updatedPaymentMethod,
+        discounts: [...settingsData.setting.discounts],
+      });
+      console.log('API RESPONSE: ', result.data.paymentMethod);
+      dispatch(setPaymentAccount(result.data.paymentMethod));
+      navigation.goBack();
+    }
+  };
+
+  const updateDiscount = async (updatedDiscount: any) => {
+    console.log(updatedDiscount, 'values');
+    const updatedValues = {
+      condition: updatedDiscount.discountCondition,
+      percentage: updatedDiscount.discountPercentage,
+      people: updatedDiscount.minimumUsers,
+    };
+    if (!selectDiscount || !selectDiscount._id) {
+      return;
+    }
+    console.log(settingsData.setting.discounts, 'proceed');
+    const discountIndex = settingsData.setting.discounts.findIndex(
+      discount => discount._id === selectDiscount._id,
+    );
+
+    if (discountIndex !== -1) {
+      const updatedDiscount = [...settingsData.setting.discounts];
+      updatedDiscount[discountIndex] = {
+        ...updatedDiscount[discountIndex],
+        ...updatedValues,
+      };
+
+      console.log(updatedDiscount, ']]]]');
+      const result = await Api.updateCartpoSettings({
+        paymentMethod: [...settingsData.setting.paymentMethod],
+        discounts: updatedDiscount,
+      });
+      dispatch(setDiscount(result.data.discounts));
+      navigation.goBack();
+    }
+  };
+
   const handleAddDiscount = async values => {
     console.log(values);
     const addDiscount = {
@@ -359,14 +425,6 @@ export const useCartpoActions = () => {
   const handleSettingsSubmit = async values => {
     setLoading(true);
     console.log(values, 'values');
-    if (values.selectedDays.length === 0) {
-      setLoading(false);
-      Toast.show({
-        type: 'error',
-        text1: 'Please select the opening days',
-      });
-      return;
-    }
     if (!cityCountry && !values.address) {
       setLoading(false);
       Toast.show({
@@ -472,6 +530,8 @@ export const useCartpoActions = () => {
     handleDeletePayment,
     handleGetWallet,
     handleWithdraw,
+    updatePaymentMethod,
+    updateDiscount,
     handleAddDiscount,
     handleDeleteDiscount,
     handleTopup,

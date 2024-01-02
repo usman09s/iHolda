@@ -31,6 +31,11 @@ const validationSchema = Yup.object().shape({
   closeHours: Yup.string().notRequired(),
   coverImage: Yup.string().required('Please add a cover image'),
   featuredImages: Yup.mixed().notRequired(),
+  selectedDays: Yup.array()
+    .required('Opening Days are required')
+    .test('isNotEmpty', 'Opening Days are required', function (value) {
+      return value && value.length > 0;
+    }),
 });
 
 export const RestaurantSettingsScreen = () => {
@@ -148,7 +153,7 @@ export const RestaurantSettingsScreen = () => {
                 placeholder={
                   cityCountry ? cityCountry : values.address ? values.address : 'Tap to add address'
                 }
-                onPress={handleLocationPress}
+                onPress={handleLocationPress(setFieldValue)}
                 customContainerClass={errors.address ? 'border-2 border-red-500' : ''}
               />
             </View>
@@ -167,6 +172,7 @@ export const RestaurantSettingsScreen = () => {
                 onDaySelect={selectedDays => setFieldValue('selectedDays', selectedDays)}
                 multiselect={true}
                 defaultValue={values.selectedDays}
+                error={errors.selectedDays}
               />
             </TouchableOpacity>
             <View className="flex-row gap-2 items-center">

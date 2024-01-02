@@ -7,9 +7,9 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { CustomRestaurantButton } from '../components/CustomRestaurantButton';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  deleteDiscount,
   selectCartpoSettings,
   selectSelectedDiscount,
+  updateDiscount,
 } from 'store/cartpo/calculateSlice';
 import { useState } from 'react';
 import Toast from 'react-native-toast-message';
@@ -24,9 +24,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
-  const { handleAddDiscount, handleDeleteDiscount } = useCartpoActions();
+  const { handleAddDiscount, handleDeleteDiscount, updateDiscount } = useCartpoActions();
   const settingsData = useSelector(selectCartpoSettings);
-  const dispatch = useDispatch();
   const selectedDiscount = useSelector(selectSelectedDiscount);
   console.log(selectedDiscount, 'popopo');
   console.log(settingsData.setting?.discounts);
@@ -42,13 +41,13 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
         if (selectedDiscount.people === 1) {
           discountInfo.minimumUsers = '1 person';
           discountInfo.discountCondition =
-            selectedDiscount.condition === 2
+            selectedDiscount.condition === 1
               ? 'Both users must be new customers'
               : '1 person must be a new customer';
         } else if (selectedDiscount.people === 2) {
           discountInfo.minimumUsers = '2 people';
           discountInfo.discountCondition =
-            selectedDiscount.condition === 2
+            selectedDiscount.condition === 1
               ? 'Both users must be new customers'
               : 'Condition for 2 people';
         }
@@ -92,7 +91,11 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
       minimumUsers,
       discountCondition,
     };
-    handleAddDiscount(updatedValues);
+    if (Array.isArray(selectedDiscount)) {
+      handleAddDiscount(updatedValues);
+    } else if (typeof selectedDiscount === 'object' && selectedDiscount !== null) {
+      updateDiscount(updatedValues);
+    }
   };
 
   const handleDeletePaymentAccount = accountValue => {

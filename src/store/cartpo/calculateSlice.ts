@@ -54,14 +54,8 @@ const cartpoSlice = createSlice({
       console.log(action.payload, 'redux');
       state.selectedMenuItem = action.payload;
     },
-    deletePaymentAccount: (state, action) => {
-      const discountIdToDelete = action.payload;
-      state.cartpoSettings.setting.paymentMethod =
-        state.cartpoSettings.setting.paymentMethod.filter(
-          discount => discount.account !== discountIdToDelete,
-        );
-    },
     setPaymentAccount: (state, action) => {
+      console.log(action.payload, 'setPaymentAccount');
       if (state.cartpoSettings && state.cartpoSettings.setting) {
         state.cartpoSettings.setting.paymentMethod = action.payload;
       }
@@ -74,32 +68,6 @@ const cartpoSlice = createSlice({
     },
     setSelectedDiscount: (state, action) => {
       state.selectedDiscount = action.payload;
-    },
-    deleteDiscount: (state, action) => {
-      const discountIdToDelete = action.payload;
-      state.cartpoSettings.setting.discounts = state.cartpoSettings.setting.discounts.filter(
-        discount => discount._id !== discountIdToDelete,
-      );
-    },
-    updateDiscount: (state, action) => {
-      console.log('Before update:', state.cartpoSettings.setting.discounts);
-      const updatedDetails = action.payload;
-      console.log('Selected Discount ID:', state.selectedDiscount._id);
-      const index = state.cartpoSettings.setting.discounts.findIndex(
-        discount => discount._id === state.selectedDiscount._id,
-      );
-      console.log('Index:', index);
-      if (index !== -1) {
-        state.cartpoSettings.setting.discounts[index] = {
-          id: state.selectedDiscount._id,
-          condition: updatedDetails.discountCondition,
-          percentage: updatedDetails.discountPercentage,
-          people: updatedDetails.minimumUsers,
-        };
-      } else {
-        console.log('Selected discount not found!');
-      }
-      console.log('After update:', state.cartpoSettings.setting.discounts);
     },
     setShopData: (state, action) => {
       state.cartpoSettings.shop = action.payload;
@@ -138,12 +106,10 @@ export const {
   setUserData,
   setUserTransactions,
   setCartpoSettings,
-  deletePaymentAccount,
   setPaymentAccount,
   setWalletBalance,
   setCalculatorAmount,
   setSelectedDiscount,
-  deleteDiscount,
   setSelectedPayment,
   setDiscount,
   setShopData,
