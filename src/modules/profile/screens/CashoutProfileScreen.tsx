@@ -20,15 +20,19 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
   const [account, setAccount] = useState('');
   const { user } = useSelector(userSelector);
 
-  const { mutate, isLoading } = useMutation(Api.withdrawFromWallet, {
-    onError: error => {
-      alert('something went wrong');
-      console.error(error);
+  const { mutate, isLoading } = useMutation(
+    (withdrawAmount: number) =>
+      Api.withdrawFromWallet({ amount: withdrawAmount, phone: user?.phone }),
+    {
+      onError: error => {
+        alert('something went wrong');
+        console.error(error);
+      },
+      onSuccess: ({ data }) => {
+        navigation.navigate('WithdrawSuccessful', { withdrawAmmount });
+      },
     },
-    onSuccess: ({ data }) => {
-      navigation.navigate('WithdrawSuccessful', { withdrawAmmount });
-    },
-  });
+  );
 
   const isSmallScreen = height < 700;
   // const handleValueChange = (value: string) => {

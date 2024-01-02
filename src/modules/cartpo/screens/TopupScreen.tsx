@@ -75,7 +75,7 @@ export const TopupScreen = ({ navigation }: any) => {
 
             <Text
               style={{
-                color: 'blacck',
+                color: 'black',
                 textAlign: 'center',
                 fontSize: 16,
                 alignSelf: 'flex-end',
