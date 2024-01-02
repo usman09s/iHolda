@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const CustomInputButton = ({ text, placeholder, onPress, index, customContainerClass }) => {
+const CustomInputButton = ({ text, placeholder, onPress, index, customContainerClass }: any) => {
   return (
     <View className="flex-row items-center flex my-2">
       {index && <Text className="text-lg font-normal">{index}</Text>}

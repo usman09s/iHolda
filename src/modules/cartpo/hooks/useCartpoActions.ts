@@ -15,7 +15,6 @@ import {
   setUserTransactions,
   setWalletBalance,
 } from 'store/cartpo/calculateSlice';
-import * as Location from 'expo-location';
 import { useDispatch, useSelector } from 'react-redux';
 import { VerifyOTPMessage } from 'types/AuthTypes';
 import { selectCartpoSettings } from '../../../store/cartpo/calculateSlice';
@@ -34,7 +33,6 @@ export const useCartpoActions = () => {
   const [isLoading, setLoading] = useState(false);
   const selectPayment = useSelector(selectSelectedPayment);
   const selectDiscount = useSelector(selectSelectedDiscount);
-  console.log(selectDiscount, '[[[[[');
 
   const handleSubmit = async (values: any) => {
     let { phoneNumber } = values;
@@ -169,31 +167,6 @@ export const useCartpoActions = () => {
         });
       }
     }
-  };
-
-  const handleLocationPress = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      return;
-    }
-    let location = await Location.getCurrentPositionAsync({});
-    setLat(location.coords.latitude);
-    setLng(location.coords.longitude);
-    const updatedUserData = {
-      ...settingsData,
-      location: { coordinates: [location.coords.longitude, location.coords.latitude] },
-    };
-    dispatch(setCartpoSettings(updatedUserData));
-    getCityCountry();
-  };
-
-  const getCityCountry = async () => {
-    const name = await Location.reverseGeocodeAsync({
-      latitude: lat,
-      longitude: lng,
-    });
-    console.log(name);
-    setCityCountry(`${name[0].district}, ${name[0].city}, ${name[0].country}`);
   };
 
   const handleGetTransactions = async page => {
@@ -454,15 +427,11 @@ export const useCartpoActions = () => {
     formData.append('location[type]', 'Point');
     formData.append(
       'location[coordinates][0]',
-      settingsData?.setting?.shop?.location?.coordinates[0]
-        ? settingsData?.setting?.shop?.location?.coordinates[0]
-        : lng,
+      settingsData?.setting?.shop?.location?.coordinates[0],
     );
     formData.append(
       'location[coordinates][1]',
-      settingsData?.setting?.shop?.location?.coordinates[1]
-        ? settingsData?.setting?.shop?.location?.coordinates[1]
-        : lat,
+      settingsData?.setting?.shop?.location?.coordinates[1],
     );
 
     if (values.coverImage && values.coverImage.startsWith('file')) {
@@ -523,7 +492,6 @@ export const useCartpoActions = () => {
     handleLoginSubmit,
     handleGetTransactions,
     handleGetCartpoSettings,
-    handleLocationPress,
     handleSettingsSubmit,
     cityCountry,
     handleAddPayment,

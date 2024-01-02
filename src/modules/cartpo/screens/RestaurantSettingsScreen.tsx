@@ -10,8 +10,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { CustomRestaurantButton } from '../components/CustomRestaurantButton';
 import { useCartpoActions } from '../hooks/useCartpoActions';
 import CustomInputButton from '../components/CustomInputButton';
-import { useSelector } from 'react-redux';
-import { selectCartpoSettings } from 'store/cartpo/calculateSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import * as Location from 'expo-location';
+import { selectCartpoSettings, setCartpoSettings } from 'store/cartpo/calculateSlice';
 import { getImageLink } from '../../moments/helpers/imageHelpers';
 import * as Yup from 'yup';
 
@@ -27,7 +28,7 @@ const validationSchema = Yup.object().shape({
     .matches(/^[^\s].*$/, 'About should not start with a space'),
   phoneNumber: Yup.string().required('Please enter a phone number'),
   openHours: Yup.string().notRequired(),
-  address: Yup.string().notRequired(),
+  address: Yup.string().required('Address is required'),
   closeHours: Yup.string().notRequired(),
   coverImage: Yup.string().required('Please add a cover image'),
   featuredImages: Yup.mixed().notRequired(),
@@ -39,12 +40,40 @@ const validationSchema = Yup.object().shape({
 });
 
 export const RestaurantSettingsScreen = () => {
-  const { handleSettingsSubmit, handleLocationPress, cityCountry, isLoading } = useCartpoActions();
+  const { handleSettingsSubmit, cityCountry, isLoading } = useCartpoActions();
   const [openTime, setOpenTime] = useState(new Date());
   const [closeTime, setCloseTime] = useState(new Date());
+  const dispatch = useDispatch();
   const [isPickerShow, setIsPickerShow] = useState(false);
   const [pickerMode, setPickerMode] = useState('open');
   const settingsData = useSelector(selectCartpoSettings);
+  console.log(settingsData.setting.shop, 'yourtube');
+
+  const handleLocationPress = async (setFieldValue: any) => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    const updatedUserData = {
+      ...settingsData,
+      setting: {
+        ...settingsData?.setting,
+        shop: {
+          ...settingsData?.setting?.shop,
+          location: {
+            coordinates: [location.coords.longitude, location.coords.latitude],
+          },
+        },
+      },
+    };
+    dispatch(setCartpoSettings(updatedUserData));
+    const name = await Location.reverseGeocodeAsync({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+    setFieldValue('address', `${name[0].district}, ${name[0].city}, ${name[0].country}`);
+  };
 
   const pickImage = async (setFieldValue: any, fieldName: any, values: any) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -153,7 +182,7 @@ export const RestaurantSettingsScreen = () => {
                 placeholder={
                   cityCountry ? cityCountry : values.address ? values.address : 'Tap to add address'
                 }
-                onPress={handleLocationPress(setFieldValue)}
+                onPress={() => handleLocationPress(setFieldValue)}
                 customContainerClass={errors.address ? 'border-2 border-red-500' : ''}
               />
             </View>
