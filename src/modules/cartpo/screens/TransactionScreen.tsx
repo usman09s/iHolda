@@ -6,11 +6,7 @@ import Icons from 'components/Icons';
 import { useIsFocused } from '@react-navigation/native';
 import { useCartpoActions } from '../hooks/useCartpoActions';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  clearUserTransactions,
-  selectUserTransactions,
-  setUserTransactions,
-} from 'store/cartpo/calculateSlice';
+import { clearUserTransactions, selectUserTransactions } from 'store/cartpo/calculateSlice';
 import { CustomTransaction } from '../components/CustomTransaction';
 import { getImageLink } from '../../moments/helpers/imageHelpers';
 
@@ -59,6 +55,50 @@ export const TransactionScreen = () => {
     const transactionType = item.type.toLowerCase();
 
     if (item.title === 'Discount Sale' && item.to) {
+      const renderUserAvatar = userIndex => {
+        const user = item.met?.users?.[userIndex];
+        const userPhoto = user?.photo?.mediaId ? getImageLink(user.photo.mediaId) : null;
+
+        return (
+          <View
+            className={`rounded-full border-[3px] ${
+              userIndex === 1 ? 'right-4 border-green-500' : 'border-saffron'
+            }  bg-gray-400 justify-center items-center`}>
+            <View className="rounded-full border-[2px] border-white justify-center items-center">
+              <Image
+                source={{
+                  uri: userPhoto ?? 'https://i.pravatar.cc/150?img=36',
+                }}
+                className="w-10 h-10 rounded-full"
+              />
+            </View>
+          </View>
+        );
+      };
+
+      if (item.met?.users?.length === 2) {
+        return (
+          <CustomTransaction
+            key={item.createdAt}
+            avatarComponent={
+              <View className="flex-row">
+                {renderUserAvatar(0)}
+                {renderUserAvatar(1)}
+              </View>
+            }
+            topText={item.title}
+            bottomText={`to ${item.to.userName ? item.to.userName : 'Anonymous'}`}
+            amount={`-${item.amount}`}
+            type="positive"
+            time={new Date(item.createdAt).toLocaleTimeString([], {
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true,
+            })}
+          />
+        );
+      }
+
       return (
         <CustomTransaction
           key={item.createdAt}
