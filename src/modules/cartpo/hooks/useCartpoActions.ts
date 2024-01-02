@@ -6,6 +6,7 @@ import {
   selectPhoneNumber,
   selectSelectedDiscount,
   selectSelectedPayment,
+  selectUserData,
   setCartpoSettings,
   setDiscount,
   setPaymentAccount,
@@ -21,6 +22,7 @@ import { selectCartpoSettings } from '../../../store/cartpo/calculateSlice';
 import Toast from 'react-native-toast-message';
 import mime from 'mime';
 import * as SecureStore from 'expo-secure-store';
+import { selectUser } from 'store/userDataSlice';
 
 export const useCartpoActions = () => {
   const navigation = useNavigation();
@@ -28,11 +30,10 @@ export const useCartpoActions = () => {
   const phoneNumberSelect = useSelector(selectPhoneNumber);
   const settingsData = useSelector(selectCartpoSettings);
   const [cityCountry, setCityCountry] = useState();
-  const [lat, setLat] = useState(settingsData?.setting?.shop?.location?.coordinates[1]);
-  const [lng, setLng] = useState(settingsData?.setting?.shop?.location?.coordinates[0]);
   const [isLoading, setLoading] = useState(false);
   const selectPayment = useSelector(selectSelectedPayment);
   const selectDiscount = useSelector(selectSelectedDiscount);
+  const userData = useSelector(selectUser);
 
   const handleSubmit = async (values: any) => {
     let { phoneNumber } = values;
@@ -356,7 +357,10 @@ export const useCartpoActions = () => {
 
   const handleWithdraw = async amount => {
     try {
-      const result = await Api.withdrawBalance({ amount: parseInt(amount) });
+      const result = await Api.withdrawBalance({
+        amount: parseInt(amount),
+        phone: userData?.phone,
+      });
       console.log(result);
       if (result.message === 'withdrawal successfull') {
         navigation.navigate('WithdrawSuccessful', { amount });
@@ -377,7 +381,7 @@ export const useCartpoActions = () => {
 
   const handleTopup = async amount => {
     try {
-      const result = await Api.topupBalance({ amount: parseInt(amount) });
+      const result = await Api.topupBalance({ amount: parseInt(amount), phone: userData?.phone });
       if (result.message === 'topup successfull') {
         navigation.navigate('WithdrawSuccessful', { amount });
       } else {

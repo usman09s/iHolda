@@ -10,7 +10,7 @@ import { selectCartpoSettings, selectWalletBalance } from 'store/cartpo/calculat
 import CustomHeader from 'components/Header/CustomHeader';
 import { useCartpoActions } from '../hooks/useCartpoActions';
 
-export const TopupScreen = ({ navigation }: any) => {
+export const TopupScreen = () => {
   const { handleTopup } = useCartpoActions();
   const [withdrawAmmount, setWithdrawAmmount] = useState('');
   const isSmallScreen = height < 700;
@@ -18,7 +18,6 @@ export const TopupScreen = ({ navigation }: any) => {
   const walletBalance = useSelector(selectWalletBalance);
   const [value, setValue] = useState('value');
   const handleValueChange = (value: string) => {
-    console.log('Selected value:', value);
     setValue(value);
   };
 

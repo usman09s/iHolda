@@ -331,11 +331,11 @@ class ApiClass {
     }
   };
 
-  withdrawBalance = async ({ amount }: any) => {
+  withdrawBalance = async ({ amount, phone }: any) => {
     try {
       return await this.externalApi
         .url(`cartpo/withdraw`)
-        .post({ amount: amount })
+        .post({ amount: amount, phone: phone })
         .json(result => {
           console.log(result);
           return result;
@@ -345,11 +345,11 @@ class ApiClass {
     }
   };
 
-  topupBalance = async ({ amount }: any) => {
+  topupBalance = async ({ amount, phone }: any) => {
     try {
       return await this.externalApi
         .url(`cartpo/topup`)
-        .post({ amount: amount })
+        .post({ amount: amount, phone: phone })
         .json(result => {
           console.log(result);
           return result;
