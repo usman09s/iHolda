@@ -69,7 +69,9 @@ const CalculatorScreen = ({ navigation }: any) => {
 
     if (
       selectedOption === 'cash' ||
-      (cartpoSettings && cartpoSettings.setting && cartpoSettings.setting.paymentMethod.length > 0)
+      (cartpoSettings &&
+        cartpoSettings.setting &&
+        cartpoSettings.setting.paymentMethod.some(item => item.accountType === 'bank'))
     ) {
       dispatch(setPaymentValue(inputValue));
       setInputValue('0');
@@ -79,6 +81,7 @@ const CalculatorScreen = ({ navigation }: any) => {
       Toast.show({
         type: 'error',
         text1: 'Add a Payment Account first',
+        text2: 'Please add an account which is not a Cash Account',
       });
     }
   };

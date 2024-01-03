@@ -15,7 +15,7 @@ export const DirectPaymentScreen = ({ navigation, route }: any) => {
   const paymentAmount = parseFloat(calculatorAmount);
   const discountedAmount = (discountPercentage / 100) * paymentAmount;
   const filteredPaymentMethod = (settingsData.setting?.paymentMethod || []).filter(
-    (item: any) => item.bank.toLowerCase() !== 'cash',
+    (item: any) => item.accountType.toLowerCase() !== 'cash',
   );
   const totalAmountAfterDiscount = paymentAmount - discountedAmount;
   const isSingleAccount = settingsData.setting?.paymentMethod.length === 1;

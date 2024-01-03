@@ -33,6 +33,7 @@ export const useCartpoActions = () => {
   const [isLoading, setLoading] = useState(false);
   const selectPayment = useSelector(selectSelectedPayment);
   const selectDiscount = useSelector(selectSelectedDiscount);
+  const { user } = useSelector(selectUserData);
   const userData = useSelector(selectUser);
 
   const handleSubmit = async (values: any) => {
@@ -200,10 +201,9 @@ export const useCartpoActions = () => {
     console.log(values);
     const paymentMethod = {
       account: values.account,
-      bank: values.accountType,
-      accountType: 'cash',
+      accountType: values.accountType.toLowerCase() === 'cash' ? values.accountType : 'bank',
+      bank: values.accountType.toLowerCase() !== 'cash' ? values.accountType : null,
     };
-
     const updatedPaymentMethod = [
       ...settingsData.setting.paymentMethod.filter(item => item.account !== null),
       paymentMethod,
@@ -225,7 +225,9 @@ export const useCartpoActions = () => {
   const updatePaymentMethod = async updatedPayment => {
     const updatedValues = {
       account: updatedPayment.account,
-      bank: updatedPayment.accountType,
+      accountType:
+        updatedPayment.accountType.toLowerCase() === 'cash' ? updatedPayment.accountType : 'bank',
+      bank: updatedPayment.accountType.toLowerCase() !== 'cash' ? updatedPayment.accountType : null,
     };
     if (!selectPayment || !selectPayment.account) {
       return;
@@ -359,7 +361,7 @@ export const useCartpoActions = () => {
     try {
       const result = await Api.withdrawBalance({
         amount: parseInt(amount),
-        phone: userData?.phone,
+        phone: user?.phone ? user.phone : userData?.phone,
       });
       console.log(result);
       if (result.message === 'withdrawal successfull') {
@@ -381,7 +383,10 @@ export const useCartpoActions = () => {
 
   const handleTopup = async amount => {
     try {
-      const result = await Api.topupBalance({ amount: parseInt(amount), phone: userData?.phone });
+      const result = await Api.topupBalance({
+        amount: parseInt(amount),
+        phone: user?.phone ? user.phone : userData?.phone,
+      });
       if (result.message === 'topup successfull') {
         navigation.navigate('WithdrawSuccessful', { amount });
       } else {

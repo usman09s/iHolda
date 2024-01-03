@@ -13,7 +13,7 @@ const validationSchema = Yup.object().shape({
   accountType: Yup.string()
     .required('Account provider / Type is required')
     .matches(/^\S*$/, 'Invalid Account Type'),
-  account: Yup.string().required('Account is required').matches(/^\S*$/, 'Invalid Account Number'), // Disallow spaces
+  account: Yup.string().required('Account is required').matches(/^\S*$/, 'Invalid Account Number'),
 });
 
 export const RestaurantAddPaymentScreen = () => {
@@ -23,7 +23,7 @@ export const RestaurantAddPaymentScreen = () => {
   console.log(selectPayment, 'pipipip');
   console.log(settingsData.setting.paymentMethod, 'pipipipoioio');
   const initialValues = {
-    accountType: selectPayment?.bank || '',
+    accountType: selectPayment?.bank || selectPayment?.accountType || '',
     account: selectPayment?.account?.toString() || '',
   };
 

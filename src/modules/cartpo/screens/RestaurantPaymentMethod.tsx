@@ -36,9 +36,9 @@ export const RestaurantPaymentMethodScreen = ({ navigation }: any) => {
             index={index + 1}
             onPress={() => handlePressPaymentMethod(index)}
             text={
-              settingsData.setting.paymentMethod[index]?.bank
+              settingsData.setting.paymentMethod[index]?.bank !== null
                 ? settingsData.setting.paymentMethod[index]?.bank
-                : null
+                : settingsData.setting.paymentMethod[index]?.accountType
             }
           />
         ))}
