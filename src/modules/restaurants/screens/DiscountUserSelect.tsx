@@ -13,7 +13,6 @@ import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 const DiscountUserSelect = ({ route, navigation }: any) => {
   const { user } = useSelector(userSelector);
   const { data } = useQuery('userRecentMets', Api.getRecentMets);
-  console.log("🚀 ~ file: DiscountUserSelect.tsx:16 ~ DiscountUserSelect ~ data:", data?.data.data)
 
   const restaurantId = route.params?.restaurantId;
   const qrCode = route.params?.qrCode;

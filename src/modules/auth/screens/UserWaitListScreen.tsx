@@ -16,7 +16,6 @@ const UserWaitListScreen = () => {
   const { goBack, dispatch } = useNavigation();
   const { data, } = useQuery('userWaitingNumber', Api.getWaitingNumber);
   const user = useSelector(userSelector);
-  console.log(user.user?.userName);
   const copyToClipboard = async (value: string) => await Clipboard.setStringAsync(value);
 
   return (

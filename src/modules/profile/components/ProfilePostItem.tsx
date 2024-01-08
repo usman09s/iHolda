@@ -37,7 +37,7 @@ const ProfilePostItem = ({ index, item, onPress }: Props) => {
 
   return (
     <TouchableOpacity
-      onPress={() => onPress && onPress(item)}
+      onPress={() => onPress && onPress(users)}
       style={[
         {
           height: width / 2.4,

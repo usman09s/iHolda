@@ -13,7 +13,6 @@ const BottomNavigation = ({ navigation: { navigate }, state }: BottomTabBarProps
   // console.log("🚀 ~ file: index.tsx:12 ~ BottomNavigation ~ navigate:", navigate)
   const routes = state?.routes[0]?.state?.routes;
   const activeRoute = routes ? routes[routes.length - 1].name : 'Another';
-  console.log('🚀 ~ file: index.tsx:15 ~ BottomNavigation ~ activeRoute:', activeRoute);
   const onPressNavigate = (screen: string) => () => navigate(screen);
   const { bottom } = useSafeAreaInsets();
 

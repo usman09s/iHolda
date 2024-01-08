@@ -24,10 +24,8 @@ const PlasticQRCodeScreen = () => {
   const { dispatch, navigate }: any = useNavigation<NavigationProp<PlasticStackParamList>>();
   const [id, setId] = useState(userQrCode);
 
-  console.log("ddda",params.plasticInformation);
 
   const onCompleteePlastic = (data: any) => {
-    console.log("🚀 ~ file: PlasticQRCodeScreen.tsx:30 ~ onCompleteePlastic ~ data:", data)
     
     navigate("PlasticDeliveredDetails", {data})
   }

@@ -32,7 +32,7 @@ const LeaderBoardUsersHeader = ({ winners }: Props) => (
             <Text className={text({ type: 'b12', class: 'text-white' })}>1</Text>
           </View>
         </View>
-        <Text className={text({ type: 'm12', class: 'text-white mt-2.5' })}>
+        <Text className={text({ type: 'm9', class: 'text-white mt-2.5 text-[10px]' })}>
           {winners?.first?.username}
         </Text>
         <View className="bg-extraLightBlue px-5 py-0.5 rounded-md justify-center items-center mt-1.5">
@@ -54,7 +54,7 @@ const LeaderBoardUsersHeader = ({ winners }: Props) => (
               <Text className={text({ type: 'b12', class: 'text-white' })}>2</Text>
             </View>
           </View>
-          <Text className={text({ type: 'm12', class: 'text-white mt-4' })}>
+          <Text className={text({ type: 'm12', class: 'text-white mt-4 text-[10px]' })}>
             {winners?.second?.username}
           </Text>
           <View className="bg-extraLightBlue px-3 py-0.5 rounded-md justify-center items-center mt-1.5">
@@ -74,7 +74,7 @@ const LeaderBoardUsersHeader = ({ winners }: Props) => (
               <Text className={text({ type: 'b12', class: 'text-white' })}>3</Text>
             </View>
           </View>
-          <Text className={text({ type: 'm12', class: 'text-white mt-4' })}>
+          <Text className={text({ type: 'm12', class: 'text-white mt-4 text-[10px]' })}>
             {winners?.third?.username}
           </Text>
           <View className="bg-extraLightBlue px-3 py-0.5 rounded-md justify-center items-center mt-1.5">

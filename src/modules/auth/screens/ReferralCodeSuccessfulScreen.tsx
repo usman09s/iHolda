@@ -99,7 +99,12 @@ const ReferralCodeSuccessfulScreen = ({ route }: any) => {
             customContainer="self-center"
             type="borderedSolid"
             extraStyles={{ borderWidth: 5, borderColor: 'white', width: 180 }}
-            onPress={() => navigate('PlasticStack')}
+            onPress={() => navigate('PlasticStack', {
+              screen: 'Plastic',
+              params: {
+                shouldNotLoggedIn: true
+              },
+            })}
           />
         </View>
       </ScrollView>

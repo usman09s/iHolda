@@ -26,7 +26,7 @@ const DefaultImage = require('../../../../assets/images/bottle.png');
 const BiggerBottle = require('../../../../assets/images/biggerBottle.png');
 const BiggestBottle = require('../../../../assets/images/biggestBottle.png');
 
-const PlasticScreen = ({ navigation }: any) => {
+const PlasticScreen = ({ route }: any) => {
   const dispatch = useAppDispatch();
   const plasticSizes = useSelector(plasticSizeSelector);
   const { data, refetch } = useQuery('currentUserProfile', Api.getUserProfile0, {
@@ -34,12 +34,14 @@ const PlasticScreen = ({ navigation }: any) => {
   });
 
   const totalPlastic = useSelector(plasticCountTotalSelector);
-  const { navigate, goBack,reset } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
+  const { navigate, goBack, reset } = useAppNavigation<NavigationProp<PlasticStackParamList>>();
   const userData = useSelector(userSelector);
   const { status } = userAppInit();
   // const status = "SUCCESS"
 
-  const loggedIn = status === 'SUCCESS' && userData.user?.isReferred;
+  const shouldNotLoggedIn = route?.params?.shouldNotLoggedIn;
+
+  const loggedIn = shouldNotLoggedIn ? false : status === 'SUCCESS' && userData.user?.isReferred;
 
   const { isLoading } = useQuery('plasticSizes', Api.getPlasticSizes, {
     onSuccess: result => {
@@ -67,10 +69,14 @@ const PlasticScreen = ({ navigation }: any) => {
       <View className="px-6">
         <Header
           // onPressLeft={() => (loggedIn ? goBack() : navigation.navigate('BottomTabs'))}
-          onPressLeft={() => (loggedIn ? goBack() : reset({
-            index: 0,
-            routes: [{ name: 'BottomTabs' }],
-          }))}
+          onPressLeft={() =>
+            loggedIn
+              ? goBack()
+              : reset({
+                  index: 0,
+                  routes: [{ name: 'BottomTabs' }],
+                })
+          }
           leftComponent={<Icons.CrossIcon />}
         />
       </View>

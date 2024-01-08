@@ -18,16 +18,17 @@ const FeedHeader = () => {
 
   return (
     <View className="flex-row items-center justify-between absolute z-50 pt-5">
-      <LinearGradient
-        locations={[0, 0.2, 0.6, 1]}
+      <View
+        // locations={[0, 0.2, 0.6, 1]}
         style={{ paddingTop: top + units.vh * 3 }}
         className="flex-row items-center justify-between px-4 pb-3"
-        colors={[
-          colors['black-o-80'],
-          colors['black-o-70'],
-          colors['black-o-40'],
-          colors['black-o-01'],
-        ]}>
+        // colors={[
+        //   colors['black-o-80'],
+        //   colors['black-o-70'],
+        //   colors['black-o-40'],
+        //   colors['black-o-01'],
+        // ]}
+        >
         <>
           <TouchableOpacity
             onPress={() => navigate('Plastic')}
@@ -47,7 +48,7 @@ const FeedHeader = () => {
             </Pressable>
           </View>
         </>
-      </LinearGradient>
+      </View>
     </View>
   );
 };

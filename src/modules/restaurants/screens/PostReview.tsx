@@ -73,7 +73,6 @@ const PostReview = ({ route }: { route?: { params: any } }) => {
       body: data,
     });
     setIsLoading(false);
-    console.log('🚀 ~ file: PostPreviewScreen.tsx:58 ~ postData ~ response:', response);
     return { ...response.json(), status: response.status };
   }
 
@@ -136,7 +135,6 @@ const PostReview = ({ route }: { route?: { params: any } }) => {
     formdata.append('categories[0]', selectedCategory);
 
     postData(Api.baseUrl + 'rating', formdata).then(data => {
-      console.log('🚀~ postData ~ data:', data);
       if (data.status !== 200) return alert('Something went wrong');
       console.log(data);
       // navigate('ReviewSuccess', { type: 'accept' });

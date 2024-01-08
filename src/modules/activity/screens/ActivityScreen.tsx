@@ -19,7 +19,6 @@ const ActivityScreen = () => {
   const notifications = useQuery('getNotifications', Api.getNotifications);
   const navigation: any = useNavigation();
   const userData = useSelector(selectUser);
-  console.log(userData);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 

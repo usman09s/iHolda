@@ -8,7 +8,6 @@ import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 type Props = RankItemType;
 
 const LeaderBoardUserItem = ({ point, pointStatus, avatar, position, username, index }: Props) => {
-  console.log("🚀 ~ file: LeaderBoardUserItem.tsx:11 ~ LeaderBoardUserItem ~ avatar:", avatar)
   return (
     <View
       style={{ height: units.vh * 10 }}
@@ -18,7 +17,7 @@ const LeaderBoardUserItem = ({ point, pointStatus, avatar, position, username, i
         <View className="border-4 border-saffron rounded-full self-center ml-4 mr-4">
           <Image className="h-10 w-10 rounded-full" source={{ uri: getImageLink(avatar) }} />
         </View>
-        <Text className={text({ type: 'm13' })}>{username}</Text>
+        <Text className={text({ type: 'm13' ,class: 'text-[13px]' })}>{username}</Text>
       </View>
       <View className="justify-end items-end">
         <Text className={text({ type: 'b13', class: 'mb-2' })}>{point}</Text>

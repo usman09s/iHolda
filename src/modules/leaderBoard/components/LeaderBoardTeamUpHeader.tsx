@@ -46,7 +46,7 @@ const LeaderBoardTeamUpHeader = ({ winners }: Props) => (
             <Text className={text({ type: 'b12', class: 'text-white' })}>1</Text>
           </View>
         </View>
-        <Text className={text({ type: 'm12', class: 'text-white mt-3' })}>{winners?.first.username} & {winners?.first.username2}</Text>
+        <Text className={text({ type: 'm12', class: 'text-white mt-3 text-[12px]' })}>{winners?.first.username} & {winners?.first.username2}</Text>
         <View className="bg-extraLightBlue px-5 py-0.5 rounded-md justify-center items-center mt-1.5">
           <Text className={text({ type: 'm12', class: 'text-black' })}>{winners.first.point}x</Text>
         </View>
@@ -79,7 +79,7 @@ const LeaderBoardTeamUpHeader = ({ winners }: Props) => (
             </View>
           </View>
           <View className="items-center justify-center">
-            <Text className={text({ type: 'm12', class: 'text-white' })}>{winners?.second.username} & {winners?.second.username2}</Text>
+            <Text className={text({ type: 'm12', class: 'text-white text-[10px]' })}>{winners?.second.username} & {winners?.second.username2}</Text>
             <View className="bg-extraLightBlue px-3 py-0.5 rounded-md justify-center items-center mt-1.5">
               <Text className={text({ type: 'm12', class: 'text-black' })}>{winners.second.point}x</Text>
             </View>
@@ -111,7 +111,7 @@ const LeaderBoardTeamUpHeader = ({ winners }: Props) => (
             </View>
           </View>
           <View className="items-center justify-center">
-            <Text className={text({ type: 'm12', class: 'text-white' })}>{winners?.third.username} & {winners?.third.username2}</Text>
+            <Text className={text({ type: 'm12', class: 'text-white text-[10px]' })}>{winners?.third.username} & {winners?.third.username2}</Text>
             <View className="bg-extraLightBlue px-3 py-0.5 rounded-md justify-center items-center mt-1.5">
               <Text className={text({ type: 'm12', class: 'text-black' })}>{winners?.third.point}x</Text>
             </View>

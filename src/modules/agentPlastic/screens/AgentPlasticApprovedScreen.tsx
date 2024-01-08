@@ -15,7 +15,6 @@ import { AgentPlasticStackParamList } from '../AgentPlasticNavigator';
 
 const AgentPlasticApprovedScreen = () => {
   const { params } = useRoute<RouteProp<AgentPlasticStackParamList, 'AgentPlasticApproved'>>();
-  console.log(params, 'params');
   const { reset, goBack, navigate } = useNavigation<any>();
 
   return (

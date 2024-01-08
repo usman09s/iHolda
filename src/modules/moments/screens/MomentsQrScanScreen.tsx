@@ -38,7 +38,6 @@ const MomentsQrScanScreen = () => {
 
   const { mutate, isLoading } = useMutation(Api.postMeetup, {
     onError: async (error: any) => {
-      console.log('🚀 ~ file: MomentsQrScanScreen.tsx:41 ~ onError: ~ error:', error);
 
       let errorMessage = 'An unknown error occurred';
 

@@ -17,7 +17,6 @@ const MomentsMatchScreen = ({ route }: { route?: { params: MatchedUserType } }) 
   const { data } = useQuery('currentUserProfile', Api.getUserProfile0);
   const { navigate } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const matchedUser = route?.params;
-  console.log("🚀 ~ file: MomentsMatchScreen.tsx:20 ~ MomentsMatchScreen ~ matchedUser:", matchedUser)
 
   const profilePhoto = data?.data.user.photo.mediaId;
 

@@ -17,6 +17,7 @@ interface Props {
   metsUserId?: string;
   userName?: string;
   description: string;
+  otherUser?: boolean;
 }
 
 const Profile = ({
@@ -27,13 +28,13 @@ const Profile = ({
   onPressMet,
   userName,
   description,
+  otherUser,
 }: Props) => {
   const [data, setData] = useState<{ data: { data: UserMoment[] } }>();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const getMets = async (getBookmarks: number) => {
     if (getBookmarks === 1) return;
-    console.log('🚀 ~ file: Profile.tsx:43 ~ getMets ~ getBookmarks:', getBookmarks);
     try {
       setActiveIndex(getBookmarks);
       setData({ data: { data: [] } });
@@ -50,7 +51,6 @@ const Profile = ({
 
       const data = await response.json();
       console.log(
-        '🚀 ~ file: Profile.tsx:41 ~ getMets ~ data:',
         getBookmarks === 2 ? { data: { data: data?.data?.posts } } : data,
       );
 
@@ -84,7 +84,9 @@ const Profile = ({
             description={description}
           />
           <View className="border-[0.5px] border-black-o-10" />
-          <ProfilePostTabs activeIndex={activeIndex} onPressTabItem={i => getMets(i)} />
+          {!otherUser ? (
+            <ProfilePostTabs activeIndex={activeIndex} onPressTabItem={i => getMets(i)} />
+          ) : <View className='h-5' />}
         </>
       }
       renderItem={({ item, index }) => (

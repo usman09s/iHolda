@@ -67,7 +67,6 @@ const ModifyConfirmPlastic = ({ route }: any) => {
   const { mutateAsync, isLoading } = useMutation(Api.approvedPlasticDelivery);
 
   const getImageForSize = (size: '1L' | '1.5L' | '5L') => {
-    console.log('Size', size);
     if (size === '1L') {
       return Bottle;
     } else if (size === '1.5L') {
@@ -124,7 +123,7 @@ const ModifyConfirmPlastic = ({ route }: any) => {
           navigate('PlasticApproveScreen', { username: scannedData?.user?.userName, totalPlastic });
         },
         onError: (error) => {
-        console.log("🚀 ~ file: ModifyOrConfirmPlastics.tsx:129 ~ handlePlasticSupply ~ error:", error)
+        console.log("🚀 ~ handlePlasticSupply ~ error:", error)
           
         }
       },

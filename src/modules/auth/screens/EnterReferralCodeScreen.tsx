@@ -58,7 +58,6 @@ const EnterReferralCodeScreen = () => {
       { referralCode:referralCode.trim() },
       {
         onSuccess: result => {
-          console.log(result);
           navigate('ReferralCodeSuccessful', { result });
         },
         onError: error => {
@@ -99,13 +98,7 @@ const EnterReferralCodeScreen = () => {
       };
       formData1.append('photo', image);
 
-      postData(Api.baseUrl + 'user', formData1)
-        .then(res => {
-          console.log('🚀 ~ file: EnterReferralCodeScreen.tsx:105 ~ useEffect ~ res:', res);
-        })
-        .catch(err => {
-          console.log('🚀 ~ file: EnterReferralCodeScreen.tsx:109 ~ useEffect ~ err:', err);
-        });
+      postData(Api.baseUrl + 'user', formData1);
 
       // Api.updateuser(formdata).then(() => {
       //   navigate('EnterReferralCode');

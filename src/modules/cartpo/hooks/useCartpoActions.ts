@@ -43,7 +43,6 @@ export const useCartpoActions = () => {
       const result = await Api.verifyPhoneBeforeRegister({
         phone: phoneNumber,
       });
-      console.log(result, 'lklklklklklk');
       if (result.navigateTo === 'ConfirmOtp') {
         navigation.navigate(result.navigateTo, { otp: result.data.otp });
         return;

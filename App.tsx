@@ -21,7 +21,6 @@ export default function App() {
   const checkNetworkStatus = async () => {
     try {
       const state = await NetInfo.fetch();
-      console.log('Network Status Checked:', state.isConnected);
       setNetworkErrorVisible(!state.isConnected);
     } catch (error) {
       console.error('Failed to check network status:', error);
@@ -38,7 +37,6 @@ export default function App() {
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
-      console.log('Network Status Changed:', state.isConnected);
       setNetworkErrorVisible(!state.isConnected);
     });
     checkNetworkStatus();

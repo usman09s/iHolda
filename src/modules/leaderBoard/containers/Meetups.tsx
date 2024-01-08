@@ -42,7 +42,7 @@ const Meetup = () => {
   return (
     <View className="flex-1">
       <FlatList
-        data={rankItems}
+        data={rankItems?.filter(e => e?.username)}
         onScroll={onScroll}
         className="flex-1"
         ListEmptyComponent={<ActivityIndicator />}

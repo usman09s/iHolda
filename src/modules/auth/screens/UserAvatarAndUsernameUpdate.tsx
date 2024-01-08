@@ -39,7 +39,6 @@ const UserAvatarAndUsernameUpdate = () => {
   const uploadImage = useMutation(Api.uploadImage, {});
   const updateUsername = useMutation(Api.updateUsername, {});
   const isVisibleKeyboard = useKeyboardVisible();
-  console.log(pickedImage);
   const { Spacing, customSizeAnimatedStyle } = useAnimatedComponentStyle({
     customSize: 176,
   });
@@ -62,7 +61,6 @@ const UserAvatarAndUsernameUpdate = () => {
 
   const onContinue = async () => {
     const cleanedUsername = username.replace('@', '');
-    console.log(username);
     dispatch(
       setUserImageAndUsername({
         username: cleanedUsername,

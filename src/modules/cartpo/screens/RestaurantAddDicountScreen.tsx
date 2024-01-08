@@ -22,8 +22,6 @@ export const RestaurantAddDiscountScreen = ({ navigation }: any) => {
   const settingsData = useSelector(selectCartpoSettings);
   const dispatch = useDispatch();
   const selectedDiscount = useSelector(selectSelectedDiscount);
-  console.log(selectedDiscount);
-  console.log(settingsData.setting?.discounts);
 
   const initialDiscount = selectedDiscount
     ? {

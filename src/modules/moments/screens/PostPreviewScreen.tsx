@@ -56,7 +56,6 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
       body: data,
     });
     setIsLoading(false);
-    console.log('🚀 ~ file: PostPreviewScreen.tsx:58 ~ postData ~ response:', response);
     return { ...response.json(), status: response.status };
   }
 
@@ -125,7 +124,6 @@ const PostPreviewScreen = ({ route }: { route?: { params: PostScreenParams } }) 
     if (postCaption) formdata.append('text', postCaption);
 
     postData(Api.baseUrl + 'post', formdata).then(data => {
-      console.log('🚀 ~ file: PostPreviewScreen.tsx:100 ~ postData ~ data:', data);
       if (data.status !== 200) return alert('Something went wrong');
       console.log(data);
       dispatchNavigation(StackActions.popToTop());

@@ -74,7 +74,6 @@ const SignUpScreen = () => {
 
     const formattedPhone = `${selectedCountry.phone}${phoneNumber}`;
     const formattedPhoneWithoutPlus = formattedPhone.replace(/\+/g, '');
-    console.log(formattedPhoneWithoutPlus, 'ssss');
     dispatch(
       setCountryCode({
         countryCode: selectedCountry.countryCode,

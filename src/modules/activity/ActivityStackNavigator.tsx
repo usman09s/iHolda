@@ -36,7 +36,6 @@ function ActivityStackNavigator() {
   // const { data: user } = useQuery('currentUserProfile', () => Api.getUserProfile());
   // console.log("🚀 ~ file: ActivityStackNavigator.tsx:35 ~ ActivityStackNavigator ~ user:", user)
   const user = useSelector(userSelector);
-  console.log('🚀 ~ file: ActivityStackNavigator.tsx:39 ~ ActivityStackNavigator ~ user:', user);
 
   return (
     <ActivityStack.Navigator screenOptions={commonScreenOptions}>

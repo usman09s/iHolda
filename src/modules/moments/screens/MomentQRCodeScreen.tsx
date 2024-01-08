@@ -15,7 +15,6 @@ const MomentsQRCodeScreen = () => {
   const [viewHeight, setViewHeight] = useState(0);
   const { goBack } = useNavigation<NavigationProp<MomentsStackParamList>>();
   const { data, isLoading } = useQuery('currentUserProfile', Api.getUserProfile0);
-  console.log("🚀 ~ file: MomentQRCodeScreen.tsx:20 ~ MomentsQRCodeScreen ~ data?.data.user:", data?.data.user)
 
   const profilePhoto = data?.data.user?.photo?.mediaId;
   const qrCode = data?.data.user.userQrCode;
@@ -40,7 +39,7 @@ const MomentsQRCodeScreen = () => {
             <Image className="h-14 w-14 rounded-full mr-2" source={{ uri: getImageLink(profilePhoto) }} />
           ) : null}
           <Text className={text({ type: 'b16' })}>{username}</Text>
-          <Icons.SmallVerifiedCircleIcon className="mb-2" />
+          {/* <Icons.SmallVerifiedCircleIcon className="mb-2" /> */}
         </View>
         <View onLayout={handleLayout} className="w rounded-xl mt-4 w-full">
           {isLoading ? <ActivityIndicator size={'small'} /> : <QRCode size={viewHeight} value={qrCode} />}

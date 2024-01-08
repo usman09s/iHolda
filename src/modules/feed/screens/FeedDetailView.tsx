@@ -42,6 +42,7 @@ const FeedDetailView = ({ route }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState<any[]>([]);
+  const [err, setErr] = useState('');
   // console.log('🚀 ~ file: FeedDetailView.tsx:45 ~ FeedDetailView ~ data:', data);
   const {} = useAppNavigation<NavigationProp<FeedStackParamList>>();
 
@@ -52,23 +53,28 @@ const FeedDetailView = ({ route }: any) => {
 
   async function getTwoUserMet() {
     try {
+      console.log("🚀 ~ file: FeedDetailView.tsx:60 ~ getTwoUserMet ~ item0:", item0)
       const response = await fetch(
         Api.baseUrl +
-          `met?userId=${item0?.users[0]?.user?._id}&userId2=${item0?.users[1]?.user?._id}`,
+          `met?userId=${item0[0]?.user?._id}&userId2=${item0[1]?.user?._id}`,
         {
           method: 'GET',
         },
       );
-      
 
-      if (response?.status !== 200) return setIsLoading(false);;
+      if (response?.status !== 200) return setIsLoading(false);
 
       const res = await response.json();
-      if (!res?.data?.data) return setIsLoading(false);;
+      if (!res?.data?.data) {
+        setIsLoading(false);
+        setErr('No moments found');
 
+        return;
+      }
+
+      if (!res?.data?.data?.length) setErr('No moments found');
       setData(res.data.data);
       setIsLoading(false);
-      //       console.log('🚀 ~ file: FeedDetailView.tsx:67 ~ getTwoUserMet ~ res:', res.data.data);
     } catch (error) {
       console.log('~ getTwoUserMet ~ error:', error);
     }
@@ -139,18 +145,19 @@ const FeedDetailView = ({ route }: any) => {
   return (
     <>
       {/* <FeedHeader /> */}
-      {isLoading && (
+      {/* {isLoading && (
         <View className="absolute self-center z-40 flex-1 justify-center items-center h-full bg-black-o-30 w-full">
           <ActivityIndicator color={colors.saffron} size={'large'} />
         </View>
-      )}
+      )} */}
 
-      {!isLoading && !data?.length ? (
+      {isLoading || err ? (
         <View className="absolute self-center z-40 flex-1 justify-center items-center h-full bg-black-o-30 w-full">
-          {/* <ActivityIndicator color={colors.saffron} size={'large'} /> */}
-          <Text className={text({ type: 'm14', class: 'text-white text-center' })}>
-            No moments found
-          </Text>
+          {isLoading ? (
+            <ActivityIndicator color={colors.saffron} size={'large'} />
+          ) : err ? (
+            <Text className={text({ type: 'm14', class: 'text-white text-center' })}>{err}</Text>
+          ) : null}
         </View>
       ) : null}
       <View className="absolute top-0 left-0 w-full h-full bg-black">
@@ -180,7 +187,8 @@ const FeedDetailView = ({ route }: any) => {
             const quizUsers = isQuizUserdata
               ? item?.userQuiz?.users?.map((el: any) => ({ user: el }))
               : [];
-            const metUsers = isMet && item.met?.users ? item.met?.users?.map((el: any) => ({ user: el })) : [];
+            const metUsers =
+              isMet && item.met?.users ? item.met?.users?.map((el: any) => ({ user: el })) : [];
 
             const users = isMet
               ? metUsers
@@ -200,7 +208,7 @@ const FeedDetailView = ({ route }: any) => {
                     onPressLike={() => getTwoUserMet()}
                     shares={item.post?.shareCount}
                     bookmarks={item.post?.bookmarkCount}
-                    username={item0?.users[1]?.user?.userName}
+                    username={item0[1]?.user?.userName}
                     canGoBack={() => true}
                     useTabHeight={false}
                     likes={item.post.likes?.length}
@@ -263,7 +271,7 @@ const FeedDetailView = ({ route }: any) => {
                   <Text className={text({ type: 'r32', class: 'text-white' })}>{index + 1}</Text>
                 </View>
                 <Text className={text({ type: 'r12', class: 'text-white pl-4 mt-1' })}>
-                  {item.post?.createdAt? getTimeDifference(item.post?.createdAt): null}
+                  {item.post?.createdAt ? getTimeDifference(item.post?.createdAt) : null}
                 </Text>
               </TouchableOpacity>
             )}

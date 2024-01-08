@@ -10,8 +10,6 @@ type Props = {
 };
 
 const PlasticItem = ({ image, count = 0, onPressDecrease, onPressIncrease, id }: Props) => {
-  console.log(id);
-  console.log(count);
   return (
     <View className="bg-blue mr-5 rounded-3xl overflow-hidden" style={styles.container}>
       <View className="mt-0" style={styles.imageContainer}>

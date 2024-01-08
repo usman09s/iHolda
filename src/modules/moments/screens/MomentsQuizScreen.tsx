@@ -151,9 +151,7 @@ const MomentsQuizScreen = ({ route }: { route?: { params: MatchedUserType } }) =
     });
 
     const resData = await postData(Api.baseUrl + 'quiz/attempt', formdata);
-    console.log("🚀 ~ file: MomentsQuizScreen.tsx:154 ~ postQuiz ~ formdata:", formdata)
     const response = await resData.json();
-    console.log('🚀 ~ file: MomentsQuizScreen.tsx:159 ~ postQuiz ~ response:', response);
 
     if (resData.status !== 200) {
       alert('Something went wrong');

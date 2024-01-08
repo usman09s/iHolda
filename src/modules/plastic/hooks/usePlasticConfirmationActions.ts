@@ -55,10 +55,7 @@ export const usePlasticConfirmationActions = () => {
 
   const onSuccessPlastics = async data => {
     dispatch(setPlasticSupplyData(data.data));
-    console.log(
-      '🚀 ~ file: usePlasticConfirmationActions.ts:69 ~ onSuccessPlastics ~ data.data.plasticQrCode:',
-      data.data.plasticQrCode,
-    );
+   
     console.log(data.data, 'llllllllll');
     dispatch(setQrCode(data.data.plasticQrCode));
     try {

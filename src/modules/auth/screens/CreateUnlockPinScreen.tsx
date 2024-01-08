@@ -46,17 +46,14 @@ const CreateUnlockPinScreen = () => {
         onSuccess: result => {
           if (result.message === 'Register successful') {
             dispatch(setQrCode(result.data.user.userQrCode));
-            console.log(result.data.userQrCode, 'dwhceonewoncoi');
             // dispatch(setTokensAndQueryId({ accessToken: result.data.accessToken }));
 
             navigate('EnterReferralCode');
           }
         },
         onError: data => {
-          console.log(data, 'chehiohe');
           const errorMessageObject = JSON.parse(data.message);
           const errorMessage = errorMessageObject.message;
-          console.log("🚀 ~ file: CreateUnlockPinScreen.tsx:59 ~ onConfirm ~ errorMessage:", errorMessage)
           // console.log("🚀 ~ file: CreateUnlockPinScreen.tsx:59 ~ onConfirm ~ errorMessage:", errorMessage)
           // setErrorText(
           //   errorMessage.includes('invalid value')

@@ -45,7 +45,7 @@ const TeamUp = () => {
   return (
     <View className="flex-1">
       <FlatList
-        data={rankItems}
+        data={rankItems?.filter(e => e.username && e.username2)}
         onScroll={onScroll}
         keyExtractor={item => item.toString()}
         stickyHeaderIndices={[currenUserIndex - 3]}

@@ -39,7 +39,7 @@ const LeaderBoardTeamUpItem = ({
           </View>
         </View>
       </View>
-      <Text className={text({ type: 'm13' })}>
+      <Text className={text({ type: 'm13', class: 'text-[12px]' })}>
         {username}
         {' & '}
         {username2}

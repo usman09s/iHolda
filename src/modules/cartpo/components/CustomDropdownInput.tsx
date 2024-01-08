@@ -32,7 +32,6 @@ const CustomDropdownInput = ({ title, type, options, ...props }: any) => {
           placeholderColor={props.placeholderTextColor ? props.placeholderTextColor : '#b3b3b3'}
           buttonTextStyle={styles.dropdownButtonText}
           onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
             helpers.setValue(selectedItem);
             props.onValueChange && props.onValueChange(selectedItem);
           }}

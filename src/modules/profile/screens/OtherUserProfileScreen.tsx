@@ -16,7 +16,7 @@ import Api from 'services/Api';
 import { useNavigation } from '@react-navigation/native';
 import { SignInResponseType } from 'types/AuthTypes';
 
-const OtherUserProfileScreen = ({ route }: any) => {
+const OtherUserProfileScreen = ({ route , navigation}: any) => {
   const activeY = useSharedValue(0);
   const { top } = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
@@ -54,7 +54,7 @@ const OtherUserProfileScreen = ({ route }: any) => {
 
   const { navigate }: any = useNavigation();
 
-  const invitedBy = data?.data.user?.invitedBy?.userName;
+  const invitedBy = data?.data.user?.invitedBy;
   const username = data?.data?.user.userName;
   const avatar = data?.data?.user.photo?.mediaId;
 
@@ -62,8 +62,6 @@ const OtherUserProfileScreen = ({ route }: any) => {
   const date = new Date(dateString);
 
   const formattedDate = date.toLocaleString('default', { month: 'long', year: 'numeric' });
-
-  console.log(formattedDate); // Output: "December 2023"
 
   const joinedMonthAndYear = formattedDate;
   // const { joinedMonthAndYear } = useSelector(userCommonInformationSelector);
@@ -79,6 +77,7 @@ const OtherUserProfileScreen = ({ route }: any) => {
   const RenderedComponent =
     [
       <Profile
+        otherUser={true}
         userName={username}
         description={data?.data.user?.bio ?? ''}
         onPressMet={(data: any) => navigate('FeedDetailView', { item: data })}
@@ -114,6 +113,7 @@ const OtherUserProfileScreen = ({ route }: any) => {
           renderItem={({ item }) => item}
           ListHeaderComponent={
             <ProfileHeader
+              navigate={navigation.push}
               verified={data?.data?.user?.basicVerification?.isVerified ?? false}
               user={data?.data?.user}
               top={top}
@@ -122,7 +122,7 @@ const OtherUserProfileScreen = ({ route }: any) => {
               username={username ?? ''}
               activeIndex={index}
               key={'profileHeader'}
-              invitedBy={invitedBy ?? ''}
+              invitedBy={invitedBy}
               isCurrentUser={false}
               hederThumbnail={avatar ?? ''}
               monthAndYear={joinedMonthAndYear}

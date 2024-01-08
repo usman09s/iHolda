@@ -1,4 +1,4 @@
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import Icons from 'components/Icons';
 import { text } from 'theme/text';
@@ -11,12 +11,13 @@ import ScrolledHeader from './ScrolledHeader';
 import ScrolledHeaderRight from './ScrolledHeaderRight';
 import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import { User } from 'types/AuthTypes';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   top: number;
   avatar: string;
   username: string;
-  invitedBy: string;
+  invitedBy: User | undefined;
   activeIndex: number;
   monthAndYear: string;
   hederThumbnail: string;
@@ -25,7 +26,8 @@ type Props = {
   onPressTabItem: (value: number) => () => void;
   user?: User;
   verified: boolean;
-  isAgent?:boolean;
+  isAgent?: boolean;
+  navigate:any;
 };
 
 const ProfileHeader = ({
@@ -41,10 +43,14 @@ const ProfileHeader = ({
   onPressTabItem,
   user,
   verified,
-  isAgent = false
+  isAgent = false,
+  navigate
 }: Props) => {
   const headerImageHeight = units.vh * 40;
   const tabHeight = units.vh * 8;
+
+  // const {navigate}: any = useNavigation();
+  const isMe = (id: string) => id === user?._id;
 
   const animatedTabsStyle = useAnimatedStyle(() => ({
     marginTop: interpolate(
@@ -67,10 +73,14 @@ const ProfileHeader = ({
       <Animated.View
         style={[{ height: headerImageHeight }, animatedHeaderStyle]}
         className={'z-30 flex-row overflow-hidden w-full'}>
-        <Image
-          className="w-full h-full absolute bg-black"
-          source={{ uri: getImageLink(hederThumbnail) }}
-        />
+        <View className="absolute w-full h-full">
+          <Image
+            className="w-full h-full bg-black"
+            source={{ uri: getImageLink(hederThumbnail) }}
+          />
+
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.3)' }} />
+        </View>
         <View className=" h-full justify-end px-6" style={{ paddingBottom: units.vh * 2 }}>
           <View className="flex-row">
             <Text className={text({ type: 'b20', class: 'text-white mr-1 mb-3' })}>{username}</Text>
@@ -94,8 +104,15 @@ const ProfileHeader = ({
             )}
           </View>
           <Text className={text({ type: 'r13', class: 'text-white' })}>
-            Joined {monthAndYear} {invitedBy ? 'invited by' : null}{' '}
-            <Text className={text({ type: 'b13' })}>{invitedBy && '@' + invitedBy}</Text>
+            Joined {monthAndYear} {invitedBy?.userName ? 'invited by' : null}{' '}
+            <TouchableWithoutFeedback
+              onPress={() => {
+                navigate(isMe(invitedBy?._id ?? '') ? 'ProfileStack' : 'OtherUserProfileMain', {
+                  userId: invitedBy?._id,
+                });
+              }}>
+              <Text className={text({ type: 'b13' })}>{invitedBy?.userName && '@' + invitedBy?.userName}</Text>
+            </TouchableWithoutFeedback>
           </Text>
         </View>
         <ScrolledHeaderRight
@@ -115,7 +132,7 @@ const ProfileHeader = ({
         />
         <Animated.View style={animatedTabsStyle}>
           <ProfileTabs
-          isAgent={isAgent}
+            isAgent={isAgent}
             activeIndex={activeIndex}
             isCurrentUser={isCurrentUser}
             onPressTabItem={onPressTabItem}

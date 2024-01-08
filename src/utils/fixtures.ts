@@ -27,12 +27,19 @@ export const WelcomeComments = [
 //   name: 'Cameroon',
 //   emoji: '\ud83c\udde8\ud83c\uddf2',
 // };
-export const INITIAL_SELECTED_COUNTRY = {
-  phone: '+237',
-  name: 'Cameroon',
-  emoji: '\ud83c\udde8\ud83c\uddf2',
-  countryCode: 'CM',
-};
+export const INITIAL_SELECTED_COUNTRY = __DEV__
+  ? {
+      phone: '+92',
+      name: 'Pakistan',
+      emoji: '\ud83c\udde8\ud83c\uddf2',
+      countryCode: 'PK',
+    }
+  : {
+      phone: '+237',
+      name: 'Cameroon',
+      emoji: '\ud83c\udde8\ud83c\uddf2',
+      countryCode: 'CM',
+    };
 export const CashAndPointsFixture = [
   {
     id: 1,

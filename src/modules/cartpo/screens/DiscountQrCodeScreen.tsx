@@ -16,7 +16,7 @@ export const DiscountQrCodeScreen = ({ navigation }: any) => {
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [qrCode, setQrCode] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [errorText, setErrorText] = useState();
+  const [errorText, setErrorText] = useState('');
   const scanResult = useRef<
     { encrypted_data: string; query_id: string; plastic_id: string } | undefined
   >();

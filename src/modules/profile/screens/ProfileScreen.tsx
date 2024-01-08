@@ -102,6 +102,8 @@ const ProfileScreen = ({ route, navigation }: any) => {
         renderItem={({ item }) => item}
         ListHeaderComponent={
           <ProfileHeader
+            navigate={navigation.push}
+            user={user}
             verified={user?.basicVerification?.isVerified ?? false}
             top={top}
             isCurrentUser={isCurrentUser}
@@ -111,7 +113,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
             activeIndex={index}
             key={'profileHeader'}
             isAgent={user?.isPlasticAgent}
-            invitedBy={invitedBy ?? ''}
+            invitedBy={user?.invitedBy}
             hederThumbnail={avatar?.mediaId ?? ''}
             monthAndYear={joinedMonthAndYear}
             onPressTabItem={onPressTabItem}

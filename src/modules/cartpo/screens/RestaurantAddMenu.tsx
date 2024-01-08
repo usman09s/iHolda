@@ -37,7 +37,6 @@ export const RestaurantAddMenuScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
   const restaurantData = useSelector(selectCartpoSettings);
   const selectedItem = useSelector(selectSelectedMenuItem);
-  console.log(selectedItem, 'selectedMenuItem');
   const initialValues = {
     photo:
       selectedItem && selectedItem.photos && selectedItem.photos[0]

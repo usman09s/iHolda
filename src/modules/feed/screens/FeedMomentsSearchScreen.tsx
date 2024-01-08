@@ -49,7 +49,7 @@ const FeedMomentsSearchScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
   const [page, setPage] = useState(1);
-  const {} = useAppNavigation<NavigationProp<FeedStackParamList>>();
+  const {navigate}: any = useAppNavigation<NavigationProp<FeedStackParamList>>();
   const { user } = useSelector(userSelector);
 
   const isFocused = useIsFocused();
@@ -57,6 +57,8 @@ const FeedMomentsSearchScreen = () => {
   // const handlePressUser = () => {
   //   navigation.navigate('ProfileStack', { screen: 'Profile', params: { isCurrentUser: false } });
   // };
+
+  const isMe = (id: string) => id === user?._id;
 
   async function getData(url = '') {
     const response = await fetch(url, {
@@ -72,15 +74,19 @@ const FeedMomentsSearchScreen = () => {
       Api.baseUrl +
       `met/all?type=${searchType.slug}&page=1&limit=100` +
       (searchTxt ? '&search=' + searchTxt.toLowerCase() : '');
-    console.log('🚀 ~ file: FeedMomentsSearchScreen.tsx:64 ~ search ~ url:', url);
     const res = await getData(url);
 
     // if (!query || page === 1) setPage(prevState => prevState + 1);
     if (searchType.slug === 'video') setSearchResult(res.data?.metUsers);
-    if (searchType.slug === 'user') setSearchResult(res.data?.users);
+    if (searchType.slug === 'user')
+      setSearchResult(res.data?.users?.filter((e: any) => !e?.followers?.includes(user?._id)));
     if (searchType.slug === 'restaurant') setSearchResult(res.data?.restaurants);
+    // item?.followers?.includes(user?._id)
     if (searchType.slug === 'all')
-      setSearchResult([...res.data?.users?.slice(0, 3), ...res.data?.metUsers]);
+      setSearchResult([
+        ...res.data?.users?.filter((e: any) => !e?.followers?.includes(user?._id))?.slice(0, 3),
+        ...res.data?.metUsers,
+      ]);
     setIsLoading(false);
 
     // if (specificPage || query) setSearchResult(res.data);
@@ -128,7 +134,7 @@ const FeedMomentsSearchScreen = () => {
   };
 
   useEffect(() => {
-   if(isFocused) searchList()
+    if (isFocused) searchList();
   }, [isFocused]);
 
   useEffect(() => {
@@ -169,7 +175,7 @@ const FeedMomentsSearchScreen = () => {
               onPress={() => setSearchType(c)}
               className={
                 (searchType.slug === c.slug ? 'bg-[#ffde71] ' : 'border border-[#808080]') +
-                'flex-grow-0 py-1 px-4 rounded-[50px] mx-3'
+                'flex-grow-0 py-1 px-4 rounded-[50px] mx-1'
               }
               style={
                 searchType.slug === c.slug
@@ -183,10 +189,10 @@ const FeedMomentsSearchScreen = () => {
                       shadowRadius: 2.22,
 
                       elevation: 3,
-                      marginLeft: index === 0 ? 57 : 12,
+                      marginLeft: index === 0 ? 45 : 12,
                     }
                   : {
-                      marginLeft: index === 0 ? 57 : 12,
+                      marginLeft: index === 0 ? 45 : 12,
                     }
               }>
               <Text className={text({ type: 'm16', class: 'text-center' })}>{c.name}</Text>
@@ -197,13 +203,11 @@ const FeedMomentsSearchScreen = () => {
 
       <View style={{ height: 20 }} />
 
-      <ScrollView className='px-5'>
+      <ScrollView className="px-5">
         {isLoading ? (
           <ActivityIndicator />
         ) : (
-          <View
-            className={`flex-row justify-between`}
-            style={{ flexWrap: 'wrap' }}>
+          <View className={`flex-row justify-between`} style={{ flexWrap: 'wrap' }}>
             {searchResult?.map((item: any, index: number) => {
               // const isUser = item?.users && item?.users[0]?.metCount !== undefined;
               const isUser = !item?.post;
@@ -217,7 +221,7 @@ const FeedMomentsSearchScreen = () => {
                 return isRestaurant ? (
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate('RestaurentDetail', {item});
+                      navigation.navigate('RestaurentDetail', { item });
                     }}
                     // className="flex-1 mx-2 mb-1 ml-4 bg-black w-full"
                     className={`${index === 0 ? 'w-[100%]' : 'w-[49%]'} mt-2 pl-0`}>
@@ -249,7 +253,13 @@ const FeedMomentsSearchScreen = () => {
                     </View>
                   </TouchableOpacity>
                 ) : isUser ? (
-                  <View className="p-2 flex-row items-center px-0 w-full">
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigate(isMe(item?._id ?? '') ? 'ProfileStack' : 'OtherUserProfileMain', {
+                        userId: item?._id,
+                      });
+                    }}
+                    className="p-2 flex-row items-center px-0 w-full">
                     <Image
                       source={{
                         uri: item?.photo?.mediaId
@@ -271,7 +281,7 @@ const FeedMomentsSearchScreen = () => {
                         <Text style={{ fontSize: 13 }}>{isFollowed ? 'Following' : 'Follow'}</Text>
                       </TouchableOpacity>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 ) : index === 0 && searchType.slug === categories[0].slug ? null : (
                   <View className="w-[48%]  mb-1">
                     {item.post?.media[0]?.mediaType?.includes('video') ? (

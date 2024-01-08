@@ -83,14 +83,7 @@ export const CashoutProfileScreen = ({ navigation, route }: any) => {
             <TextInput
               value={withdrawAmmount}
               onChangeText={val => {
-                console.log(
-                  '🚀 ~ file: CashoutProfileScreen.tsx:86 ~ CashoutProfileScreen ~ val:',
-                  val,
-                );
-                console.log(
-                  '🚀 ~ file: CashoutProfileScreen.tsx:87 ~ CashoutProfileScreen ~ numbers.includes(Number(val)):',
-                  numbers.includes(val[val?.length - 1]),
-                );
+              
                 // if(!val) return;
                 if (numbers.includes(!val?.length ? val : val[val?.length - 1]))
                   setWithdrawAmmount(val);

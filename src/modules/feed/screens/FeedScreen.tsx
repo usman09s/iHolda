@@ -7,6 +7,7 @@ import {
   Pressable,
   RefreshControl,
   ScrollView,
+  StatusBar,
   View,
   ViewToken,
   useWindowDimensions,
@@ -17,7 +18,7 @@ import { useAppNavigation } from 'hooks/useAppNavigation';
 import { useQuery } from 'react-query';
 import Api from 'services/Api';
 import colors from 'theme/colors';
-import { height, units, wH, wW } from 'utils/helpers';
+import { height, units, wH, wW, windowSizes } from 'utils/helpers';
 import { Audio } from 'expo-av';
 
 import FeedHeader from '../components/FeedHeader';
@@ -30,6 +31,7 @@ import { getImageLink } from 'modules/moments/helpers/imageHelpers';
 import { userAppInit } from 'hooks/useAppInit';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { setUser } from 'store/userDataSlice';
+import SwiperFlatList from 'react-native-swiper-flatlist';
 
 const FeedScreen = () => {
   const [currentIndex, setIndex] = useState(0);
@@ -57,7 +59,7 @@ const FeedScreen = () => {
   const { height: newHeight } = useWindowDimensions();
   // console.log("🚀 ~ file: FeedScreen.tsx:58 ~ FeedScreen ~ kdj:", kdj)
 
-  const ITEM_HEIGHT = newHeight - top - units.vh * 8;
+  const ITEM_HEIGHT = newHeight - units.vh * 8;
   // console.log("🚀 ~ file: FeedScreen.tsx:61 ~ FeedScreen ~ height:", height)
   // units.vh * 8
   const onRefresh = () => {
@@ -96,7 +98,7 @@ const FeedScreen = () => {
             ios: wH - units.vh * 8,
             android: ITEM_HEIGHT,
           }),
-          marginTop: top,
+          // marginTop: top,
         }}>
         <FeedItem
           users={users}
@@ -134,8 +136,19 @@ const FeedScreen = () => {
     }
   }, [isFocused]);
 
+  // const onViewCallBack = useCallback(viewableItems => {
+  //   console.log(viewableItems);
+  //   // Use viewable items in state or as intended
+  // }, []); // any dependencies that require the function to be "redeclared"
+
+  // const viewConfigRef = useRef({
+  //   waitForInteraction: true,
+  //   viewAreaCoveragePercentThreshold: 100,
+  // });
+
   return (
     <>
+      <View style={{ height: StatusBar.currentHeight, backgroundColor: 'black' }} />
       <FeedHeader />
       {isLoading ||
         (refreshing && (
@@ -143,10 +156,22 @@ const FeedScreen = () => {
             <ActivityIndicator color={colors.saffron} size={'large'} />
           </View>
         ))}
-      <View className="absolute top-0 left-0 w-full h-full">
-        {/* <ScrollView>{data?.result?.posts?.map(renderItem)}</ScrollView> */}
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'black',
+        }}>
+        {/* <SwiperFlatList
+          vertical
+          data={data?.result?.posts ?? []}
+          renderItem={renderItem}
+          keyExtractor={item => item?._id}
+          onChangeIndex={e => {
+            console.log('🚀 ~ file: FeedScreen.tsx:211 ~ FeedScreen ~ e:', e);
+          }}
+        /> */}
+              
         <FlatList
-          // ref={flatlistRef}
           data={data?.result?.posts ?? []}
           className="bg-black"
           renderItem={renderItem}
@@ -162,7 +187,7 @@ const FeedScreen = () => {
             ios: 4,
             android: 2,
           })}
-          removeClippedSubviews
+          // removeClippedSubviews
           viewabilityConfig={{
             minimumViewTime: 100,
             waitForInteraction: true,
@@ -175,7 +200,6 @@ const FeedScreen = () => {
               newIndex < data?.result?.posts.length &&
               newIndex >= 0
             ) {
-              // pauseSound()
               setIndex(Math.round(newIndex));
             }
           }}
@@ -183,8 +207,6 @@ const FeedScreen = () => {
           decelerationRate="fast"
           snapToAlignment="start"
           refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={false} />}
-          // onViewableItemsChanged={onViewCallBack}
-          // viewabilityConfig={viewConfigRef.current}
         />
       </View>
     </>

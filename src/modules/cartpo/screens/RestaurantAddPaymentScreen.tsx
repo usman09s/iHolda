@@ -17,8 +17,6 @@ export const RestaurantAddPaymentScreen = ({ route }: any) => {
   const { handleAddPayment, handleDeletePayment } = useCartpoActions();
   const settingsData = useSelector(selectCartpoSettings);
   const selectPayment = useSelector(selectSelectedPayment);
-  console.log(selectPayment);
-  console.log(settingsData.setting.paymentMethod);
   const initialValues = {
     accountType: selectPayment?.bank || '',
     account: selectPayment?.account?.toString() || '',

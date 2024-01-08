@@ -110,7 +110,6 @@ const MomentsMoodScreen = ({ route }: { route?: { params: MomentsMoodParams } })
 
     const resData = await postData(Api.baseUrl + 'met', formdata);
 
-    console.log('🚀 ~ file: MomentsMoodScreen.tsx:100 ~ postData ~ resData:', resData);
     if (resData.status !== 200) return alert('Something went wrong');
     reset({
       index: 0,

@@ -158,10 +158,7 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
           if (metMedia.length - 1 === index) {
             // const media: any  = await getMedia();
             formdata.append('post[mediaType]', 'image');
-            console.log(
-              '🚀 ~ file: MomentsSelfieScreen.tsx:140 ~ goToMomentsUpload ~ formdata:',
-              formdata,
-            );
+           
 
             const moodScale = 1;
 
@@ -176,14 +173,7 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
 
             const resData = await postData(Api.baseUrl + 'met', formdata);
 
-            console.log(
-              '🚀 ~ file: MomentsSelfieScreen.tsx:159 ~ goToMomentsUpload ~ resData:',
-              resData,
-            );
-            console.log(
-              '🚀 ~ file: MomentsMoodScreen.tsx:100 ~ postData ~ resData:',
-              resData.data.met.post,
-            );
+           
             if (resData.status !== 200) return alert('Something went wrong');
             reset({
               index: 0,
@@ -216,11 +206,7 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
           if (metMedia.length - 1 === index) {
             // const media: any  = await getMedia();
             formdata.append('post[mediaType]', 'image');
-            console.log(
-              '🚀 ~ file: MomentsSelfieScreen.tsx:140 ~ goToMomentsUpload ~ formdata:',
-              formdata,
-            );
-
+           
             const moodScale = 1;
 
             if (postMomentsParams.caption) formdata.append('post[text]', postMomentsParams.caption);
@@ -234,14 +220,6 @@ const MomentsSelfieScreen = ({ route }: { route?: { params: MatchedUserType } })
 
             const resData = await postData(Api.baseUrl + 'met', formdata);
 
-            console.log(
-              '🚀 ~ file: MomentsSelfieScreen.tsx:159 ~ goToMomentsUpload ~ resData:',
-              resData,
-            );
-            console.log(
-              '🚀 ~ file: MomentsMoodScreen.tsx:100 ~ postData ~ resData:',
-              resData.data.met.post,
-            );
             if (resData.status !== 200) return alert('Something went wrong');
             reset({
               index: 0,

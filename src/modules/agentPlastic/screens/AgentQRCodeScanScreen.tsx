@@ -49,7 +49,6 @@ const AgentQRCodeScanScreen = () => {
   const handleContinuePress = async () => {
     try {
       const apiUrl = `http://ihold.yameenyousuf.com/api/plastic/scan/${qrCode}/${plasticAgent}`;
-      console.log(apiUrl, 'hofheoihf');
       const response = await axios.get(apiUrl);
 
       if (response.status === 200) {

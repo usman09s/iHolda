@@ -58,7 +58,6 @@ export const userAppInit = () => {
 
   useEffect(() => {
     if (data) {
-      console.log('🚀 ~ file: useAppInit.ts:62 ~ useEffect ~ data:', data);
       dispatch(setUserInfo(data.data.user));
     }
   }, [data]);

@@ -27,7 +27,6 @@ const EnterOptScreen = () => {
 
   const { error, isLoading, mutate } = useMutation(Api.resetPinCodeConfirm, {
     onSuccess: result => {
-      console.log(result, 'mmmmmm');
       if (result.message === 'OTP verified successfully') {
         navigate('ResetPin', { phone: params.phone });
       }

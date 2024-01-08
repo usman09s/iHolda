@@ -1,4 +1,4 @@
-import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { Image, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import colors from 'theme/colors';
 import { text } from 'theme/text';
@@ -50,7 +50,7 @@ const FeedItemDetailsBar = ({
   const { user } = useSelector(userSelector);
   const [isFollowed, setIsFollowed] = useState(false);
   const [isFollowed2, setIsFollowed2] = useState(false);
-
+  const [numOfSubTextLines, setNumOfSubTextLines] = useState<number | undefined>(2);
   const followUnfollowUser = async (userId: string, userNum: number) => {
     try {
       await Api.followUnFollowUseer(userId, false);
@@ -151,12 +151,15 @@ const FeedItemDetailsBar = ({
                   userId: userId1,
                 })
               }>
-              <Text className={text({ type: 'r20', class: 'text-white text-center' })}>
+              <Text className={text({ type: 'r20', class: 'text-white text-center text-[15px]' })}>
                 {userFirst.username}
               </Text>
             </TouchableOpacity>
             {userSecond?.username ? (
-              <Text className={text({ type: 'r20', class: 'text-white text-center' })}> and </Text>
+              <Text className={text({ type: 'r20', class: 'text-white text-center text-[15px]' })}>
+                {' '}
+                and{' '}
+              </Text>
             ) : null}
             {userSecond?.username ? (
               <TouchableOpacity
@@ -165,7 +168,8 @@ const FeedItemDetailsBar = ({
                     userId: userId2,
                   })
                 }>
-                <Text className={text({ type: 'r20', class: 'text-white text-center' })}>
+                <Text
+                  className={text({ type: 'r20', class: 'text-white text-center text-[15px]' })}>
                   {userSecond.username}
                 </Text>
               </TouchableOpacity>
@@ -173,20 +177,28 @@ const FeedItemDetailsBar = ({
           </View>
 
           {!!caption && (
-            <Text numberOfLines={4} className={text({ type: 'r15', class: 'text-white mt-1' })}>
+            <Text
+              numberOfLines={4}
+              className={text({ type: 'r15', class: 'text-white mt-1 w-[70%]' })}
+              style={{ fontSize: 13 }}>
               {renderTextWithBoldHashtags(caption)}
             </Text>
           )}
           {!!subText && (
-            <Text
-              numberOfLines={1}
-              // style={{ paddingBottom: units.vh * 2 }}
-              className={text({
-                type: 'r15',
-                class: 'text-white mt-2',
-              })}>
-              {renderTextWithBoldHashtags(subText)}
-            </Text>
+            <TouchableWithoutFeedback
+              onPress={() => setNumOfSubTextLines(prev => (prev ? undefined : 2))}>
+              <Text
+                numberOfLines={numOfSubTextLines}
+                style={{
+                  fontSize: 13,
+                  marginTop: 8,
+                  color: 'white',
+                  width: '70%',
+                  fontFamily: 'Regular',
+                }}>
+                {renderTextWithBoldHashtags(subText)}
+              </Text>
+            </TouchableWithoutFeedback>
           )}
         </View>
       </LinearGradient>

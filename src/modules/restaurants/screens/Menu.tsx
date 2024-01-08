@@ -11,7 +11,6 @@ interface Props {id: string}
 
 const Menu = ({id}: Props) => {
   const { data } = useQuery('restaurantMenu', () => Api.getRestaurantMenu(id));
-  console.log("🚀 ~ file: Menu.tsx:13 ~ Menu ~ data:", data?.data?.cartpoMenus)
   return (
     <ScrollView style={{ backgroundColor: '#fff', paddingTop: 20, paddingHorizontal: 10 }}>
       {data?.data?.cartpoMenus.map((item: any, i: number) => (

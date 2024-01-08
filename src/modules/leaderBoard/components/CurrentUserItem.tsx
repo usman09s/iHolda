@@ -17,7 +17,7 @@ const CurrentUserItem = ({ index, avatar, username }: Props) => (
     <View className="border-4 border-saffron rounded-full self-center ml-4 mr-4">
       <Image className="h-10 w-10 rounded-full" source={{ uri: getImageLink(avatar) }} />
     </View>
-    <Text className={text({ type: 'm13' })}>{username}</Text>
+    <Text className={text({ type: 'm13', class: "text-[13px]" })}>{username}</Text>
   </View>
 );
 
